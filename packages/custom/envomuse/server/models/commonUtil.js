@@ -12,7 +12,7 @@ var BaseSchema = new Schema({
   creator: {
     type: Schema.ObjectId,
     ref: 'User',
-    required: true
+    required: false
   },
   created: {
     type: Date,

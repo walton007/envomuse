@@ -34,4 +34,13 @@ var CustomerSchema = BaseSchema.extend({
   }
 });
 
+/**
+ * Statics
+ */
+CustomerSchema.statics.load = function(id, cb) {
+  this.findOne({
+    _id: id
+  }).populate('user', 'name username').exec(cb);
+};
+
 mongoose.model('Customer', CustomerSchema);

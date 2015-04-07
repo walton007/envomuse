@@ -2,7 +2,8 @@
 
 /* jshint -W098 */
 var express = require('express'),
-   mean = require('meanio');
+   mean = require('meanio'),
+   customer = require('../controllers/customer');
 
 // The Package is past automatically as first parameter
 module.exports = function(Envomuse, app, auth, database) {
@@ -110,26 +111,13 @@ module.exports = function(Envomuse, app, auth, database) {
 
   //Customers
   apiRouter.route('/customers/')
-  .get(function(req, res, next) {
-    res.json([{id:1}, {id:2}]);
-  })
-  .post(function(req, res, next) {
-    res.json({id:2});
-  });
+  .get(customer.all)
+  .post(customer.create);
   apiRouter.route('/customers/:customerId')
-  .get(function(req, res, next) {
-    res.json({id:2});
-  })
-  .put(function(req, res, next) {
-    res.json({id:2});
-  })
-  .delete(function(req, res, next) {
-    res.json(200);
-  });
-  apiRouter.param('customerId', function(req, res, next, id){
-    req.customer = null;
-    next();
-  }); 
+  .get(customer.show)
+  .put(customer.update)
+  .delete(customer.destroy);
+  apiRouter.param('customerId', customer.customer); 
 
   //Sites
   apiRouter.route('/sites/')
