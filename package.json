@@ -19,7 +19,9 @@
     "mocha": "node node_modules/.bin/mocha packages/**/server/tests/**/*.js -R spec -r tools/test/mocha-req.js",
     "karma": "node node_modules/karma/bin/karma start karma.conf.js",
     "test": "npm run mocha && NODE_ENV=test npm run start & sleep 20 && npm run karma",
-    "postinstall": "node node_modules/meanio/node_modules/mean-cli/bin/mean-postinstall"
+    "postinstall": "node node_modules/meanio/node_modules/mean-cli/bin/mean-postinstall",
+    "startzmq": "node ./zeromq/zmqserver",
+    "startzmqclient": "node ./zeromq/zmqclient"
   },
   "dependencies": {
     "assetmanager": "1.1.2",
@@ -50,7 +52,8 @@
     "q": "^1.2.0",
     "serve-favicon": "2.2.0",
     "swig": "1.4.2",
-    "view-helpers": "0.1.5"
+    "view-helpers": "0.1.5",
+    "zmq": "^2.11.0"
   },
   "devDependencies": {
     "expect.js": "0.3.1",

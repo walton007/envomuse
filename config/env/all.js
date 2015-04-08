@@ -43,5 +43,8 @@ module.exports = {
   },
 
   // The session cookie name
-  sessionName: 'connect.sid'
+  sessionName: 'connect.sid',
+
+  pubAddr: "tcp://127.0.0.1:9999",
+  pushCmdAddr: "tcp://127.0.0.1:9998"
 };
