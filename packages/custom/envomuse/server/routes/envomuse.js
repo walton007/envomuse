@@ -3,7 +3,8 @@
 /* jshint -W098 */
 var express = require('express'),
    mean = require('meanio'),
-   customer = require('../controllers/customer');
+   customer = require('../controllers/customer'),
+   sites = require('../controllers/site');
 
 // The Package is past automatically as first parameter
 module.exports = function(Envomuse, app, auth, database) {
@@ -121,38 +122,21 @@ module.exports = function(Envomuse, app, auth, database) {
 
   //Sites
   apiRouter.route('/sites/')
-  .get(function(req, res, next) {
-    res.json([{id:1}, {id:2}]);
-  })
-  .post(function(req, res, next) {
-    res.json({id:2});
-  });
+  .get(sites.all)
+  .post(sites.create);
   apiRouter.route('/sites/:siteId')
-  .get(function(req, res, next) {
-    res.json({id:2});
-  })
-  .put(function(req, res, next) {
-    res.json({id:2});
-  })
-  .delete(function(req, res, next) {
-    res.json(200);
-  });
+  .get(sites.show)
+  .put(sites.update)
+  .delete(sites.destroy);
   apiRouter.route('/sites/:siteId/bindLicense')
-  .post(function(req, res, next) {
-    res.send(200);
-  });
+  .post(sites.bindLicense);
   apiRouter.route('/sites/:siteId/license/activate')
-  .post(function(req, res, next) {
-    res.send(200);
-  });
+  .post(sites.licenseActivate);
   apiRouter.route('/sites/:siteId/connectionLogs')
   .get(function(req, res, next) {
     res.json([{id:2}]);
   });
-  apiRouter.param('siteId', function(req, res, next, id){
-    req.site = null;
-    next();
-  });
+  apiRouter.param('siteId', sites.site);
 
   //ConnectionLogs For Music Player
   // ConnectionLog

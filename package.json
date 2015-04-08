@@ -39,6 +39,7 @@
     "mongoose-schema-extend": "^0.1.7",
     "morgan": "1.5.0",
     "ms": "0.6.2",
+    "node-uuid": "^1.4.3",
     "nodemailer": "1.2.2",
     "passport-facebook": "1.0.3",
     "passport-github": "0.1.5",

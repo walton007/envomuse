@@ -27,10 +27,9 @@ var SiteSchema = BaseSchema.extend({
   license: {
     uuid: String,
     activated: {
-      type: String,
+      type: Boolean,
       required: true,
-      default: 'inactive',
-      enum: ['active', 'inactive'],
+      default: false
     },
     deviceInfo: {
       mac: String
@@ -41,6 +40,15 @@ var SiteSchema = BaseSchema.extend({
     activatedDate: Date,
   }
 });
+
+/**
+ * Statics
+ */
+SiteSchema.statics.load = function(id, cb) {
+  this.findOne({
+    _id: id
+  }).populate('user', 'name username').exec(cb);
+};
 
 mongoose.model('Site', SiteSchema);
 
