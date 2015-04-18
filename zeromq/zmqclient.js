@@ -10,20 +10,23 @@ function logToConsole (message) {
 
 // Connect to the server instance.
 socketCmd.bindSync(config.pushCmdAddr); 
+console.log('config.pubAddr:', config.pubAddr);
 socketSub.connect(config.pubAddr);
-socketSub.subscribe('scan');
+socketSub.subscribe('cmd');
 socketSub.on("message", function (topic, message) {  
 	var recObj = JSON.parse(message.toString('utf8'));
 	console.log('socketSub on message', topic.toString('utf8'), recObj);
     // Convert the message into a string and log to the console.
     // var recObj = JSON.parse(message);
-    logToConsole("  message: " + recObj.message[0].meta);
-    logToConsole("  taskId: " + recObj.taskId);
+    logToConsole("  cmdId: " + recObj.cmdId);
 });
 
 setTimeout(function() {
 	console.log('going send msg');
-	var msgStr = JSON.stringify({taskId: 11, cmd: 'scan'});
+	var msgStr = JSON.stringify({cmdId: 11, cmd: 'comingJobs', args:['all']});
+	socketCmd.send(msgStr);
+
+	var msgStr = JSON.stringify({cmdId: 13, cmd: 'comingJobs', args:['forceRefresh']});
 	socketCmd.send(msgStr);
 	 
 }, 200);

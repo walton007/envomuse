@@ -23,7 +23,7 @@ gulp.task('jshint', function () {
   return gulp.src(paths.js)
     .pipe(plugins.jshint())
     .pipe(plugins.jshint.reporter('jshint-stylish'))
-    .pipe(plugins.jshint.reporter('fail'))
+    // .pipe(plugins.jshint.reporter('fail'))
     .pipe(count('jshint', 'files lint free'));
 });
 

@@ -4,7 +4,8 @@
 var express = require('express'),
    mean = require('meanio'),
    customer = require('../controllers/customer'),
-   sites = require('../controllers/site');
+   sites = require('../controllers/site'),
+   comingJobs = require('../controllers/comingJob');
 
 // The Package is past automatically as first parameter
 module.exports = function(Envomuse, app, auth, database) {
@@ -17,21 +18,21 @@ module.exports = function(Envomuse, app, auth, database) {
 
   //Coming Jobs
   apiRouter.route('/comingJobs')
-  .get(function(req, res, next) {
-    res.json([{id:1}, {id:2}]);
-  });
+  .get(comingJobs.all);
+  apiRouter.route('/comingJobs/forceRefresh')
+  .post(comingJobs.forceRefresh);
   
   apiRouter.route('/comingJobs/:comingJobId')
   .get(function(req, res, next) {
     res.json({id:2});
   });
 
-  apiRouter.route('/comingJobs/:comingJobId/active')
+  apiRouter.route('/comingJobs/:comingJobId/import')
   .post(function(req, res, next) {
     res.send(200);
   });
   apiRouter.param('comingJobId', function(req, res, next, id){
-    req.comingJobs = null;
+    req.comingJobsId = id;
     next();
   }); 
 
@@ -49,15 +50,45 @@ module.exports = function(Envomuse, app, auth, database) {
   });
   apiRouter.route('/jobs/:jobId/generateProgram')
   .post(function(req, res, next) {
+    req.body.startDate = new Date();
+    req.body.endDate = new Date();
     //generateProgram
     res.json({
       id: 100
     });
   });
+  apiRouter.route('/jobs/:jobId/export')
+  .post(function(req, res, next) {
+    //export job war package
+    res.json([{
+      id: 100
+    }]);
+  });
+  apiRouter.route('/jobs/:jobId/programs')
+  .post(function(req, res, next) {
+    //export job war package
+    res.json([{
+      id: 100,
+      programInfo : {}
+    }]);
+  });
   apiRouter.param('jobId', function(req, res, next, id){
     req.job = null;
     next();
   }); 
+
+  //export task
+  apiRouter.route('/exportTasks/')
+  .get(function(req, res, next) {
+    res.json([{taskid:2, jobid:1, complete: false, warFileName:10}]);
+  })
+  apiRouter.route('/exportTasks/:taskid')
+  .get(function(req, res, next) {
+    res.json({id:2});
+  })
+  .delete(function(req, res, next) {
+    res.send(200);
+  });   
 
   //Programs
   apiRouter.get('/programs', function(req, res, next) {
@@ -111,13 +142,17 @@ module.exports = function(Envomuse, app, auth, database) {
   });
 
   //Customers
-  apiRouter.route('/customers/')
+  apiRouter.route('/customers/?expand')
   .get(customer.all)
   .post(customer.create);
   apiRouter.route('/customers/:customerId')
   .get(customer.show)
   .put(customer.update)
   .delete(customer.destroy);
+  apiRouter.route('/customers/:customerId/sites')
+  .get(function(req, res, next) {
+    res.json([{siteid:1}]);
+  });
   apiRouter.param('customerId', customer.customer); 
 
   //Sites

@@ -4,17 +4,13 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-  commonUtil = require('./commonUtil');
+  Schema = mongoose.Schema;
 
-var BaseSchema = commonUtil.BaseSchema;
-
-var JobSchema = BaseSchema.extend({
+var JobSchema = new Schema({
   uuid: String,
   creator: String,
   programName: String,
   custumorName: String,
-  delete: Boolean,
   programRule: {
     boxes: [{
       name: String,
@@ -58,3 +54,7 @@ var JobSchema = BaseSchema.extend({
 });
 
 mongoose.model('Job', JobSchema);
+
+module.exports = exports = {
+  JobSchema: JobSchema
+}; 

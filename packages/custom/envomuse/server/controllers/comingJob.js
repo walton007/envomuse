@@ -4,21 +4,9 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-  Customer = mongoose.model('Customer'),
+  zmqAgent = require('../zmqclient/client'),
   _ = require('lodash');
 
-
-/**
- * Find Customer by id
- */
-exports.customer = function(req, res, next, id) {
-  Customer.load(id, function(err, customer) {
-    if (err) return next(err);
-    if (!customer) return next(new Error('Failed to load customer ' + id));
-    req.customer = customer;
-    next();
-  });
-};
 
 /**
  * Create an customer
@@ -76,24 +64,21 @@ exports.destroy = function(req, res) {
 };
 
  /**
- * Show an customer
+ * forceRefresh
  */
-exports.show = function(req, res) {
-  res.json(req.customer);
+exports.forceRefresh = function(req, res) {
+  zmqAgent.sendCmd('comingJobs', ['forceRefresh'], function(comingJobs) {
+    console.log('forceRefresh comingJobs:', comingJobs);
+    res.json(comingJobs);
+  });
 };
 
 
 /**
- * List of Articles
+ * List of comingJobs
  */
 exports.all = function(req, res) {
-  Customer.find().sort('-created').populate('user', 'name username').exec(function(err, customers) {
-    if (err) {
-      return res.status(500).json({
-        error: 'Cannot list the customers'
-      });
-    }
-    res.json(customers);
-
+  zmqAgent.sendCmd('comingJobs', ['all'], function(comingJobs) {
+    res.json(comingJobs);
   });
 };
