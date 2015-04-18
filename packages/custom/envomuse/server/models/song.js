@@ -7,14 +7,12 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema,
   commonUtil = require('./commonUtil');
 
-var BaseSchema = commonUtil.BaseSchema;
-
 //----------- program, music related information  ----------------//
 
 //some information supplied by music editor:
 // name, creator, duration, 
 //some information is calculated by server: hash, rawfilepath, encfilepath
-var SongSchema = BaseSchema.extend({
+var SongSchema = new Schema({
   name: String,
   duration: Number,
   tags: [{key: String, value: String}],

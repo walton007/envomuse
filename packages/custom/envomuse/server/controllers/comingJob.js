@@ -9,40 +9,23 @@ var mongoose = require('mongoose'),
 
 
 /**
- * Create an customer
+ * Get allTasks
  */
-exports.create = function(req, res) {
-  var customer = new Customer(req.body);
-  customer.user = req.user;
-
-  customer.save(function(err) {
-    if (err) {
-      console.warn('create err:', err);
-      return res.status(500).json({
-        error: 'Cannot save the customer'
-      });
-    }
-    res.json(customer);
-
+exports.allTasks = function(req, res) {
+  zmqAgent.sendCmd('comingJobs', ['allTasks'], function(tasks) {
+    res.json(tasks);
   });
 };
 
 /**
- * Update an customer
+ * import an comingJobs
  */
-exports.update = function(req, res) {
-  var customer = req.customer;
-
-  customer = _.extend(customer, req.body);
-
-  customer.save(function(err) {
-    if (err) {
-      return res.status(500).json({
-        error: 'Cannot update the customer'
-      });
-    }
-    res.json(customer);
-
+exports.import = function(req, res) {
+  var comingJobsId = req.comingJobsId;
+  zmqAgent.sendCmd('comingJobs', ['import', comingJobsId], function(taskId) {
+    res.json({
+      taskId: taskId
+    });
   });
 };
 
@@ -68,7 +51,7 @@ exports.destroy = function(req, res) {
  */
 exports.forceRefresh = function(req, res) {
   zmqAgent.sendCmd('comingJobs', ['forceRefresh'], function(comingJobs) {
-    console.log('forceRefresh comingJobs:', comingJobs);
+    // console.log('forceRefresh comingJobs:', comingJobs);
     res.json(comingJobs);
   });
 };

@@ -21,16 +21,9 @@ module.exports = function(Envomuse, app, auth, database) {
   .get(comingJobs.all);
   apiRouter.route('/comingJobs/forceRefresh')
   .post(comingJobs.forceRefresh);
-  
-  apiRouter.route('/comingJobs/:comingJobId')
-  .get(function(req, res, next) {
-    res.json({id:2});
-  });
 
   apiRouter.route('/comingJobs/:comingJobId/import')
-  .post(function(req, res, next) {
-    res.send(200);
-  });
+  .post(comingJobs.import);
   apiRouter.param('comingJobId', function(req, res, next, id){
     req.comingJobsId = id;
     next();
@@ -88,7 +81,11 @@ module.exports = function(Envomuse, app, auth, database) {
   })
   .delete(function(req, res, next) {
     res.send(200);
-  });   
+  });
+
+  //all Tasks
+  apiRouter.route('/tasks/')
+  .get(comingJobs.allTasks);
 
   //Programs
   apiRouter.get('/programs', function(req, res, next) {

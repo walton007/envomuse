@@ -14,7 +14,12 @@ var mongoose = require('mongoose'),
 var ComingJobSchema = job.JobSchema.extend({
   filepath: String,
   md5: String,
-  imported: Boolean,
+  importStatus: {
+    type: String,
+    required: true,
+    default: 'notImport',
+    enum: ['notImport', 'importing', 'imported'],
+  },
   outdate: {
 	  type: Boolean,
 	  default: false
