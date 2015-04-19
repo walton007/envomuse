@@ -20,14 +20,15 @@ var JobSchema = new Schema({
         songid: {
           type: Schema.ObjectId,
           ref: 'Song'
-        }
+        },
+        relativePath: String
       }]
     }],
-    rules: {
+    rules: [{
       name: String,
       description: String,
       boxes: [String],
-    },
+    }],
     playlists: [{
       name: String,
       timePeriods: {
@@ -43,12 +44,12 @@ var JobSchema = new Schema({
           default: 'Mon',
           enum: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
         }],
-        multipleDatesValues: [Date],
-        dateRangeValues: {startDate: Date, endDate: Date},
+        multipleDatesValues: [String],
+        dateRangeValues: {startDate: String, endDate: String},
       },
 
       //one day is divided to 48 units, every rule may cover several units
-      dayRuleUnits: [{ruleName:String, starthour: Number, endhour: Number}],
+      dayRuleUnits: [{ruleName:String, starthour: String, endhour: String}],
     }],
   }
 });

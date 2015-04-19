@@ -18,12 +18,14 @@ var ComingJobSchema = job.JobSchema.extend({
     type: String,
     required: true,
     default: 'notImport',
-    enum: ['notImport', 'importing', 'imported'],
+    enum: ['notImport', 'importing', 'imported', 'badzip'],
   },
   outdate: {
 	  type: Boolean,
 	  default: false
-	}
+	},
+
+  extractFilepath: String
 });
 
 mongoose.model('ComingJob', ComingJobSchema);

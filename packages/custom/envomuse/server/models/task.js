@@ -18,9 +18,15 @@ var TaskSchema = new Schema({
     type: String,
     required: true,
     default: 'idle',
-    enum: ['idle', 'running', 'finished'],
+    enum: ['idle', 'running', 'finished', 'failed'],
   },
   ref: String
 });
+
+TaskSchema.method('failed',
+  function() {
+    this.status = 'failed';
+    this.save(); 
+  });
 
 mongoose.model('Task', TaskSchema);
