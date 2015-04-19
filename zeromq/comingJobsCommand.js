@@ -5,6 +5,11 @@
  */
 require('../packages/custom/envomuse/server/models/comingJob');
 require('../packages/custom/envomuse/server/models/task');
+require('../packages/custom/envomuse/server/models/job');
+require('../packages/custom/envomuse/server/models/song');
+
+var mean = require('meanio'),
+  config = mean.loadConfig();
 
 var mongoose = require('mongoose'),
 	fs = require('fs'),
@@ -16,18 +21,22 @@ var mongoose = require('mongoose'),
 	chokidar = require('chokidar'),
 	_ = require('lodash'),
 	ComingJob = mongoose.model('ComingJob'),
+	Job = mongoose.model('Job'),
+	Song = mongoose.model('Song'),
 	Task = mongoose.model('Task');
 
 var zipManager = require('./zipmanager');
 var DJUploadDir = path.resolve(__dirname, '../uploadAttachment/dj');
-
+var musicAssertDir = path.resolve(__dirname, '../'+ config.musicAssert);
 console.log('comingJob model path.normalize(p) :', DJUploadDir);
 
 function clearAll(respCallback, respErrorback) {
-	console.log('!! Clear All Task and ComingJob records!!');
+	console.log('!! Clear All Song, Job, Task and ComingJob records!!');
+	Job.remove({}).exec();
+	Song.remove({}).exec();
 	ComingJob.remove({}).exec();
 	Task.remove({}).exec();
-	respCallback('Done');
+	respCallback && respCallback('Done');
 }
 
 function allComingJobs(respCallback, respErrorback) {
@@ -63,7 +72,7 @@ function createComingJob(filepath, md5val, callback) {
 
 		var target = _.assign(meta, {
 			filepath: filepath,
-			md5: md5val,
+			hash: md5val,
 			outdate: false
 		});
 		console.log('target:', target);
@@ -183,7 +192,18 @@ function extractingComingJob(task) {
 				return;
 			};
 			// Create Job and song according to comingJob
-
+			zipManager.extraData(comingJob, musicAssertDir,
+				function(err, newJob) {
+					if (err) {
+						console.error('failed to extraData comingJob');
+						comingJob.badzip();
+						task.failed();
+						return
+					};
+					console.log('finish task');
+					comingJob.finish();
+					task.finish();
+				});
 
 		});
 }
@@ -286,7 +306,7 @@ function importComingJob(comingJobId, respCallback, respErrorback) {
 					return;
 				};
 				//start an task record
-				CreateTask('comingJob', comingJobId.id, function(err, task) {
+				CreateTask('comingJob', comingJob.id, function(err, task) {
 					if (err) {
 						console.error('CreateTask err', err);
 						respErrorback('CreateTask err');
@@ -314,6 +334,8 @@ ClearRuningTask(function() {
 	setInterval(StartIdleTasks, 10000);
 });
 
+//For Development Usage
+// clearAll();
 
 exports = module.exports = {
 	all: allComingJobs,

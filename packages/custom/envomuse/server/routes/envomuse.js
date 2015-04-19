@@ -5,13 +5,14 @@ var express = require('express'),
    mean = require('meanio'),
    customer = require('../controllers/customer'),
    sites = require('../controllers/site'),
-   comingJobs = require('../controllers/comingJob');
+   comingJobs = require('../controllers/comingJob'),
+   jobs = require('../controllers/job');
 
 // The Package is past automatically as first parameter
 module.exports = function(Envomuse, app, auth, database) {
   //Set musicAssert
   var config = mean.loadConfig();
-  app.use('/musicAssert', express.static(config.root + '/musicAssert'));
+  app.use('/musicAssert', express.static(config.root + '/'+ config.musicAssert));
 
   var apiRouter = express.Router();
   app.use('/api', apiRouter);
@@ -30,9 +31,7 @@ module.exports = function(Envomuse, app, auth, database) {
   }); 
 
   //Jobs
-  apiRouter.get('/jobs', function(req, res, next) {
-    res.json([{id:1}, {id:2}]);
-  });
+  apiRouter.get('/jobs', jobs.all);
 
   apiRouter.route('/jobs/:jobId')
   .get(function(req, res, next) {

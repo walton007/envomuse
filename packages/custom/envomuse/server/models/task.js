@@ -29,4 +29,10 @@ TaskSchema.method('failed',
     this.save(); 
   });
 
+TaskSchema.method('finish',
+  function() {
+    this.status = 'finished';
+    this.save(); 
+  });
+
 mongoose.model('Task', TaskSchema);

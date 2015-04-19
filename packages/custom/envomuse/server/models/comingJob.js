@@ -28,4 +28,16 @@ var ComingJobSchema = job.JobSchema.extend({
   extractFilepath: String
 });
 
+ComingJobSchema.method('badzip',
+  function() {
+    this.status = 'badzip';
+    this.save(); 
+  });
+
+ComingJobSchema.method('finish',
+  function() {
+    this.importStatus = 'imported';
+    this.save(); 
+  });
+
 mongoose.model('ComingJob', ComingJobSchema);

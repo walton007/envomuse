@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
 
 //some information supplied by music editor:
 // name, creator, duration, 
-//some information is calculated by server: hash, rawfilepath, encfilepath
+//some information is calculated by server: md5, rawfilepath, encfilepath
 var SongSchema = new Schema({
   name: String,
   duration: Number,

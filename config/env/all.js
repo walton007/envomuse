@@ -46,5 +46,6 @@ module.exports = {
   sessionName: 'connect.sid',
 
   pubAddr: "tcp://127.0.0.1:9999",
-  pushCmdAddr: "tcp://127.0.0.1:9998"
+  pushCmdAddr: "tcp://127.0.0.1:9998",
+  musicAssert: "musicAssert"
 };

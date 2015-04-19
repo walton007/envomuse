@@ -1,9 +1,18 @@
+require('../packages/custom/envomuse/server/models/song');
+
 var JSZip = require("jszip"),
 	path = require('path'),
 	fs = require('fs'),
+	Q = require('q'),
 	crypto = require('crypto'),
 	_ = require('lodash');
 var filepath = path.resolve(__dirname, '../uploadAttachment/dj/Archive.zip');
+
+
+
+var mongoose = require('mongoose'),
+	Job = mongoose.model('Job'),
+	Song = mongoose.model('Song');
 
 function getMetaInfo(zipFilepath, callback) {
 	fs.readFile(zipFilepath, function(err, data) {
@@ -15,7 +24,7 @@ function getMetaInfo(zipFilepath, callback) {
 		var zip = new JSZip(data);
 		var metaJson = zip.file("musicEditor.json");
 		if (!metaJson) {
-			callback('no such file');
+			callback('invalid zip file');
 			return;
 		};
 		var buf = metaJson.asNodeBuffer();
@@ -25,7 +34,89 @@ function getMetaInfo(zipFilepath, callback) {
 	});
 }
 
-function extraData(zipFilepath) {
+function EncFile(musicFileBuf) {
+	return musicFileBuf;
+}
+
+function CreateSong(musicAssertPath, filename, musicFileBuf, hash, key) {
+	var q = Q.defer();
+
+	//Check whether this file already exist
+	Song.findOne({
+		hash: hash
+	}).exec(function(err, song) {
+		if (err) {
+			console.log('find song error filename:', filename);
+			q.reject('find song error filename');
+			return;
+		};
+		if (song) {
+			console.log('find song already exist filename:', filename);
+			q.resolve({
+				song: song,
+				key: key
+			});
+			return;
+		};
+		//Create song and write the song to musicAssertPath
+		crypto.randomBytes(8, function(ex, buf) {
+			var token = buf.toString('hex');
+			var rawName = 'raw-' + token + '-' + filename;
+			var encName = 'enc-' + token + '-' + filename;
+			var targetRawFilePath = path.resolve(musicAssertPath, rawName);
+			var targetEncFilePath = path.resolve(musicAssertPath, encName);
+			fs.writeFileSync(targetRawFilePath, musicFileBuf);
+			fs.writeFileSync(targetEncFilePath, EncFile(musicFileBuf));
+
+			//Create modal record
+			new Song({
+				name: filename,
+				hash: hash,
+				rawfilepath: targetRawFilePath,
+				encfilepath: targetEncFilePath
+			}).save(function(err, song) {
+				if (err) {
+					console.error('save song failed:', filename);
+					q.reject('save song failed');
+					return;
+				};
+				console.log('save song success:', filename);
+				q.resolve({
+					song: song,
+					key: key
+				});
+			});
+		})
+
+	});
+
+	return q.promise;
+}
+
+function CreateJob(comingJob, validSongMap, callback) {
+	var jsonObj = comingJob.toObject();
+	_(jsonObj.boxes)
+		.each(function(box) {
+			_(box.songlist).each(function(song) {
+				if (song.relativePath in validSongMap) {
+					song.songid = validSongMap[song.relativePath];
+					delete song.relativePath;
+				};
+
+			});
+		});
+
+	new Job({
+		uuid: jsonObj.uuid,
+		creator: jsonObj.creator,
+		programName: jsonObj.programName,
+		custumorName: jsonObj.custumorName,
+		programRule: jsonObj.programRule
+	}).save(callback);
+}
+
+function extraData(comingJob, musicAssertPath, callback) {
+	var zipFilepath = comingJob.filepath;
 	fs.readFile(filepath, function(err, data) {
 		if (err) {
 			console.error('read file failed:', filepath);
@@ -34,9 +125,13 @@ function extraData(zipFilepath) {
 		}
 		var zip = new JSZip(data);
 		var metaJson = zip.file("musicEditor.json");
+		if (!metaJson) {
+			callback('invalid zip file');
+			return;
+		};
 
+		var song_promises = [];
 		var buf = metaJson.asNodeBuffer();
-		// console.log('typeof buf is:', typeof buf);
 		var meta = JSON.parse(buf);
 		_(meta.programRule.boxes)
 			.each(function(box) {
@@ -48,19 +143,27 @@ function extraData(zipFilepath) {
 					md5.update(musicFileBuf);
 					var hash = md5.digest('hex');
 					console.log('musicFileBuf length:', musicFileBuf.length, ' hash:', hash);
-					fs.writeFile(path.resolve(__dirname, path.basename(song.relativePath)),
-						musicFileBuf,
-						function(err) {
-							console.log('write success:', song.relativePath);
-						});
+					song_promises.push(CreateSong(musicAssertPath, path.basename(song.relativePath), musicFileBuf, hash, song.relativePath));
 				});
 			});
+		//Create Job
+		Q.allSettled(song_promises).spread(function() {
+			var validSongMap = {};
+			var songsArr = arguments;
+			Object.keys(songsArr).forEach(function(key) {
+				var objVal = songsArr[key];
+				if (objVal.state === 'fulfilled') {
+					validSongMap[objVal.value.key] = objVal.value.song;
+				}
+			});
+			console.log('validSongMap:', validSongMap);
+			// respCallback && respCallback(validComingJobs);
+			CreateJob(comingJob, validSongMap, function(err, newJob) {
+				callback && callback(err, newJob);
+			});
+		});
 	});
 }
-
-// getMetaInfo(filepath, function(err, meta) {
-// 	console.log(meta);
-// });
 
 exports = module.exports = {
 	getMetaInfo: getMetaInfo,
