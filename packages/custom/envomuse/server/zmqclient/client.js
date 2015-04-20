@@ -19,9 +19,9 @@ var ZmqAgent = function(pushCmdAddr, subConfig) {
 	socketSub.connect(subConfig.addr);
 	socketSub.subscribe(subConfig.subMsg);
 	socketSub.on("message", function (topic, message) {  
-		console.log('receive message:', topic, message);
+		// console.log('receive message:', topic, message);
 		var recObj = JSON.parse(message.toString('utf8'));
-		if (!!recObj.cmdId && recObj.cmdId in gCmdDict) {
+		if (recObj.cmdId && recObj.cmdId in gCmdDict) {
 			console.log('rev cmd resp: ', recObj.cmdId);
 			var callback = gCmdDict[recObj.cmdId];
 			delete gCmdDict[recObj.cmdId];

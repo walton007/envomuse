@@ -45,6 +45,7 @@ function allComingJobs(respCallback, respErrorback) {
 	ComingJob.find({
 			outdate: false
 		})
+		.select('-filepath -outdate')
 		.exec(function(err, comingJobs) {
 			if (err) {
 				respErrorback && respErrorback('err:' + err);
@@ -335,7 +336,7 @@ ClearRuningTask(function() {
 });
 
 //For Development Usage
-// clearAll();
+clearAll();
 
 exports = module.exports = {
 	all: allComingJobs,

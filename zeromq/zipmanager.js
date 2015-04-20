@@ -38,7 +38,7 @@ function EncFile(musicFileBuf) {
 	return musicFileBuf;
 }
 
-function CreateSong(musicAssertPath, filename, musicFileBuf, hash, key) {
+function CreateSong(comingJob, musicAssertPath, filename, musicFileBuf, hash, key) {
 	var q = Q.defer();
 
 	//Check whether this file already exist
@@ -70,6 +70,7 @@ function CreateSong(musicAssertPath, filename, musicFileBuf, hash, key) {
 
 			//Create modal record
 			new Song({
+				comingJob: comingJob,
 				name: filename,
 				hash: hash,
 				rawfilepath: targetRawFilePath,
@@ -143,7 +144,7 @@ function extraData(comingJob, musicAssertPath, callback) {
 					md5.update(musicFileBuf);
 					var hash = md5.digest('hex');
 					console.log('musicFileBuf length:', musicFileBuf.length, ' hash:', hash);
-					song_promises.push(CreateSong(musicAssertPath, path.basename(song.relativePath), musicFileBuf, hash, song.relativePath));
+					song_promises.push(CreateSong(comingJob, musicAssertPath, path.basename(song.relativePath), musicFileBuf, hash, song.relativePath));
 				});
 			});
 		//Create Job

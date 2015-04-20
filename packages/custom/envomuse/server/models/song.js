@@ -22,10 +22,20 @@ var SongSchema = new Schema({
   
   creator: String,
   tagEditor: String,
-  jobid: {
+  comingJob: {
     type: Schema.ObjectId,
-    ref: 'Job'
+    ref: 'comingJob'
   }
 });
+
+
+/**
+ * Statics
+ */
+SongSchema.statics.load = function(id, cb) {
+  this.findOne({
+    _id: id
+  }).exec(cb);
+};
 
 mongoose.model('Song', SongSchema);

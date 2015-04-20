@@ -6,7 +6,8 @@ var express = require('express'),
    customer = require('../controllers/customer'),
    sites = require('../controllers/site'),
    comingJobs = require('../controllers/comingJob'),
-   jobs = require('../controllers/job');
+   jobs = require('../controllers/job'),
+   songs = require('../controllers/song');
 
 // The Package is past automatically as first parameter
 module.exports = function(Envomuse, app, auth, database) {
@@ -108,34 +109,25 @@ module.exports = function(Envomuse, app, auth, database) {
 
   //Songs
   apiRouter.route('/songs')
-  .get(function(req, res, next) {
-    res.json([{id:1}, {id:2}]);
-  });
+  .get(songs.all);
   apiRouter.route('/songs/:songId')
   .get(function(req, res, next) {
     res.json([{id:1}]);
   });
   apiRouter.route('/songs/:songId/hqfile')
   .get(function(req, res, next) {
-    res.redirect('/musicAssert/alphaEnc.mp3');
+    var hqfileUrl = req.song.rawfilepath.substr(config.root.length);
+    // console.log('hqfileUrl:', hqfileUrl);
+    res.redirect(hqfileUrl);
+    // res.redirect('/musicAssert/alphaEnc.mp3');
   });
   apiRouter.route('/songs/:songId/lqfile')
   .get(function(req, res, next) {
-    res.redirect('/musicAssert/alpha.mp3');
+    var rawfileUrl = req.song.rawfilepath.substr(config.root.length);
+    // console.log('rawfileUrl:', rawfileUrl);
+    res.redirect(rawfileUrl);
   });
-  apiRouter.param('songId', function(req, res, next, id){
-    req.program = null;
-    next();
-  }); 
-
-  app.route('/resource/alpha.mp3')
-  .get(function(req, res, next) {
-    res.json([{id:1}, {id:23}]);
-  });
-  app.route('/resource/alphaEnc.mp3')
-  .get(function(req, res, next) {
-    res.json([{id:1}, {id:4}]);
-  });
+  apiRouter.param('songId', songs.song); 
 
   //Customers
   apiRouter.route('/customers/?expand')
