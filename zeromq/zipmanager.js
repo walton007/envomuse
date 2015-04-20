@@ -65,8 +65,16 @@ function CreateSong(comingJob, musicAssertPath, filename, musicFileBuf, hash, ke
 			var encName = 'enc-' + token + '-' + filename;
 			var targetRawFilePath = path.resolve(musicAssertPath, rawName);
 			var targetEncFilePath = path.resolve(musicAssertPath, encName);
-			fs.writeFileSync(targetRawFilePath, musicFileBuf);
-			fs.writeFileSync(targetEncFilePath, EncFile(musicFileBuf));
+			fs.writeFile(targetRawFilePath, musicFileBuf, 
+				function(err) {
+					if (err) {console.error('Failed to writeFile:',  targetRawFilePath); return;}
+					console.log('writeFile Success:', targetRawFilePath);
+				});
+			fs.writeFile(targetEncFilePath, EncFile(musicFileBuf),
+				function(err) {
+					if (err) {console.error('Failed to write enc File:',  targetEncFilePath); return;}
+					console.log('write enc File Success:', targetEncFilePath);
+				});
 
 			//Create modal record
 			new Song({

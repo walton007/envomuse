@@ -55,9 +55,9 @@ function allComingJobs(respCallback, respErrorback) {
 		});
 }
 
-function findByMd5(md5val, callback) {
+function findByMd5(hash, callback) {
 	ComingJob.findOne({
-			md5: md5val
+			hash: hash
 		})
 		.exec(callback);
 }
@@ -76,7 +76,7 @@ function createComingJob(filepath, md5val, callback) {
 			hash: md5val,
 			outdate: false
 		});
-		console.log('target:', target);
+		// console.log('target:', target);
 		var comingJob = new ComingJob(target);
 		comingJob.save(callback);
 	});
@@ -89,7 +89,7 @@ function validFilePath(filepath) {
 function forceRefresh(respCallback, respErrorback) {
 	console.log('forceRefresh');
 	var updateQ = Q.defer();
-	ComingJob.update({}, {
+	ComingJob.update({importStatus: 'notImport'}, {
 			$set: {
 				outdate: true
 			}
@@ -121,8 +121,9 @@ function forceRefresh(respCallback, respErrorback) {
 				fileStream.on('end', function() {
 					console.log('finish one file:', filepath);
 					//find file with md5
-					var md5value = md5.digest('hex');
-					findByMd5(md5value, function(err, comingJob) {
+					var hash = md5.digest('hex');
+					console.log('md5value hash:', hash);
+					findByMd5(hash, function(err, comingJob) {
 						if (err) {
 							console.error('findByMd5 error filepath:', filepath);
 							q.reject('findByMd5 error filepath:' + filepath);
@@ -141,7 +142,7 @@ function forceRefresh(respCallback, respErrorback) {
 							});
 						} else {
 							//create a new record
-							createComingJob(filepath, md5value,
+							createComingJob(filepath, hash,
 								function(err, obj) {
 									if (err) {
 										q.reject('comingJob.create err:' + err);
@@ -336,7 +337,7 @@ ClearRuningTask(function() {
 });
 
 //For Development Usage
-clearAll();
+// clearAll();
 
 exports = module.exports = {
 	all: allComingJobs,

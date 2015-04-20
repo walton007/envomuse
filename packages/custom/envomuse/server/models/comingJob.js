@@ -13,7 +13,7 @@ var mongoose = require('mongoose'),
 
 var ComingJobSchema = job.JobSchema.extend({
   filepath: String,
-  md5: String,
+  hash: String,
   importStatus: {
     type: String,
     required: true,
