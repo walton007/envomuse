@@ -54,6 +54,15 @@ var JobSchema = new Schema({
   }
 });
 
+/**
+ * Statics
+ */
+JobSchema.statics.load = function(id, cb) {
+  this.findOne({
+    _id: id
+  }).exec(cb);
+};
+
 mongoose.model('Job', JobSchema);
 
 module.exports = exports = {

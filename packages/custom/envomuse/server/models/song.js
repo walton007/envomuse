@@ -28,7 +28,6 @@ var SongSchema = new Schema({
   }
 });
 
-
 /**
  * Statics
  */

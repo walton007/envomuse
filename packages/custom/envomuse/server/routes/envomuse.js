@@ -42,14 +42,7 @@ module.exports = function(Envomuse, app, auth, database) {
     res.send(200);
   });
   apiRouter.route('/jobs/:jobId/generateProgram')
-  .post(function(req, res, next) {
-    req.body.startDate = new Date();
-    req.body.endDate = new Date();
-    //generateProgram
-    res.json({
-      id: 100
-    });
-  });
+  .post(jobs.generateProgram);
   apiRouter.route('/jobs/:jobId/export')
   .post(function(req, res, next) {
     //export job war package
@@ -65,10 +58,7 @@ module.exports = function(Envomuse, app, auth, database) {
       programInfo : {}
     }]);
   });
-  apiRouter.param('jobId', function(req, res, next, id){
-    req.job = null;
-    next();
-  }); 
+  apiRouter.param('jobId', jobs.job); 
 
   //export task
   apiRouter.route('/exportTasks/')
