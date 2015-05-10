@@ -120,8 +120,8 @@ module.exports = function(Envomuse, app, auth, database) {
   apiRouter.param('songId', songs.song); 
 
   //Customers
-  apiRouter.route('/customers/?expand')
-  .get(customer.all)
+  apiRouter.route('/customers/')
+  .get(customer.count, customer.analysis, customer.all)
   .post(customer.create);
   apiRouter.route('/customers/:customerId')
   .get(customer.show)
@@ -135,7 +135,7 @@ module.exports = function(Envomuse, app, auth, database) {
 
   //Sites
   apiRouter.route('/sites/')
-  .get(sites.all)
+  .get(sites.statistic, sites.all)
   .post(sites.create);
   apiRouter.route('/sites/:siteId')
   .get(sites.show)

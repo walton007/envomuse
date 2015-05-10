@@ -13,7 +13,7 @@ var BaseSchema = commonUtil.BaseSchema;
  
 var ProgramSchema = BaseSchema.extend({
   name: String,
-  jobid: {
+  job: {
     type: Schema.ObjectId,
     ref: 'Job'
   },
@@ -33,7 +33,7 @@ var ProgramSchema = BaseSchema.extend({
   }],
   startDate: Date,
   endDate: Date,
-  siteId: {
+  site: {
     type: Schema.ObjectId,
     ref: 'Site'
   },

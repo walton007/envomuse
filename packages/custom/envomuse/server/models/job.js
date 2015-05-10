@@ -13,6 +13,7 @@ var JobSchema = new Schema({
   custumorName: String,
   programRule: {
     boxes: [{
+      uuid: String,
       name: String,
       description: String,
       songlist: [ {

@@ -24,15 +24,15 @@
       <div class="panel b-a">
         <div class="panel-heading no-border bg-light dker">          
           <span class="pull-right"><i class="fa fa-leaf"></i> {{item.industry }} </span>
-          <span class="text-lt"><a ui-sref="customers.brand.detail({brandId:item.id})">{{item.brandName | uppercase}}</a></span>
+          <span class="text-lt"><a ui-sref="customers.brand.detail({brandId:item._id})">{{item.brand | uppercase}}</a></span>
         </div>
         <div class="item m-l-n-xxs m-r-n-xxs b-b">
           <div class="panel-body">
           <div class="clearfix text-center m-t">
             <div class="inline" style="width: 100px; height: 100px; line-height: 100px;">
-                <a ui-sref="customers.brand.detail({brandId:item.id})">
+                <a ui-sref="customers.brand.detail({brandId:item._id})">
                   <div class="thumb-lg m-t-n-xxl">
-                    <img src="{{item.logopicture}}" alt="LOGO {{item.brandName}}">
+                    <img src="{{item.logopicture}}" alt="LOGO {{item.brand}}">
                   </div>
                 </a>
               </div>

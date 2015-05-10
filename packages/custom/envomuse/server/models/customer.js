@@ -8,7 +8,6 @@ var mongoose = require('mongoose'),
 
 var BaseSchema = commonUtil.BaseSchema,
 ContactSchema = commonUtil.ContactSchema;
-
 var CustomerSchema = BaseSchema.extend({
   brand: String,
   address: String,
@@ -31,7 +30,13 @@ var CustomerSchema = BaseSchema.extend({
     endContractDate: Date,
     salesCost: Number,
     invoice: Boolean,
-  }
+  },
+
+  designFee: Number,
+  setupFee: Number,
+  monthServiceFee: Number,
+  otherFee: Number,
+  description: String
 });
 
 /**

@@ -23,6 +23,9 @@ var SiteSchema = BaseSchema.extend({
   province: String,
   city: String,
   zipcode: String,
+  latitude: String,
+  longitude: String,
+  description: String,
 
   license: {
     uuid: String,
@@ -37,7 +40,23 @@ var SiteSchema = BaseSchema.extend({
     sshkey: String,
 
     lastConnectDate: Date,
+    playerStatus: {
+      type: String,
+      default: 'local',
+      enum: ['updated', 'local', 'partialUpate'],
+    },
     activatedDate: Date,
+  },
+
+  disable: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
+
+  playerSetting: {
+    startSyncTm: String,
+    retryCnt: Number
   }
 });
 

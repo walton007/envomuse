@@ -173,3 +173,13 @@ exports.licenseActivate = function(req, res) {
   }
 };
 
+exports.statistic = function(req, res, next) {
+  if ('statistic' in req.query) {
+    res.json({
+      totalStore: 1003,
+      activeStore: 12
+    });
+    return;
+  };
+  next();
+};

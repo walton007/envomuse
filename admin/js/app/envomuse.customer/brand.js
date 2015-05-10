@@ -1,4 +1,5 @@
-app.controller('BrandListCtrl', ['$scope', 'brands', '$stateParams', function($scope, brands, $stateParams) {
+app.controller('BrandListCtrl', ['$scope', 'brands', 'Customers', '$stateParams', 
+  function($scope, brands, Customers, $stateParams) {
     
     //TBD: add sort functionalities
 
@@ -7,9 +8,9 @@ app.controller('BrandListCtrl', ['$scope', 'brands', '$stateParams', function($s
       $scope.bigCurrentPage = 1;  //current page
       $scope.datasource = [];
 
-      brands.getLength().then(function(res){
-        $scope.bigTotalItems = res;
-      });
+      // brands.getLength().then(function(res){
+      //   $scope.bigTotalItems = res;
+      // });
 
       $scope.pageChanged();
     };
@@ -26,9 +27,16 @@ app.controller('BrandListCtrl', ['$scope', 'brands', '$stateParams', function($s
           break;
       }
 
-      brands.getPage($scope.bigCurrentPage).then(function(res){
-        $scope.datasource = res;
-      });
+      // brands.getPage($scope.bigCurrentPage).then(function(res){
+      //   $scope.datasource = res;
+      // });
+
+      Customers.getPageData({'offset':0, 'size':10, 'type': 'new'},
+        function(res) {
+          $scope.bigTotalItems = res.count;
+          $scope.datasource = res.data;
+        })
+
     };
   }])
 ;
@@ -39,7 +47,37 @@ app.controller('BrandDetailCtrl', ['$scope', 'brands', '$stateParams', function(
   })
 }]);
 
-app.controller('BrandNewCtrl', ['$scope', 'brands', function($scope,brands) {
+app.controller('BrandCountCtrl', ['$scope', 'brands', 'Customers', '$stateParams', 
+  function($scope, brands, Customers, $stateParams) {
+  $scope.stat = {
+    newBrand :10,
+    totalBrand : 100,
+    newPOS : 20,
+    totalPOS : 200
+  };
+
+  $scope.init = function() {
+    $scope.customers = [];
+    Customers.getCount(function(resp) {
+      $scope.stat.totalBrand = resp.count;
+    });
+    var startDt = new Date(), 
+    endDt = startDt;
+    Customers.getIncrCount({startDate: startDt.getTime(),
+      endDate: endDt.getTime()}, 
+      function(resp) {
+        $scope.stat.newBrand = resp.count;
+      });
+  };
+}]);
+
+app.controller('BrandDetailCtrl', ['$scope', 'brands', '$stateParams', function($scope, brands, $stateParams) {
+  brands.get($stateParams.brandId).then(function(brand){
+    $scope.brand = brand;
+  })
+}]);
+
+app.controller('BrandNewCtrl', ['$scope', 'brands', 'Customers', function($scope,brands, Customers) {
   $scope.brand = {
     name: '',
     industry: '',
@@ -65,10 +103,12 @@ app.controller('BrandNewCtrl', ['$scope', 'brands', function($scope,brands) {
   ];
 
   $scope.statuslist = [
-    {name: 'first contact'},
+    {name: 'prospect'},
+    {name: 'meeting'},
     {name: 'demo'},
-    {name: 'test'},
-    {name: 'contract'}
+    {name: 'pilot'},
+    {name: 'active'},
+    {name: 'inactive'}
   ];
 
   $scope.updateperiodlist = [
@@ -92,22 +132,53 @@ app.controller('BrandNewCtrl', ['$scope', 'brands', function($scope,brands) {
   ];
 
   $scope.createBrand = function(){
-    var newBrand = {
-    name: $scope.brand.name,
-    industry: $scope.brand.industry,
-    status: $scope.brand.status,
-    updateperiod: $scope.brand.updateperiod,
-    contact: $scope.brand.contact,
-    contractdate: $scope.brand.contractdate,
-    discount: $scope.brand.discount,
-    unitprice: $scope.brand.unitprice,
-    firstcontactdate: $scope.brand.firstcontactdate,
-    salesperson: $scope.brand.salesperson,
-    descripton: $scope.brand.descripton
+    var newCustomer = {
+      brand: $scope.brand.name,
+      industry: $scope.brand.industry.name,
+      status: $scope.brand.status.name,
+      updatePeriod: $scope.brand.updateperiod.name,
+      crmInfo: {
+        contractDate: $scope.brand.contractdate.getTime()
+      },  
+      descripton: $scope.brand.descripton
     };
 
-    console.log(newBrand);
+  //   brand: String,
+  // address: String,
+  // industry: String,
+  // updatePeriod: String,
 
+  // contacts: [ContactSchema],
+
+  // state: {
+  //   type: String,
+  //   required: true,
+  //   default: 'prospect',
+  //   enum: ['prospect', 'meeting', 'demo', 'pilot', 'active', 'inactive'],
+  // },
+  // crmInfo: {
+  //   firstContactDate: Date,
+  //   demoDate: Date,
+  //   pilotDate: Date,
+  //   contractDate: Date,
+  //   endContractDate: Date,
+  //   salesCost: Number,
+  //   invoice: Boolean,
+  // },
+
+  // designFee: Number,
+  // setupFee: Number,
+  // monthServiceFee: Number,
+  // otherFee: Number,
+  // description: String
+
+
+    //console.log(newBrand);
+
+    var customer = new Customers(newCustomer);
+    customer.$save(function(customer) {
+      alert('create customer success');
+    });
 
     //brands.createNew(newBrand)
   };

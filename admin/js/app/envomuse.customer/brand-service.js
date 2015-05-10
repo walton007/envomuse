@@ -1,3 +1,23 @@
+'use strict';
+
+//Articles service used for articles REST endpoint
+app.factory('Customers', ['$resource',
+  function($resource) {
+    return $resource('/api/customers/:customerId', {
+      customerId: '@_id'
+    }, {
+      update: {
+        method: 'PUT'
+      },
+      'getIncrCount':  {method:'GET', isArray:false, params:{'increase': true,
+      startDate:1, endDate:1}},
+      'getCount': {method:'GET', isArray:false, params:{'count':0}},
+      'getPageData': {method:'GET', isArray:false,
+         params:{'offset':0, 'size':10, 'type': 'new'}}
+    });
+  }
+]);
+
 // A RESTful factory for retreiving brands from 'brand.json'
 app.factory('brands', ['$http', function ($http) {
 
@@ -11,10 +31,23 @@ app.factory('brands', ['$http', function ($http) {
     return resp.data;
   });
 
+
+
+
   var factory = {};
 
   factory.all = function () {
     return brands;
+  };
+
+  factory.getstat = function($resource) {
+    return $resource('warehouses/:warehouseId', {
+      warehouseId: '@_id'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    });
   };
 
   factory.allContacts = function () {

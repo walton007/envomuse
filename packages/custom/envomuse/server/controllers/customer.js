@@ -82,18 +82,40 @@ exports.show = function(req, res) {
   res.json(req.customer);
 };
 
-
 /**
  * List of Articles
  */
 exports.all = function(req, res) {
+  var offset = req.query.offset,
+  size = req.query.size,
+  type = req.query.type;
+  
   Customer.find().sort('-created').populate('user', 'name username').exec(function(err, customers) {
     if (err) {
       return res.status(500).json({
         error: 'Cannot list the customers'
       });
     }
-    res.json(customers);
+    res.json({count: 1000, data: customers});
 
   });
+};
+
+exports.count = function(req, res, next) {
+  if ('count' in req.query) {
+    res.json({count:100});
+    return;
+  };
+
+  next();
+};
+
+exports.analysis = function(req, res, next) {
+  console.log('increase:', req.query);
+  if ('increase' in req.query) {
+    res.json({count:10});
+    return;
+  };
+
+  next();
 };

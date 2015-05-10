@@ -5,7 +5,7 @@
       <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-none">
         <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
         <li><a ui-sref="customers.dash">客户管理</a></li>
-        <li class="active">{{brand.brandName | uppercase }}</li>
+        <li class="active">{{brand.brand | uppercase }}</li>
       </ul>
     </div>
   </div>
@@ -21,9 +21,9 @@
             <div class="panel-body">
               <div class="clearfix text-center m-t col-md-3">
                 <div class="inline" style="width: 100px; height: 100px; line-height: 100px;">
-                  <a ui-sref="customers.brand.detail({brandId:brand.id})">
+                  <a ui-sref="customers.brand.detail({brandId:brand._id})">
                     <div class="thumb-lg m-t-n-xxl">
-                      <img src="{{brand.logopicture}}" alt="LOGO {{brand.brandName}}">
+                      <img src="{{brand.logopicture}}" alt="LOGO {{brand.brand}}">
                     </div>
                   </a>
                 </div>
