@@ -1,0 +1,65 @@
+<div ng-controller="ContactListCtrl">
+  <!-- breadcrumb -->
+  <div class="row">
+    <div class="bg-light lter">
+      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
+        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
+        <li><a ui-sref="customers.dash">客户管理</a></li>
+        <li><a ui-sref="customers.brand.detail({brandId:brandId})">{{brandName | uppercase}}</a></li>
+        <li class="active">联系人</li>
+      </ul>
+    </div>
+  </div>
+  <!-- / breadcrumb -->
+
+
+  <div class="wrapper-md">
+    <div class="b-b m-b-lg">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12 text-middle">
+          <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-init="init()" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+        </div>
+      </div>
+    </div>
+    
+    <div ng-repeat="item in datasource" class="col-sm-3">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="clearfix text-center m-t">
+            <div class="inline">
+              <div class="thumb-lg" style="height: 96px;">
+                <a ui-sref="customers.contact.detail({contactId:item.id})">
+                  <img src="{{item.picture}}" class="img-circle" alt="{{item.name}}">
+                </a>
+              </div>
+              <div class="h4 m-t m-b-xs"><a ui-sref="customers.contact.detail({contactId:item.id})">{{item.name}}</a></div>
+              <small class="text-muted m-b">{{item.title}}</small>
+            </div>                      
+          </div>
+        </div>
+        <footer class="panel-footer bg-info text-center no-padder">
+          <div class="row wrapper no-gutter">
+            {{item.phone}}
+          </div>
+          <div class="row no-gutter">
+            <div class="col-xs-4">
+              <div class="wrapper">
+                <small class="text-muted"><i class="fa fa-phone block m-b-xs fa-2x"></i></small>
+              </div>
+            </div>
+            <div class="col-xs-4 dk">
+              <div class="wrapper">
+                <small class="text-muted"><i class="fa fa-wechat block m-b-xs fa-2x"></i></small>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <div class="wrapper">
+                <small class="text-muted"><i class="fa fa-envelope block m-b-xs fa-2x"></i></small>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,113 @@
+<div ng-controller="StoreDetailCtrl">
+  <!-- breadcrumb -->
+  <div class="row">
+    <div class="bg-light lter">
+      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
+        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
+        <li><a ui-sref="customers.dash">客户管理</a></li>
+        <li><a ui-sref="customers.brand.detail({brandId:store.brandId})">{{store.brandName | uppercase}}</a></li>
+        <li class="active">{{store.storeName | uppercase}}</li>
+      </ul>
+    </div>
+  </div>
+  <!-- / breadcrumb -->
+
+  <div class="hbox hbox-auto-xs hbox-auto-sm">
+
+    <!-- main -->
+    <div class="col">
+      <div class="wrapper-sm">
+        <div class="panel">
+          <div class="wrapper">
+            <div class="panel-body">
+              <div class="clearfix text-center m-t col-md-3">
+                <a ui-sref="customers.contact.detail({contactId:store.id})" class="block panel padder-v bg-primary dk item">
+                  <span class="text-white font-thin h1 block">{{store.contact}}</span>
+                  <span class="text-muted text-xs">{{store.phone}}</span>
+                </a>
+              </div>                     
+              <div class="col-md-9">
+                {{store.about}}
+                <div class="line line-lg b-b b-light"></div>
+                <div class="text-muted">
+                  <!--<span class="pull-right">
+                    <i class="fa fa-user text-muted"></i>  {{store.createdBy}}
+                    <i class="fa fa-clock-o text-muted m-l-sm"></i>  {{store.createdOn | date : "MMM-dd"}}
+                  </span>
+                  -->
+                  <span class="pull-left">
+                    <i class="fa fa-taxi text-muted"></i>  {{store.address}}
+                    <i class="fa fa-map-marker text-muted m-l-sm"></i> {{store.latitude}} , {{store.longitude}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          
+        <h5 class="font-bold">基本信息</h5>
+        <div class="row row-sm text-center">
+          <div class="col-xs-9">
+            <a ui-sref="customers.brand" class="block panel padder-v bg-info lt item">
+              <span class="text-white font-thin h1 block"> {{store.terminalId}}</span>
+              <span class="text-muted text-xs">终端ID</span>
+            </a>
+          </div>
+          <div class="col-xs-3">
+            <a ui-sref="customers.contact.detail({contactId:store.id})" class="block panel padder-v bg-primary dk item">
+              <span class="text-white font-thin h1 block">{{store.contact}}</span>
+              <span class="text-muted text-xs">{{store.phone}}</span>
+            </a>
+          </div>
+        </div>
+
+        <h5 class="font-bold">Terminal connection information</h5>
+        <div class="row row-sm text-center">
+          <div class="col-xs-3">
+            <a ui-sref="customers.brand" class="block panel padder-v bg-success lt item">
+              <span class="text-white font-thin h1 block">{{store.terminalFirstHandShake}}</span>
+              <span class="text-muted text-xs">首次连接</span>
+              <span class="bottom text-right w-full">
+                <i class="fa fa-users text-muted m-r-sm"></i>
+              </span>
+            </a>
+          </div>
+          <div class="col-xs-3">
+            <a ui-sref="customers.brand" class="block panel padder-v bg-success lt item">
+              <span class="text-white font-thin h1 block">{{store.terminalLastHandShank}}</span>
+              <span class="text-muted text-xs">最后连接</span>
+              <span class="bottom text-right w-full">
+                <i class="fa fa-users text-muted m-r-sm"></i>
+              </span>
+            </a>
+          </div>
+          <div class="col-xs-3">
+            <a ui-sref="customers.brand" class="block panel padder-v bg-{{store.terminalStatus.cc}} lt item">
+              <span class="text-white font-thin h1 block">{{store.terminalStatus.value}}</span>
+              <span class="text-muted text-xs">当前状态</span>
+              <span class="bottom text-right w-full">
+                <i class="fa fa-users text-muted m-r-sm"></i>
+              </span>
+            </a>
+          </div>
+          <div class="col-xs-3">
+            <a ui-sref="customers.brand" class="block panel padder-v bg-success lt item">
+              <span class="text-white font-thin h1 block">{{store.nextPlaylistUpdate}}</span>
+              <span class="text-muted text-xs">下次更新/同步日期</span>
+              <span class="bottom text-right w-full">
+                <i class="fa fa-users text-muted m-r-sm"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /main -->
+    <!-- right col -->
+    <div class="col w-md bg-light dker b-l bg-auto no-border-xs">    
+      <div class="wrapper-md">
+      
+      </div>
+    </div>
+    <!-- /right col -->
+  </div>

@@ -1,0 +1,522 @@
+[
+  {
+    "rgId": 19,
+    "rgName": "ullamco proident",
+    "rules": [
+      {
+        "timeslot": 0,
+        "rId": 148,
+        "rName": "in"
+      },
+      {
+        "timeslot": 37,
+        "rId": 257,
+        "rName": "proident"
+      },
+      {
+        "timeslot": 22,
+        "rId": 50,
+        "rName": "consectetur"
+      },
+      {
+        "timeslot": 5,
+        "rId": 218,
+        "rName": "nostrud"
+      },
+      {
+        "timeslot": 47,
+        "rId": 241,
+        "rName": "et"
+      },
+      {
+        "timeslot": 18,
+        "rId": 186,
+        "rName": "ea"
+      },
+      {
+        "timeslot": 5,
+        "rId": 3,
+        "rName": "exercitation"
+      },
+      {
+        "timeslot": 45,
+        "rId": 288,
+        "rName": "Lorem"
+      },
+      {
+        "timeslot": 3,
+        "rId": 284,
+        "rName": "pariatur"
+      },
+      {
+        "timeslot": 25,
+        "rId": 6,
+        "rName": "dolore"
+      },
+      {
+        "timeslot": 27,
+        "rId": 61,
+        "rName": "velit"
+      },
+      {
+        "timeslot": 27,
+        "rId": 220,
+        "rName": "eu"
+      },
+      {
+        "timeslot": 43,
+        "rId": 130,
+        "rName": "laboris"
+      },
+      {
+        "timeslot": 27,
+        "rId": 106,
+        "rName": "exercitation"
+      },
+      {
+        "timeslot": 6,
+        "rId": 298,
+        "rName": "laborum"
+      },
+      {
+        "timeslot": 16,
+        "rId": 137,
+        "rName": "commodo"
+      },
+      {
+        "timeslot": 21,
+        "rId": 287,
+        "rName": "ut"
+      }
+    ],
+    "calcType": "date",
+    "weekValues": "Mon",
+    "dateValues": [
+      "2015-07-29",
+      "2015-06-03",
+      "2015-06-15"
+    ],
+    "dateRangeStart": "2015-07-22",
+    "dateRangeEnd": "2015-05-13"
+  },
+  {
+    "rgId": 20,
+    "rgName": "pariatur aliqua",
+    "rules": [
+      {
+        "timeslot": 45,
+        "rId": 146,
+        "rName": "nulla"
+      },
+      {
+        "timeslot": 28,
+        "rId": 242,
+        "rName": "in"
+      },
+      {
+        "timeslot": 37,
+        "rId": 187,
+        "rName": "culpa"
+      },
+      {
+        "timeslot": 5,
+        "rId": 212,
+        "rName": "eu"
+      },
+      {
+        "timeslot": 14,
+        "rId": 295,
+        "rName": "laborum"
+      },
+      {
+        "timeslot": 4,
+        "rId": 245,
+        "rName": "magna"
+      },
+      {
+        "timeslot": 14,
+        "rId": 101,
+        "rName": "laborum"
+      },
+      {
+        "timeslot": 29,
+        "rId": 207,
+        "rName": "reprehenderit"
+      },
+      {
+        "timeslot": 9,
+        "rId": 153,
+        "rName": "aliquip"
+      },
+      {
+        "timeslot": 22,
+        "rId": 52,
+        "rName": "ea"
+      },
+      {
+        "timeslot": 38,
+        "rId": 141,
+        "rName": "incididunt"
+      },
+      {
+        "timeslot": 40,
+        "rId": 124,
+        "rName": "quis"
+      },
+      {
+        "timeslot": 42,
+        "rId": 101,
+        "rName": "minim"
+      },
+      {
+        "timeslot": 43,
+        "rId": 277,
+        "rName": "cupidatat"
+      },
+      {
+        "timeslot": 20,
+        "rId": 253,
+        "rName": "sunt"
+      },
+      {
+        "timeslot": 20,
+        "rId": 79,
+        "rName": "minim"
+      },
+      {
+        "timeslot": 4,
+        "rId": 112,
+        "rName": "ea"
+      },
+      {
+        "timeslot": 44,
+        "rId": 215,
+        "rName": "aliquip"
+      },
+      {
+        "timeslot": 25,
+        "rId": 146,
+        "rName": "nulla"
+      },
+      {
+        "timeslot": 39,
+        "rId": 282,
+        "rName": "amet"
+      }
+    ],
+    "calcType": "daysOfWeek",
+    "weekValues": "Sat",
+    "dateValues": [
+      "2015-06-22",
+      "2015-07-08",
+      "2015-07-18"
+    ],
+    "dateRangeStart": "2015-05-25",
+    "dateRangeEnd": "2015-06-02"
+  },
+  {
+    "rgId": 29,
+    "rgName": "amet et",
+    "rules": [
+      {
+        "timeslot": 31,
+        "rId": 300,
+        "rName": "id"
+      },
+      {
+        "timeslot": 27,
+        "rId": 31,
+        "rName": "pariatur"
+      },
+      {
+        "timeslot": 20,
+        "rId": 253,
+        "rName": "minim"
+      },
+      {
+        "timeslot": 40,
+        "rId": 140,
+        "rName": "sint"
+      },
+      {
+        "timeslot": 9,
+        "rId": 192,
+        "rName": "ipsum"
+      },
+      {
+        "timeslot": 35,
+        "rId": 173,
+        "rName": "elit"
+      },
+      {
+        "timeslot": 1,
+        "rId": 115,
+        "rName": "do"
+      },
+      {
+        "timeslot": 5,
+        "rId": 241,
+        "rName": "laborum"
+      },
+      {
+        "timeslot": 22,
+        "rId": 252,
+        "rName": "qui"
+      },
+      {
+        "timeslot": 6,
+        "rId": 120,
+        "rName": "elit"
+      },
+      {
+        "timeslot": 35,
+        "rId": 115,
+        "rName": "nisi"
+      },
+      {
+        "timeslot": 41,
+        "rId": 244,
+        "rName": "minim"
+      },
+      {
+        "timeslot": 11,
+        "rId": 44,
+        "rName": "exercitation"
+      },
+      {
+        "timeslot": 28,
+        "rId": 210,
+        "rName": "Lorem"
+      },
+      {
+        "timeslot": 39,
+        "rId": 38,
+        "rName": "nostrud"
+      },
+      {
+        "timeslot": 0,
+        "rId": 277,
+        "rName": "consectetur"
+      },
+      {
+        "timeslot": 3,
+        "rId": 92,
+        "rName": "velit"
+      },
+      {
+        "timeslot": 37,
+        "rId": 280,
+        "rName": "magna"
+      },
+      {
+        "timeslot": 38,
+        "rId": 158,
+        "rName": "qui"
+      },
+      {
+        "timeslot": 34,
+        "rId": 274,
+        "rName": "magna"
+      },
+      {
+        "timeslot": 37,
+        "rId": 16,
+        "rName": "consequat"
+      },
+      {
+        "timeslot": 47,
+        "rId": 218,
+        "rName": "officia"
+      },
+      {
+        "timeslot": 43,
+        "rId": 102,
+        "rName": "exercitation"
+      },
+      {
+        "timeslot": 12,
+        "rId": 25,
+        "rName": "occaecat"
+      },
+      {
+        "timeslot": 16,
+        "rId": 201,
+        "rName": "magna"
+      },
+      {
+        "timeslot": 37,
+        "rId": 3,
+        "rName": "sit"
+      },
+      {
+        "timeslot": 24,
+        "rId": 161,
+        "rName": "cillum"
+      },
+      {
+        "timeslot": 36,
+        "rId": 222,
+        "rName": "sint"
+      },
+      {
+        "timeslot": 20,
+        "rId": 7,
+        "rName": "proident"
+      },
+      {
+        "timeslot": 35,
+        "rId": 291,
+        "rName": "veniam"
+      },
+      {
+        "timeslot": 1,
+        "rId": 159,
+        "rName": "laboris"
+      },
+      {
+        "timeslot": 3,
+        "rId": 186,
+        "rName": "nulla"
+      },
+      {
+        "timeslot": 7,
+        "rId": 97,
+        "rName": "nostrud"
+      },
+      {
+        "timeslot": 18,
+        "rId": 151,
+        "rName": "mollit"
+      }
+    ],
+    "calcType": "daysOfWeek",
+    "weekValues": "Wed",
+    "dateValues": [
+      "2015-06-18",
+      "2015-05-18",
+      "2015-07-30"
+    ],
+    "dateRangeStart": "2015-06-22",
+    "dateRangeEnd": "2015-07-20"
+  },
+  {
+    "rgId": 26,
+    "rgName": "eiusmod ex",
+    "rules": [
+      {
+        "timeslot": 17,
+        "rId": 21,
+        "rName": "deserunt"
+      },
+      {
+        "timeslot": 1,
+        "rId": 28,
+        "rName": "excepteur"
+      },
+      {
+        "timeslot": 14,
+        "rId": 100,
+        "rName": "anim"
+      },
+      {
+        "timeslot": 35,
+        "rId": 134,
+        "rName": "sit"
+      },
+      {
+        "timeslot": 24,
+        "rId": 146,
+        "rName": "culpa"
+      },
+      {
+        "timeslot": 19,
+        "rId": 166,
+        "rName": "consequat"
+      },
+      {
+        "timeslot": 7,
+        "rId": 21,
+        "rName": "reprehenderit"
+      },
+      {
+        "timeslot": 19,
+        "rId": 192,
+        "rName": "elit"
+      },
+      {
+        "timeslot": 5,
+        "rId": 171,
+        "rName": "voluptate"
+      },
+      {
+        "timeslot": 26,
+        "rId": 199,
+        "rName": "occaecat"
+      },
+      {
+        "timeslot": 14,
+        "rId": 47,
+        "rName": "cillum"
+      },
+      {
+        "timeslot": 15,
+        "rId": 87,
+        "rName": "elit"
+      },
+      {
+        "timeslot": 5,
+        "rId": 264,
+        "rName": "ut"
+      },
+      {
+        "timeslot": 44,
+        "rId": 193,
+        "rName": "est"
+      },
+      {
+        "timeslot": 30,
+        "rId": 3,
+        "rName": "eu"
+      },
+      {
+        "timeslot": 38,
+        "rId": 3,
+        "rName": "irure"
+      },
+      {
+        "timeslot": 47,
+        "rId": 40,
+        "rName": "id"
+      },
+      {
+        "timeslot": 7,
+        "rId": 111,
+        "rName": "dolore"
+      },
+      {
+        "timeslot": 37,
+        "rId": 169,
+        "rName": "labore"
+      },
+      {
+        "timeslot": 4,
+        "rId": 250,
+        "rName": "dolor"
+      },
+      {
+        "timeslot": 41,
+        "rId": 119,
+        "rName": "ullamco"
+      }
+    ],
+    "calcType": "date",
+    "weekValues": "Mon",
+    "dateValues": [
+      "2015-07-09",
+      "2015-07-06",
+      "2015-07-29"
+    ],
+    "dateRangeStart": "2015-07-27",
+    "dateRangeEnd": "2015-07-23"
+  }
+]

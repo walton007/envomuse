@@ -1,0 +1,53 @@
+<div ng-controller="PlaylistListCtrl">
+  <!-- breadcrumb -->
+  <div class="row">
+    <div class="bg-light lter">
+      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
+        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
+        <li><a ui-sref="playlists.dash">播放列表管理</a></li>
+        <li class="active">{{status | uppercase}} </li>
+      </ul>
+    </div>
+  </div>
+  <!-- / breadcrumb -->
+
+  <div class="wrapper-md">
+    <div class="b-b m-b-lg">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12 text-middle">
+          <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-init="init()" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+        </div>
+      </div>
+    </div>
+
+
+    <div ng-repeat="item in datasource" class="col-sm-3">
+      <div class="panel">
+        <div class="panel-body">
+          <div href class="m-l m-t-xs">
+            <a ui-sref="playlists.detail({playlistId:item.id})" class="text-mutedblock m-b-xs">{{item.name}}</a>
+          </div>
+          <div href class="m-l m-t-xs">
+            <a ui-sref="customers.brand.detail({brandId:item.associatedBrandId})" class="text-info block m-b-xs" tooltip="客户"><i class="fa fa-star m-r-sm"></i>{{item.associatedBrandName}}</a>
+          </div>
+          <div class="list-group no-radius alt m-t-sm">
+            <a href class="list-group-item">
+              <span class="badge bg-success">{{item.startDate}}</span>
+              开始日期
+            </a>
+            <a href class="list-group-item">
+              <span class="badge bg-success">{{item.endDate}}</span>
+              结束日期
+            </a>
+          </div>
+          <div class="clear" ng-show="!item.linkState">
+            <a href class="btn btn-addon btn-sm btn-success m-t-xs"><i class="glyphicon glyphicon-link"></i> 关联店铺 </a>
+          </div>
+          <div class="clear" ng-show="item.linkState">
+            <i class="glyphicon glyphicon-link"></i> 已关联店铺
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

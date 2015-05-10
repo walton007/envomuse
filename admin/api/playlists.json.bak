@@ -1,0 +1,79 @@
+{ "aaData": [
+  {
+    "_id": "54cb00e25ef45b011fd0496d",
+    "index": 0,
+    "guid": "cac7b7e3-c1ad-40bd-af98-760e33598e74",
+    "name": "Avila Hobbs",
+    "company": "EXOSTREAM",
+    "dj": "Madeline Pearson",
+    "isActive": true,
+    "version": "8a3e923d-df46-409d-994d-a0a6ff680a15",
+    "createdate": "Mon Aug 10 1970 05:45:06 GMT+0800 (CST)"
+  },
+  {
+    "_id": "54cb00e23e7fa2c96cbd38a1",
+    "index": 1,
+    "guid": "7d89c969-2da2-4d42-9603-16043c6dc2c7",
+    "name": "Reilly Hebert",
+    "company": "ESCENTA",
+    "dj": "Chambers Foley",
+    "isActive": true,
+    "version": "8ed7a8df-9931-461e-a504-5be0c582d5d1",
+    "createdate": "Fri Dec 29 2000 18:12:53 GMT+0800 (CST)"
+  },
+  {
+    "_id": "54cb00e23715945477ba12ba",
+    "index": 2,
+    "guid": "c5711dce-f8ff-4837-837a-91394264ea50",
+    "name": "Torres Shannon",
+    "company": "HYDROCOM",
+    "dj": "Jewell Haynes",
+    "isActive": true,
+    "version": "f04ec8b4-a276-451f-b2c1-7b2894351857",
+    "createdate": "Sat Jun 27 1981 16:05:52 GMT+0800 (CST)"
+  },
+  {
+    "_id": "54cb00e244fb25601ecc0b99",
+    "index": 3,
+    "guid": "53eda8dc-fed8-49df-9c10-6f155a92b06b",
+    "name": "Acevedo Kinney",
+    "company": "ENERFORCE",
+    "dj": "Huffman Wells",
+    "isActive": false,
+    "version": "e5f328fe-cb3c-4233-bb47-1ea3965580ba",
+    "createdate": "Thu Dec 16 1976 21:21:14 GMT+0800 (CST)"
+  },
+  {
+    "_id": "54cb00e28dfafc7a0cc2a81e",
+    "index": 4,
+    "guid": "10dcb02b-6586-40cc-874c-77eca2ca1dbf",
+    "name": "Justine Vincent",
+    "company": "COMBOGEN",
+    "dj": "Debora Butler",
+    "isActive": true,
+    "version": "fc99aca9-0e11-45a8-a872-bf0c087a749f",
+    "createdate": "Thu Feb 01 2001 06:22:15 GMT+0800 (CST)"
+  },
+  {
+    "_id": "54cb00e2409d748bd33aae32",
+    "index": 5,
+    "guid": "b0705314-d280-4785-b353-4a1395ff9e8c",
+    "name": "Dionne Miranda",
+    "company": "FORTEAN",
+    "dj": "Hunt Petersen",
+    "isActive": true,
+    "version": "af0207fa-7541-4e3d-966b-aa25e038c101",
+    "createdate": "Sun Sep 06 1987 03:09:40 GMT+0900 (CDT)"
+  },
+  {
+    "_id": "54cb00e283f626a991943fc3",
+    "index": 6,
+    "guid": "3ee19e66-1ab1-4464-acdb-e3e7c2ce3df7",
+    "name": "Mccarty Glover",
+    "company": "MICROLUXE",
+    "dj": "Colleen Santana",
+    "isActive": false,
+    "version": "449d92d6-5bd4-4746-99bc-78e5a98efbd8",
+    "createdate": "Fri Dec 26 2008 13:50:48 GMT+0800 (CST)"
+  }
+]}

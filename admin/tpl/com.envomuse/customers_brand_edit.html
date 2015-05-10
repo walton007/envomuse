@@ -1,0 +1,148 @@
+<div ng-controller="BrandEditCtrl">
+  <!-- breadcrumb -->
+  <div class="row">
+    <div class="bg-light lter">
+      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
+        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
+        <li><a ui-sref="customers.dash">客户管理</a></li>
+        <li><a ui-sref="customers.brand.detail({brandId:brand.id})">{{brand.brandName | uppercase}}</a></li>
+        <li class="active">编辑</li>
+      </ul>
+    </div>
+  </div>
+  <!-- / breadcrumb -->
+
+  <div class="hbox hbox-auto-xs hbox-auto-sm">
+  <!-- main -->
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading font-bold">编辑客户</div>
+          <div class="panel-body">
+            <form name="editBrand" class="form-horizontal m-t-lg">
+              <div class="form-group">
+                <label class="col-lg-2 control-label">客户名称</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" ng-model="brand.brandName" required disabled>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">所属行业</label>
+                <div class="col-lg-8">
+                  <select ui-jq="chosen" data-placeholder="选择客户所在行业" class="form-control" ng-model="brand.industry">
+                    <option ng-repeat="list in industrylist" value="{{list}}">{{list.name}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">客户状态</label>
+                <div class="col-lg-8">
+                  <select ui-jq="chosen" data-placeholder="选择客户状态" class="form-control" ng-model="brand.status">
+                    <option ng-repeat="list in statuslist" value="{{list}}">{{list.name}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">曲目更新周期</label>
+                <div class="col-lg-8">
+                  <select ui-jq="chosen" data-placeholder="该客户更新周期" class="form-control" ng-model="brand.updateperiod">
+                    <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list.name}}</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="col-sm-2 control-label">合同开始日期</label>
+                <div class="col-sm-10" ng-controller="DatepickerDemoCtrl">
+                  <div class="input-group w-md">
+                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="brand.contractdate" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">设计费</label>
+                  <div class="col-sm-6">
+                    <div class="m-b">
+                      <input ui-jq="TouchSpin" type="text" value="0" class="form-control" data-min='0' data-max="10" data-step="0.1" data-decimals="2" data-prefix="$" ng-model="brand.unitprice">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">安装费</label>
+                  <div class="col-sm-6">
+                    <div class="m-b">
+                      <input ui-jq="TouchSpin" type="text" value="0" class="form-control" data-min='0' data-max="10" data-step="0.1" data-decimals="2" data-prefix="$" ng-model="brand.unitprice">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">月服务费</label>
+                  <div class="col-sm-6">
+                    <div class="m-b">
+                      <input ui-jq="TouchSpin" type="text" value="0" class="form-control" data-min='0' data-max="10" data-step="0.1" data-decimals="2" data-prefix="$" ng-model="brand.unitprice">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">其它费用</label>
+                  <div class="col-sm-6">
+                    <div class="m-b">
+                      <input ui-jq="TouchSpin" type="text" value="0" class="form-control" data-min='0' data-max="10" data-step="0.1" data-decimals="2" data-prefix="$" ng-model="brand.unitprice">
+                    </div>
+                  </div>
+                </div>
+
+              <div class="line line-dashed b-b line-lg pull-in"></div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">详细描述</label>
+                <div class="col-sm-10">
+                  <div class="btn-toolbar m-b-sm btn-editor" data-role="editor-toolbar" data-target="#editor">
+                    <div class="btn-group">
+                      <a class="btn btn-sm btn-default" data-edit="bold" tooltip="Bold (Ctrl/Cmd+B)"><i class="fa text-base fa-bold"></i></a>
+                      <a class="btn btn-sm btn-default" data-edit="italic" tooltip="Italic (Ctrl/Cmd+I)"><i class="fa text-base fa-italic"></i></a>
+                    </div>
+                    <div class="btn-group">
+                      <a class="btn btn-sm btn-default" data-edit="insertunorderedlist" tooltip="Bullet list"><i class="fa text-base fa-list-ul"></i></a>
+                      <a class="btn btn-sm btn-default" data-edit="insertorderedlist" tooltip="Number list"><i class="fa text-base fa-list-ol"></i></a>
+                      <a class="btn btn-sm btn-default" data-edit="outdent" tooltip="Reduce indent (Shift+Tab)"><i class="fa text-base fa-dedent"></i></a>
+                      <a class="btn btn-sm btn-default" data-edit="indent" tooltip="Indent (Tab)"><i class="fa text-base fa-indent"></i></a>
+                    </div>
+                    <div class="btn-group">
+                      <a class="btn btn-sm btn-default" data-edit="justifyleft" tooltip="Align Left (Ctrl/Cmd+L)"><i class="fa text-base fa-align-left"></i></a>
+                      <a class="btn btn-sm btn-default" data-edit="justifycenter" tooltip="Center (Ctrl/Cmd+E)"><i class="fa text-base fa-align-center"></i></a>
+                      <a class="btn btn-sm btn-default" data-edit="justifyright" tooltip="Align Right (Ctrl/Cmd+R)"><i class="fa text-base fa-align-right"></i></a>
+                      <a class="btn btn-sm btn-default" data-edit="justifyfull" tooltip="Justify (Ctrl/Cmd+J)"><i class="fa text-base fa-align-justify"></i></a>
+                    </div>
+                  </div>
+                  <div ui-jq="wysiwyg" class="form-control h-auto" style="min-height:200px;" ng-model="brand.descripton">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-lg-8 col-lg-offset-2">
+                  <button class="btn btn-info w-xs" ng-click="saveBrand()">保存修改</button>
+                </div>
+              </div>
+            </form>
+          </div>
+      </div>
+    </div>
+  <!-- /main -->
+  <!-- right col -->
+    <div class="col w-md bg-light dker b-l bg-auto no-border-xs">    
+      <div class="wrapper-md">
+         
+      </div>
+    </div>
+
+  <!-- /right col -->
+</div>
+</div>
+

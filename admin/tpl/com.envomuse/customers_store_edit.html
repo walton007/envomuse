@@ -1,0 +1,101 @@
+<div ng-controller="StoreEditCtrl">
+  <!-- breadcrumb -->
+  <div class="row">
+    <div class="bg-light lter">
+      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
+        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
+        <li><a ui-sref="customers.dash">客户管理</a></li>
+        <li><a ui-sref="customers.brand.detail({brandId:store.brandId})">{{store.brandName | uppercase}}</a></li>
+        <li><a ui-sref="customers.store.detail({brandId:store.brandId,storeId:store.id})">{{store.storeName | uppercase}}</a></li>
+        <li class="active">编辑</li>
+      </ul>
+    </div>
+  </div>
+  <!-- / breadcrumb -->
+
+  <div class="hbox hbox-auto-xs hbox-auto-sm">
+  <!-- main -->
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading font-bold">编辑店铺</div>
+        <div class="panel-body">
+          <form name="editStore" class="form-horizontal m-t-lg">
+            <div class="form-group">
+              <label class="col-lg-2 control-label">品牌</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="store.brandName" required disabled>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">店铺ID</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="store.storeName" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">地址</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="store.address" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">经度</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="store.latitude" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">纬度</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="store.longitude" required>
+              </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">详细描述</label>
+              <div class="col-sm-10">
+                <div class="btn-toolbar m-b-sm btn-editor" data-role="editor-toolbar" data-target="#editor">
+                  <div class="btn-group">
+                    <a class="btn btn-sm btn-default" data-edit="bold" tooltip="Bold (Ctrl/Cmd+B)"><i class="fa text-base fa-bold"></i></a>
+                    <a class="btn btn-sm btn-default" data-edit="italic" tooltip="Italic (Ctrl/Cmd+I)"><i class="fa text-base fa-italic"></i></a>
+                  </div>
+                  <div class="btn-group">
+                    <a class="btn btn-sm btn-default" data-edit="insertunorderedlist" tooltip="Bullet list"><i class="fa text-base fa-list-ul"></i></a>
+                    <a class="btn btn-sm btn-default" data-edit="insertorderedlist" tooltip="Number list"><i class="fa text-base fa-list-ol"></i></a>
+                    <a class="btn btn-sm btn-default" data-edit="outdent" tooltip="Reduce indent (Shift+Tab)"><i class="fa text-base fa-dedent"></i></a>
+                    <a class="btn btn-sm btn-default" data-edit="indent" tooltip="Indent (Tab)"><i class="fa text-base fa-indent"></i></a>
+                  </div>
+                  <div class="btn-group">
+                    <a class="btn btn-sm btn-default" data-edit="justifyleft" tooltip="Align Left (Ctrl/Cmd+L)"><i class="fa text-base fa-align-left"></i></a>
+                    <a class="btn btn-sm btn-default" data-edit="justifycenter" tooltip="Center (Ctrl/Cmd+E)"><i class="fa text-base fa-align-center"></i></a>
+                    <a class="btn btn-sm btn-default" data-edit="justifyright" tooltip="Align Right (Ctrl/Cmd+R)"><i class="fa text-base fa-align-right"></i></a>
+                    <a class="btn btn-sm btn-default" data-edit="justifyfull" tooltip="Justify (Ctrl/Cmd+J)"><i class="fa text-base fa-align-justify"></i></a>
+                  </div>
+                </div>
+                <div ui-jq="wysiwyg" class="form-control h-auto" style="min-height:200px;" ng-model="brand.descripton">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-lg-8 col-lg-offset-2">
+                <button class="btn btn-info w-xs" ng-click="saveStore()">保存</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  <!-- /main -->
+  <!-- right col -->
+    <div class="col w-md bg-light dker b-l bg-auto no-border-xs">    
+      <div class="wrapper-md">
+         <button class="btn m-b-xs btn-sm btn-warning btn-addon" ui-sref="customers.store.detail({brandId:store.brandId,storeId:store.id})"><i class="fa fa-arrow-circle-left"></i>取消</button>
+      </div>
+    </div>
+  <!-- /right col -->
+</div>

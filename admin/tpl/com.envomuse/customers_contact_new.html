@@ -1,0 +1,114 @@
+<div ng-controller="ContactNewCtrl">
+  <!-- breadcrumb -->
+  <div class="row">
+    <div class="bg-light lter">
+      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
+        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
+        <li><a ui-sref="customers.dash">客户管理</a></li>
+        <li><a ui-sref="customers.brand.detail({brandId:brand.id})">{{brand.brandName | uppercase}}</a></li>
+        <li><a ui-sref="customers.store({brandId:brand.id})"> 店铺 </a></li>
+        <li class="active">新增联系人</li>
+      </ul>
+    </div>
+  </div>
+  <!-- / breadcrumb -->
+
+  <div class="hbox hbox-auto-xs hbox-auto-sm">
+  <!-- main -->
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading font-bold">新增联系人</div>
+          <div class="panel-body">
+            <form name="newStore" class="form-horizontal m-t-lg">
+              <div class="form-group">
+                <label class="col-lg-2 control-label">品牌</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" ng-model="brand.brandName" required disabled>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">姓名</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" ng-model="store.storeName" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">职位</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" ng-model="store.address" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">电话</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" ng-model="store.address" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">QQ</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" ng-model="store.latitude" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">微信</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" ng-model="store.longitude" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">Email</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" ng-model="store.address" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">生日</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" ng-model="store.address" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">性别</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" ng-model="store.address" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">地址</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" ng-model="store.address" required>
+                </div>
+              </div>
+
+              <div class="line line-dashed b-b line-lg pull-in"></div>
+
+              <div class="form-group">
+                <div class="col-lg-8 col-lg-offset-2">
+                  <button class="btn btn-info w-xs" ng-click="createStore()">添加</button>
+                </div>
+              </div>
+            </form>
+          </div>
+      </div>
+    </div>
+  <!-- /main -->
+
+  <!-- right col -->
+    <div class="col w-md bg-light dker b-l bg-auto no-border-xs">    
+      <div class="wrapper-md">
+         
+      </div>
+    </div>
+  <!-- /right col -->
+  </div>
+</div>

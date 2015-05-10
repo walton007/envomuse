@@ -1,0 +1,44 @@
+<div ng-controller="ProgramDetailCtrl">
+  <!-- breadcrumb -->
+  <div class="row">
+    <div class="bg-light lter">
+      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
+        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
+        <li><a ui-sref="jobs.dash">工作管理</a></li>
+        <li><a ui-sref="jobs.list">所有工作</a></li>
+        <li><a ui-sref="jobs.detail({jobId:job.id})">{{job.uuid | uppercase }}</a></li>
+        <li class="active">{{program.programName | uppercase }}</li>
+      </ul>
+    </div>
+  </div>
+  <!-- / breadcrumb -->
+
+  <div class="wrapper-md">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <span class="m-r-lg">{{program.programId | uppercase }}</span>
+        <span class="m-r-lg">{{program.calcType }}</span>
+        <span class="m-r-lg">{{program.dValues }} </span></div>  
+      <table st-table="rowCollectionBasic" class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th width="10%">时间段</th>
+          <th width="10%">RULE名称</th>
+          <th>BOXES</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="row in rowCollectionBasic" st-select-row="row">
+          <td>{{ row.timeslot }}</td>
+          <td><a ui-sref="jobs.rule({jobId:job.id,programId:program.programId,ruleId:row.ruleId})">{{row.ruleName}}</a></td>
+          <td>
+            <span ng-repeat="r in row.boxes" class="m-r-sm b">
+              <a ui-sref="jobs.box({jobId:job.id,programId:program.programId,ruleId:row.ruleId,boxId:r.boxId})">{{r.boxName}}</a>
+            </span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

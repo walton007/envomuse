@@ -1,0 +1,131 @@
+<div ng-controller="BrandDetailCtrl">
+  <!-- breadcrumb -->
+  <div class="row">
+    <div class="bg-light lter">
+      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-none">
+        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
+        <li><a ui-sref="customers.dash">客户管理</a></li>
+        <li class="active">{{brand.brandName | uppercase }}</li>
+      </ul>
+    </div>
+  </div>
+  <!-- / breadcrumb -->
+
+  <div class="hbox hbox-auto-xs hbox-auto-sm">
+
+    <!-- main -->
+    <div class="col">
+      <div class="wrapper-sm">
+        <div class="panel">
+          <div class="wrapper">
+            <div class="panel-body">
+              <div class="clearfix text-center m-t col-md-3">
+                <div class="inline" style="width: 100px; height: 100px; line-height: 100px;">
+                  <a ui-sref="customers.brand.detail({brandId:brand.id})">
+                    <div class="thumb-lg m-t-n-xxl">
+                      <img src="{{brand.logopicture}}" alt="LOGO {{brand.brandName}}">
+                    </div>
+                  </a>
+                </div>
+              </div>                     
+              <div class="col-md-9">
+                {{brand.description}}
+                <div class="line line-lg b-b b-light"></div>
+                <div class="text-muted">
+                  <span class="pull-right">
+                    <i class="fa fa-user text-muted"></i>  {{brand.createdBy}}
+                    <i class="fa fa-clock-o text-muted m-l-sm"></i>  {{brand.firstContractDate | date : "MMM-dd"}}
+                  </span>
+                  <span class="pull-left">
+                    <i class="fa fa-tag text-muted"></i>  {{brand.industry}}
+                    <i class="fa fa-check-circle-o text-muted m-l-sm"></i>  {{brand.status | uppercase }}
+                    <i class="fa fa-star-o text-muted m-l-sm"></i>  {{brand.renewalCount}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          
+        <h5 class="font-bold">Basic information</h5>
+          <div class="row row-sm text-center">
+            <div class="col-xs-4">
+              <a ui-sref="customers.store({brandId:brand.id})" class="block panel padder-v bg-primary dk item">
+                <span class="text-white font-thin h1 block">{{brand.storeNumber}}</span>
+                <span class="text-muted text-xs">Total store/POS</span>
+                <span class="bottom text-right w-full">
+                  <i class="fa fa-building-o text-muted m-r-sm"></i>
+                </span>
+              </a>
+            </div>
+            <div class="col-xs-4">
+              <a ui-sref="customers.brand" class="block panel padder-v bg-success dk item">
+                <span class="text-white font-thin h1 block">{{brand.nextUpdateDate | date : "MMM-dd"}}</span>
+                <span class="text-muted text-xs">{{brand.updatePeriod}}</span>
+                <span class="bottom text-right w-full">
+                  <i class="fa fa-users text-muted m-r-sm"></i>
+                </span>
+              </a>
+            </div>
+            <div class="col-xs-4">
+              <a ui-sref="customers.contact({brandId:brand.id})" class="block panel padder-v bg-primary item">
+                <span class="text-white font-thin h1 block">{{brand.contactNumber}}</span>
+                <span class="text-muted text-xs">Contacts</span>
+                <span class="bottom text-right w-full">
+                  <i class="fa fa-building-o text-muted m-r-sm"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+        <h5 class="font-bold">POS Status</h5>
+          <div class="row row-sm text-center">
+            <div class="col-xs-3">
+              <a ui-sref="customers.brand" class="block panel padder-v bg-success lt item">
+                <span class="text-white font-thin h1 block">26</span>
+                <span class="text-muted text-xs">To Setup</span>
+                <span class="bottom text-right w-full">
+                  <i class="fa fa-users text-muted m-r-sm"></i>
+                </span>
+              </a>
+            </div>
+            <div class="col-xs-3">
+              <a ui-sref="customers.brand" class="block panel padder-v bg-success lt item">
+                <span class="text-white font-thin h1 block">30</span>
+                <span class="text-muted text-xs">Online</span>
+                <span class="bottom text-right w-full">
+                  <i class="fa fa-users text-muted m-r-sm"></i>
+                </span>
+              </a>
+            </div>
+            <div class="col-xs-3">
+              <a ui-sref="customers.brand" class="block panel padder-v bg-success lt item">
+                <span class="text-white font-thin h1 block">3</span>
+                <span class="text-muted text-xs">Offline</span>
+                <span class="bottom text-right w-full">
+                  <i class="fa fa-users text-muted m-r-sm"></i>
+                </span>
+              </a>
+            </div>
+            <div class="col-xs-3">
+              <a ui-sref="customers.brand" class="block panel padder-v bg-success lt item">
+                <span class="text-white font-thin h1 block">1</span>
+                <span class="text-muted text-xs">Closed</span>
+                <span class="bottom text-right w-full">
+                  <i class="fa fa-users text-muted m-r-sm"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+      </div>
+    </div>
+    <!-- /main -->
+    <!-- right col -->
+    <div class="col w-md bg-light dker b-l bg-auto no-border-xs">    
+      <div class="wrapper-md">
+        
+      </div>
+    </div>
+    <!-- /right col -->
+  </div>
+
+</div>

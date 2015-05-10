@@ -1,0 +1,45 @@
+<div >
+  <!-- breadcrumb -->
+  <div class="row">
+    <div class="bg-light lter">
+      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
+        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
+        <li class="active">任务管理</li>
+      </ul>
+    </div>
+  </div>
+  <!-- / breadcrumb -->
+
+  <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+    app.settings.asideFolded = false; 
+    app.settings.asideDock = false;
+  ">
+    <!-- main -->
+    <div class="wrapper-md">
+      <!-- stats -->
+      <div class="row">
+        <div class="row row-sm text-center">
+          <div class="col-xs-6">
+            <a ui-sref="tasks.incoming" class="block panel padder-v bg-primary item">
+              <span class="text-white font-thin h1 block">930</span>
+              <span class="text-muted text-xs">待导入</span>
+              <span class="bottom text-right w-full">
+                <i class="fa fa-cloud-upload text-muted m-l-sm"></i>
+              </span>
+            </a>
+          </div>
+          <div class="col-xs-6">
+            <a ui-sref="tasks.ongoing" class="block panel padder-v bg-primary item">
+              <span class="text-white font-thin h1 block">30</span>
+              <span class="text-muted text-xs">进行中</span>
+              <span class="bottom text-right w-full">
+                <i class="fa fa-cloud-upload text-muted m-l-sm"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- /main -->
+  </div>
+</div>

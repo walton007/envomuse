@@ -1,0 +1,45 @@
+<div >
+  <!-- breadcrumb -->
+  <div class="row">
+    <div class="bg-light lter">
+      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
+        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
+        <li class="active">工作管理</li>
+      </ul>
+    </div>
+  </div>
+  <!-- / breadcrumb -->
+
+  <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+    app.settings.asideFolded = false; 
+    app.settings.asideDock = false;
+  ">
+    <!-- main -->
+    <div class="wrapper-md">
+      <!-- stats -->
+      <div class="row">
+        <div class="row row-sm text-center">
+          <div class="col-xs-6">
+            <a ui-sref="jobs.list({jobStatus:'active'})" class="block panel padder-v bg-success item">
+              <span class="text-white font-thin h1 block">26</span>
+              <span class="text-muted text-xs">已激活</span>
+              <span class="top text-left">
+                <i class="fa fa-caret-up text-warning m-l-sm"></i>
+              </span>
+            </a>
+          </div>
+          <div class="col-xs-6">
+            <a ui-sref="jobs.list({jobStatus:'inactive'})" class="block panel padder-v bg-dark item">
+              <span class="text-white font-thin h1 block">30</span>
+              <span class="text-muted text-xs">待激活</span>
+              <span class="top text-left">
+                <i class="fa fa-caret-up text-warning m-r-sm"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- /main -->
+  </div>
+</div>

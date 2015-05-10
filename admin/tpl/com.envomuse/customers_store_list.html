@@ -1,0 +1,61 @@
+<div ng-controller="StoreListCtrl">
+  <!-- breadcrumb -->
+  <div class="row">
+    <div class="bg-light lter">
+      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
+        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
+        <li><a ui-sref="customers.dash">客户管理</a></li>
+        <li><a ui-sref="customers.brand.detail({brandId:brandId})">{{brandName | uppercase}}</a></li>
+        <li class="active">店铺列表</li>
+      </ul>
+    </div>
+  </div>
+  <!-- / breadcrumb -->
+
+<div class="wrapper-md">
+  <div class="b-b m-b-lg">
+    <div class="row">
+
+      <div class="col-sm-6 col-xs-12 text-middle">
+        <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-init="init()" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+      </div>
+    </div>
+  </div>
+  
+  <div ng-repeat="item in datasource" class="col-sm-3">
+    <div class="panel panel-default">
+            <div class="panel-heading">
+              <div class="clearfix">
+                <div class="clear">
+                  <div class="h3 m-t-xs m-b-xs">
+                    <a ui-sref="customers.store.detail({brandId:item.brandId,storeId:item.id})">{{item.storeName}} </a>
+                    <i class="fa fa-circle text-{{item.terminalStatus.cc}} pull-right text-xs m-t-sm" tooltip="{{item.terminalStatus.value | uppercase}}"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="list-group no-radius alt">
+              <a class="list-group-item" href>
+                <span class="badge bg-success">{{item.phone}}</span>
+                <i class="fa fa-user fa-fw text-muted"></i> 
+                {{item.contact}}
+              </a>
+              <a class="list-group-item" href>
+                <i class="fa fa-random fa-fw text-muted"></i> 
+                Playlist
+              </a>
+              <a class="list-group-item" href>
+                <span class="badge bg-info">{{item.associatedPlaylistId}}</span>
+                <i class="fa fa-heart fa-fw text-muted"></i> 
+                Connected since
+              </a>
+              <span class="list-group-item" href>
+                <span class="badge bg-light">{{item.nextPlaylistUpdate | date:"MMM:dd"}}</span>
+                <i class="fa fa-refresh fa-fw text-muted"></i> 
+                Next sync
+              </span>
+            </div>
+          </div>
+  </div>
+</div>
+</div>

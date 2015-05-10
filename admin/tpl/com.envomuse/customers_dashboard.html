@@ -1,0 +1,64 @@
+<div >
+  <!-- breadcrumb -->
+  <div class="row">
+    <div class="bg-light lter">
+      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
+        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
+        <li class="active">客户管理</li>
+      </ul>
+    </div>
+  </div>
+  <!-- / breadcrumb -->
+
+  <!-- main -->
+  <div class="wrapper-md">
+    <!-- stats -->
+    <div class="row">
+      <div class="row row-sm text-center">
+        <div class="col-xs-6">
+          <a ui-sref="customers.brand({listState:'new'})" class="block panel padder-v bg-warning item">
+            <span class="text-white font-thin h1 block">26</span>
+            <span class="text-muted text-xs">年度新增</span>
+            <span class="bottom text-right w-full">
+              <i class="fa fa-users text-muted m-r-sm"></i>
+            </span>
+          </a>
+        </div>
+        <div class="col-xs-6">
+          <a ui-sref="customers.brand({listState:'all'})" class="block panel padder-v bg-success item">
+            <span class="text-white font-thin h1 block">930</span>
+            <span class="text-muted text-xs">总客户数</span>
+            <span class="bottom text-right w-full">
+              <i class="fa fa-users text-muted m-r-sm"></i>
+            </span>
+          </a>
+        </div>
+        <div class="col-xs-6">
+          <a ui-sref="customers.store" class="block panel padder-v bg-info item">
+            <span class="text-white font-thin h1 block">32</span>
+            <span class="text-muted text-xs">在线店铺/POS数</span>
+            <span class="bottom text-right w-full">
+              <i class="fa fa-building-o text-muted m-r-sm"></i>
+            </span>
+          </a>
+        </div>
+        <div class="col-xs-6">
+          <a ui-sref="customers.store" class="block panel padder-v bg-primary item">
+            <span class="text-white font-thin h1 block">332</span>
+            <span class="text-muted text-xs">总店铺/POS数</span>
+            <span class="bottom text-right w-full">
+              <i class="fa fa-building-o text-muted m-r-sm"></i>
+            </span>
+          </a>
+        </div>
+        <div class="col-xs-12 m-b-md">
+          <div class="r bg-light dker item hbox no-border">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- / stats -->
+  </div>
+  <!-- /main -->
+</div>

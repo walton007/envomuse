@@ -1,0 +1,52 @@
+{ "aaData": 
+[
+  {
+    "fileName": "quis",
+    "localPath": "/public/uploads/quis",
+    "filesize": 270531948,
+    "uploadedOn": "2014-06-23 00:07:49"
+  },
+  {
+    "fileName": "anim",
+    "localPath": "/public/uploads/anim",
+    "filesize": 264892069,
+    "uploadedOn": "2014-11-21 07:50:49"
+  },
+  {
+    "fileName": "eu",
+    "localPath": "/public/uploads/eu",
+    "filesize": 168205082,
+    "uploadedOn": "2014-09-28 21:38:37"
+  },
+  {
+    "fileName": "ullamco",
+    "localPath": "/public/uploads/ullamco",
+    "filesize": 186500969,
+    "uploadedOn": "2014-02-27 08:00:43"
+  },
+  {
+    "fileName": "anim",
+    "localPath": "/public/uploads/anim",
+    "filesize": 140118149,
+    "uploadedOn": "2014-06-18 17:50:30"
+  },
+  {
+    "fileName": "eiusmod",
+    "localPath": "/public/uploads/eiusmod",
+    "filesize": 233228105,
+    "uploadedOn": "2014-08-08 18:27:35"
+  },
+  {
+    "fileName": "et",
+    "localPath": "/public/uploads/et",
+    "filesize": 235681599,
+    "uploadedOn": "2014-11-02 03:02:04"
+  },
+  {
+    "fileName": "aute",
+    "localPath": "/public/uploads/aute",
+    "filesize": 125181359,
+    "uploadedOn": "2014-01-05 04:06:37"
+  }
+]
+ }

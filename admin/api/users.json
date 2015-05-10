@@ -1,0 +1,442 @@
+{ "aaData": [
+  {
+    "_id": "54d42456d1b9c9feacb9e683",
+    "index": 0,
+    "guid": "a08dbc9c-c5b4-455f-982e-2452581acc59",
+    "isActive": true,
+    "picture": "http://placehold.it/32x32",
+    "name": "Casandra Chase",
+    "company": "ASIMILINE",
+    "email": "casandrachase@asimiline.com",
+    "username": "Phelps Haney",
+    "phone": "+1 (961) 566-2206",
+    "address": "425 Ryder Street, Croom, Alabama, 8028",
+    "registered": "2014-02-04T02:06:45 -08:00",
+    "latestActivity": "2014-04-07T14:35:41 -08:00",
+    "permissions": "PERM-9",
+    "category": {
+      "value": "超级管理员",
+      "color": "info"
+    }
+  },
+  {
+    "_id": "54d42456fd76767d280079f0",
+    "index": 1,
+    "guid": "42d8ab2b-9da6-42f0-89de-3ab689c8da97",
+    "isActive": false,
+    "picture": "http://placehold.it/32x32",
+    "name": "Marina Conley",
+    "company": "SECURIA",
+    "email": "marinaconley@securia.com",
+    "username": "Leah Sweeney",
+    "phone": "+1 (948) 425-2189",
+    "address": "845 Grant Avenue, Saticoy, New York, 4009",
+    "registered": "2014-06-12T01:31:22 -08:00",
+    "latestActivity": "2014-12-08T22:10:05 -08:00",
+    "permissions": "PERM-4",
+    "category": {
+      "vaue": "销售经理",
+      "color": "primary"
+    }
+  },
+  {
+    "_id": "54d42456d6995bc1ad5fcdd3",
+    "index": 2,
+    "guid": "73761c0d-3d01-461e-b8e1-cd2910553db1",
+    "isActive": true,
+    "picture": "http://placehold.it/32x32",
+    "name": "Elvia Rodgers",
+    "company": "KOFFEE",
+    "email": "elviarodgers@koffee.com",
+    "username": "Skinner Waller",
+    "phone": "+1 (821) 476-3185",
+    "address": "352 Homecrest Court, Kiskimere, Maryland, 4292",
+    "registered": "2014-05-29T19:44:56 -08:00",
+    "latestActivity": "2014-05-15T02:14:27 -08:00",
+    "permissions": "PERM-7",
+    "category": {
+      "value": "超级管理员",
+      "color": "info"
+    }
+  },
+  {
+    "_id": "54d42456df461c8c66901f69",
+    "index": 3,
+    "guid": "1f8d0f54-bb82-478c-92d3-675610aa84a4",
+    "isActive": true,
+    "picture": "http://placehold.it/32x32",
+    "name": "Love Bradley",
+    "company": "ZENSOR",
+    "email": "lovebradley@zensor.com",
+    "username": "Sampson Drake",
+    "phone": "+1 (924) 506-3682",
+    "address": "446 Bayview Avenue, Matthews, Montana, 2187",
+    "registered": "2014-06-03T21:31:10 -08:00",
+    "latestActivity": "2014-01-29T17:23:19 -08:00",
+    "permissions": "PERM-2",
+    "category": {
+      "value": "IT管理员",
+      "color": "primary"
+    }
+  },
+  {
+    "_id": "54d4245667fb32305b5ee17f",
+    "index": 4,
+    "guid": "c5842686-79ef-491a-9620-0c692685c84d",
+    "isActive": true,
+    "picture": "http://placehold.it/32x32",
+    "name": "Aline Carson",
+    "company": "ERSUM",
+    "email": "alinecarson@ersum.com",
+    "username": "Atkins Colon",
+    "phone": "+1 (929) 558-2265",
+    "address": "753 Apollo Street, Chloride, Nevada, 7339",
+    "registered": "2014-07-13T10:03:40 -08:00",
+    "latestActivity": "2014-04-16T13:07:06 -08:00",
+    "permissions": "PERM-7",
+    "category": {
+      "value": "音乐制作人",
+      "color": "danger"
+    }
+  },
+  {
+    "_id": "54d4245649e2fded712b1e77",
+    "index": 5,
+    "guid": "6c2e212e-948d-4780-be84-301a214a3ea0",
+    "isActive": false,
+    "picture": "http://placehold.it/32x32",
+    "name": "Lilly Parsons",
+    "company": "XIIX",
+    "email": "lillyparsons@xiix.com",
+    "username": "Hooper Merrill",
+    "phone": "+1 (892) 427-2767",
+    "address": "283 Classon Avenue, Dotsero, Puerto Rico, 7578",
+    "registered": "2014-02-18T21:28:59 -08:00",
+    "latestActivity": "2014-03-15T15:33:55 -08:00",
+    "permissions": "PERM-8",
+    "category": {
+      "value": "客户",
+      "color": "success"
+    }
+  },
+  {
+    "_id": "54d424560d4f961dbe621df9",
+    "index": 6,
+    "guid": "ca6a27e5-e40a-4594-a1c9-b9116a9cb2a9",
+    "isActive": true,
+    "picture": "http://placehold.it/32x32",
+    "name": "Whitfield May",
+    "company": "DRAGBOT",
+    "email": "whitfieldmay@dragbot.com",
+    "username": "Thomas Jefferson",
+    "phone": "+1 (895) 487-3505",
+    "address": "650 Utica Avenue, Sussex, American Samoa, 1387",
+    "registered": "2014-06-23T04:22:57 -08:00",
+    "latestActivity": "2014-06-06T08:37:17 -08:00",
+    "permissions": "PERM-8",
+    "category": {
+      "value": "超级管理员",
+      "color": "info"
+    }
+  },
+  {
+    "_id": "54d4245695c2e2d095a12d19",
+    "index": 7,
+    "guid": "6c009a8b-a3d3-422f-b35c-2b822bb0fdc9",
+    "isActive": true,
+    "picture": "http://placehold.it/32x32",
+    "name": "Mann Solis",
+    "company": "BOLAX",
+    "email": "mannsolis@bolax.com",
+    "username": "Sanders Bush",
+    "phone": "+1 (916) 470-2464",
+    "address": "739 Liberty Avenue, Roy, Rhode Island, 9614",
+    "registered": "2014-03-11T16:34:01 -08:00",
+    "latestActivity": "2014-04-14T20:43:11 -08:00",
+    "permissions": "PERM-10",
+    "category": {
+      "value": "超级管理员",
+      "color": "info"
+    }
+  },
+  {
+    "_id": "54d42456370308e4ebca00b4",
+    "index": 8,
+    "guid": "6bc80e0c-9bb2-4da2-abc3-bc24dfd7ef40",
+    "isActive": true,
+    "picture": "http://placehold.it/32x32",
+    "name": "Mays Padilla",
+    "company": "LUMBREX",
+    "email": "mayspadilla@lumbrex.com",
+    "username": "Melinda Johnston",
+    "phone": "+1 (866) 590-2931",
+    "address": "548 Boulevard Court, Vandiver, New Jersey, 1750",
+    "registered": "2014-11-09T18:02:04 -08:00",
+    "latestActivity": "2015-01-04T01:37:13 -08:00",
+    "permissions": "PERM-7",
+    "category": {
+      "value": "音乐制作人",
+      "color": "danger"
+    }
+  },
+  {
+    "_id": "54d4245617a51dc4398a1688",
+    "index": 9,
+    "guid": "da4459d0-e453-45f3-a26f-2078a57f86f9",
+    "isActive": false,
+    "picture": "http://placehold.it/32x32",
+    "name": "Burks Charles",
+    "company": "CINASTER",
+    "email": "burkscharles@cinaster.com",
+    "username": "Cook Morrison",
+    "phone": "+1 (936) 449-3382",
+    "address": "363 Langham Street, Dupuyer, South Carolina, 1975",
+    "registered": "2014-11-26T03:11:49 -08:00",
+    "latestActivity": "2014-12-11T13:29:13 -08:00",
+    "permissions": "PERM-1",
+    "category": {
+      "value": "超级管理员",
+      "color": "info"
+    }
+  },
+  {
+    "_id": "54d424569f492b38d1dd88d9",
+    "index": 10,
+    "guid": "3a440468-7acb-4863-aa27-ef45f999f1cb",
+    "isActive": true,
+    "picture": "http://placehold.it/32x32",
+    "name": "Mueller Carr",
+    "company": "CENTREXIN",
+    "email": "muellercarr@centrexin.com",
+    "username": "Buck England",
+    "phone": "+1 (872) 542-3847",
+    "address": "335 Fay Court, Lewis, Marshall Islands, 1260",
+    "registered": "2014-11-13T07:21:31 -08:00",
+    "latestActivity": "2014-10-27T07:54:58 -08:00",
+    "permissions": "PERM-4",
+    "category": {
+      "value": "DEMO账户",
+      "color": "warning"
+    }
+  },
+  {
+    "_id": "54d4245673e701ce2936d21b",
+    "index": 11,
+    "guid": "1eefe362-16d0-48ab-baa7-b6e822295223",
+    "isActive": true,
+    "picture": "http://placehold.it/32x32",
+    "name": "Faulkner York",
+    "company": "CIRCUM",
+    "email": "faulkneryork@circum.com",
+    "username": "Shelby Gibson",
+    "phone": "+1 (993) 402-3451",
+    "address": "676 Ashland Place, Klagetoh, Kansas, 7451",
+    "registered": "2014-01-18T16:16:56 -08:00",
+    "latestActivity": "2014-03-17T20:30:10 -08:00",
+    "permissions": "PERM-8",
+    "category": {
+      "value": "客户",
+      "color": "success"
+    }
+  },
+  {
+    "_id": "54d424560810e3c3d249b7d5",
+    "index": 12,
+    "guid": "e6b0c994-2bee-4e34-b76e-2126e01822da",
+    "isActive": false,
+    "picture": "http://placehold.it/32x32",
+    "name": "Brewer Dickerson",
+    "company": "NETROPIC",
+    "email": "brewerdickerson@netropic.com",
+    "username": "Fitzpatrick Newton",
+    "phone": "+1 (807) 481-3520",
+    "address": "584 Doughty Street, Hegins, Northern Mariana Islands, 8001",
+    "registered": "2014-04-16T16:51:01 -08:00",
+    "latestActivity": "2014-09-07T03:53:06 -08:00",
+    "permissions": "PERM-10",
+    "category": {
+      "value": "超级管理员",
+      "color": "info"
+    }
+  },
+  {
+    "_id": "54d424564fc627929ed5809e",
+    "index": 13,
+    "guid": "6d2b2c98-5525-4c79-acc5-6a523c0cb1dd",
+    "isActive": true,
+    "picture": "http://placehold.it/32x32",
+    "name": "Melissa Foley",
+    "company": "GENMY",
+    "email": "melissafoley@genmy.com",
+    "username": "Trudy Summers",
+    "phone": "+1 (846) 565-2494",
+    "address": "847 Jefferson Street, Bordelonville, Michigan, 6552",
+    "registered": "2014-06-23T03:25:06 -08:00",
+    "latestActivity": "2014-09-01T18:01:40 -08:00",
+    "permissions": "PERM-1",
+    "category": {
+      "value": "客户",
+      "color": "success"
+    }
+  },
+  {
+    "_id": "54d42456ed8206b8cf3faf29",
+    "index": 14,
+    "guid": "cc93f821-9972-4278-89fe-cc2f182259cd",
+    "isActive": true,
+    "picture": "http://placehold.it/32x32",
+    "name": "Salas Wolf",
+    "company": "NSPIRE",
+    "email": "salaswolf@nspire.com",
+    "username": "Sharpe Small",
+    "phone": "+1 (890) 426-2482",
+    "address": "115 Dover Street, Chesterfield, Massachusetts, 5286",
+    "registered": "2014-07-04T23:40:39 -08:00",
+    "latestActivity": "2014-09-17T10:44:24 -08:00",
+    "permissions": "PERM-10",
+    "category": {
+      "value": "超级管理员",
+      "color": "info"
+    }
+  },
+  {
+    "_id": "54d424569796282986659b72",
+    "index": 15,
+    "guid": "06cb650b-d2d1-4f24-b047-78a226f2eae0",
+    "isActive": true,
+    "picture": "http://placehold.it/32x32",
+    "name": "Francine Marks",
+    "company": "MULTIFLEX",
+    "email": "francinemarks@multiflex.com",
+    "username": "Carlson Norris",
+    "phone": "+1 (993) 426-3794",
+    "address": "213 Polhemus Place, Grill, Palau, 2102",
+    "registered": "2014-06-19T06:06:49 -08:00",
+    "latestActivity": "2014-11-12T02:09:50 -08:00",
+    "permissions": "PERM-1",
+    "category": {
+      "value": "超级管理员",
+      "color": "info"
+    }
+  },
+  {
+    "_id": "54d424560e657de9c3bb34b5",
+    "index": 16,
+    "guid": "65449d54-25eb-4645-8c5d-63eda2036353",
+    "isActive": false,
+    "picture": "http://placehold.it/32x32",
+    "name": "Minnie Lester",
+    "company": "CAPSCREEN",
+    "email": "minnielester@capscreen.com",
+    "username": "Dunn Cannon",
+    "phone": "+1 (809) 579-2543",
+    "address": "850 Verona Street, Rew, Wisconsin, 5899",
+    "registered": "2014-06-02T23:33:48 -08:00",
+    "latestActivity": "2014-03-15T05:32:28 -08:00",
+    "permissions": "PERM-2",
+    "category": {
+      "value": "客户",
+      "color": "success"
+    }
+  },
+  {
+    "_id": "54d4245668802541ae3a4c07",
+    "index": 17,
+    "guid": "132c8f55-9471-4b07-af47-68398b932bb5",
+    "isActive": true,
+    "picture": "http://placehold.it/32x32",
+    "name": "Opal Barnett",
+    "company": "VETRON",
+    "email": "opalbarnett@vetron.com",
+    "username": "Leach Bass",
+    "phone": "+1 (813) 406-2849",
+    "address": "537 Vine Street, Westerville, Louisiana, 8846",
+    "registered": "2014-10-07T22:59:22 -08:00",
+    "latestActivity": "2014-06-17T22:01:46 -08:00",
+    "permissions": "PERM-10",
+    "category": {
+      "value": "IT管理员",
+      "color": "primary"
+    }
+  },
+  {
+    "_id": "54d4245679eada89efeec90f",
+    "index": 18,
+    "guid": "190717f5-263f-4860-953d-f5c509822ad6",
+    "isActive": false,
+    "picture": "http://placehold.it/32x32",
+    "name": "Alfreda Sosa",
+    "company": "EMERGENT",
+    "email": "alfredasosa@emergent.com",
+    "username": "Horne Workman",
+    "phone": "+1 (826) 539-3941",
+    "address": "924 Havens Place, Derwood, Arizona, 8555",
+    "registered": "2014-03-29T08:08:40 -08:00",
+    "latestActivity": "2014-12-03T13:32:28 -08:00",
+    "permissions": "PERM-6",
+    "category": {
+      "value": "超级管理员",
+      "color": "info"
+    }
+  },
+  {
+    "_id": "54d4245647a9202f7b10d92c",
+    "index": 19,
+    "guid": "7f2ae5fa-0409-4038-957a-a4d8af16f1c0",
+    "isActive": true,
+    "picture": "http://placehold.it/32x32",
+    "name": "Corrine Valenzuela",
+    "company": "ZINCA",
+    "email": "corrinevalenzuela@zinca.com",
+    "username": "Clay Dunlap",
+    "phone": "+1 (873) 568-3920",
+    "address": "503 Adams Street, Emison, Ohio, 6293",
+    "registered": "2015-01-18T06:59:13 -08:00",
+    "latestActivity": "2014-06-24T11:50:18 -08:00",
+    "permissions": "PERM-5",
+    "category": {
+      "value": "客户",
+      "color": "success"
+    }
+  },
+  {
+    "_id": "54d42456d8e40a967a6b9b1f",
+    "index": 20,
+    "guid": "a9ab7081-98a4-4b32-acad-5526da1020e1",
+    "isActive": true,
+    "picture": "http://placehold.it/32x32",
+    "name": "Ann Mathis",
+    "company": "COMDOM",
+    "email": "annmathis@comdom.com",
+    "username": "Fuentes Shannon",
+    "phone": "+1 (952) 440-3639",
+    "address": "195 Bassett Avenue, Zarephath, Maine, 1890",
+    "registered": "2015-01-28T21:21:22 -08:00",
+    "latestActivity": "2014-04-16T13:35:59 -08:00",
+    "permissions": "PERM-7",
+    "category": {
+      "value": "客户",
+      "color": "success"
+    }
+  },
+  {
+    "_id": "54d42456c2cb8da59467869e",
+    "index": 21,
+    "guid": "686f6d5b-d2ab-4dc4-ac4e-8947c46c78db",
+    "isActive": false,
+    "picture": "http://placehold.it/32x32",
+    "name": "Glenn Flynn",
+    "company": "BIZMATIC",
+    "email": "glennflynn@bizmatic.com",
+    "username": "Garner Baxter",
+    "phone": "+1 (889) 451-2361",
+    "address": "137 Bevy Court, Interlochen, Connecticut, 5489",
+    "registered": "2014-11-07T13:53:36 -08:00",
+    "latestActivity": "2014-09-10T19:08:22 -08:00",
+    "permissions": "PERM-3",
+    "category": {
+      "vaue": "销售经理",
+      "color": "primary"
+    }
+  }
+] }

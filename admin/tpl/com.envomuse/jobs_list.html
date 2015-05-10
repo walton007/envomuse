@@ -1,0 +1,59 @@
+<div ng-controller="JobListCtrl">
+  <!-- breadcrumb -->
+  <div class="row">
+    <div class="bg-light lter">
+      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
+        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
+        <li><a ui-sref="jobs.dash">工作管理</a></li>
+        <li class="active">{{status | uppercase}} </li>
+      </ul>
+    </div>
+  </div>
+  <!-- / breadcrumb -->
+
+  <div class="wrapper-md">
+    <div class="b-b m-b-lg">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12 text-middle">
+          <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-init="init()" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+        </div>
+      </div>
+    </div>
+    
+    <div ng-repeat="item in datasource" class="col-sm-3">
+      <div class="panel">
+        <div class="panel-body">
+          <div href class="m-l m-t-xs">
+            <a ui-sref="jobs.detail({jobId:item.id})" class="text-muted m-b-xs">{{item.uuid}}</a>
+          </div>
+          <div href class="m-l m-t-xs">
+            <a href class="text-muted pull-right block m-b-xs" tooltip="DJ"><i class="fa fa-user m-r-sm"></i>{{item.creator}}</a>
+            <a ui-sref="customers.brand.detail({brandId:item.associatedBrandId})" class="text-info block m-b-xs" tooltip="客户"><i class="fa fa-star m-r-sm"></i>{{item.associatedBrand}}</a>
+          </div>
+        
+          <div class="list-group no-radius alt m-t-sm">
+            <a class="list-group-item" tooltip="该工作生成的播放列表" href ng-show="item.status">
+              <span class="badge bg-info">{{item.programRule.boxes.length}}</span>
+              <i class="fa fa-random fa-fw text-muted"></i> 
+              播放清单
+            </a>
+          </div>
+          <div class="clear" ng-show="!item.status">
+            <a href class="btn btn-addon btn-sm btn-success m-t-xs"><i class="fa fa-unlock"></i> 激活 </a>
+          </div>
+          <div class="clear" ng-show="item.status">
+            <div class="btn-group" ng-controller="SetJobDateRangeModalCtrl">
+              <a class="btn btn-addon btn-sm btn-success m-t-xs" ng-click="open('md')">
+                <span class="text-sm">生成播放清单</span>
+                <script type="text/ng-template" id="setJobDateRangeModal">
+                  <div ng-include="'tpl/com.envomuse/jobs_set_daterange_modal.html'"></div>
+                </script>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

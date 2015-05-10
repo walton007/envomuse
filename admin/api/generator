@@ -1,0 +1,640 @@
+http://www.json-generator.com/
+
+customers > brand
+==============================
+
+[
+  '{{repeat(65)}}',
+  {
+    id: '{{index()}}',
+    brandName: function (tags) {
+      var fruits = ['ysl','versace','rolex','premier','lv','hermes','hennessy','guerlain','gucci','givency','fendi','channel','celine','carrefour','burberry','bentley','bally','astonmartin'];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+    industry: function (tags) {
+      var fruits = ['luxury', 'restaurant', 'bank','manufactor','commercial center','automobile'];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+    logopicture: function (tags){
+      return 'img/logo/'+this.brandName+'.png';
+    },
+    storeNumber: '{{integer(20, 200)}}',
+    contactNumber: '{{integer(20, 50)}}',
+    nextUpdateDate: '{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+    status: function (tags) {
+      var fruits = ['first contact', 'demo', 'test','contract'];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+    updatePeriod: function (tags) {
+      var fruits = ['weekly', 'monthly', 'quaterly','6 months','yearly'];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+    title: '{{lorem(5, "words")}}',
+    description: '{{lorem(2, "paragraphs")}}',
+    contact: '{{firstName()}}',
+    
+    //created by information
+    createdBy: '{{firstName()}}',
+    firstSalesPerson: '{{firstName()}}',
+    contractSalesPerson: '{{firstName()}}',
+    firstContact: '{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+    firstContractDate: '{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+    renewalCount: '{{random(1,2,3,4,5,6,7)}}',
+    associatedSalesPerson: '{{firstName()}}',
+    unitPrice: '{{integer(10,50)}}',
+    discount: '{{integer(10,50)}}%',
+    nextReceiptDate : '{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}'
+  }
+]
+
+customers > stores
+===============================
+[
+  '{{repeat(265)}}',
+  {
+    id: '{{index()}}',
+    storeName:'{{company().toUpperCase()}}',
+    storeRef: '{{"REF_ABC_XYZ_"+guid()}}',
+    latitude: '{{floating(-90.000001, 90)}}',
+    longitude: '{{floating(-180.000001, 180)}}',
+
+    //brandInformation
+    brandId: '{{integer(0, 64)}}',
+    brandName: '{{company().toUpperCase()}}',
+    
+    //contact information
+    contact: '{{firstName()}}',
+    phone: '+86 {{phone()}}',
+    address: '{{integer(100, 999)}} {{street()}}, {{city()}}, {{state()}}, {{integer(100, 10000)}}',
+    about: '{{lorem(1, "paragraphs")}}',
+    
+    //created by information
+    createdOn: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-dd hh:mm:ss")}}',
+    createdBy: '{{firstName()}}',
+
+    //terminal information
+    terminalId:'{{"T_"+guid()}}',
+    terminalFirstHandShake:'{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-dd hh:mm:ss")}}',
+    terminalLastHandShank:'{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-dd hh:mm:ss")}}',
+    terminalStatus:function (tags) {
+      var fruits = [{value:'disabled',cc:'dark'},
+                    {value:'error',cc:'danger'},
+                    {value:'offline',cc:'warn'},
+                    {value:'online',cc:'success'}];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+
+    //playlist information
+    associatedPlaylistId:'{{integer(0, 64)}}',
+    nextPlaylistUpdate:'{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-dd hh:mm:ss")}}'
+  }
+]
+
+
+customers > contact
+=======================
+[
+  '{{repeat(339)}}',
+  {
+    id: '{{index()}}',
+    name: '{{firstName()}}',
+    phone: '+86 {{phone()}}',
+    address: '{{integer(100, 999)}} {{street()}}, {{city()}}, {{state()}}, {{integer(100, 10000)}}',
+    about: '{{lorem(1, "paragraphs")}}',
+    title:function (tags) {
+      var fruits = ['Director', 'Manager', 'Store Owner','Staff'];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+    qq:'{{integer(10000000,9000000)}}',
+    wechat:'{{lorem(1,"words")}}',
+    email:'{{email()}}',
+    picture: function(){return 'img/avatar/'+this.id+'.jpg';},
+    birthday:'{{date(new Date(1950, 0, 1), new Date(), "YYYY-MM-dd")}}',
+    isActive: '{{bool()}}',
+    gender: '{{gender()}}',
+    
+    //association information
+    brandId: '{{integer(0, 64)}}',
+    brandName: '{{company().toUpperCase()}}',
+    storeId: '{{integer(0, 264)}}',
+    storeName:'{{company().toUpperCase()}}',
+    
+    //created by information
+    createdOn: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-dd hh:mm:ss")}}',
+    createdBy: '{{firstName()}}'
+  }
+]
+
+Jobs > Program | NEW ACTIVE
+===========================
+[
+  '{{repeat(40)}}',
+  {
+    id: '{{index()}}',
+    
+    // meta info
+    uuid:'{{guid()}}',
+    creator:'{{firstName()}}',
+    createdOn:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+    associatedBrand:'{{company()}}',    
+
+    //import and activation information
+    importedBy: '{{firstName()}}',
+    importedOn: '{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+
+    //playlist info after generation
+    status:'{{bool()}}',
+    associatedBrandId: '{{integer(0,64)}}',
+    activatedBy: '{{firstName()}}',
+    activatedOn: '{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+    associatedPlaylistsId: [
+      '{{repeat(3, 5)}}',
+      '{{index()}}'
+    ],
+  
+    programs: [ 
+        '{{repeat(5, 10)}}',
+        {
+          programId:  '{{guid()}}',
+          programName: '{{lorem(1,"words")}}',
+          rules: [ 
+          '{{repeat(5, 10)}}',
+          {
+            ruleId:  '{{guid()}}',
+            ruleName: '{{lorem(1,"words")}}',
+            timeslot: '{{integer(0,47)}}',
+            boxes: [
+              '{{repeat(5, 7)}}',
+              {
+              boxId:'{{integer(0,9)}}',
+              boxName:'{{lorem(1,"words")}}',
+              songList:[
+                '{{repeat(5, 10)}}',
+                {
+                 trackId:'{{integer(10,1000)}}',
+                 trackName:'{{lorem(3,"words")}}',
+                 trackDuration:'{{integer(180,360)}}',
+                 trackUrl:'/opt/envo/audio/abc.mp3',
+                 isJingle:'{{bool()}}'
+                }
+               ]
+              }
+            ]
+          }],
+          calcType: function (tags) {
+            var fruits = ['date', 'dateRange', 'daysOfWeek'];
+            return fruits[tags.integer(0, fruits.length - 1)];
+          },
+          
+          weekValues: function (tags) {
+            var fruits = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+            return fruits[tags.integer(0, fruits.length - 1)];
+          },
+
+          dateValues:[
+            '{{repeat([3])}}',
+            '{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}'],
+
+          dateRangeStart:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+          dateRangeEnd:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}'
+        }
+      ]
+  }
+]
+
+
+JOB > Program | DEPRECATED
+============================
+[
+  '{{repeat(40)}}',
+  {
+    id: '{{index()}}',
+    
+    // meta info
+    uuid:'{{guid()}}',
+    creator:'{{firstName()}}',
+    createdOn:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+    associatedBrand:'{{company()}}',    
+
+    //import and activation information
+    importedBy: '{{firstName()}}',
+    importedOn: '{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+
+    //playlist info after generation
+    status:'{{bool()}}',
+    associatedBrandId: '{{integer(0,64)}}',
+    activatedBy: '{{firstName()}}',
+    activatedOn: '{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+    associatedPlaylistsId: [
+      '{{repeat(3, 5)}}',
+      '{{index()}}'
+    ],
+
+    programRule: {
+      boxes: [
+        '{{repeat(3, 10)}}',
+        {
+        boxId: '{{index()}}',
+        boxName: '{{lorem(1,"words")}}',
+        songlist: [
+          '{{repeat(10, 15)}}',
+          {
+          songIndex: '{{index()}}',
+          songGuid: '{{guid()}}',
+          name: '{{lorem(1,"words")}}',
+          fadIn: '{{integer(1,5)}}',
+          fadeOut: '{{integer(1,5)}}'
+        }]
+      }],
+      
+      rules: [ 
+        '{{repeat(5, 10)}}',
+        {
+          ruleId:  '{{index()}}',
+          ruleName: '{{lorem(1,"words")}}',
+          boxes: [
+            '{{repeat(5, 7)}}',
+            {boxId:'{{integer(0,9)}}',
+            boxName:'{{lorem(1,"words")}}'}
+          ],
+
+          calcType: function (tags) {
+            var fruits = ['date', 'dateRange', 'daysOfWeek'];
+            return fruits[tags.integer(0, fruits.length - 1)];
+          },
+          
+          weekValues: function (tags) {
+            var fruits = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+            return fruits[tags.integer(0, fruits.length - 1)];
+          },
+
+          dateValues:[
+            '{{repeat([3])}}',
+            '{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}'],
+
+          dateRangeStart:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+          dateRangeEnd:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}'
+        }
+        }
+      ]
+    }
+    
+  }
+]
+
+
+Jobs > Rules (for job detail page demo)
+==================
+[
+  '{{repeat(3,5)}}',
+  {
+    rgId:'{{integer(0,39)}}',
+    rgName: '{{lorem(2,"words")}}',
+
+    rules : [
+      '{{repeat(10, 48)}}',
+      {
+       timeslot: '{{integer(0,47)}}',
+       rId:'{{integer(0,300)}}',
+       rName:'{{lorem(1,"words")}}'
+      }
+    ],
+
+    calcType: function (tags) {
+      var fruits = ['date', 'dateRange', 'daysOfWeek'];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+    
+    weekValues: function (tags) {
+      var fruits = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+
+    dateValues:[
+      '{{repeat([3])}}',
+      '{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}'],
+
+    dateRangeStart:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+    dateRangeEnd:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}'
+  }
+]
+
+Jobs > Rule detail
+===========================
+[
+  '{{repeat(47,47)}}',
+  {
+    rId:'{{index(0)}}',
+    rName: '{{lorem(2,"words")}}',
+
+    boxes : [
+      '{{repeat(3, 10)}}',
+      {
+       bId:'{{integer(0,300)}}',
+       bName:'{{lorem(1,"words")}}'
+      }
+    ],
+
+    calcType: function (tags) {
+      var fruits = ['date', 'dateRange', 'daysOfWeek'];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+    
+    weekValues: function (tags) {
+      var fruits = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+
+    dateValues:[
+      '{{repeat([3])}}',
+      '{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}'],
+
+    dateRangeStart:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+    dateRangeEnd:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}'
+  }
+]
+
+Playlists -> calendar
+============================
+{title:'yyyyyyyyyyyyyyyyyyy', start: new Date(y, m, d + 1, 22, 0), end: new Date(y, m, d + 1, 26, 30), allDay: false, className: ['b-l b-2x b-primary'], location:'New York', info:'Party all day'},
+
+Playlists -> Monthly view
+============================
+[
+  //monthly view
+  '{{repeat(31,31)}}',
+  {
+    id:'{{index()}}',
+    name:'{{lorem(3,"words")}}',
+    dates:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+    associatedBrandId:'{{integer(1,20)}}',
+    associatedBrandName: '{{lorem(1,"words")}}'
+  }
+]
+
+Playlists -> Weekly view
+============================
+[
+  //weekly view
+  {
+    id:'{{index()}}',
+    name:'{{lorem(3,"words")}}',
+    associatedBrandId:'{{integer(1,20)}}',
+    associatedBrandName: '{{lorem(1,"words")}}',
+    lists:[
+      '{{repeat(7,7)}}',
+      {
+      dates:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+      tracks:[
+        '{{repeat(10,40)}}',
+        {
+          trackId:'{{integer(10,1000)}}',
+          trackName:'{{lorem(3,"words")}}',
+          trackDuration:'{{integer(180,360)}}',
+          trackStartTime:'',
+          trackUrl:'/opt/envo/audio/abc.mp3',
+          previousTrackId:'{{integer(10,1000)}}'
+        }
+      ]
+     }
+   ]
+  }
+]
+
+
+Playlists -> Day view
+============================
+[
+  //day view
+  {
+    id:'{{index()}}',
+    name:'{{lorem(3,"words")}}',
+    associatedBrandId:'{{integer(1,20)}}',
+    associatedBrandName: '{{lorem(1,"words")}}',
+    dates:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+    tracks:[
+      '{{repeat(10,50)}}',
+      {
+        trackId:'{{integer(10,1000)}}',
+        trackName:'{{lorem(3,"words")}}',
+        trackDuration:'{{integer(180,360)}}',
+        trackStartTime:'',
+        trackUrl:'/opt/envo/audio/abc.mp3',
+        previousTrackId:'{{integer(10,1000)}}'
+      }
+    ] 
+  }
+]
+
+
+PLAYLISTS LIST
+===============================
+ [
+   '{{repeat(30)}}',
+   {
+    id:'{{index()}}',
+    name:'{{lorem(3,"words")}}',
+    linkState:'{{bool()}}',
+    associatedBrandId:'{{integer(1,20)}}',
+    associatedBrandName: '{{lorem(1,"words")}}',
+    associatedStoreId: '{{integer(1,30)}}',
+    associatedStoreName: '{{lorem(1,"words")}}',
+    associatedJobId:'{{integer(1,20)}}',
+    generationDate:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+    
+    startDate:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+    endDate:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+    
+    tracksByDay:[
+      '{{repeat(5,10)}}',
+     {
+      listDate:'{{date(new Date(2015, 7, 1), new Date(), "YYYY-MM-dd")}}',
+      tracks:[
+        '{{repeat(10,20)}}',
+        {
+        trackId:'{{integer(10,1000)}}',
+        trackName:'{{lorem(3,"words")}}',
+        trackDuration:'{{integer(180,360)}}',
+        trackStartTime:'',
+        trackUrl:'/opt/envo/audio/abc.mp3',
+        previousTrackId:'{{integer(10,1000)}}'
+        }
+      ]
+     }
+    ]
+  }
+ ]
+
+
+
+//BRANDS, STORES + CONTACTS
+
+[
+  '{{repeat(5, 30)}}',
+  {
+    index: '{{index()}}',
+    guid: '{{guid()}}',
+    name: '{{firstName()}}',
+    picture: 'img/c0.jpg',
+    status:function (tags) {
+      var fruits = [{value:'现有客户',label:'bg-success'},{value:'首次接触',label:'bg-info'},{value:'目标客户',label:'bg-light'},{value:'合同结束未续签',label:'bg-danger'},{value:'接触后未继续',label:'bg-warning'}];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+    industry:function (tags) {
+      var fruits = [{value:'奢侈品',icon:'fa-apple',color:'bg-info'},{value:'快销',icon:'fa-delicious',color:'bg-warning'}, {value:'银行',icon:'fa-bitcoin',color:'bg-primary'},{value:'餐饮',icon:'fa-pagelines',color:'bg-danger'},{value:'零售',icon:'fa-stack-overflow',color:'bg-success'},{value:'商场',icon:'fa-rebel',color:'bg-dark'}];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+    stars: function(tags) {
+      var fruits = [1,2,3,4,5,6,7];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+
+    updateperiod: function(tags) {
+      var fruits = ['每月更新','每季度更新','每年更新'];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+    deploymentStatus:  function(tags) {
+      var fruits = ['bg-success','bg-warning'];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+    contractStatus:  function(tags) {
+      var fruits = ['bg-success','bg-danger'];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+    terminalStatus:  function(tags) {
+      var fruits = ['bg-success','bg-warning'];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+    nextFollowupDate: '{{date()}}',
+    stores:[
+    '{{repeat(1, 10)}}',
+      {
+        _id: '{{objectId()}}',
+        index: '{{index()}}',
+        guid: '{{guid()}}',
+        name: '{{firstName()}}',
+        isClosed:function (tags) {
+          var fruits = [
+            {value:"Closed",color:'bg-dark'},
+            {value:"Open",color:'bg-success'}
+          ];
+            return fruits[tags.integer(0, fruits.length - 1)];
+        }
+      }
+    ],
+    contacts:[
+
+    ]
+    program:objectId;
+  }
+]
+
+
+
+
+//PROGRAM and playlists
+[
+  '{{repeat(5, 50)}}',
+  {
+    index: '{{index()}}',
+    guid: '{{guid()}}',
+    brand: function(tags) {
+      var fruits = ['HERMES',    'CHANNEL',    'GUCCI',    '中国银行',    'prada',    'LV',    '浦东国际机场',    '农业银行',    '工商银行',    'ZARA',    'LA LIQUE',    'GAP',    'UNILQO',    'HM',    'LONGCHAMPS',    'LA MER',    'le priare',    'sephora',    'printemp',    '巴黎春天',    '汇金百货',    '日式料理'];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    },
+    createdBy: '{{surname()}}',
+        createdOn: '{{date()}}',
+        isActive:function (tags) {
+          var fruits = ['active','disabled'];
+            return fruits[tags.integer(0, fruits.length - 1)];
+        },
+        latestUpdatedOn: '{{date()}}',
+        latestUpdatedBy: '{{firstName()}} {{surname()}}',
+        isImported:function (tags) {
+          var fruits = ['active','disabled'];
+            return fruits[tags.integer(0, fruits.length - 1)];
+        },
+    importedOn: '{{date()}}',
+    stores:[
+    '{{repeat(1, 10)}}',
+      {
+        _id: '{{objectId()}}',
+        index: '{{index()}}',
+        guid: '{{guid()}}',
+        name: '{{firstName()}}',
+        isClosed:function (tags) {
+          var fruits = [
+            {value:"Closed",color:'bg-dark'},
+            {value:"Open",color:'bg-success'}
+          ];
+            return fruits[tags.integer(0, fruits.length - 1)];
+        }
+      }
+    ],
+    playlists:[
+      '{{repeat(5, 10)}}',
+      {
+        _id: '{{objectId()}}',
+        index: '{{index()}}',
+        guid: '{{guid()}}',
+        name: '{{firstName()}}', 
+        associatedStores: [],
+        createdBy: '{{surname()}}',
+        createdOn: '{{date()}}',
+        isActive:function (tags) {
+          var fruits = ['active','disabled'];
+            return fruits[tags.integer(0, fruits.length - 1)];
+        },
+        latestUpdatedOn: '{{date()}}',
+        latestUpdatedBy: '{{firstName()}} {{surname()}}',
+        isImported:function (tags) {
+          var fruits = ['active','disabled'];
+            return fruits[tags.integer(0, fruits.length - 1)];
+        },
+        importedOn: '{{date()}}'
+      }
+    ]
+  }
+]
+
+
+//IMPORT FILES LIST
+[
+  '{{repeat(5, 10)}}',
+  {
+    fileName: '{{lorem(1,"words")}}',
+    localPath: function(){
+      return '/public/uploads/'+this.fileName;
+    },
+    filesize: '{{integer(100000000,300000000)}}',
+    uploadedOn:'{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-dd hh:mm:ss")}}'
+  }
+]
+
+// USERS
+[
+  '{{repeat(5, 7)}}',
+  {
+    _id: '{{objectId()}}',
+    index: '{{index()}}',
+    guid: '{{guid()}}',
+    isActive: '{{bool()}}',
+    picture: 'http://placehold.it/32x32',
+    name: '{{firstName()}} {{surname()}}',
+    company: '{{company().toUpperCase()}}',
+    email: '{{email()}}',
+    username:'{{firstName()}} {{surname()}}',
+    phone: '+1 {{phone()}}',
+    address: '{{integer(100, 999)}} {{street()}}, {{city()}}, {{state()}}, {{integer(100, 10000)}}',
+    registered: '{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
+    latestActivity:'{{date(new Date(2014, 0, 1), new Date(), "YYYY-MM-ddThh:mm:ss Z")}}',
+    permissions:function (tags) {
+          var fruits = ['PERM-1','PERM-2','PERM-3','PERM-4','PERM-5','PERM-6','PERM-7','PERM-8','PERM-9','PERM-10'];
+            return fruits[tags.integer(0, fruits.length - 1)];
+    },
+    category:function (tags) {
+      var fruits = [{value:'IT管理员',color:'primary'},{value:'超级管理员',color:'info'},{value:'DEMO账户',color:'warning'},{value:'客户',color:'success'},{value:'音乐制作人',color:'danger'},{vaue:'销售经理',color:'primary'}];
+      return fruits[tags.integer(0, fruits.length - 1)];
+    }
+  }
+]

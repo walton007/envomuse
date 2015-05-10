@@ -1,0 +1,60 @@
+<div class="row" ng-controller="StoreDetailCtrl">
+  <div class="col-sm-2 hidden-xs">
+
+  </div>
+
+  <div class="col-sm-10">
+    <div class="w-auto-xl w-auto-xs center-block">
+      <div class="btn-group btn-group-justified text-center text-sm">
+        <div class="btn-group">
+          <a class="wrapper-xs block" ui-sref="customers.brand.detail({brandId:store.brandId})">
+            <i class="block text-md m-t-xs icon-arrow-left"></i>
+            <span class="text-sm">返回</span>
+          </a>
+        </div>
+        <div class="btn-group">
+          <a class="wrapper-xs block" ui-sref="customers.store.edit({brandId:store.brandId,storeId:store.id})">
+            <i class="block text-md m-t-xs icon-note"></i>
+            <span class="text-sm">编辑</span>
+          </a>
+        </div>
+        <div class="btn-group">    
+          <a class="wrapper-xs block" ui-sref="customers.contact.add({brandId:store.brandId,storeId:store.id})">
+            <i class="block text-md m-t-xs icon-user-follow"></i>
+            <span class="text-sm">联系人</span>
+          </a>
+        </div>
+        <div class="btn-group">    
+          <a class="wrapper-xs block" href="">
+            <i class="block text-md m-t-xs icon-key"></i>
+            <span class="text-sm">生成LICENSE</span>
+          </a>
+        </div>
+        <div class="btn-group">    
+          <a class="wrapper-xs block" href="">
+            <i class="block text-md m-t-xs icon-link"></i>
+            <span class="text-sm">关联播放清单</span>
+          </a>
+        </div>
+        <div class="btn-group">    
+          <a class="wrapper-xs block" href="">
+            <i class="block text-md m-t-xs icon-doc"></i>
+            <span class="text-sm">导出</span>
+          </a>
+        </div>
+        <div class="btn-group" ng-controller="StoreDeleteModalCtrl">
+          <a class="wrapper-xs block" ng-click="open('sm',store.id)">
+            <i class="block text-md m-t-xs icon-trash"></i>
+            <span class="text-sm">删除</span>
+              <script type="text/ng-template" id="deleteStoreConfirmModal">
+                <div ng-include="'tpl/com.envomuse/customers_store_delete_confirm_modal.html'"></div>
+              </script>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-2 hidden-xs">
+
+  </div>
+</div>
