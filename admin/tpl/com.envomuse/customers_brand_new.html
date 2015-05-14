@@ -1,4 +1,4 @@
-<div ng-controller="BrandNewCtrl">
+<div ng-controller="CustomerNewCtrl">
   <!-- breadcrumb -->
   <div class="row">
     <div class="bg-light lter">
@@ -17,19 +17,55 @@
       <div class="panel panel-default">
         <div class="panel-heading font-bold">新增客户</div>
           <div class="panel-body">
-            <form name="newBrand" class="form-horizontal m-t-lg">
+            <form name="form" class="form-horizontal m-t-lg form-validation">
               <div class="form-group">
                 <label class="col-lg-2 control-label">客户名称</label>
                 <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="brand.name" required>
+                  <input type="text" class="form-control" ng-model="brand.name" placeholder="必填" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="wrapper-md" ng-controller="ImgCropCtrl">
+                  <label class="col-lg-2 control-label">设置客户LOGO</label>
+                  <div class="col-lg-8">
+                    <div class="m-b">
+                      <input type="file" id="fileInput" />
+                    </div>
+                    <div class="hbox hbox-auto-xs">
+                      <div class="col">
+                        <div class="wrapper-sm b-a bg-white m-r-xs m-b-xs">
+                          <div class="bg-light" style="height:160px">
+                            <img-crop 
+                              image="myImage" 
+                              result-image="myCroppedImage"
+                              result-image-size="100"
+                              area-type="{{cropType}}"
+                            ></img-crop>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="inline bg-white wrapper-sm b-a">
+                          <div class="bg-light" ng-model="myCroppedImage">
+                            <img ng-src="{{myCroppedImage}}" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="btn-group m-t">
+                        <label class="btn btn-default" ng-model="cropType" btn-radio="'circle'">圆形</label>
+                        <label class="btn btn-default" ng-model="cropType" btn-radio="'square'">方形</label>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-lg-2 control-label">所属行业</label>
                 <div class="col-lg-8">
-                  <select ui-jq="chosen" data-placeholder="选择客户所在行业" class="form-control" ng-model="brand.industry">
-                    <option ng-repeat="list in industrylist" value="{{list}}">{{list.name}}</option>
+                  <select ui-jq="chosen" class="form-control" ng-model="brand.industry" placeholder="必填" required>
+                    <option ng-repeat="list in industrylist" value="{{list}}">{{list}}</option>
                   </select>
                 </div>
               </div>
@@ -37,8 +73,8 @@
               <div class="form-group">
                 <label class="col-lg-2 control-label">客户状态</label>
                 <div class="col-lg-8">
-                  <select ui-jq="chosen" data-placeholder="选择客户状态" class="form-control" ng-model="brand.status">
-                    <option ng-repeat="list in statuslist" value="{{list}}">{{list.name}}</option>
+                  <select ui-jq="chosen" class="form-control" ng-model="brand.status" placeholder="必填" required>
+                    <option ng-repeat="list in statuslist" value="{{list}}">{{list}}</option>
                   </select>
                 </div>
               </div>
@@ -46,8 +82,8 @@
               <div class="form-group">
                 <label class="col-lg-2 control-label">曲目更新周期</label>
                 <div class="col-lg-8">
-                  <select ui-jq="chosen" data-placeholder="该客户更新周期" class="form-control" ng-model="brand.updateperiod">
-                    <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list.name}}</option>
+                  <select ui-jq="chosen" class="form-control" ng-model="brand.updatePeriod" placeholder="必填" required>
+                    <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list}}</option>
                   </select>
                 </div>
               </div>
@@ -65,68 +101,42 @@
               </div>
 
               <div class="line line-dashed b-b line-lg pull-in"></div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">设计费</label>
-                  <div class="col-sm-6">
-                    <div class="m-b">
-                      <input ui-jq="TouchSpin" type="text" value="0" class="form-control" data-min='0' data-max="10" data-step="0.1" data-decimals="2" data-prefix="$" ng-model="brand.unitprice">
-                    </div>
-                  </div>
+              <div class="form-group">
+                <label class="col-lg-2 control-label">设计费</label>
+                <div class="col-lg-8">
+                  <input type="number" class="form-control" placeholder="必填" ng-model="brand.designFee" required >
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">安装费</label>
-                  <div class="col-sm-6">
-                    <div class="m-b">
-                      <input ui-jq="TouchSpin" type="text" value="0" class="form-control" data-min='0' data-max="10" data-step="0.1" data-decimals="2" data-prefix="$" ng-model="brand.unitprice">
-                    </div>
-                  </div>
+              </div>
+              <div class="form-group">
+                <label class="col-lg-2 control-label">安装费</label>
+                <div class="col-lg-8">
+                  <input type="number" class="form-control" placeholder="必填" ng-model="brand.setupFee" required >
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">月服务费</label>
-                  <div class="col-sm-6">
-                    <div class="m-b">
-                      <input ui-jq="TouchSpin" type="text" value="0" class="form-control" data-min='0' data-max="10" data-step="0.1" data-decimals="2" data-prefix="$" ng-model="brand.unitprice">
-                    </div>
-                  </div>
+              </div>
+              <div class="form-group">
+                <label class="col-lg-2 control-label">月服务费</label>
+                <div class="col-lg-8">
+                  <input type="number" class="form-control" placeholder="必填" ng-model="brand.monthServiceFee" required >
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">其它费用</label>
-                  <div class="col-sm-6">
-                    <div class="m-b">
-                      <input ui-jq="TouchSpin" type="text" value="0" class="form-control" data-min='0' data-max="10" data-step="0.1" data-decimals="2" data-prefix="$" ng-model="brand.unitprice">
-                    </div>
-                  </div>
+              </div>
+              <div class="form-group">
+                <label class="col-lg-2 control-label">其它费用</label>
+                <div class="col-lg-8">
+                  <input type="number" class="form-control" placeholder="必填" ng-model="brand.otherFee" required >
                 </div>
+              </div>
 
               <div class="line line-dashed b-b line-lg pull-in"></div>
               <div class="form-group">
                 <label class="col-sm-2 control-label">详细描述</label>
                 <div class="col-sm-10">
-                  <div class="btn-toolbar m-b-sm btn-editor" data-role="editor-toolbar" data-target="#editor">
-                    <div class="btn-group">
-                      <a class="btn btn-sm btn-default" data-edit="bold" tooltip="Bold (Ctrl/Cmd+B)"><i class="fa text-base fa-bold"></i></a>
-                      <a class="btn btn-sm btn-default" data-edit="italic" tooltip="Italic (Ctrl/Cmd+I)"><i class="fa text-base fa-italic"></i></a>
-                    </div>
-                    <div class="btn-group">
-                      <a class="btn btn-sm btn-default" data-edit="insertunorderedlist" tooltip="Bullet list"><i class="fa text-base fa-list-ul"></i></a>
-                      <a class="btn btn-sm btn-default" data-edit="insertorderedlist" tooltip="Number list"><i class="fa text-base fa-list-ol"></i></a>
-                      <a class="btn btn-sm btn-default" data-edit="outdent" tooltip="Reduce indent (Shift+Tab)"><i class="fa text-base fa-dedent"></i></a>
-                      <a class="btn btn-sm btn-default" data-edit="indent" tooltip="Indent (Tab)"><i class="fa text-base fa-indent"></i></a>
-                    </div>
-                    <div class="btn-group">
-                      <a class="btn btn-sm btn-default" data-edit="justifyleft" tooltip="Align Left (Ctrl/Cmd+L)"><i class="fa text-base fa-align-left"></i></a>
-                      <a class="btn btn-sm btn-default" data-edit="justifycenter" tooltip="Center (Ctrl/Cmd+E)"><i class="fa text-base fa-align-center"></i></a>
-                      <a class="btn btn-sm btn-default" data-edit="justifyright" tooltip="Align Right (Ctrl/Cmd+R)"><i class="fa text-base fa-align-right"></i></a>
-                      <a class="btn btn-sm btn-default" data-edit="justifyfull" tooltip="Justify (Ctrl/Cmd+J)"><i class="fa text-base fa-align-justify"></i></a>
-                    </div>
-                  </div>
-                  <div ui-jq="wysiwyg" class="form-control h-auto" style="min-height:200px;" ng-model="brand.descripton">
-                  </div>
+                  <textarea class="form-control h-auto" style="min-height:200px;" ng-model="brand.description">{{brand.description}}
+                  </textarea>
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-lg-8 col-lg-offset-2">
-                  <button class="btn btn-info w-xs" ng-click="createBrand()">添加</button>
+                  <button type="submit" class="btn btn-success" ng-disabled="form.$invalid" ng-click="createBrand()">添加</button>
                 </div>
               </div>
             </form>

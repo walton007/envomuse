@@ -5,8 +5,8 @@
       <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
         <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
         <li><a ui-sref="customers.dash">客户管理</a></li>
-        <li><a ui-sref="customers.brand.detail({brandId:brand.id})">{{brand.brandName | uppercase}}</a></li>
-        <li><a ui-sref="customers.store({brandId:brand.id})"> 店铺 </a></li>
+        <li><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></li>
+        <li><a ui-sref="customers.store({brandId:brand._id})"> 店铺 </a></li>
         <li class="active">新增</li>
       </ul>
     </div>
@@ -23,7 +23,7 @@
               <div class="form-group">
                 <label class="col-lg-2 control-label">品牌</label>
                 <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="brand.brandName" required disabled>
+                  <input type="text" class="form-control" ng-model="brand.brand" required disabled>
                 </div>
               </div>
 

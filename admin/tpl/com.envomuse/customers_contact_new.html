@@ -5,8 +5,7 @@
       <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
         <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
         <li><a ui-sref="customers.dash">客户管理</a></li>
-        <li><a ui-sref="customers.brand.detail({brandId:brand.id})">{{brand.brandName | uppercase}}</a></li>
-        <li><a ui-sref="customers.store({brandId:brand.id})"> 店铺 </a></li>
+        <li><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></li>
         <li class="active">新增联系人</li>
       </ul>
     </div>
@@ -23,63 +22,63 @@
               <div class="form-group">
                 <label class="col-lg-2 control-label">品牌</label>
                 <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="brand.brandName" required disabled>
+                  <input type="text" class="form-control" ng-model="brand.brand" required disabled>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-lg-2 control-label">姓名</label>
                 <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.storeName" required>
+                  <input type="text" class="form-control" ng-model="contact.ame" required>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-lg-2 control-label">职位</label>
                 <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.address" required>
+                  <input type="text" class="form-control" ng-model="contact.title" required>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-lg-2 control-label">电话</label>
                 <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.address" required>
+                  <input type="text" class="form-control" ng-model="contact.phone" required>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-lg-2 control-label">QQ</label>
                 <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.latitude" required>
+                  <input type="text" class="form-control" ng-model="contact.qq" required>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-lg-2 control-label">微信</label>
                 <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.longitude" required>
+                  <input type="text" class="form-control" ng-model="contact.wechat" required>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-lg-2 control-label">Email</label>
                 <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.address" required>
+                  <input type="text" class="form-control" ng-model="contact.email" required>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-lg-2 control-label">生日</label>
                 <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.address" required>
+                  <input type="text" class="form-control" ng-model="contact.birthday" required>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-lg-2 control-label">性别</label>
                 <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.address" required>
+                  <input type="text" class="form-control" ng-model="contact.gender" required>
                 </div>
               </div>
 

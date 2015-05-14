@@ -1,4 +1,4 @@
-<div ng-controller="BrandCountCtrl" ng-init="init()">
+<div ng-controller="CustomerCountCtrl" ng-init="init()">
   <!-- breadcrumb -->
   <div class="row">
     <div class="bg-light lter">
@@ -35,7 +35,7 @@
         </div>
         <div class="col-xs-6">
           <a ui-sref="customers.store" class="block panel padder-v bg-info item">
-            <span class="text-white font-thin h1 block">{{stat.newPOS}}</span>
+            <span class="text-white font-thin h1 block">{{stat.newSite}}</span>
             <span class="text-muted text-xs">在线店铺/POS数</span>
             <span class="bottom text-right w-full">
               <i class="fa fa-building-o text-muted m-r-sm"></i>
@@ -44,7 +44,7 @@
         </div>
         <div class="col-xs-6">
           <a ui-sref="customers.store" class="block panel padder-v bg-primary item">
-            <span class="text-white font-thin h1 block">{{stat.totalPOS}}</span>
+            <span class="text-white font-thin h1 block">{{stat.totalSite}}</span>
             <span class="text-muted text-xs">总店铺/POS数</span>
             <span class="bottom text-right w-full">
               <i class="fa fa-building-o text-muted m-r-sm"></i>

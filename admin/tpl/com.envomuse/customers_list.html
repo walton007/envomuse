@@ -1,4 +1,4 @@
-<div ng-controller="BrandListCtrl">
+<div ng-controller="CustomerListCtrl">
   <!-- breadcrumb -->
   <div class="row">
     <div class="bg-light lter">
@@ -32,7 +32,7 @@
             <div class="inline" style="width: 100px; height: 100px; line-height: 100px;">
                 <a ui-sref="customers.brand.detail({brandId:item._id})">
                   <div class="thumb-lg m-t-n-xxl">
-                    <img src="{{item.logopicture}}" alt="LOGO {{item.brand}}">
+                    <img src="{{item.logo}}" alt="LOGO {{item.brand}}">
                   </div>
                 </a>
               </div>

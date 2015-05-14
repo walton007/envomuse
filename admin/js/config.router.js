@@ -41,23 +41,31 @@ angular.module('app')
                   url: '/customers',
                   templateUrl: 'tpl/layout.html',
                   resolve: {
+                    deps: ['$ocLazyLoad',
+                      function( $ocLazyLoad ){
+                        return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
+                                                 'js/app/envomuse.services.js']);
+                    }]
+                  }
+                  /*resolve: {
                       deps: ['uiLoad',
                         function( uiLoad){
                           return uiLoad.load(['js/app/envomuse.customer/brand.js',
                                               'js/app/envomuse.customer/brand-service.js']
                                              );
                       }]
-                  }
+                  }*/
               })
               .state('customers.dash', {
                   url: '/dash',
                   templateUrl: 'tpl/com.envomuse/customers_dashboard.html',
-                  resolve: {
+                  /*resolve: {
                     deps: ['$ocLazyLoad',
                       function( $ocLazyLoad ){
-                        return $ocLazyLoad.load(['js/controllers/chart.js']);
+                        return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
+                                                 'js/app/envomuse.services.js']);
                     }]
-                  }
+                  }*/
               })
               .state('customers.brand', {
                   url: '/list/:listState',
@@ -80,6 +88,16 @@ angular.module('app')
                       'footer': {
                           templateUrl: 'tpl/com.envomuse/customers_brand_new_footer.html'
                       }
+                  },
+                  resolve: {
+                      deps: ['$ocLazyLoad',
+                        function( $ocLazyLoad){
+                          return $ocLazyLoad.load('ngImgCrop').then(
+                              function(){
+                                 return $ocLazyLoad.load('js/controllers/imgcrop.js');
+                              }
+                          );
+                      }]
                   }
               })
               .state('customers.brand.edit', {
@@ -148,14 +166,6 @@ angular.module('app')
                       'footer': {
                           templateUrl: 'tpl/com.envomuse/customers_store_detail_footer.html'
                       }
-                  },
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad){
-                          return uiLoad.load(['js/app/envomuse.customer/store.js',
-                                              'js/app/envomuse.customer/store-service.js']
-                                             );
-                      }]
                   }
               })
               .state('customers.store.add', {
@@ -168,28 +178,12 @@ angular.module('app')
                       'footer': {
                           templateUrl: 'tpl/com.envomuse/customers_store_new_footer.html'
                       }
-                  },
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad){
-                          return uiLoad.load(['js/app/envomuse.customer/store.js',
-                                              'js/app/envomuse.customer/store-service.js']
-                                             );
-                      }]
                   }
               })
               .state('customers.store.edit', {
                   url: '/:brandId/store/:storeId/edit',
                   parent: 'customers',
-                  templateUrl: 'tpl/com.envomuse/customers_store_edit.html',
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad){
-                          return uiLoad.load(['js/app/envomuse.customer/store.js',
-                                              'js/app/envomuse.customer/store-service.js']
-                                             );
-                      }]
-                  }
+                  templateUrl: 'tpl/com.envomuse/customers_store_edit.html'
               })
               .state('customers.contact', {
                   url: '/:brandId/contacts',
@@ -231,7 +225,7 @@ angular.module('app')
                   }
               })
               .state('customers.contact.add', {
-                  url: '/:brandId/store/:storeId/addContact',
+                  url: '/:brandId/addContact',
                   parent: 'customers',
                   views: {
                       '': {
@@ -241,14 +235,6 @@ angular.module('app')
                           templateUrl: 'tpl/com.envomuse/customers_contact_new_footer.html'
                       }
                   },
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad){
-                          return uiLoad.load(['js/app/envomuse.customer/contact.js',
-                                              'js/app/envomuse.customer/contact-service.js']
-                                             );
-                      }]
-                  }
               })
               .state('customers.contact.edit', {
                   url: '/:brandId/store/:storeId/:contactId/edit',
