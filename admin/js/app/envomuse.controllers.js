@@ -204,12 +204,36 @@ app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', 
 }]);
 
 //CONTACTS
-app.controller('ContactNewCtrl', ['$scope', 'Contacts', '$stateParams', function($scope, Contacts, $stateParams) {
+app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', function($scope, Customers, $stateParams) {
   
-  Contacts.get({'contactId':$stateParams.brandId},
+  $scope.contact = {};
+
+  Customers.get({'customerId':$stateParams.brandId},
     function(res) {
       $scope.brand = res;
     });
-  
+
+  $scope.createContact = function(){
+
+    var newContact = {
+      name: $scope.contact.name,
+      gender: $scope.contact.gender,
+      birthday: $scope.contact.birthday.getTime(),
+      workmobile: $scope.contact.workmobile,
+      privatemobile: $scope.contact.privatemobile,
+      email: $scope.contact.email,
+      weixin: $scope.contact.wechat,
+      qq: $scope.contact.qq,
+      title: $scope.contact.title,
+      department: $scope.contact.department
+    };
+
+    $scope.brand.contacts.push(newContact);
+
+    $scope.brand.$update(function(customer) {
+      alert('Add contact success');
+    });
+  };
+
 
 }]);
