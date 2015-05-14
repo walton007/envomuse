@@ -44,7 +44,7 @@ exports.create = function(req, res) {
  */
 exports.update = function(req, res) {
   var customer = req.customer;
-
+  //console.log(req);
   customer = _.extend(customer, req.body);
 
   customer.save(function(err) {
@@ -96,7 +96,8 @@ exports.all = function(req, res) {
         error: 'Cannot list the customers'
       });
     }
-    res.json({count: 1000, data: customers});
+
+    res.json({count: customers.length, data: customers.slice(offset,(customers.length-offset)/size>1?size:customers.length)});
 
   });
 };

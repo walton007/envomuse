@@ -15,13 +15,17 @@ var CustomerSchema = BaseSchema.extend({
   updatePeriod: String,
 
   contacts: [ContactSchema],
-
-  state: {
+  logo:{
+    type:String,
+    default:"img/default_logo.png"
+  },
+  status: String,
+  /*{
     type: String,
     required: true,
     default: 'prospect',
     enum: ['prospect', 'meeting', 'demo', 'pilot', 'active', 'inactive'],
-  },
+  },*/
   crmInfo: {
     firstContactDate: Date,
     demoDate: Date,
