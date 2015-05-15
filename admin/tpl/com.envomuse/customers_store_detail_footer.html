@@ -7,19 +7,19 @@
     <div class="w-auto-xl w-auto-xs center-block">
       <div class="btn-group btn-group-justified text-center text-sm">
         <div class="btn-group">
-          <a class="wrapper-xs block" ui-sref="customers.brand.detail({brandId:store.brandId})">
+          <a class="wrapper-xs block" ui-sref="customers.brand.detail({brandId:brand._id})">
             <i class="block text-md m-t-xs icon-arrow-left"></i>
             <span class="text-sm">返回</span>
           </a>
         </div>
         <div class="btn-group">
-          <a class="wrapper-xs block" ui-sref="customers.store.edit({brandId:store.brandId,storeId:store.id})">
+          <a class="wrapper-xs block" ui-sref="customers.store.edit({brandId:brand._id,storeId:store._id})">
             <i class="block text-md m-t-xs icon-note"></i>
             <span class="text-sm">编辑</span>
           </a>
         </div>
         <div class="btn-group">    
-          <a class="wrapper-xs block" ui-sref="customers.contact.add({brandId:store.brandId,storeId:store.id})">
+          <a class="wrapper-xs block" ui-sref="customers.contact.add({brandId:brand._id,storeId:store._id})">
             <i class="block text-md m-t-xs icon-user-follow"></i>
             <span class="text-sm">联系人</span>
           </a>

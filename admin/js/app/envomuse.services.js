@@ -1,8 +1,7 @@
 'use strict';
 
 //Customers service : Customer REST endpoint
-app.factory('Customers', ['$resource',
-  function($resource) {
+app.factory('Customers', ['$resource', function($resource) {
     return $resource(
       '/api/customers/:customerId', 
     {
@@ -24,8 +23,7 @@ app.factory('Customers', ['$resource',
 ]);
 
 //STORE - SITES
-app.factory('Sites', ['$resource',
-  function($resource) {
+app.factory('Sites', ['$resource', function($resource) {
     return $resource(
       '/api/sites/:siteId', 
     {
@@ -41,9 +39,7 @@ app.factory('Sites', ['$resource',
       'siteStats': {method:'GET', isArray:false, params:{'statistic':true}},
 
       'update': {method: 'PUT'},
-      'getIncrCount':  {method:'GET', isArray:false, params:{'increase': true, startDate:1, endDate:1}},
-      'getCount': {method:'GET', isArray:false, params:{'count':0}},
-      'getPageData': {method:'GET', isArray:false, params:{'offset':0, 'size':10, 'type': 'new'}}
+      'getPageData': {method:'GET', isArray:true, params:{'offset':0, 'size':10}}
     });
   }
 ]);

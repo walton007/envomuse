@@ -16,6 +16,9 @@ var SiteSchema = BaseSchema.extend({
     type: Schema.ObjectId,
     ref: 'Customer'
   },
+  siteName:String,
+  businesscenter:String,
+  reference: String,
   manager: ContactSchema,
   phone: String,
   address: String,

@@ -19,39 +19,84 @@
       <div class="panel panel-default">
         <div class="panel-heading font-bold">新增店铺</div>
           <div class="panel-body">
-            <form name="newStore" class="form-horizontal m-t-lg">
-              <div class="form-group">
-                <label class="col-lg-2 control-label">品牌</label>
-                <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="brand.brand" required disabled>
-                </div>
-              </div>
+
+            <form name="form" class="form-horizontal m-t-lg form-validation">
 
               <div class="form-group">
                 <label class="col-lg-2 control-label">店铺ID</label>
                 <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.storeName" required>
+                  <input type="text" class="form-control" ng-model="store.reference" placeholder="必填" required>
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="col-lg-2 control-label">地址</label>
+                <label class="col-lg-2 control-label">店名</label>
                 <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.address" required>
+                  <input type="text" class="form-control" ng-model="store.sitename" placeholder="必填" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">商圈</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" ng-model="store.businesscenter" placeholder="必填" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">店长</label>
+                <div class="col-lg-8">
+                  <select ui-jq="chosen" class="form-control" ng-model="store.manager" placeholder="必填" required>
+                    <option ng-repeat="list in contacts" value="{{list}}">{{list.name}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">国家</label>
+                <div class="col-lg-8">
+                  <select ui-jq="chosen" class="form-control" ng-model="store.country" >
+                    <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">省份</label>
+                <div class="col-lg-8">
+                  <select ui-jq="chosen" class="form-control" ng-model="store.province">
+                    <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">城市</label>
+                <div class="col-lg-8">
+                  <select ui-jq="chosen" class="form-control" ng-model="store.city">
+                    <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-2 control-label">详细地址</label>
+                <div class="col-lg-8">
+                  <input type="text" class="form-control" ng-model="store.address" placeholder="必填" required>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-lg-2 control-label">经度</label>
                 <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.latitude" required>
+                  <input type="text" class="form-control" ng-model="store.latitude">
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-lg-2 control-label">纬度</label>
                 <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.longitude" required>
+                  <input type="text" class="form-control" ng-model="store.longitude">
                 </div>
               </div>
 
@@ -59,31 +104,14 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">详细描述</label>
                 <div class="col-sm-10">
-                  <div class="btn-toolbar m-b-sm btn-editor" data-role="editor-toolbar" data-target="#editor">
-                    <div class="btn-group">
-                      <a class="btn btn-sm btn-default" data-edit="bold" tooltip="Bold (Ctrl/Cmd+B)"><i class="fa text-base fa-bold"></i></a>
-                      <a class="btn btn-sm btn-default" data-edit="italic" tooltip="Italic (Ctrl/Cmd+I)"><i class="fa text-base fa-italic"></i></a>
-                    </div>
-                    <div class="btn-group">
-                      <a class="btn btn-sm btn-default" data-edit="insertunorderedlist" tooltip="Bullet list"><i class="fa text-base fa-list-ul"></i></a>
-                      <a class="btn btn-sm btn-default" data-edit="insertorderedlist" tooltip="Number list"><i class="fa text-base fa-list-ol"></i></a>
-                      <a class="btn btn-sm btn-default" data-edit="outdent" tooltip="Reduce indent (Shift+Tab)"><i class="fa text-base fa-dedent"></i></a>
-                      <a class="btn btn-sm btn-default" data-edit="indent" tooltip="Indent (Tab)"><i class="fa text-base fa-indent"></i></a>
-                    </div>
-                    <div class="btn-group">
-                      <a class="btn btn-sm btn-default" data-edit="justifyleft" tooltip="Align Left (Ctrl/Cmd+L)"><i class="fa text-base fa-align-left"></i></a>
-                      <a class="btn btn-sm btn-default" data-edit="justifycenter" tooltip="Center (Ctrl/Cmd+E)"><i class="fa text-base fa-align-center"></i></a>
-                      <a class="btn btn-sm btn-default" data-edit="justifyright" tooltip="Align Right (Ctrl/Cmd+R)"><i class="fa text-base fa-align-right"></i></a>
-                      <a class="btn btn-sm btn-default" data-edit="justifyfull" tooltip="Justify (Ctrl/Cmd+J)"><i class="fa text-base fa-align-justify"></i></a>
-                    </div>
-                  </div>
-                  <div ui-jq="wysiwyg" class="form-control h-auto" style="min-height:200px;" ng-model="brand.descripton">
-                  </div>
+                  <textarea class="form-control h-auto" style="min-height:200px;" ng-model="store.description">{{store.description}}
+                  </textarea>
                 </div>
               </div>
+
               <div class="form-group">
                 <div class="col-lg-8 col-lg-offset-2">
-                  <button class="btn btn-info w-xs" ng-click="createStore()">添加</button>
+                  <button class="btn btn-info w-xs" class="btn btn-success" ng-disabled="form.$invalid" ng-click="createStore()">添加</button>
                 </div>
               </div>
             </form>

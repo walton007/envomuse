@@ -5,7 +5,7 @@
       <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
         <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
         <li><a ui-sref="customers.dash">客户管理</a></li>
-        <li><a ui-sref="customers.brand.detail({brandId:brandId})">{{brandName | uppercase}}</a></li>
+        <li><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></li>
         <li class="active">店铺列表</li>
       </ul>
     </div>
@@ -28,7 +28,7 @@
               <div class="clearfix">
                 <div class="clear">
                   <div class="h3 m-t-xs m-b-xs">
-                    <a ui-sref="customers.store.detail({brandId:item.brandId,storeId:item.id})">{{item.storeName}} </a>
+                    <a ui-sref="customers.store.detail({brandId:brand._id,storeId:item._id})">{{item._id}} </a>
                     <i class="fa fa-circle text-{{item.terminalStatus.cc}} pull-right text-xs m-t-sm" tooltip="{{item.terminalStatus.value | uppercase}}"></i>
                   </div>
                 </div>

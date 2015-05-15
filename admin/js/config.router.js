@@ -146,14 +146,6 @@ angular.module('app')
                       'footer': {
                           templateUrl: 'tpl/com.envomuse/customers_store_list_footer.html'
                       }
-                  },
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad){
-                          return uiLoad.load(['js/app/envomuse.customer/store.js',
-                                              'js/app/envomuse.customer/store-service.js']
-                                             );
-                      }]
                   }
               })
               .state('customers.store.detail', {
@@ -194,14 +186,6 @@ angular.module('app')
                       'footer': {
                           templateUrl: 'tpl/com.envomuse/customers_contact_list_footer.html'
                       }
-                  },
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad){
-                          return uiLoad.load(['js/app/envomuse.customer/contact.js',
-                                              'js/app/envomuse.customer/contact-service.js']
-                                             );
-                      }]
                   }
               })
               .state('customers.contact.detail', {

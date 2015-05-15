@@ -197,11 +197,114 @@ app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', 
   Customers.get({'customerId':$stateParams.brandId},
     function(res) {
       $scope.brand = res;
+      $scope.contacts = $scope.brand.contacts;
     });
 
+  $scope.createStore = function(){
+    var newStore = {
+      customerId: $scope.brand._id,
+      siteName: $scope.store.sitename,
+      reference: $scope.store.reference,
+      businesscenter: $scope.store.businesscenter,
+      manager: $scope.store.contact,
+      address: $scope.store.address,
+      country: $scope.store.country,
+      province: $scope.store.province,
+      city: $scope.store.city,
+      zipcode: $scope.store.zipcode,
+      latitude: $scope.store.latitude,
+      longitude: $scope.store.longitude,
+      description: $scope.store.description
+    };
 
+    var store = new Sites(newStore);
+    store.$save(function(site) {
+      alert('add site success');
+    });
+  };
 
 }]);
+
+
+app.controller('StoreListCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', function($scope, Customers, Sites, $stateParams) {
+    
+    //TBD: add sort
+    $scope.init = function(){
+      $scope.maxSize = 5; //total buttons displayed
+      $scope.bigCurrentPage = 1;  //current page
+      $scope.datasource = [];
+      $scope.pageItems = 12;
+
+      Customers.get({'customerId':$stateParams.brandId},
+      function(res) {
+        $scope.brand = res;
+      });
+
+      Sites.getPageData({'offset':0, 'size':$scope.pageItems, 'type': $stateParams.listState},
+        function(res) {
+          $scope.bigTotalItems = res.count;
+          $scope.datasource = res;
+        });
+
+      $scope.pageChanged();
+    };
+
+    $scope.setPage = function (pageNo) {
+      $scope.bigCurrentPage = pageNo;
+    };
+
+    $scope.pageChanged = function() {
+
+      Sites.getPageData({'offset':($scope.bigCurrentPage-1)*$scope.pageItems, 'size':$scope.pageItems, 'type': $stateParams.listState},
+        function(res) {
+          $scope.datasource = res;
+        });
+    };
+
+  }]);
+
+
+app.controller('StoreDetailCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', function($scope, Customers, Sites, $stateParams) {
+  Sites.get({'siteId':$stateParams.storeId},
+    function(res) {
+      $scope.store = res;
+    });
+
+  Customers.get({'customerId':$stateParams.brandId},
+      function(res) {
+        $scope.brand = res;
+      });
+
+}]);
+
+app.controller('StoreDeleteModalCtrl', ['$scope', '$modal', '$log', function($scope, $modal, $log) {
+    $scope.items = ['item1', 'item2', 'item3'];
+
+    $scope.open = function (size,id) {
+      var modalInstance = $modal.open({
+        templateUrl: 'deleteStoreConfirmModal',
+        controller: 'ModalInstanceCtrl',
+        size: size,
+        resolve: {
+          items: function () {
+            return $scope.items;
+          },
+          customerId: function (){
+            return id;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      }); 
+    };
+  }])
+  ; 
+
 
 //CONTACTS
 app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', function($scope, Customers, $stateParams) {
@@ -237,3 +340,34 @@ app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', functio
 
 
 }]);
+
+app.controller('ContactListCtrl', ['$scope', 'Customers', '$stateParams', function($scope, Customers, $stateParams) {
+
+    $scope.init = function(){
+      $scope.maxSize = 5; //total buttons displayed
+      $scope.bigCurrentPage = 1;  //current page
+      $scope.datasource = [];
+      $scope.pageItems = 12;
+
+      Customers.get({'customerId':$stateParams.brandId},
+        function(res) {
+          $scope.brand = res;
+          $scope.bigTotalItems = $scope.brand.contacts.length;
+          $scope.datasource = $scope.brand.contacts.slice(($scope.bigCurrentPage-1)*$scope.pageItems,($scope.bigTotalItems-($scope.bigCurrentPage-1)*$scope.pageItems)/$scope.pageItems>1?$scope.pageItems:$scope.bigTotalItems);
+
+          $scope.pageChanged();
+        });      
+    };
+
+    $scope.setPage = function (pageNo) {
+      $scope.bigCurrentPage = pageNo;
+    };
+
+    $scope.pageChanged = function() {
+      $scope.datasource = $scope.brand.contacts.slice(
+          ($scope.bigCurrentPage-1)*$scope.pageItems,
+          ($scope.bigTotalItems-($scope.bigCurrentPage-1)*$scope.pageItems)/$scope.pageItems>1?$scope.pageItems:$scope.bigTotalItems);
+    };
+
+  }])
+;

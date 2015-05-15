@@ -5,7 +5,7 @@
       <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
         <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
         <li><a ui-sref="customers.dash">客户管理</a></li>
-        <li><a ui-sref="customers.brand.detail({brandId:brandId})">{{brandName | uppercase}}</a></li>
+        <li><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></li>
         <li class="active">联系人</li>
       </ul>
     </div>
@@ -28,18 +28,18 @@
           <div class="clearfix text-center m-t">
             <div class="inline">
               <div class="thumb-lg" style="height: 96px;">
-                <a ui-sref="customers.contact.detail({contactId:item.id})">
-                  <img src="{{item.picture}}" class="img-circle" alt="{{item.name}}">
+                <a ui-sref="customers.contact.detail({contactId:item._id})">
+                  <img src="img/default_logo.png" class="img-circle" alt="{{item.name}}">
                 </a>
               </div>
-              <div class="h4 m-t m-b-xs"><a ui-sref="customers.contact.detail({contactId:item.id})">{{item.name}}</a></div>
+              <div class="h4 m-t m-b-xs"><a ui-sref="customers.contact.detail({contactId:item._id})">{{item.name}}</a></div>
               <small class="text-muted m-b">{{item.title}}</small>
             </div>                      
           </div>
         </div>
         <footer class="panel-footer bg-info text-center no-padder">
           <div class="row wrapper no-gutter">
-            {{item.phone}}
+            {{item.workmobile}}
           </div>
           <div class="row no-gutter">
             <div class="col-xs-4">

@@ -5,8 +5,8 @@
       <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
         <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
         <li><a ui-sref="customers.dash">客户管理</a></li>
-        <li><a ui-sref="customers.brand.detail({brandId:store.brandId})">{{store.brandName | uppercase}}</a></li>
-        <li class="active">{{store.storeName | uppercase}}</li>
+        <li><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></li>
+        <li class="active">{{store._id | uppercase}}</li>
       </ul>
     </div>
   </div>
@@ -21,13 +21,13 @@
           <div class="wrapper">
             <div class="panel-body">
               <div class="clearfix text-center m-t col-md-3">
-                <a ui-sref="customers.contact.detail({contactId:store.id})" class="block panel padder-v bg-primary dk item">
+                <a ui-sref="customers.contact.detail({contactId:store._id})" class="block panel padder-v bg-primary dk item">
                   <span class="text-white font-thin h1 block">{{store.contact}}</span>
-                  <span class="text-muted text-xs">{{store.phone}}</span>
+                  <span class="text-muted text-xs">{{store.businesscenter}}</span>
                 </a>
               </div>                     
               <div class="col-md-9">
-                {{store.about}}
+                {{store.description}}
                 <div class="line line-lg b-b b-light"></div>
                 <div class="text-muted">
                   <!--<span class="pull-right">

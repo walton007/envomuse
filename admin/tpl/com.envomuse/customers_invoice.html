@@ -1,11 +1,11 @@
-<div ng-controller="BrandDetailCtrl">
+<div ng-controller="CustomerDetailCtrl">
 <!-- breadcrumb -->
   <div class="row">
     <div class="bg-light lter">
       <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-none">
         <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
         <li><a ui-sref="customers.dash">客户管理</a></li>
-        <li><a ui-sref="customers.brand.detail({brandId:brand.id})">{{brand.brandName | uppercase }}</a></li>
+        <li><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase }}</a></li>
         <li class="active">发票</li>
       </ul>
     </div>
@@ -19,12 +19,12 @@
         <div>
           <div class="inline" style="width: 100px; height: 100px; line-height: 100px;">
             <div class="thumb-lg m-t-n-xxl">
-              <img src="{{brand.logopicture}}" alt="LOGO {{brand.brandName}}">
+              <img src="{{brand.logo}}" alt="LOGO {{brand.brand}}">
             </div>
           </div>
           <div class="row">
             <div class="col-xs-6">
-              <h4>{{brand.brandName | uppercase}}</h4>
+              <h4>{{brand.brand | uppercase}}</h4>
               <p><a href="http://www.apple.com">www.apple.com</a></p>
               <p>1 Infinite Loop <br>
                 95014 Cuperino, CA<br>
