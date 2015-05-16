@@ -20,7 +20,7 @@ module.exports = function(Envomuse, app, auth, database) {
 
   //Coming Jobs
   apiRouter.route('/comingJobs')
-  .get(comingJobs.all);
+  .get(comingJobs.statistic, comingJobs.all);
   apiRouter.route('/comingJobs/forceRefresh')
   .post(comingJobs.forceRefresh);
 
@@ -32,7 +32,7 @@ module.exports = function(Envomuse, app, auth, database) {
   }); 
 
   //Jobs
-  apiRouter.get('/jobs', jobs.all);
+  apiRouter.get('/jobs', jobs.statistic, jobs.all);
 
   apiRouter.route('/jobs/:jobId')
   .get(function(req, res, next) {
@@ -134,8 +134,8 @@ module.exports = function(Envomuse, app, auth, database) {
   apiRouter.param('customerId', customer.customer); 
 
   //Sites
-  // apiRouter.route('/sites/')
-  // .get(sites.statistic, sites.all)
+  apiRouter.route('/sites/')
+  .get(sites.statistic)
   // .post(sites.create);
   apiRouter.route('/sites/:siteId')
   .get(sites.show)

@@ -33,6 +33,26 @@ exports.job = function(req, res, next, id) {
   });
 };
 
+exports.statistic = function(req, res, next) {
+  if (!'statistic' in req.query) {
+    next();
+  }
+
+  Job.count(function(err, count) {
+    if (err) {
+      console.error('Job count error:', err);
+      return res.status(500).json({
+        error: 'count the Job error'
+      });
+    }
+
+    res.json({
+      count: count
+    });
+    return;
+  });
+};
+
 function translateDateString(dateString) {
   return moment(dateString);
 };
