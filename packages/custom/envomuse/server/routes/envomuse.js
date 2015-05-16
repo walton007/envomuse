@@ -121,7 +121,7 @@ module.exports = function(Envomuse, app, auth, database) {
 
   //Customers
   apiRouter.route('/customers/')
-  .get(customer.count, customer.analysis, customer.paginate)
+  .get(customer.count, customer.analysis, customer.basicInfos, customer.paginate)
   .post(customer.create);
   // .put(customer.update);  //added jun
   apiRouter.route('/customers/:customerId')

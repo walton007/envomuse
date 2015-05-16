@@ -257,6 +257,23 @@ exports.analysis = function(req, res, next) {
   });
 
   return;
+};
 
+exports.basicInfos = function(req, res, next) {
+  if (!('basicInfos' in req.query)) {
+    next();
+    return;
+  };
 
+  Customer.where({deleteFlag: false}).select('_id brand').exec(function(err, customers) {
+    if (err) {
+      console.error('customer basicInfos error:', err);
+      return res.status(500).json({
+        error: 'count the basicInfos error'
+      });
+    }
+
+    res.json(customers);
+    return;
+  });
 };
