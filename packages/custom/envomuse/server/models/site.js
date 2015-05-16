@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+mongoosePaginate = require('mongoose-paginate'),
   Schema = mongoose.Schema,
   commonUtil = require('./commonUtil');
 
@@ -12,8 +13,9 @@ ContactSchema= commonUtil.ContactSchema;
 
 
 var SiteSchema = BaseSchema.extend({
-  customerid: {
+  customer: {
     type: Schema.ObjectId,
+    required: true,
     ref: 'Customer'
   },
   manager: ContactSchema,
@@ -68,6 +70,8 @@ SiteSchema.statics.load = function(id, cb) {
     _id: id
   }).populate('user', 'name username').exec(cb);
 };
+
+SiteSchema.plugin(mongoosePaginate);
 
 mongoose.model('Site', SiteSchema);
 

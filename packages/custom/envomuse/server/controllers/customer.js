@@ -5,6 +5,9 @@
  */
 var mongoose = require('mongoose'),
   Customer = mongoose.model('Customer'),
+  Site = mongoose.model('Site'),
+  SiteController = require('./site'),
+  util = require('util'),
   _ = require('lodash');
 
 
@@ -75,48 +78,185 @@ exports.destroy = function(req, res) {
   });
 };
 
- /**
+/**
  * Show an customer
  */
 exports.show = function(req, res) {
-  res.json(req.customer);
+  //collect sites information
+  Site.find({
+      customer: req.customer
+    }).count()
+    .exec(function(err, count) {
+      if (err) {
+        console.error('find site error');
+        res.send(err, 500);
+        return;
+      };
+      var jsonObj = req.customer.toJSON();
+      jsonObj['sitesCount'] = count;
+      res.json(jsonObj);
+    });
+};
+
+/**
+ * Show an customer's sites information
+ */
+exports.sites = function(req, res) {
+  //collect sites information
+  Site.find({
+      customer: req.customer
+    }).select('-__t -__v -deleteFlag')
+    .exec(function(err, sites) {
+      if (err) {
+        console.error('find site error');
+        res.send(err, 500);
+        return;
+      };
+       
+      res.json(sites);
+    });
+};
+
+exports.sitesPaginate = function(req, res) {
+  req.checkQuery('pageNumber', 'invalid pageNumber').isInt();
+  req.checkQuery('pageSize', 'invalid pageSize').isInt();
+  var errors = req.validationErrors(true);
+  if (errors) {
+    res.send(errors, 400);
+    return;
+  }
+
+  var pageNumber = req.query.pageNumber,
+    pageSize = req.query.pageSize,
+    callback = function(error, pageCount, paginatedResults, itemCount) {
+      if (error) {
+        console.error(error);
+        res.status(500).json({
+          error: error
+        });
+      } else {
+        res.json({
+          pageCount: pageCount,
+          data: paginatedResults,
+          count: itemCount
+        });
+      }
+    }
+
+  Site.paginate({
+    customer: req.customer,
+      deleteFlag: false
+    },
+    pageNumber, pageSize, callback, {
+      sortBy: '-created',
+      columns: '-__v -__t -deleteFlag'
+    });
+
+};
+
+exports.addSite = function(req, res) {
+  req.body.customer = req.customer;
+  SiteController.create(req, res);
 };
 
 /**
  * List of Articles
  */
-exports.all = function(req, res) {
-  var offset = req.query.offset,
-  size = req.query.size,
-  type = req.query.type;
-  
-  Customer.find().sort('-created').populate('user', 'name username').exec(function(err, customers) {
-    if (err) {
-      return res.status(500).json({
-        error: 'Cannot list the customers'
-      });
+exports.paginate = function(req, res) {
+  req.checkQuery('pageNumber', 'invalid pageNumber').isInt();
+  req.checkQuery('pageSize', 'invalid pageSize').isInt();
+  var errors = req.validationErrors(true);
+  if (errors) {
+    res.send(errors, 400);
+    return;
+  }
+
+  var pageNumber = req.query.pageNumber,
+    pageSize = req.query.pageSize,
+    type = req.query.type,
+    callback = function(error, pageCount, paginatedResults, itemCount) {
+      if (error) {
+        console.error(error);
+        res.status(500).json({
+          error: error
+        });
+      } else {
+        res.json({
+          pageCount: pageCount,
+          data: paginatedResults,
+          count: itemCount
+        });
+        console.log('Pages:', pageCount);
+        console.log('itemCount:', itemCount);
+      }
     }
 
-    res.json({count: customers.length, data: customers.slice(offset,(customers.length-offset)/size>1?size:customers.length)});
-
-  });
+  Customer.paginate({
+      deleteFlag: false
+    },
+    pageNumber, pageSize, callback, {
+      sortBy: '-created',
+      columns: '-__v -__t -deleteFlag'
+    });
 };
 
 exports.count = function(req, res, next) {
-  if ('count' in req.query) {
-    res.json({count:100});
+  if (!('count' in req.query)) {
+    next();
     return;
   };
 
-  next();
+  Customer.count(function(err, count) {
+    if (err) {
+      console.error('customer count error:', err);
+      return res.status(500).json({
+        error: 'count the customers error'
+      });
+    }
+
+    res.json({
+      count: count
+    });
+    return;
+  });
 };
 
 exports.analysis = function(req, res, next) {
   console.log('increase:', req.query);
-  if ('increase' in req.query) {
-    res.json({count:10});
+  if (!('increase' in req.query)) {
+    next();
     return;
   };
 
-  next();
+  req.checkQuery('startDate', 'invalid startDate').isDate();
+  req.checkQuery('endDate', 'invalid endDate').isDate();
+  var errors = req.validationErrors(true);
+  if (errors) {
+    res.send(errors, 400);
+    return;
+  }
+
+  Customer.where({
+    created: {
+      $gte: req.query.startDate,
+      $lte: req.query.endDate,
+    }
+  }).count(function(err, count) {
+    if (err) {
+      console.error('customer analysis error:', err);
+      return res.status(500).json({
+        error: 'count the analysis error'
+      });
+    }
+
+    res.json({
+      count: count
+    });
+    return;
+
+  });
+
+  return;
+
+
 };

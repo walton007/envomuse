@@ -31,7 +31,7 @@ app.controller('BrandListCtrl', ['$scope', 'brands', 'Customers', '$stateParams'
       //   $scope.datasource = res;
       // });
 
-      Customers.getPageData({'offset':0, 'size':10, 'type': 'new'},
+      Customers.getPageData({'pageNumber':1, 'pageSize':10, 'type': 'new'},
         function(res) {
           $scope.bigTotalItems = res.count;
           $scope.datasource = res.data;
@@ -61,10 +61,11 @@ app.controller('BrandCountCtrl', ['$scope', 'brands', 'Customers', '$stateParams
     Customers.getCount(function(resp) {
       $scope.stat.totalBrand = resp.count;
     });
-    var startDt = new Date(), 
-    endDt = startDt;
-    Customers.getIncrCount({startDate: startDt.getTime(),
-      endDate: endDt.getTime()}, 
+    var endDt = new Date(), 
+    startDt = new Date();
+    startDt.setFullYear(endDt.getFullYear()-1);
+    Customers.getIncrCount({startDate: startDt.toLocaleDateString(),
+      endDate: endDt.toLocaleDateString()}, 
       function(resp) {
         $scope.stat.newBrand = resp.count;
       });

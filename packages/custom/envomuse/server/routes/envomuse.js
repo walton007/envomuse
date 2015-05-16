@@ -121,23 +121,22 @@ module.exports = function(Envomuse, app, auth, database) {
 
   //Customers
   apiRouter.route('/customers/')
-  .get(customer.count, customer.analysis, customer.all)
-  .post(customer.create)
-  .put(customer.update);  //added jun
+  .get(customer.count, customer.analysis, customer.paginate)
+  .post(customer.create);
+  // .put(customer.update);  //added jun
   apiRouter.route('/customers/:customerId')
   .get(customer.show)
   .put(customer.update)
   .delete(customer.destroy);
   apiRouter.route('/customers/:customerId/sites')
-  .get(function(req, res, next) {
-    res.json([{siteid:1}]);
-  });
+  .get(customer.sitesPaginate)
+  .post(customer.addSite);
   apiRouter.param('customerId', customer.customer); 
 
   //Sites
-  apiRouter.route('/sites/')
-  .get(sites.statistic, sites.all)
-  .post(sites.create);
+  // apiRouter.route('/sites/')
+  // .get(sites.statistic, sites.all)
+  // .post(sites.create);
   apiRouter.route('/sites/:siteId')
   .get(sites.show)
   .put(sites.update)
