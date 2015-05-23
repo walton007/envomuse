@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+mongoosePaginate = require('mongoose-paginate'),
   commonUtil = require('./commonUtil');
 
 var BaseSchema = commonUtil.BaseSchema,
@@ -53,5 +54,7 @@ CustomerSchema.statics.load = function(id, cb) {
     _id: id
   }).populate('user', 'name username').exec(cb);
 };
+
+CustomerSchema.plugin(mongoosePaginate);
 
 mongoose.model('Customer', CustomerSchema);

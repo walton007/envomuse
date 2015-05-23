@@ -82,7 +82,7 @@ exports.destroy = function(req, res) {
   });
 };
 
- /**
+/**
  * Show an site
  */
 exports.show = function(req, res) {
@@ -94,7 +94,7 @@ exports.show = function(req, res) {
  * List of Sites
  */
 exports.all = function(req, res) {
-  Site.find().sort('-created').populate('user', 'name username').exec(function(err, sites) {
+  Site.find().sort('-created').exec(function(err, sites) {
     if (err) {
       return res.status(500).json({
         error: 'Cannot list the sites'
@@ -106,12 +106,15 @@ exports.all = function(req, res) {
 };
 
 
- /**
+/**
  * bind license for an site
  */
 exports.bindLicense = function(req, res) {
   var site = req.site;
-  site.license = {uuid: uuid.v4(), activated: false};
+  site.license = {
+    uuid: uuid.v4(),
+    activated: false
+  };
   site.save(function(err) {
     if (err) {
       console.warn('bindLicense error:', err);
@@ -123,7 +126,7 @@ exports.bindLicense = function(req, res) {
   });
 };
 
- /**
+/**
  * active license for an site
  */
 exports.licenseActivate = function(req, res) {
@@ -131,8 +134,8 @@ exports.licenseActivate = function(req, res) {
   var macRegex = /^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$/;
   if (!macRegex.test(mac)) {
     return res.status(503).json({
-        error: 'invalid mac!'
-      });
+      error: 'invalid mac!'
+    });
   }
   var requestuuid = req.body.uuid;
   var site = req.site;
@@ -154,7 +157,7 @@ exports.licenseActivate = function(req, res) {
         activated: true,
         deviceInfo: mac,
         activatedDate: new Date()
-      });  
+      });
       site.save(function(err) {
         if (err) {
           console.warn('update licenseActivate error:', err);
@@ -168,18 +171,29 @@ exports.licenseActivate = function(req, res) {
 
   } else {
     return res.status(500).json({
-        error: 'bindLicense first!'
-      });
+      error: 'bindLicense first!'
+    });
   }
 };
 
 exports.statistic = function(req, res, next) {
-  if ('statistic' in req.query) {
+  if (!'statistic' in req.query) {
+    next();
+  }
+
+  Site.count(function(err, count) {
+    if (err) {
+      console.error('site count error:', err);
+      return res.status(500).json({
+        error: 'count the site error'
+      });
+    }
+
     res.json({
-      totalStore: 1003,
-      activeStore: 12
+      totalStore: count,
+      activeStore: count
     });
     return;
-  };
-  next();
+  });
+
 };

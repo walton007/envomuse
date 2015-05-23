@@ -22,7 +22,7 @@ exports.allTasks = function(req, res) {
  */
 exports.import = function(req, res) {
   var comingJobsId = req.comingJobsId;
-  zmqAgent.sendCmd('comingJobs', ['import', comingJobsId], function(taskId) {
+  zmqAgent.sendCmd('comingJobs', ['doImport', comingJobsId], function(taskId) {
     res.json({
       taskId: taskId
     });
@@ -65,3 +65,13 @@ exports.all = function(req, res) {
     res.json(comingJobs);
   });
 };
+
+/**
+ * statistic of comingJobs
+ */
+exports.statistic = function(req, res) {
+  zmqAgent.sendCmd('comingJobs', ['statistic'], function(comingJobsCount) {
+    res.json({count: comingJobsCount});
+  });
+};
+

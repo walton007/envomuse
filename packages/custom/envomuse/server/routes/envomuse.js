@@ -20,7 +20,7 @@ module.exports = function(Envomuse, app, auth, database) {
 
   //Coming Jobs
   apiRouter.route('/comingJobs')
-  .get(comingJobs.all);
+  .get(comingJobs.statistic, comingJobs.all);
   apiRouter.route('/comingJobs/forceRefresh')
   .post(comingJobs.forceRefresh);
 
@@ -32,7 +32,7 @@ module.exports = function(Envomuse, app, auth, database) {
   }); 
 
   //Jobs
-  apiRouter.get('/jobs', jobs.all);
+  apiRouter.get('/jobs', jobs.statistic, jobs.all);
 
   apiRouter.route('/jobs/:jobId')
   .get(function(req, res, next) {
@@ -51,13 +51,7 @@ module.exports = function(Envomuse, app, auth, database) {
     }]);
   });
   apiRouter.route('/jobs/:jobId/programs')
-  .post(function(req, res, next) {
-    //export job war package
-    res.json([{
-      id: 100,
-      programInfo : {}
-    }]);
-  });
+  .get(jobs.programs);
   apiRouter.param('jobId', jobs.job); 
 
   //export task
@@ -121,23 +115,22 @@ module.exports = function(Envomuse, app, auth, database) {
 
   //Customers
   apiRouter.route('/customers/')
-  .get(customer.count, customer.analysis, customer.all)
-  .post(customer.create)
-  .put(customer.update);  //added jun
+  .get(customer.count, customer.analysis, customer.basicInfos, customer.paginate)
+  .post(customer.create);
+  // .put(customer.update);  //added jun
   apiRouter.route('/customers/:customerId')
   .get(customer.show)
   .put(customer.update)
   .delete(customer.destroy);
   apiRouter.route('/customers/:customerId/sites')
-  .get(function(req, res, next) {
-    res.json([{siteid:1}]);
-  });
+  .get(customer.sitesPaginate)
+  .post(customer.addSite);
   apiRouter.param('customerId', customer.customer); 
 
   //Sites
   apiRouter.route('/sites/')
-  .get(sites.statistic, sites.all)
-  .post(sites.create);
+  .get(sites.statistic)
+  // .post(sites.create);
   apiRouter.route('/sites/:siteId')
   .get(sites.show)
   .put(sites.update)

@@ -55,6 +55,22 @@ function allComingJobs(respCallback, respErrorback) {
 		});
 }
 
+function ComingJobsStatistic(respCallback, respErrorback) {
+	console.log('ComingJobsStatistic');
+	// body...
+	ComingJob.find({
+			outdate: false
+		})
+		.count()
+		.exec(function(err, count) {
+			if (err) {
+				respErrorback && respErrorback('err:' + err);
+			} else {
+				respCallback && respCallback(count);
+			}
+		});
+}
+
 function findByMd5(hash, callback) {
 	ComingJob.findOne({
 			hash: hash
@@ -341,8 +357,9 @@ ClearRuningTask(function() {
 
 exports = module.exports = {
 	all: allComingJobs,
+	statistic: ComingJobsStatistic,
 	forceRefresh: forceRefresh,
-	import: importComingJob,
+	doImport: importComingJob,
 
 	//tasks
 	allTasks: allTasks,

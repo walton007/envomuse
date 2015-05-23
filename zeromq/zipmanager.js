@@ -108,7 +108,7 @@ function CreateJob(comingJob, validSongMap, callback) {
 		.each(function(box) {
 			_(box.songlist).each(function(song) {
 				if (song.relativePath in validSongMap) {
-					song.songid = validSongMap[song.relativePath];
+					song.song = validSongMap[song.relativePath];
 					delete song.relativePath;
 				};
 

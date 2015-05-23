@@ -13,7 +13,7 @@ app.factory('Customers', ['$resource',
       startDate:1, endDate:1}},
       'getCount': {method:'GET', isArray:false, params:{'count':0}},
       'getPageData': {method:'GET', isArray:false,
-         params:{'offset':0, 'size':10, 'type': 'new'}}
+         params:{'pageNumber':1, 'pageSize':10, 'type': 'new'}}
     });
   }
 ]);
