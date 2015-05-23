@@ -5,6 +5,7 @@ var express = require('express'),
    mean = require('meanio'),
    customer = require('../controllers/customer'),
    sites = require('../controllers/site'),
+   programs = require('../controllers/program'),
    comingJobs = require('../controllers/comingJob'),
    jobs = require('../controllers/job'),
    songs = require('../controllers/song');
@@ -72,24 +73,15 @@ module.exports = function(Envomuse, app, auth, database) {
   .get(comingJobs.allTasks);
 
   //Programs
-  apiRouter.get('/programs', function(req, res, next) {
-    res.json([{id:1}, {id:2}]);
-  });
+  apiRouter.get('/programs', programs.all);
   apiRouter.route('/programs/:programId')
-  .get(function(req, res, next) {
-    res.json({id:2});
-  })
+  .get(programs.show)
   .delete(function(req, res, next) {
     res.send(200);
   });
   apiRouter.route('/programs/:programId/bindSite')
-  .post(function(req, res, next) {
-    res.json({id:2});
-  });
-  apiRouter.param('programId', function(req, res, next, id){
-    req.program = null;
-    next();
-  }); 
+  .post(programs.bindSite);
+  apiRouter.param('programId', programs.program); 
 
   //Songs
   apiRouter.route('/songs')
@@ -137,6 +129,8 @@ module.exports = function(Envomuse, app, auth, database) {
   .delete(sites.destroy);
   apiRouter.route('/sites/:siteId/bindLicense')
   .post(sites.bindLicense);
+  apiRouter.route('/sites/:siteId/bindProgram')
+  .post(sites.bindProgram);
   apiRouter.route('/sites/:siteId/license/activate')
   .post(sites.licenseActivate);
   apiRouter.route('/sites/:siteId/connectionLogs')

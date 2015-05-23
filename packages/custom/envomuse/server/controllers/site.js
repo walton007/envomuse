@@ -89,6 +89,15 @@ exports.show = function(req, res) {
   res.json(req.site);
 };
 
+/**
+ * Show an site
+ */
+exports.bindProgram = function(req, res) {
+  req.checkBody('programId', 'invalid programId').isDate();
+  res.json({
+    
+  });
+};
 
 /**
  * List of Sites
