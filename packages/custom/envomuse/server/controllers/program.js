@@ -37,6 +37,28 @@ exports.bindSite = function(req, res) {
 };
 
 
+exports.statistic = function(req, res, next) {
+  if (!('statistic' in req.query)) {
+    next();
+    return;
+  }
+
+  Program.count(function(err, count) {
+    if (err) {
+      console.error('Program count error:', err);
+      return res.status(500).json({
+        error: 'count the Program error'
+      });
+    }
+
+    res.json({
+      bindCount: count,
+      unbindCount: 0
+    });
+    return;
+  });
+};
+
 // /**
 //  * Update an customer
 //  */

@@ -73,7 +73,7 @@ module.exports = function(Envomuse, app, auth, database) {
   .get(comingJobs.allTasks);
 
   //Programs
-  apiRouter.get('/programs', programs.all);
+  apiRouter.get('/programs', programs.statistic, programs.all);
   apiRouter.route('/programs/:programId')
   .get(programs.show)
   .delete(function(req, res, next) {
