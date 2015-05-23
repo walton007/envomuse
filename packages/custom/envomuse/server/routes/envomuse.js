@@ -121,8 +121,7 @@ module.exports = function(Envomuse, app, auth, database) {
 
   //Sites
   apiRouter.route('/sites/')
-  .get(sites.statistic)
-  // .post(sites.create);
+  .get(sites.statistic, sites.all)
   apiRouter.route('/sites/:siteId')
   .get(sites.show)
   .put(sites.update)

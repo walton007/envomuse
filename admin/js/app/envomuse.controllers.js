@@ -11,8 +11,8 @@ app.controller('CustomerCountCtrl', ['$scope', 'Customers', 'Sites', '$statePara
 
       var startDt = new Date(), endDt = startDt;
 
-      Customers.getIncrCount({startDate: startDt.getTime(),
-        endDate: endDt.getTime()}, 
+      Customers.getIncrCount({startDate: startDt.toLocaleDateString(),
+        endDate: endDt.toLocaleDateString()}, 
         function(resp) {
           $scope.stat.newBrand = resp.count;
       });
@@ -35,7 +35,7 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
       $scope.datasource = [];
       $scope.pageItems = 12;
 
-      Customers.getPageData({'offset':0, 'size':$scope.pageItems, 'type': $stateParams.listState},
+      Customers.getPageData({},
         function(res) {
           $scope.bigTotalItems = res.count;
           $scope.datasource = res.data;
@@ -58,7 +58,7 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
           break;
       }
 
-      Customers.getPageData({'offset':($scope.bigCurrentPage-1)*$scope.pageItems, 'size':$scope.pageItems, 'type': $stateParams.listState},
+      Customers.getPageData({},
         function(res) {
           //$scope.bigTotalItems = res.count;
           $scope.datasource = res.data;
@@ -192,7 +192,8 @@ app.controller('CustomerDeleteModalCtrl', ['$scope', '$modal', '$log', function(
 
 
 //STORES
-app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', function($scope, Customers, Sites, $stateParams) {
+app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites', '$stateParams', 
+  function($scope, Customers, Sites, CustomerSites, $stateParams) {
 
   Customers.get({'customerId':$stateParams.brandId},
     function(res) {
@@ -205,20 +206,20 @@ app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', 
       customerId: $scope.brand._id,
       siteName: $scope.store.sitename,
       reference: $scope.store.reference,
-      businesscenter: $scope.store.businesscenter,
-      manager: $scope.store.contact,
-      address: $scope.store.address,
-      country: $scope.store.country,
-      province: $scope.store.province,
-      city: $scope.store.city,
-      zipcode: $scope.store.zipcode,
-      latitude: $scope.store.latitude,
-      longitude: $scope.store.longitude,
+      // businesscenter: $scope.store.businesscenter,
+      // manager: $scope.store.contact,
+      // address: $scope.store.address,
+      // country: $scope.store.country,
+      // province: $scope.store.province,
+      // city: $scope.store.city,
+      // zipcode: $scope.store.zipcode,
+      // latitude: $scope.store.latitude,
+      // longitude: $scope.store.longitude,
       description: $scope.store.description
     };
 
-    var store = new Sites(newStore);
-    store.$save(function(site) {
+    var store = new CustomerSites(newStore);
+    store.$save({'customerId':  $stateParams.brandId}, function(site) {
       alert('add site success');
     });
   };
@@ -226,7 +227,7 @@ app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', 
 }]);
 
 
-app.controller('StoreListCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', function($scope, Customers, Sites, $stateParams) {
+app.controller('StoreListCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites', '$stateParams', function($scope, Customers, Sites, CustomerSites, $stateParams) {
     
     //TBD: add sort
     $scope.init = function(){
@@ -240,11 +241,11 @@ app.controller('StoreListCtrl', ['$scope', 'Customers', 'Sites', '$stateParams',
         $scope.brand = res;
       });
 
-      Sites.getPageData({'offset':0, 'size':$scope.pageItems, 'type': $stateParams.listState},
-        function(res) {
-          $scope.bigTotalItems = res.count;
-          $scope.datasource = res;
-        });
+      // CustomerSites.getPageData({'customerId':$stateParams.brandId},
+      //   function(res) {
+      //     $scope.bigTotalItems = res.count;
+      //     $scope.datasource = res;
+      //   });
 
       $scope.pageChanged();
     };
@@ -255,9 +256,10 @@ app.controller('StoreListCtrl', ['$scope', 'Customers', 'Sites', '$stateParams',
 
     $scope.pageChanged = function() {
 
-      Sites.getPageData({'offset':($scope.bigCurrentPage-1)*$scope.pageItems, 'size':$scope.pageItems, 'type': $stateParams.listState},
+      CustomerSites.getPageData({'customerId':$stateParams.brandId},
         function(res) {
-          $scope.datasource = res;
+          $scope.bigTotalItems = res.count;
+          $scope.datasource = res.data;
         });
     };
 
@@ -371,3 +373,58 @@ app.controller('ContactListCtrl', ['$scope', 'Customers', '$stateParams', functi
 
   }])
 ;
+
+app.controller('JobListCtrl', ['$scope', 'Jobs', '$stateParams', function($scope, Jobs, $stateParams) {
+    
+    //TBD: add sort functionalities
+
+    $scope.init = function(){
+      $scope.maxSize = 5; //total buttons displayed
+      $scope.bigCurrentPage = 1;  //current page
+      $scope.datasource = [];
+
+      // Jobs.get({},
+      //   function(res) {
+      //     $scope.datasource = res;
+
+      //     $scope.pageChanged();
+      //   });
+
+      $scope.pageChanged();
+    };
+
+    $scope.setPage = function (pageNo) {
+      $scope.bigCurrentPage = pageNo;
+    };
+    $scope.pageChanged = function() {
+
+      Jobs.get(function(res) {
+          $scope.datasource = res;
+        });
+
+    };
+
+  }]);
+
+app.controller('SetJobDateRangeModalCtrl', ['$scope', '$modal', '$log', function($scope, $modal, $log) {
+    $scope.items = ['item1', 'item2', 'item3'];
+    $scope.open = function (size) {
+      var modalInstance = $modal.open({
+        templateUrl: 'setJobDateRangeModal',
+        controller: 'ModalInstanceCtrl',
+        size: size,
+        resolve: {
+          items: function () {
+            return $scope.items;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
+    };
+  }])
+  ; 

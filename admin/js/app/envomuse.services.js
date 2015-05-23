@@ -8,7 +8,7 @@ app.factory('Customers', ['$resource', function($resource) {
       customerId: '@_id'
     },
     {
-
+  
       /*'get':  {method:'GET'},
       'save':   {method:'POST'},
       'query':  {method:'GET', isArray:true},
@@ -17,10 +17,23 @@ app.factory('Customers', ['$resource', function($resource) {
       'update': {method: 'PUT'},
       'getIncrCount':  {method:'GET', isArray:false, params:{'increase': true, startDate:1, endDate:1}},
       'getCount': {method:'GET', isArray:false, params:{'count':0}},
-      'getPageData': {method:'GET', isArray:false, params:{'offset':0, 'size':10, 'type': 'new'}}
+      'getPageData': {method:'GET', isArray:false, params:{'pageNumber':1, 'pageSize':12}}
     });
   }
 ]);
+
+app.factory('CustomerSites', ['$resource', function($resource) {
+    return $resource(
+      '/api/customers/:customerId/sites', 
+    {
+      customerId: '@_id'
+    },
+    {
+      'getPageData': {method:'GET', isArray:false, params:{'pageNumber':1, 'pageSize':12}}
+    });
+  }
+]);
+
 
 //STORE - SITES
 app.factory('Sites', ['$resource', function($resource) {
@@ -39,7 +52,7 @@ app.factory('Sites', ['$resource', function($resource) {
       'siteStats': {method:'GET', isArray:false, params:{'statistic':true}},
 
       'update': {method: 'PUT'},
-      'getPageData': {method:'GET', isArray:true, params:{'offset':0, 'size':10}}
+      'getPageData': {method:'GET', isArray:false, params:{'pageNumber':1, 'pageSize':12}}
     });
   }
 ]);
@@ -91,3 +104,14 @@ app.factory('Sites', ['$resource',
   }
 ]);
 */
+
+app.factory('Jobs', ['$resource', function($resource) {
+    return $resource(
+      '/api/jobs/', 
+    {
+    },
+    {
+      'get': {method:'GET', isArray:true}
+    });
+  }
+]);

@@ -97,10 +97,7 @@ var ContactSchema = {
   title: String,
   hobby: [String],
   department: {
-    type: String,
-    required: true,
-    default: 'others',
-    enum: ['sales', 'markets', 'store', 'others'],
+    type: String
   },
 }; 
 

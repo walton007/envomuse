@@ -47,13 +47,13 @@ exports.create = function(req, res) {
  */
 exports.update = function(req, res) {
   var customer = req.customer;
-  //console.log(req);
+  console.log('req.customer:', req.customer);
   customer = _.extend(customer, req.body);
 
   customer.save(function(err) {
     if (err) {
       return res.status(500).json({
-        error: 'Cannot update the customer'
+        error: err
       });
     }
     res.json(customer);
@@ -165,11 +165,20 @@ exports.addSite = function(req, res) {
 exports.paginate = function(req, res) {
   req.checkQuery('pageNumber', 'invalid pageNumber').isInt();
   req.checkQuery('pageSize', 'invalid pageSize').isInt();
+  req.checkQuery('startDate', 'invalid startDate').optional().isDate();
+  req.checkQuery('endDate', 'invalid endDate').optional().isDate();
+  console.log('startDate:', req.query.startDate);
+
   var errors = req.validationErrors(true);
   if (errors) {
     res.send(errors, 400);
     return;
   }
+
+  var useDateQuery = false;
+  if (req.query.startDate && req.query.endDate) {
+    useDateQuery = true;
+  };
 
   var pageNumber = req.query.pageNumber,
     pageSize = req.query.pageSize,
@@ -191,9 +200,13 @@ exports.paginate = function(req, res) {
       }
     }
 
-  Customer.paginate({
-      deleteFlag: false
-    },
+  Customer.paginate(useDateQuery ? {
+      deleteFlag: false,
+      created: {
+        $gte: req.query.startDate,
+        $lte: req.query.endDate,
+      }
+    } : {deleteFlag: false},
     pageNumber, pageSize, callback, {
       sortBy: '-created',
       columns: '-__v -__t -deleteFlag'

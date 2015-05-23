@@ -247,6 +247,13 @@ angular.module('app')
                   abstract: true,
                   url: '/jobs',
                   templateUrl: 'tpl/layout.html',
+                  resolve: {
+                    deps: ['$ocLazyLoad',
+                      function( $ocLazyLoad ){
+                        return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
+                                                 'js/app/envomuse.services.js']);
+                    }]
+                  }
               })
               .state('jobs.dash', {
                   url: '/dash',
@@ -261,14 +268,6 @@ angular.module('app')
                       'footer': {
                           templateUrl: 'tpl/com.envomuse/jobs_list_footer.html'
                       }
-                  },
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad){
-                          return uiLoad.load(['js/app/envomuse.job/job.js',
-                                              'js/app/envomuse.job/job-service.js']
-                                             );
-                      }]
                   }
               })
               .state('jobs.detail', {

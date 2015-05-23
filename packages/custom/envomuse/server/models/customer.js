@@ -15,8 +15,8 @@ var CustomerSchema = BaseSchema.extend({
   industry: String,
   updatePeriod: String,
 
-  //contacts: [ContactSchema],
-  contacts: [],
+  contacts: [ContactSchema],
+  // contacts: [],
   logo:{
     type:String,
     default:"img/default_logo.png"
@@ -29,7 +29,7 @@ var CustomerSchema = BaseSchema.extend({
     enum: ['prospect', 'meeting', 'demo', 'pilot', 'active', 'inactive'],
   },*/
   crmInfo: {
-    manager: ContactSchema, //brand manager
+    // manager: ContactSchema, //brand manager
     firstContactDate: Date,
     demoDate: Date,
     pilotDate: Date,

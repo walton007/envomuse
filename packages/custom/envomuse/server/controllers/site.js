@@ -198,6 +198,8 @@ exports.statistic = function(req, res, next) {
       });
     }
 
+    //online store
+
     res.json({
       totalStore: count,
       activeStore: count
