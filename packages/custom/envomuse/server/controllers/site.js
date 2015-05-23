@@ -94,7 +94,7 @@ exports.show = function(req, res) {
  * List of Sites
  */
 exports.all = function(req, res) {
-  Site.find().sort('-created').populate('user', 'name username').exec(function(err, sites) {
+  Site.find().sort('-created').exec(function(err, sites) {
     if (err) {
       return res.status(500).json({
         error: 'Cannot list the sites'

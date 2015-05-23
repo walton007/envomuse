@@ -17,17 +17,22 @@ var ProgramSchema = BaseSchema.extend({
     type: Schema.ObjectId,
     ref: 'Job'
   },
-  playlists: [{
+  dayPrograms: [{
     guid: String,
     date: Date,
-    tracks: [{
-      id: Number,
+    playlist: [{
+      song: {
+        type: Schema.ObjectId,
+        ref: 'Song'
+      },
       title: String,
-      hour: Date,
+      hour: String,
+      milliseconds: Number,
       volume: Number,
       fadeIn: Number,
       fadeOut: Number,
       duration: Number,
+      displayTm: String,
       url:String,
     }],
   }],

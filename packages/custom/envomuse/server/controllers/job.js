@@ -8,9 +8,11 @@ var mongoose = require('mongoose'),
   Program = mongoose.model('Program'),
   moment = require('moment-range'),
   Chance = require('chance'),
+  Q = require('q'),
   _ = require('lodash');
 
 exports.all = function(req, res) {
+  console.log('all jobs');
   Job.find().sort('-created').exec(function(err, jobs) {
     if (err) {
       return res.status(500).json({
@@ -34,8 +36,9 @@ exports.job = function(req, res, next, id) {
 };
 
 exports.statistic = function(req, res, next) {
-  if (!'statistic' in req.query) {
+  if (!('statistic' in req.query)) {
     next();
+    return;
   }
 
   Job.count(function(err, count) {
@@ -55,8 +58,10 @@ exports.statistic = function(req, res, next) {
 
 function translateDateString(dateString) {
   return moment(dateString);
-};
+}
+
 function translateDayString(dayString) {
+  console.log('translateDayString dayString:', dayString);
   var dayOfWeekMap = {'Mon': moment().day(1),
          'Tue': moment().day(2), 
          'Wed': moment().day(3),
@@ -65,9 +70,11 @@ function translateDayString(dayString) {
          'Sat': moment().day(6),
          'Sun': moment().day(0)};
   return dayOfWeekMap[dayString];
-};
+}
+
 function translateDayRuleUnitString(ruleUnitString) {
-  return moment().hour(parseInt(Number));
+  console.log('translateDayRuleUnitString:', ruleUnitString);
+  return moment().hour(parseInt(ruleUnitString));
 }
 
 //Define the song selection strategy
@@ -77,8 +84,57 @@ function randomFromBox(ctx, box) {
   return box.songlist[idx];
 }
 
+function getTimeInCurDay(mmt) {
+  return mmt.milliseconds()
+  + mmt.seconds() *1000
+  + mmt.minutes() *60*1000
+  + mmt.hours() *60 *60 *1000;
+}
+
+function generatePlaylistFromRule(ctx) {
+  console.log('generatePlaylistFromRule:', ctx.starthour.toISOString());
+  var starthourAsMs = getTimeInCurDay(ctx.starthour),
+    endhourAsMs = getTimeInCurDay(ctx.endhour);
+
+    ctx.lasthour = moment.max(ctx.lasthour, ctx.starthour);
+  
+  var breakFlag = false;
+  var i = 0;
+  var lasthourAsMs = getTimeInCurDay(ctx.lasthour);
+  while (true) {
+    if (i > 1000 || breakFlag || lasthourAsMs > endhourAsMs) {
+      break;
+    };
+    i++;
+    // console.log('starthourAsMs:', starthourAsMs, 'endhourAsMs:', endhourAsMs, 'lasthourAsMs:', lasthourAsMs);
+    
+    // console.log();
+    _.each(ctx.currentRule.boxes, function(boxKey) {
+      if (breakFlag || lasthourAsMs > endhourAsMs) {
+        breakFlag = true;
+        return;
+      };
+      var songObj = randomFromBox(ctx, ctx.boxes[boxKey]);
+      var track = {
+        song: songObj.song,
+        displayTm: ctx.lasthour.format("LTS"),
+        milliseconds: lasthourAsMs,
+        duration: !!songObj.duration ? songObj.duration : 3*60*1000 
+      };
+      //update ctx
+      ctx.lasthour.add(track.duration, 'milliseconds');
+      //update lasthourAsMs
+      lasthourAsMs = getTimeInCurDay(ctx.lasthour);
+      ctx.playlist.push(track);
+    });
+  }
+}
+
 function generatePlaylistFromJob(checkDay, job) {
-  var sortedPlaylists = _.sortBy(job.programRule.playlists, 
+  console.log('generatePlaylistFromJob for day:', checkDay.format('L'));
+  
+  var jobJson = job.toJSON();
+  var sortedPlaylists = _.sortBy(jobJson.programRule.playlists, 
     function(playlist) {
       var numberArr = [ 'multipleDates', 'dateRange', 'daysOfWeek']; 
       return numberArr.indexOf(playlist.timePeriods.calcType);
@@ -106,18 +162,7 @@ function generatePlaylistFromJob(checkDay, job) {
     };
     if (calcType === 'daysOfWeek') {
       for (var j = curPlaylist.timePeriods.daysOfWeekValues.length - 1; j >= 0; j--) {
-        if (translateDayString(curPlaylist.timePeriods.daysOfWeekValues).day() === checkDay.day()) {
-          findPlaylist = curPlaylist;
-          break;
-        }
-      };
-
-      var daysOfWeekValues = curPlaylist.timePeriods.daysOfWeekValues;
-      _(daysOfWeekValues).map(function(day) {
-
-      })
-      for (var j = multipleDatesValues.length - 1; j >= 0; j--) {
-        if (moment(multipleDatesValues[j]).day() === checkDay.day()) {
+        if (translateDayString(curPlaylist.timePeriods.daysOfWeekValues[j]).day() === checkDay.day()) {
           findPlaylist = curPlaylist;
           break;
         }
@@ -129,65 +174,130 @@ function generatePlaylistFromJob(checkDay, job) {
     };
   };
 
-  if (findPlaylist) {
-    var ctx = {};
-    var selectedSongPair = [];
-    findPlaylist.dayRuleUnits;
-    var sortedDayRuleUnits = _.sortBy(findPlaylist.dayRuleUnits, 
-      function(dayRuleUnit) {
-        dayRuleUnit.starthour = translateDayRuleUnitString(dayRuleUnit.starthour);
-        return translateDayRuleUnitString(dayRuleUnit.starthour);
-      });
-    if (sortedPlaylists.length === 0) {
-      return null;
-    };
-    var curHour = sortedPlaylists[0].starthour;
-    _(sortedDayRuleUnits).each(function(sortedDayRuleUnit) {
-      //find rule
-      var rules = _.filter(job.programRule.rules, function(rule) {
-        rule.name === sortedDayRuleUnit.ruleName;
-      }), rule = rules[0];
-      var boxes = {};
-      _(job.programRule.boxes).each(function(box) {
-        boxes[box.name] = box;
-      });
-      //iterate rule until time used out
-      _.each(rule.boxes, function(boxKey) {
-        // if (curHour ) {};
-        var songObj = randomFromBox(ctx, boxes[boxKey]);
-        songObj.songid;
-        var track = {
-      id: Number,
-      title: String,
-      hour: Date,
-      volume: Number,
-      fadeIn: Number,
-      fadeOut: Number,
-      duration: Number,
-      url:String,
-    };
+  if (!findPlaylist) {
+    console.warn('Not find suitable playlist');
+    return null;
+  }
 
-      });
-      
-    })
-    return;
+  // var dayRuleUnits = _.cloneDeep(findPlaylist.dayRuleUnits;
+  var dayRuleUnits = findPlaylist.dayRuleUnits;
+  console.log('dayRuleUnits is:', dayRuleUnits);
+
+  var ctx = {
+    playlist: [],
+    boxes: job.programRule.boxes,
+    lasthour: undefined,
+
+    currentRule: undefined,
+    starthour: undefined,
+    endhour: undefined
   };
-  return null;
+
+  _(job.programRule.boxes).each(function(box) {
+    ctx.boxes[box.name] = box;
+  });
+
+  var selectedSongPair = [];
+  console.log('findPlaylist.dayRuleUnits:', dayRuleUnits);
+  var sortedDayRuleUnits = _.sortBy(dayRuleUnits, 
+    function(dayRuleUnit) {
+      dayRuleUnit.starthour = translateDayRuleUnitString(dayRuleUnit.starthour);
+      dayRuleUnit.endhour = translateDayRuleUnitString(dayRuleUnit.endhour);
+      return dayRuleUnit.starthour;
+    });
+  if (sortedPlaylists.length === 0) {
+    return null;
+  };
+  // ctx.lasthour = moment(sortedPlaylists[0].starthour.toISOString());
+  ctx.lasthour = moment(sortedPlaylists[0].starthour);
+  
+  _(sortedDayRuleUnits).each(function(sortedDayRuleUnit) {
+    console.log(sortedDayRuleUnit.ruleName, sortedDayRuleUnit.starthour.toISOString()
+      ,sortedDayRuleUnit.endhour.toISOString());
+    //find rule
+    var rules = _.filter(job.programRule.rules, function(rule) {
+      return rule.name === sortedDayRuleUnit.ruleName;
+    }), rule = rules[0];
+    //Generate Playlist from rule
+    ctx.starthour = sortedDayRuleUnit.starthour;
+    ctx.endhour = sortedDayRuleUnit.endhour;
+    ctx.currentRule = rule;
+    generatePlaylistFromRule(ctx);
+  });
+
+  return ctx.playlist;
 }
 
 function generateProgramFromJob(startDate, endDate, job) {
-  console.log('generateProgramFromJob');
-  var range = moment.range(startDate, endDate);
+  console.log('generateProgramFromJob 1');
+  var invalidDays = [];
+  var validDays = [];
+  var range = moment.range(startDate, endDate.subtract(1, 'days'));
   range.by('days', function(checkDay) {
-    // Do something with `moment`
-    console.log('day:', checkDay);
     //generate playlist for current moment
+    var playlist = generatePlaylistFromJob(checkDay, job);
+    if (!playlist) {
+      invalidDays.push(checkDay);
+    } else {
+      validDays.push({
+        // date: checkDay.format('L'),
+        date: checkDay,
+        playlist: playlist
+      })
+    }
+  });
+  return {
+    validDays: validDays,
+    invalidDays: invalidDays
+  };
+}
 
+function generateProgramRecord(job, startDate, endDate, programName, validDays) {
+  var deferred = Q.defer();
+  var program = new Program({
+    name: programName,
+    job: job,
+    startDate: startDate,
+    endDate: endDate
+  });
+  program.dayPrograms = _.map(validDays, function(obj) {
+    var dayProgram = {
+      date: obj.date,
+      playlist: []
+    };
+    dayProgram.playlist = _.map(obj.playlist, function(trackObj) {
+      return {
+        song: trackObj.song,
+        milliseconds: trackObj.milliseconds,
+        duration: trackObj.duration,
+        displayTm: trackObj.displayTm
+      };
+    });
+    
+    return dayProgram;
   });
 
+  program.save(function(err, newObj) {
+    if (err) {
+      console.warn('create err:', err);
+      deferred.reject(err);
+      return;
+    }
+    deferred.resolve(newObj);
+  });
+
+  return deferred.promise;
 }
 
 exports.generateProgram = function(req, res, next) {
+  req.checkBody('startDate', 'invalid startDate').isDate();
+  req.checkBody('endDate', 'invalid endDate').isDate();
+  var errors = req.validationErrors(true);
+  if (errors) {
+    res.send(errors, 400);
+    return;
+  }
+
     var startDate = moment(req.body.startDate),
        endDate  = moment(req.body.endDate);
     //Check startDate and endDate
@@ -197,8 +307,40 @@ exports.generateProgram = function(req, res, next) {
       });
     };
     //generateProgram
-    generateProgramFromJob(startDate, endDate, req.job);
-    res.json({
-      id: 100
-    });
+    var result = generateProgramFromJob(startDate, endDate, req.job);
+    if (result.invalidDays.length) {
+      res.json({
+        invalidDays: result.invalidDays
+      }, 400);
+    } else {
+      console.log('have validDays');
+      //generate program valid now!
+      generateProgramRecord(req.job, startDate, endDate,
+       req.body.name ? req.body.name : req.job.programName, result.validDays)
+      .then(function(program){
+        res.json(program);
+      }, function(err) {
+        res.json({
+          createProgramErr: err
+        }, 400);
+      });
+    }
+    
   }
+
+exports.programs = function(req, res, next) {
+  Program.find({
+    job: req.job
+  })
+  .select('-__t -__v -deleteFlag -modified')
+  .exec(function(err, programs) {
+    if (err) {
+      console.warn('programs err:', err);
+      res.json({
+        getProgramErr: err
+      }, 400);
+      return;
+    }
+    res.json(programs);
+  });
+}

@@ -18,10 +18,11 @@ var JobSchema = new Schema({
       description: String,
       songlist: [ {
         //name: String,
-        songid: {
+        song: {
           type: Schema.ObjectId,
           ref: 'Song'
         },
+        duration: Number, // in milliseconds
         relativePath: String
       }]
     }],

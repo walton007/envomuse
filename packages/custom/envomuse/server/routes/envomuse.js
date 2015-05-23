@@ -51,13 +51,7 @@ module.exports = function(Envomuse, app, auth, database) {
     }]);
   });
   apiRouter.route('/jobs/:jobId/programs')
-  .post(function(req, res, next) {
-    //export job war package
-    res.json([{
-      id: 100,
-      programInfo : {}
-    }]);
-  });
+  .get(jobs.programs);
   apiRouter.param('jobId', jobs.job); 
 
   //export task
