@@ -140,13 +140,57 @@ module.exports = function(Envomuse, app, auth, database) {
   .get(sites.programs);
   apiRouter.param('siteId', sites.site);
 
+  //All Terminal Player related interface will be moved to another dedicated server 
+  var terminalRouter = express.Router();
+  app.use('/terminal', terminalRouter);
   //ConnectionLogs For Music Player
   // ConnectionLog
+  terminalRouter.route('/login')
+  .post(function(req, res, next) {
+    //param: {uuid: 'abc', deviceInfo: {mac:'ac-de-fc-sd'}}
+    //update site.license info
+    res.json({ok: true});
+  });
+  terminalRouter.route('/getTernimalConfig')
+  .get(function(req, res, next) {
+    //return site.playerSetting
+    //once a day 
+    res.json({fadeIn: 10, fadeOut:12 });
+  });
+  terminalRouter.route('/getJingoList')
+  .get(function(req, res, next) {
+    //return the site's jingo information
+    //once a day 
+    res.json({jingo: []});
+  });
+  terminalRouter.route('/getPlayList')
+  .get(function(req, res, next) {
+    //query param: version
+    //once a day 
+    res.json({playlist: []});
+  });
+  terminalRouter.route('/songs/:songId/hqfile')
+  .get(function(req, res, next) {
+    var hqfileUrl = req.song.rawfilepath.substr(config.root.length);
+    // console.log('hqfileUrl:', hqfileUrl);
+    res.redirect(hqfileUrl);
+  });
+  terminalRouter.route('/reports')
+  .post(function(req, res, next) {
+    // once a day: for statistic purpose
+    // concrete content need to be defined later
+    res.json({ok: true});
+  });
+  terminalRouter.route('/heartbeat')
+  .post(function(req, res, next) {
+    // 30 miniutes once a day: for statistic purpose
+    // this will update site.lastHeartbeat
+    res.json({ok: true});
+  });
 
   //For Debug
   apiRouter.route('/debug/siteProgram')
   .get(sitePrograms.all);
-
 
   app.get('/envomuse/example/admin', auth.requiresAdmin, function(req, res, next) {
     res.send('Only users with Admin role can access this');

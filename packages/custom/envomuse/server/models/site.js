@@ -34,23 +34,22 @@ var SiteSchema = BaseSchema.extend({
 
   license: {
     uuid: String,
-    activated: {
-      type: Boolean,
-      required: true,
-      default: false
-    },
+    activatedDate: Date,
     deviceInfo: {
       mac: String
     },
     sshkey: String,
 
-    lastConnectDate: Date,
+    lastHeartbeat: {
+      time: Date,
+      song: String  
+    },
+
     playerStatus: {
       type: String,
       default: 'local',
       enum: ['updated', 'local', 'partialUpate'],
-    },
-    activatedDate: Date,
+    }
   },
 
   disable: {

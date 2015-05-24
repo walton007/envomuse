@@ -18,7 +18,8 @@ var SiteProgramSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Program'
   },
-  created: {
+  programName: String, 
+  bindDate: {
     type: Date,
     default: Date.now,
     required: true
