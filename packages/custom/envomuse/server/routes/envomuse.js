@@ -36,9 +36,7 @@ module.exports = function(Envomuse, app, auth, database) {
   apiRouter.get('/jobs', jobs.statistic, jobs.all);
 
   apiRouter.route('/jobs/:jobId')
-  .get(function(req, res, next) {
-    res.json({id:2});
-  })
+  .get(jobs.show)
   .delete(function(req, res, next) {
     res.send(200);
   });
@@ -80,22 +78,21 @@ module.exports = function(Envomuse, app, auth, database) {
     res.send(200);
   });
   apiRouter.route('/programs/:programId/bindSite')
-  .post(programs.bindSite);
+  .post(function(req, res, next){
+    return sites.site(req, res, next, req.body.siteId);
+  }, sites.bindProgram);
   apiRouter.param('programId', programs.program); 
 
   //Songs
   apiRouter.route('/songs')
   .get(songs.all);
   apiRouter.route('/songs/:songId')
-  .get(function(req, res, next) {
-    res.json([{id:1}]);
-  });
+  .get(songs.show);
   apiRouter.route('/songs/:songId/hqfile')
   .get(function(req, res, next) {
     var hqfileUrl = req.song.rawfilepath.substr(config.root.length);
     // console.log('hqfileUrl:', hqfileUrl);
     res.redirect(hqfileUrl);
-    // res.redirect('/musicAssert/alphaEnc.mp3');
   });
   apiRouter.route('/songs/:songId/lqfile')
   .get(function(req, res, next) {
@@ -129,7 +126,9 @@ module.exports = function(Envomuse, app, auth, database) {
   apiRouter.route('/sites/:siteId/bindLicense')
   .post(sites.bindLicense);
   apiRouter.route('/sites/:siteId/bindProgram')
-  .post(sites.bindProgram);
+  .post(function(req, res, next) {
+    return programs.program(req, res, next, req.body.programId);
+  }, sites.bindProgram);
   apiRouter.route('/sites/:siteId/license/activate')
   .post(sites.licenseActivate);
   apiRouter.route('/sites/:siteId/connectionLogs')

@@ -19,6 +19,13 @@ exports.all = function(req, res) {
 };
 
 /**
+ * Show an song
+ */
+exports.show = function(req, res) {
+  res.json(req.song);
+};
+
+/**
  * Find song by id
  */
 exports.song = function(req, res, next, id) {

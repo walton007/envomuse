@@ -71,7 +71,7 @@ var SiteSchema = BaseSchema.extend({
 SiteSchema.statics.load = function(id, cb) {
   this.findOne({
     _id: id
-  }).populate('user', 'name username').exec(cb);
+  }).exec(cb);
 };
 
 SiteSchema.plugin(mongoosePaginate);

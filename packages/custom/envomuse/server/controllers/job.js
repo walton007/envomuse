@@ -24,6 +24,12 @@ exports.all = function(req, res) {
 };
 
 /**
+ * Show an job
+ */
+exports.show = function(req, res) {
+  res.json(req.job);
+};
+/**
  * Find job by id
  */
 exports.job = function(req, res, next, id) {

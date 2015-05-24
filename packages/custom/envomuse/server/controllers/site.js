@@ -5,9 +5,9 @@
  */
 var mongoose = require('mongoose'),
   Site = mongoose.model('Site'),
+  SiteProgram = mongoose.model('SiteProgram'),
   uuid = require('node-uuid'),
   _ = require('lodash');
-
 
 /**
  * Find Site by id
@@ -88,15 +88,37 @@ exports.destroy = function(req, res) {
 exports.show = function(req, res) {
   res.json(req.site);
 };
-
-/**
- * Show an site
- */
+ 
 exports.bindProgram = function(req, res) {
-  req.checkBody('programId', 'invalid programId').isDate();
-  res.json({
-    
-  });
+  SiteProgram.loadBy(req.site, req.program,
+    function(err, siteProgram) {
+      if (err) {
+        console.warn('SiteProgram.loadBy err:', err);
+        return res.status(500).json({
+          error: err
+        });
+      }  
+      if (siteProgram) {
+        res.json(siteProgram);
+        return;
+      }
+      siteProgram = new SiteProgram({
+        site: req.site,
+        program: req.program
+      });
+
+      siteProgram.save(function(err, newObj) {
+        if (err) {
+          console.warn('create err:', err);
+          return res.status(500).json({
+            error: 'Cannot save the siteProgram'
+          });
+        }
+        res.json(newObj);
+      });
+
+    })
+  
 };
 
 /**
@@ -199,7 +221,6 @@ exports.statistic = function(req, res, next) {
     }
 
     //online store
-
     res.json({
       totalStore: count,
       activeStore: count

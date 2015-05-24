@@ -37,11 +37,16 @@ var ProgramSchema = BaseSchema.extend({
     }],
   }],
   startDate: Date,
-  endDate: Date,
-  site: {
-    type: Schema.ObjectId,
-    ref: 'Site'
-  },
+  endDate: Date
 });
+
+/**
+ * Statics
+ */
+ProgramSchema.statics.load = function(id, cb) {
+  this.findOne({
+    _id: id
+  }).exec(cb);
+};
 
 mongoose.model('Program', ProgramSchema);

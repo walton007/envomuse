@@ -12,9 +12,9 @@ var mongoose = require('mongoose'),
  * Find program by id
  */
 exports.program = function(req, res, next, id) {
-  Program.load(id, function(err, customer) {
+  Program.load(id, function(err, program) {
     if (err) return next(err);
-    if (!customer) return next(new Error('Failed to load program ' + id));
+    if (!program) return next(new Error('Failed to load program ' + id));
     req.program = program;
     next();
   });
@@ -27,15 +27,6 @@ exports.program = function(req, res, next, id) {
 exports.show = function(req, res) {
   res.json(req.program);
 };
-
-/**
- * bind this program to some site
- */
-exports.bindSite = function(req, res) {
-  // res.json(req.program);
-  res.json({id:2});
-};
-
 
 exports.statistic = function(req, res, next) {
   if (!('statistic' in req.query)) {
