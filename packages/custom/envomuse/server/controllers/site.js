@@ -142,6 +142,10 @@ exports.all = function(req, res) {
  */
 exports.bindLicense = function(req, res) {
   var site = req.site;
+  if (site.license) {
+    return res.json(site);
+  };
+
   site.license = {
     uuid: uuid.v4(),
     activated: false
@@ -154,6 +158,21 @@ exports.bindLicense = function(req, res) {
       });
     }
     res.json(site);
+  });
+};
+
+exports.programs = function(req, res) {
+  SiteProgram.find({
+    site: req.site
+  })
+  .exec(function(err, sites) {
+    if (err) {
+      console.warn('site find programs error:', err);
+      return res.status(500).json({
+        error: err
+      });
+    }
+    res.json(sites);
   });
 };
 
@@ -208,8 +227,8 @@ exports.licenseActivate = function(req, res) {
 };
 
 exports.statistic = function(req, res, next) {
-  if (!'statistic' in req.query) {
-    next();
+  if (!('statistic' in req.query)) {
+    return next();
   }
 
   Site.count(function(err, count) {

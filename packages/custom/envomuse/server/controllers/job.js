@@ -264,11 +264,14 @@ function generateProgramRecord(job, startDate, endDate, programName, validDays) 
     name: programName,
     job: job,
     startDate: startDate,
-    endDate: endDate
+    displayStartDate: startDate.format('L'),
+    endDate: endDate,
+    displayEndDate: endDate.format('L')
   });
   program.dayPrograms = _.map(validDays, function(obj) {
     var dayProgram = {
       date: obj.date,
+      displayDate: obj.date.format('L'),
       playlist: []
     };
     dayProgram.playlist = _.map(obj.playlist, function(trackObj) {

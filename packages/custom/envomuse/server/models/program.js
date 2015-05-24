@@ -20,6 +20,7 @@ var ProgramSchema = BaseSchema.extend({
   dayPrograms: [{
     guid: String,
     date: Date,
+    displayDate: String,
     playlist: [{
       song: {
         type: Schema.ObjectId,
@@ -36,8 +37,11 @@ var ProgramSchema = BaseSchema.extend({
       url:String,
     }],
   }],
+   
   startDate: Date,
-  endDate: Date
+  displayStartDate: String,
+  endDate: Date,
+  displayEndDate: String,
 });
 
 /**

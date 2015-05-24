@@ -8,7 +8,8 @@ var express = require('express'),
    programs = require('../controllers/program'),
    comingJobs = require('../controllers/comingJob'),
    jobs = require('../controllers/job'),
-   songs = require('../controllers/song');
+   songs = require('../controllers/song'),
+   sitePrograms = require('../controllers/siteProgram');
 
 // The Package is past automatically as first parameter
 module.exports = function(Envomuse, app, auth, database) {
@@ -135,10 +136,16 @@ module.exports = function(Envomuse, app, auth, database) {
   .get(function(req, res, next) {
     res.json([{id:2}]);
   });
+  apiRouter.route('/sites/:siteId/programs')
+  .get(sites.programs);
   apiRouter.param('siteId', sites.site);
 
   //ConnectionLogs For Music Player
   // ConnectionLog
+
+  //For Debug
+  apiRouter.route('/debug/siteProgram')
+  .get(sitePrograms.all);
 
 
   app.get('/envomuse/example/admin', auth.requiresAdmin, function(req, res, next) {
