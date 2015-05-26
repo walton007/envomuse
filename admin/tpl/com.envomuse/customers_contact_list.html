@@ -28,11 +28,12 @@
           <div class="clearfix text-center m-t">
             <div class="inline">
               <div class="thumb-lg" style="height: 96px;">
-                <a ui-sref="customers.contact.detail({contactId:item._id})">
+                <a ui-sref="customers.contact.detail({contactId:item._id,brandContent:brand})">
                   <img src="img/default_logo.png" class="img-circle" alt="{{item.name}}">
+                  {{brand.brand}}
                 </a>
               </div>
-              <div class="h4 m-t m-b-xs"><a ui-sref="customers.contact.detail({contactId:item._id})">{{item.name}}</a></div>
+              <div class="h4 m-t m-b-xs"><a ui-sref="customers.contact.detail({contactId:item._id,brandContent:brand})">{{item.name}}</a></div>
               <small class="text-muted m-b">{{item.title}}</small>
             </div>                      
           </div>

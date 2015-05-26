@@ -191,6 +191,9 @@ angular.module('app')
               .state('customers.contact.detail', {
                   url: '/contact/:contactId/detail',
                   parent: 'customers',
+                  params : {
+                    brandContent:null
+                  },
                   views: {
                       '': {
                           templateUrl: 'tpl/com.envomuse/customers_contact_detail.html'
@@ -198,14 +201,6 @@ angular.module('app')
                       'footer': {
                           templateUrl: 'tpl/com.envomuse/customers_contact_detail_footer.html'
                       }
-                  },
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad){
-                          return uiLoad.load(['js/app/envomuse.customer/contact.js',
-                                              'js/app/envomuse.customer/contact-service.js']
-                                             );
-                      }]
                   }
               })
               .state('customers.contact.add', {
@@ -221,8 +216,11 @@ angular.module('app')
                   },
               })
               .state('customers.contact.edit', {
-                  url: '/:brandId/store/:storeId/:contactId/edit',
+                  url: '/contact/:contactId/edit',
                   parent: 'customers',
+                  params : {
+                    brandContent:null
+                  },
                   views: {
                       '': {
                           templateUrl: 'tpl/com.envomuse/customers_contact_edit.html'
@@ -230,14 +228,6 @@ angular.module('app')
                       'footer': {
                           templateUrl: 'tpl/com.envomuse/customers_contact_edit_footer.html'
                       }
-                  },
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad){
-                          return uiLoad.load(['js/app/envomuse.customer/contact.js',
-                                              'js/app/envomuse.customer/contact-service.js']
-                                             );
-                      }]
                   }
               })
 

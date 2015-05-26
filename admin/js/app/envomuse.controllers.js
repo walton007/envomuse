@@ -1,3 +1,4 @@
+//Customer-Brand
 app.controller('CustomerCountCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', 
   function($scope, Customers, Sites, $stateParams) {  
 
@@ -23,7 +24,6 @@ app.controller('CustomerCountCtrl', ['$scope', 'Customers', 'Sites', '$statePara
       });
   };
 }]);
-
 
 app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams', 
   function($scope, Customers, $stateParams) {
@@ -74,11 +74,11 @@ app.controller('CustomerDetailCtrl', ['$scope', 'Customers', '$stateParams', fun
     });
 }]);
 
-app.controller('CustomerNewCtrl', ['$scope', 'Customers', function($scope, Customers) {
+app.controller('CustomerNewCtrl', ['$scope', '$state', 'Customers', function($scope,$state, Customers) {
   $scope.brand = {};
 
   $scope.industrylist = [
-    "保险业","采矿","能源","餐饮","宾馆","电讯业","房地产","服务","服装业","公益组织","广告业","航空航天","化学","健康","保健","建筑业","教育","培训","计算机","金属冶炼","警察","消防","军人","会计","美容","媒体","出版","木材","造纸","零售","批发","农业","旅游业","司法","律师","司机","体育运动","学术研究","演艺","医疗服务","艺术","设计","银行","金融","因特网","音乐舞蹈","邮政快递","运输业","政府机关","机械制造","咨询","其它"
+    "奢侈品","酒店/宾馆","餐饮","服装业", "服务","美容","媒体","零售","设计","银行","金融","因特网","咨询","其它"
   ];
   $scope.statuslist = [
     "目标客户","初步接触","DEMO展示","PILOT试用","现有","合同已终止","其它"
@@ -107,14 +107,9 @@ app.controller('CustomerNewCtrl', ['$scope', 'Customers', function($scope, Custo
 
     var customer = new Customers(newCustomer);
     customer.$save(function(customer) {
-      alert('create customer success');
-      /*if(customer){
-        $rootScope.$on('$stateChangeStart', 
-          function(event, toState, toParams, fromState, fromParams){
-            event.preventDefault();
-            $state.
-        })
-      }*/
+      if(customer){
+        $state.go('customers.brand.detail',{brandId:customer._id});
+      }
     });
   };
 
@@ -128,7 +123,7 @@ app.controller('CustomerEditCtrl', ['$scope', '$state', 'Customers', '$statePara
     });
 
   $scope.industrylist = [
-    "保险业","采矿","能源","餐饮","宾馆","电讯业","房地产","服务","服装业","公益组织","广告业","航空航天","化学","健康","保健","建筑业","教育","培训","计算机","金属冶炼","警察","消防","军人","会计","美容","媒体","出版","木材","造纸","零售","批发","农业","旅游业","司法","律师","司机","体育运动","学术研究","演艺","医疗服务","艺术","设计","银行","金融","因特网","音乐舞蹈","邮政快递","运输业","政府机关","机械制造","咨询","其它"
+    "奢侈品","酒店/宾馆","餐饮","服装业", "服务","美容","媒体","零售","设计","银行","金融","因特网","咨询","其它"
   ];
   $scope.statuslist = [
     "目标客户","初步接触","DEMO展示","PILOT试用","现有","合同已终止","其它"
@@ -156,7 +151,8 @@ app.controller('CustomerEditCtrl', ['$scope', '$state', 'Customers', '$statePara
 
     var customer = new Customers(customerUpdated);
     customer.$update(function(customer) {
-      alert('edit customer success');
+      //alert('edit customer success');
+      $state.go('customers.brand.detail',{brandId:customer._id});
     });
   };
 
@@ -187,13 +183,11 @@ app.controller('CustomerDeleteModalCtrl', ['$scope', '$modal', '$log', function(
         $log.info('Modal dismissed at: ' + new Date());
       }); 
     };
-  }])
-  ; 
+}]); 
 
-
-//STORES
-app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites', '$stateParams', 
-  function($scope, Customers, Sites, CustomerSites, $stateParams) {
+//STORES-Sites
+app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites', '$stateParams', '$state',
+  function($scope, Customers, Sites, CustomerSites, $stateParams,$state) {
 
   Customers.get({'customerId':$stateParams.brandId},
     function(res) {
@@ -220,7 +214,49 @@ app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites',
 
     var store = new CustomerSites(newStore);
     store.$save({'customerId':  $stateParams.brandId}, function(site) {
-      alert('add site success');
+      //alert('add site success');
+      $state.go('customers.store.detail',{brandId:$stateParams.brandId,storeId:site._id});
+    });
+  };
+
+}]);
+
+app.controller('StoreEditCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', '$state',
+  function($scope, Customers, Sites, $stateParams,$state) {
+
+  Customers.get({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.brand = res;
+      $scope.contacts = $scope.brand.contacts;
+    });
+
+  Sites.get({'siteId':$stateParams.storeId},
+    function(res) {
+      $scope.store = res;
+    });
+
+  $scope.saveStore = function(){
+    var updatedStore = {
+      _id:$scope.store._id,
+      customerId: $scope.brand._id,
+      siteName: $scope.store.siteName,
+      reference: $scope.store.reference,
+      // businesscenter: $scope.store.businesscenter,
+      // manager: $scope.store.contact,
+      // address: $scope.store.address,
+      // country: $scope.store.country,
+      // province: $scope.store.province,
+      // city: $scope.store.city,
+      // zipcode: $scope.store.zipcode,
+      // latitude: $scope.store.latitude,
+      // longitude: $scope.store.longitude,
+      description: $scope.store.description
+    };
+
+    var store = new Sites(updatedStore);
+    store.$update(function(site) {
+      //alert('add site success');
+      $state.go('customers.store.detail',{brandId:$stateParams.brandId,storeId:$stateParams.storeId});
     });
   };
 
@@ -308,8 +344,8 @@ app.controller('StoreDeleteModalCtrl', ['$scope', '$modal', '$log', function($sc
   ; 
 
 
-//CONTACTS
-app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', function($scope, Customers, $stateParams) {
+//Contacts
+app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', '$state', function($scope, Customers, $stateParams, $state) {
   
   $scope.contact = {};
 
@@ -323,7 +359,7 @@ app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', functio
     var newContact = {
       name: $scope.contact.name,
       gender: $scope.contact.gender,
-      birthday: $scope.contact.birthday.getTime(),
+      birthday: $scope.contact.birthday !=null ? $scope.contact.birthday.getTime():"",
       workmobile: $scope.contact.workmobile,
       privatemobile: $scope.contact.privatemobile,
       email: $scope.contact.email,
@@ -336,20 +372,49 @@ app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', functio
     $scope.brand.contacts.push(newContact);
 
     $scope.brand.$update(function(customer) {
-      alert('Add contact success');
+      //alert('Add contact success');
+      $state.go('customers.brand.detail',{brandId:customer._id});
     });
   };
 
 
 }]);
 
+app.controller('ContactEditCtrl', ['$scope', 'Customers', '$stateParams', '$state', function($scope, Customers, $stateParams, $state) {
+  
+  $scope.brand = $stateParams.brandContent;
+  getContact = function(){
+    for(var i=0;i<$scope.brand.contacts.length;i++){
+      if($scope.brand.contacts[i]._id===$stateParams.contactId)
+        return $scope.brand.contacts[i];
+    }
+  };
+
+  $scope.contact = getContact();
+
+  $scope.saveContact = function(){
+    var customerUpdated = $scope.brand;
+
+    var customer = new Customers(customerUpdated);
+    customer.$update(function(customer) {
+      //alert('edit customer success');
+      $state.go('customers.contact.detail',{contactId:$stateParams.contactId,brandContent:customer});
+    });
+  };
+
+}]);
+
 app.controller('ContactListCtrl', ['$scope', 'Customers', '$stateParams', function($scope, Customers, $stateParams) {
+
+    //for footer controller
+    $scope.brandId = $stateParams.brandId;
 
     $scope.init = function(){
       $scope.maxSize = 5; //total buttons displayed
       $scope.bigCurrentPage = 1;  //current page
       $scope.datasource = [];
       $scope.pageItems = 12;
+
 
       Customers.get({'customerId':$stateParams.brandId},
         function(res) {
@@ -374,6 +439,43 @@ app.controller('ContactListCtrl', ['$scope', 'Customers', '$stateParams', functi
   }])
 ;
 
+app.controller('ContactDetailCtrl', ['$scope', 'Customers', '$stateParams', function($scope, Customers, $stateParams) {
+
+  $scope.brand = $stateParams.brandContent;
+
+  for(var arr = $scope.brand.contacts,i=0;i<arr.length;i++){
+    if(arr[i]._id===$stateParams.contactId)
+      $scope.contact = arr[i];
+  }
+
+}]);
+
+
+app.controller('ContactDeleteModalCtrl', ['$scope', '$modal', '$log', function($scope, $modal, $log) {
+    $scope.items = ['item1', 'item2', 'item3'];
+    $scope.open = function (size,id) {
+      var modalInstance = $modal.open({
+        templateUrl: 'deleteContactConfirmModal',
+        controller: 'ModalInstanceCtrl',
+        size: size,
+        resolve: {
+          items: function () {
+            return $scope.items;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
+    };
+  }])
+  ; 
+
+
+//Jobs
 app.controller('JobListCtrl', ['$scope', 'Jobs', '$stateParams', function($scope, Jobs, $stateParams) {
     
     //TBD: add sort functionalities
