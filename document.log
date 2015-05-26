@@ -1,0 +1,15 @@
+DashBoard (Brands Dashboard, Terminals Dashboard)  
+Customers (choose brand, general info about all brands)
+  -sitesInfo
+    -site (liscens, connectionlog)
+  -Contacts
+    -contact
+
+Jobs (action: generateProgram, export,)
+  - 
+ComingJobs (import, forceRefresh)
+  -Tasks 
+
+Programs (action: batchExport)
+
+Tasks-

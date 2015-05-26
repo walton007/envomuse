@@ -39,17 +39,16 @@ var SiteSchema = BaseSchema.extend({
       mac: String
     },
     sshkey: String,
+    // playerStatus: {
+    //   type: String,
+    //   default: 'local',
+    //   enum: ['updated', 'local', 'partialUpate'],
+    // }
+  },
 
-    lastHeartbeat: {
-      time: Date,
-      song: String  
-    },
-
-    playerStatus: {
-      type: String,
-      default: 'local',
-      enum: ['updated', 'local', 'partialUpate'],
-    }
+  lastHeartbeat: {
+    time: Date,
+    song: String  
   },
 
   disable: {
