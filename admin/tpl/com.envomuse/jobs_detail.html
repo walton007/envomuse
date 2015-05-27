@@ -6,7 +6,7 @@
         <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
         <li><a ui-sref="jobs.dash">工作管理</a></li>
         <li><a ui-sref="jobs.list">所有工作</a></li>
-        <li class="active">{{job.uuid | uppercase }}</li>
+        <li class="active">{{job.programName | uppercase }}</li>
       </ul>
     </div>
   </div>
@@ -15,7 +15,7 @@
   <div class="wrapper-md">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <span class="m-r-lg">客户名称：{{job.associatedBrand | uppercase }}</span>
+        <span class="m-r-lg">客户名称：{{job.custumorName | uppercase }}</span>
         <span>创作者：{{job.creator}}</span>
       </div>
       <table st-table="rowCollectionBasic" class="table table-bordered table-striped">
@@ -25,18 +25,18 @@
           <th width="10%">名称</th>
           <th width="10%">日期类型</th>
           <th width="10%">日期定义</th>
-          <th>RULES</th>
+          <th>情景段</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="row in rowCollectionBasic" st-select-row="row">
+        <tr ng-repeat="row in job.programRule.playlists" st-select-row="row">
           <td>{{ $index + 1 }}</td>
-          <td><a ui-sref="jobs.program({jobId:job.id,programId:row.programId})">{{row.programName}}</a></td>
-          <td>{{row.calcType}}</td>
-          <td>{{row.dValues}}</td>
+          <td><a ui-sref="jobs.program({jobId:job._id,programId:row._id,programContent:row,jobContent:job})">{{row.name}}</a></td>
+          <td>{{row.timePeriods.calcType}}</td>
+          <td>{{row.timePeriods.dValues}}</td>
           <td>
-            <span ng-repeat="r in row.rules" class="m-r-sm b">
-              <a ui-sref="jobs.rule({jobId:job.id,programId:row.programId,ruleId:r.ruleId})">{{r.timeslot}}:{{r.ruleName}}</a>
+            <span ng-repeat="r in row.dayRuleUnits" class="m-r-sm b">
+              <a ui-sref="jobs.rule({ruleId:r._id,jobContent:job,programContent:row,ruleContent:r})">{{r.ruleName}} [{{r.starthour}} --> {{r.endhour}}]</a>
             </span>
           </td>
         </tr>

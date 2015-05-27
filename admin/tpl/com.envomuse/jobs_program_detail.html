@@ -6,8 +6,8 @@
         <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
         <li><a ui-sref="jobs.dash">工作管理</a></li>
         <li><a ui-sref="jobs.list">所有工作</a></li>
-        <li><a ui-sref="jobs.detail({jobId:job.id})">{{job.uuid | uppercase }}</a></li>
-        <li class="active">{{program.programName | uppercase }}</li>
+        <li><a ui-sref="jobs.detail({jobId:job._id,jobContent:job})">{{job.programName | uppercase }}</a></li>
+        <li class="active">{{program.name | uppercase }}</li>
       </ul>
     </div>
   </div>
@@ -16,24 +16,24 @@
   <div class="wrapper-md">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <span class="m-r-lg">{{program.programId | uppercase }}</span>
-        <span class="m-r-lg">{{program.calcType }}</span>
-        <span class="m-r-lg">{{program.dValues }} </span></div>  
+        <span class="m-r-lg">{{program.name | uppercase }}</span>
+        <span class="m-r-lg">{{program.timePeriods.calcType }}</span>
+        <span class="m-r-lg">{{program.timePeriods.dValues }} </span></div>  
       <table st-table="rowCollectionBasic" class="table table-bordered table-striped">
         <thead>
         <tr>
           <th width="10%">时间段</th>
-          <th width="10%">RULE名称</th>
-          <th>BOXES</th>
+          <th width="10%">情景段</th>
+          <th>曲风盒</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="row in rowCollectionBasic" st-select-row="row">
-          <td>{{ row.timeslot }}</td>
-          <td><a ui-sref="jobs.rule({jobId:job.id,programId:program.programId,ruleId:row.ruleId})">{{row.ruleName}}</a></td>
+        <tr ng-repeat="row in program.dayRuleUnits" st-select-row="row">
+          <td>{{ row.starthour }} --> {{ row.endhour }}</td>
+          <td><a ui-sref="jobs.rule({ruleId:row._id,jobContent:job,programContent:program,ruleContent:row})">{{row.ruleName}}</a></td>
           <td>
             <span ng-repeat="r in row.boxes" class="m-r-sm b">
-              <a ui-sref="jobs.box({jobId:job.id,programId:program.programId,ruleId:row.ruleId,boxId:r.boxId})">{{r.boxName}}</a>
+              <a ui-sref="jobs.box({boxId:r._id,jobContent:job,programContent:program,ruleContent:row,boxContent:r})">{{r.name}}</a>
             </span>
           </td>
         </tr>

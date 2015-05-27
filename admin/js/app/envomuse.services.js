@@ -62,7 +62,71 @@ app.factory('Jobs', ['$resource', function($resource) {
     {
     },
     {
-      'get': {method:'GET', isArray:true}
+      'get': {method:'GET', isArray:true},
+      'getCount':{method:'GET', isArray:false, params:{'statistic':0}}
+    });
+  }
+]);
+
+//ComingJobs, used for dash statistic
+app.factory('ComingJobs', ['$resource', function($resource) {
+    return $resource(
+      '/api/comingJobs/', 
+    {
+    },
+    {
+      //'get': {method:'GET', isArray:false},
+      'getCount':{method:'GET', isArray:false}
+    });
+  }
+]);
+
+app.factory('ComingJobsRefresh', ['$resource', function($resource) {
+    return $resource(
+      '/api/comingJobs/forceRefresh', 
+    {
+    },
+    {
+      //'get': {method:'GET', isArray:false},
+      'refresh':{method:'POST',isArray:true}
+    });
+  }
+]);
+
+app.factory('ComingJobsImport', ['$resource', function($resource) {
+    return $resource(
+      '/api/comingJobs/:jobId/import', 
+    {
+      jobId:'@_id'
+    },
+    {
+      'import':{method:'POST'}
+    });
+  }
+]);
+
+
+
+//Tasks, used for comingjos list page
+app.factory('Tasks', ['$resource', function($resource) {
+    return $resource(
+      '/api/tasks/', 
+    {
+    },
+    {
+      'allTasks': {method:'GET', isArray:true}
+    });
+  }
+]);
+
+//Programs
+app.factory('Programs', ['$resource', function($resource) {
+    return $resource(
+      '/api/programs/', 
+    {
+    },
+    {
+      'getCount': {method:'GET', isArray:false, params:{'statistic':''}}
     });
   }
 ]);

@@ -261,7 +261,10 @@ angular.module('app')
                   }
               })
               .state('jobs.detail', {
-                  url: '/:jobId/detail',
+                  url: '/job/:jobId/detail',
+                  params : {
+                    jobContent:null
+                  },
                   views: {
                       '': {
                           templateUrl: 'tpl/com.envomuse/jobs_detail.html'
@@ -269,19 +272,15 @@ angular.module('app')
                       'footer': {
                           templateUrl: 'tpl/com.envomuse/jobs_detail_footer.html'
                       }
-                  },
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad){
-                          return uiLoad.load(['js/app/envomuse.job/job.js',
-                                              'js/app/envomuse.job/job-service.js']
-                                             );
-                      }]
                   }
               })
 
               .state('jobs.program', {
-                  url: '/:jobId/program/:programId',
+                  url: '/program/:programId/detail',
+                  params : {
+                    programContent:null,
+                    jobContent:null
+                  },
                   views: {
                       '': {
                           templateUrl: 'tpl/com.envomuse/jobs_program_detail.html'
@@ -293,8 +292,7 @@ angular.module('app')
                   resolve: {
                       deps: ['$ocLazyLoad',
                         function( $ocLazyLoad){
-                          return $ocLazyLoad.load(['js/app/envomuse.job/job.js',
-                                              'js/app/envomuse.job/job-service.js',
+                          return $ocLazyLoad.load([
                                               'com.2fdevs.videogular', 
                                               'com.2fdevs.videogular.plugins.controls', 
                                               'com.2fdevs.videogular.plugins.overlayplay',
@@ -308,7 +306,12 @@ angular.module('app')
               })
 
               .state('jobs.rule', {
-                  url: '/:jobId/:programId/:ruleId',
+                  url: '/rule/:ruleId/detail',
+                  params : {
+                    ruleContent:null,
+                    programContent:null,
+                    jobContent:null
+                  },
                   views: {
                       '': {
                           templateUrl: 'tpl/com.envomuse/jobs_rule_detail.html'
@@ -320,8 +323,7 @@ angular.module('app')
                   resolve: {
                       deps: ['$ocLazyLoad',
                         function( $ocLazyLoad){
-                          return $ocLazyLoad.load(['js/app/envomuse.job/job.js',
-                                              'js/app/envomuse.job/job-service.js',
+                          return $ocLazyLoad.load([
                                               'com.2fdevs.videogular', 
                                               'com.2fdevs.videogular.plugins.controls', 
                                               'com.2fdevs.videogular.plugins.overlayplay',
@@ -335,8 +337,14 @@ angular.module('app')
               })
               
               .state('jobs.box', {
-                  url: '/:jobId/:programId/:ruleId/:boxId',
+                  url: '/box/:boxId/detail',
                   templateUrl: 'tpl/com.envomuse/jobs_box_detail.html',
+                  params : {
+                    boxContent:null,
+                    ruleContent:null,
+                    programContent:null,
+                    jobContent:null
+                  },
                   views: {
                       '': {
                           templateUrl: 'tpl/com.envomuse/jobs_box_detail.html'
@@ -348,8 +356,7 @@ angular.module('app')
                   resolve: {
                       deps: ['$ocLazyLoad',
                         function( $ocLazyLoad){
-                          return $ocLazyLoad.load(['js/app/envomuse.job/job.js',
-                                              'js/app/envomuse.job/job-service.js',
+                          return $ocLazyLoad.load([
                                               'com.2fdevs.videogular', 
                                               'com.2fdevs.videogular.plugins.controls', 
                                               'com.2fdevs.videogular.plugins.overlayplay',
@@ -366,7 +373,14 @@ angular.module('app')
               .state('playlists', {
                   abstract: true,
                   url: '/playlists',
-                  templateUrl: 'tpl/layout.html'
+                  templateUrl: 'tpl/layout.html',
+                  resolve: {
+                    deps: ['$ocLazyLoad',
+                      function( $ocLazyLoad ){
+                        return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
+                                                 'js/app/envomuse.services.js']);
+                    }]
+                  }
               })
               .state('playlists.dash', {
                   url: '/dash',
@@ -438,6 +452,13 @@ angular.module('app')
                   abstract: true,
                   url: '/tasks',
                   templateUrl: 'tpl/layout.html',
+                  resolve: {
+                    deps: ['$ocLazyLoad',
+                      function( $ocLazyLoad ){
+                        return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
+                                                 'js/app/envomuse.services.js']);
+                    }]
+                  }
               })
               .state('tasks.dash', {
                   url: '/dash',
@@ -447,10 +468,10 @@ angular.module('app')
                   url: '/incoming',
                   views: {
                       '': {
-                          templateUrl: 'tpl/com.envomuse/jobs_incoming.html'
+                          templateUrl: 'tpl/com.envomuse/tasks_incoming.html'
                       },
                       'footer': {
-                          templateUrl: 'tpl/com.envomuse/jobs_incoming_footer.html'
+                          templateUrl: 'tpl/com.envomuse/tasks_incoming_footer.html'
                       }
                   },
               })

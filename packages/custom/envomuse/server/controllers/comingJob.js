@@ -71,7 +71,10 @@ exports.all = function(req, res) {
  */
 exports.statistic = function(req, res) {
   zmqAgent.sendCmd('comingJobs', ['statistic'], function(comingJobsCount) {
-    res.json({count: comingJobsCount});
+    //res.json({count: comingJobsCount});
+    res.json({
+      count: comingJobsCount,
+      running: 0});
   });
 };
 

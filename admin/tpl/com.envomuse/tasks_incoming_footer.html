@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" ng-controller="ComingJobsCtrl">
   <div class="col-sm-2 hidden-xs">
 
   </div>
@@ -11,7 +11,7 @@
             <span class="text-sm">返回</span>
           </a>
         </div>
-        <div class="btn-group" ng-click="$state.reload()">
+        <div class="btn-group" ng-click="refresh()">
           <a class="wrapper-xs block">
             <i class="block text-md m-t-xs icon-refresh"></i>
             <span class="text-sm">刷新</span>

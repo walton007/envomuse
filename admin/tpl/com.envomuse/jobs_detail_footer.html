@@ -12,13 +12,14 @@
             <span class="text-sm">返回</span>
           </a>
         </div>
-        <div class="btn-group" ng-show="!job.status">    
+        <div class="btn-group" ng-show="!job.activated">    
           <a class="wrapper-xs block" href>
             <i class="block text-md m-t-xs icon-lock-open"></i>
             <span class="text-sm">激活</span>
           </a>
         </div>
-        <div class="btn-group" ng-controller="SetJobDateRangeModalCtrl" ng-show="job.status">
+        <div class="btn-group" ng-controller="SetJobDateRangeModalCtrl" ng-show="job.activated">
+        <!-- <div class="btn-group" ng-controller="SetJobDateRangeModalCtrl"> -->
           <a class="wrapper-xs block" ng-click="open('md')">
           <i class="block text-md m-t-xs icon-shuffle"></i>
           <span class="text-sm">生成播放清单</span>

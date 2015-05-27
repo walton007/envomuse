@@ -476,6 +476,14 @@ app.controller('ContactDeleteModalCtrl', ['$scope', '$modal', '$log', function($
 
 
 //Jobs
+app.controller('JobsDashboardCtrl', ['$scope', 'Jobs', '$stateParams', function($scope, Jobs, $stateParams) {  
+
+  Jobs.getCount(function(res){
+    $scope.stat = res;
+  });
+
+}]);
+
 app.controller('JobListCtrl', ['$scope', 'Jobs', '$stateParams', function($scope, Jobs, $stateParams) {
     
     //TBD: add sort functionalities
@@ -508,6 +516,95 @@ app.controller('JobListCtrl', ['$scope', 'Jobs', '$stateParams', function($scope
 
   }]);
 
+app.controller('JobDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
+
+  $scope.job = $stateParams.jobContent;
+
+  $scope.job.programRule.playlists = $scope.job.programRule.playlists.filter(function(e){
+      switch(e.timePeriods.calcType){
+        case 'multipleDates':
+          e.timePeriods.calcType="日期";
+          e.timePeriods.dValues=e.timePeriods.multipleDatesValues.join(', ');
+          break;
+        case 'dateRange':
+          e.timePeriods.calcType="日期范围";
+          //e.timePeriods.dValues=e.timePeriods.dateRangeValues.startDate+'-->'+e.timePeriods.dateRangeValues.endDate;
+          break;
+        case 'daysOfWeek':
+          e.timePeriods.calcType="周";
+          e.timePeriods.dValues = e.timePeriods.daysOfWeekValues.join(', ');
+          break;
+      };
+
+      //rules normalization
+      e.dayRuleUnits = e.dayRuleUnits.map(function(d){
+        for(var i=0;i<$scope.job.programRule.rules.length;i++){
+          if(d.ruleName.toUpperCase()===$scope.job.programRule.rules[i].name.toUpperCase())
+              return {
+                _id:d._id,
+                starthour:d.starthour,
+                endhour:d.endhour,
+                ruleName:d.ruleName,
+                description:$scope.job.programRule.rules[i].description,
+                boxes:$scope.job.programRule.rules[i].boxes
+              };
+        }
+      });
+
+      //boxes normalization
+      for(var i=0;i<e.dayRuleUnits.length;i++){
+        e.dayRuleUnits[i].boxes = e.dayRuleUnits[i].boxes.map(function(k){
+          for(var j=0;j<$scope.job.programRule.boxes.length;j++){
+            if(k.toUpperCase()===$scope.job.programRule.boxes[j].name.toUpperCase())
+              return {
+                _id:$scope.job.programRule.boxes[j]._id,
+                name:$scope.job.programRule.boxes[j].name,
+                description:$scope.job.programRule.boxes[j].description,
+                songlist:$scope.job.programRule.boxes[j].songlist
+              };
+          }
+        });
+      }
+
+      return e;
+    });
+
+ // console.log($scope.job);
+
+}]);
+
+
+app.controller('ProgramDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
+
+  $scope.job = $stateParams.jobContent;
+  $scope.program = $stateParams.programContent;
+
+  //console.log($scope.program);
+
+}]);
+
+app.controller('RuleDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
+
+  $scope.job = $stateParams.jobContent;
+  $scope.program = $stateParams.programContent;
+  $scope.rule = $stateParams.ruleContent;
+
+  // console.log($scope.program);
+
+}]);
+
+app.controller('BoxDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
+
+  $scope.job = $stateParams.jobContent;
+  $scope.program = $stateParams.programContent;
+  $scope.rule = $stateParams.ruleContent;
+  $scope.box = $stateParams.boxContent;
+
+  //console.log($scope.program);
+  console.log($scope.box);
+
+}]);
+
 app.controller('SetJobDateRangeModalCtrl', ['$scope', '$modal', '$log', function($scope, $modal, $log) {
     $scope.items = ['item1', 'item2', 'item3'];
     $scope.open = function (size) {
@@ -530,3 +627,189 @@ app.controller('SetJobDateRangeModalCtrl', ['$scope', '$modal', '$log', function
     };
   }])
   ; 
+
+//Tasks
+app.controller('TasksDashboardCtrl', ['$scope', 'ComingJobs', '$stateParams', function($scope, ComingJobs, $stateParams) {  
+
+  ComingJobs.getCount(function(res){
+    $scope.stat = res;
+  });
+
+}]);
+
+app.controller('ComingJobsCtrl', ['$scope', 'ComingJobsRefresh', 'Tasks', '$stateParams', function($scope, ComingJobsRefresh, Tasks, $stateParams) {  
+
+  $scope.jobs = [];
+
+  $scope.refresh = function (){
+    ComingJobsRefresh.refresh(function(res){
+      
+      $scope.jobs = res.map(function(e){
+        return {
+          type:e.__t,
+          version: e.__v,
+          _id:e._id,
+          creator:e.creator,
+          customerName:e.customerName, 
+          filepath:e.filepath,
+          hash:e.hash,
+          importStatus: (e.importStatus==='notImport')?'待导入':(e.importStatus==='importing'?'导入中...':'导入完成')
+        };
+      });
+
+     /*$scope.count = $scope.jobs.filter(function(e){
+      return e.importStatus !== 'notImport';
+     }).length;*/
+     $scope.count = $scope.jobs.length;
+     //console.log($scope.jobs);
+    });
+  };
+
+  $scope.doImport = function(id){
+    ComingJobsImport.import({'jobId':id},function(res){
+      $scope.tasks = res;
+      alert(res);
+    });
+  };
+
+}]);
+
+//Programs
+app.controller('ProgramDashboardCtrl', ['$scope', 'Programs', '$stateParams', function($scope, Programs, $stateParams) {  
+
+  Programs.getCount(function(res){
+    $scope.stat = res;
+  });
+
+}]);
+
+app.controller('EnvoMusicCtrl',
+  ["$sce",'$scope', function ($sce, $scope) {    
+    $scope.API = null;
+    $scope.active = 0;
+
+    $scope.audios = [
+      {
+        title: "1. Lentement",
+        artist:"Miaow",
+        poster: "img/b0.jpg",
+        sources: [
+          {src: $sce.trustAsResourceUrl("http://flatfull.com/themes/assets/musics/Miaow-03-Lentement.mp3"), type: "audio/mpeg"},
+          {src: $sce.trustAsResourceUrl("http://flatfull.com/themes/assets/musics/Miaow-03-Lentement.ogg"), type: "audio/ogg"}
+        ]
+      },
+      {
+        title: "2. Bubble",
+        artist:"Miaow",
+        poster: "img/b1.jpg",
+        sources: [
+          {src: $sce.trustAsResourceUrl("http://flatfull.com/themes/assets/musics/Miaow-07-Bubble.mp3"), type: "audio/mpeg"},
+          {src: $sce.trustAsResourceUrl("http://flatfull.com/themes/assets/musics/Miaow-07-Bubble.ogg"), type: "audio/ogg"}
+        ]
+      },      
+      {
+        title: "3. Partir",
+        artist:"Miaow",
+        poster: "img/b2.jpg",
+        sources: [
+          {src: $sce.trustAsResourceUrl("http://flatfull.com/themes/assets/musics/Miaow-09-Partir.mp3"), type: "audio/mpeg"},
+          {src: $sce.trustAsResourceUrl("http://flatfull.com/themes/assets/musics/Miaow-09-Partir.ogg"), type: "audio/ogg"}
+        ]
+      }
+    ];
+
+    $scope.config = {
+      sources: $scope.audios[0].sources,
+      title: $scope.audios[0].title,
+      repeat: false,
+      shuffle: false,
+      autoPlay: true,
+      theme: {
+        url: "js/app/music/videogular.css"
+      }
+    };
+
+    $scope.onPlayerReady = function(API) {
+      $scope.API = API;
+      if ($scope.API.currentState == 'play' || $scope.isCompleted) $scope.API.play();
+      $scope.isCompleted = false;
+    };
+
+    $scope.onComplete = function() {
+      $scope.isCompleted = true;
+      // shuffle
+      if($scope.config.shuffle){
+        $scope.active = $scope.getRandom($scope.active);
+      // next item
+      }else{
+        $scope.active++;
+      }
+      
+      // last item
+      if ($scope.active >= $scope.audios.length) {
+        $scope.active = 0;
+        // repeat
+        if($scope.config.repeat){
+          $scope.setActive($scope.active);
+        }
+      }else{
+        $scope.setActive($scope.active);
+      }
+    };
+
+    $scope.getRandom = function(index){
+      var i = Math.floor( Math.random() * $scope.audios.length );
+      if ( !(i-index) ){
+        i = $scope.getRandom( index );
+      }
+      return i;
+    }
+
+    $scope.play = function(index){
+      $scope.isCompleted = true;
+      // get prev or next item
+      index == "next" ? $scope.active++ : $scope.active--;
+      if ($scope.active >= $scope.audios.length) $scope.active = 0;
+      if ($scope.active == -1) $scope.active = $scope.audios.length - 1;
+      // play it
+      $scope.setActive($scope.active);
+    };
+
+    $scope.setActive = function(index){
+      $scope.API.stop();
+      $scope.config.sources = $scope.audios[index].sources;
+      $scope.config.title = $scope.audios[index].title;
+    };
+
+    $scope.toggleRepeat = function(){
+      $scope.config.repeat = !$scope.config.repeat;
+      if ($scope.isCompleted) $scope.API.play();
+    };
+
+    $scope.toggleShuffle = function(){
+      $scope.config.shuffle = !$scope.config.shuffle;
+      console.log($scope.API.currentState);
+      if ($scope.isCompleted) $scope.API.play();
+    };
+
+    // video
+    $scope.video = {
+      sources: [
+        {src: $sce.trustAsResourceUrl("http://flatfull.com/themes/assets/video/big_buck_bunny_trailer.m4v"), type: "video/mp4"},
+        {src: $sce.trustAsResourceUrl("http://flatfull.com/themes/assets/video/big_buck_bunny_trailer.webm"), type: "video/webm"},
+        {src: $sce.trustAsResourceUrl("http://flatfull.com/themes/assets/video/big_buck_bunny_trailer.ogv"), type: "video/ogg"}
+      ],
+      theme: {
+        url: "js/app/music/videogular.css"
+      },
+      plugins: {
+        controls: {
+          autoHide: true,
+          autoHideTime: 5000
+        },
+        poster: "img/c1.jpg"
+      }
+    };
+
+  }]
+);

@@ -1,0 +1,81 @@
+<div ng-controller="ComingJobsCtrl">
+  <!-- breadcrumb -->
+  <div class="row">
+    <div class="bg-light lter">
+      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
+        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
+        <li><a ui-sref="tasks.dash">任务管理</a></li>
+        <li class="active">待处理任务</li>
+      </ul>
+    </div>
+  </div>
+  <!-- / breadcrumb -->
+
+  <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="refresh()">
+
+    <!-- main -->
+    <div class="col">
+      <div class="wrapper-md">
+        <div class="row">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <span class="label bg-danger pull-right m-t-xs">{{count}} 个新任务</span>
+              任务
+            </div>
+            <table class="table table-striped m-b-none">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>客户</th>
+                  <th>上传路径</th>
+                  <th>DJ</th>
+                  <th>版本</th>
+                  <th>HASH</th>
+                  <th>状态</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="r in jobs">
+                  <td>
+                  {{$index+1}}
+                  </td>
+                  <td>
+                  {{r.customerName}}
+                  </td>
+                  <td>
+                  {{r.filepath}}
+                  </td>
+                  <td>
+                  {{r.creator}}
+                  </td>
+                  <td>
+                  {{r.version}}
+                  </td>
+                  <td>
+                  {{r.hash}}
+                  </td>
+                  <td>
+                  {{r.importStatus}}
+                  </td>
+                  <td>
+                    <button class="btn btn-primary" ng-show="{{r.importStatus==='待导入'}}" ng-click="doImport({{}})">导入</button>
+                    <button class="btn btn-info" ng-show="{{r.importStatus==='导入完成'}}">查看</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /main -->
+    <!-- right col -->
+    <!-- <div class="col w-md bg-light dker b-l bg-auto no-border-xs">    
+      <div class="wrapper-md">
+        
+      </div>
+    </div> -->
+    <!-- /right col -->
+  </div>
+</div>

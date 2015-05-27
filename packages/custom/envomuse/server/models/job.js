@@ -10,7 +10,11 @@ var JobSchema = new Schema({
   uuid: String,
   creator: String,
   programName: String,
-  custumorName: String,
+  customerName: String,
+  activated: {
+    type: Boolean,
+    default: false
+  },
   programRule: {
     boxes: [{
       uuid: String,

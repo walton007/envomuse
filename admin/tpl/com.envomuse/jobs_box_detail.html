@@ -6,10 +6,10 @@
         <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
         <li><a ui-sref="jobs.dash">工作管理</a></li>
         <li><a ui-sref="jobs.list">所有工作</a></li>
-        <li><a ui-sref="jobs.detail({jobId:job.id})">{{job.uuid | uppercase }}</a></li>
-        <li><a ui-sref="jobs.program({jobId:job.id,programId:program.programId})">{{program.programName | uppercase }}</a></li>
-        <li><a ui-sref="jobs.rule({jobId:job.id,programId:program.programId,ruleId:rule.ruleId})">{{rule.ruleName | uppercase }}</a></li>
-        <li class="active">{{box.boxName | uppercase }}</li>
+        <li><a ui-sref="jobs.detail({jobId:job._id,jobContent:job})">{{job.programName | uppercase }}</a></li>
+        <li><a ui-sref="jobs.program({programId:program._id,jobContent:job,programContent:program})">{{program.name | uppercase }}</a></li>
+        <li><a ui-sref="jobs.rule({ruleId:rule._id,jobContent:job,programContent:program,ruleContent:rule})">{{rule.ruleName | uppercase }}</a></li>
+        <li class="active">{{box.name | uppercase }}</li>
       </ul>
     </div>
   </div>
@@ -19,8 +19,8 @@
     <!-- main -->
     <div class="col">
       <div class="wrapper-md">
-        <h3 class="m-t-none text-black">{{box.boxName}}</h3>
-        <p class="text-muted m-b-md">{{box.boxDescription}}</p>
+        <h3 class="m-t-none text-black">{{box.name}}</h3>
+        <p class="text-muted m-b-md">{{box.description}}</p>
         <div class="hbox hbox-auto-xs">
           <div class="col w-sm">
             <img src="img/b1.jpg" class="img-full m-b">
@@ -51,18 +51,18 @@
         </div>
       </div>
       <div class="bg-white-only">
-        <h4 class="m-n wrapper">Tracklist</h4>
+        <h4 class="m-n wrapper">曲风盒歌曲列表</h4>
         <ul class="list-group no-radius no-border list-group-lg">
-          <li class="list-group-item" ng-repeat="track in box.songList">
+          <li class="list-group-item" ng-repeat="track in box.songlist">
             <div class="pull-right m-l">
-              <a href="{{track.trackUrl}}" class="m-r-sm"><i class="icon-cloud-download"></i></a>
+              <a href="{{track.relativePath}}" class="m-r-sm"><i class="icon-cloud-download"></i></a>
             </div>
             <a class="jp-play-me m-r-sm pull-left">
               <i class="icon-control-play text"></i>
               <i class="icon-control-pause text-active"></i>
             </a>
             <div class="clear text-ellipsis">
-              <span>{{track.trackName}}</span>
+              <span>{{track.relativePath}}</span>
               <span class="text-muted"> -- {{track.trackDuration}}</span>
             </div>
           </li>
@@ -72,7 +72,7 @@
     <!-- / main -->
     <!-- right col -->
     <div class="col w-md bg-light dker b-l bg-auto no-border-xs">    
-      <div class="wrapper-md">      
+      <!-- <div class="wrapper-md">      
         <div class="m-b-sm text-md">Top Plays</div>
         <ul class="list-group no-bg no-borders pull-in">
           <li class="list-group-item">
@@ -125,7 +125,7 @@
           <a href class="btn btn-sm btn-info padder-md m-b">More</a>
         </div>
       </div>
-      <!-- streamline -->
+      
       <div class="text-md wrapper-md">Activity</div>
       <div class="list-group no-borders no-bg m-l-xs m-r-xs m-t-n">
         <div class="list-group-item">
@@ -144,7 +144,7 @@
           <div class="text-muted">Thu, 17 Jan</div>
           <div>Mike Followed you</div>
         </div>
-      </div>
+      </div> -->
       <!-- / streamline -->
     </div>
     <!-- / right col -->

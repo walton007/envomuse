@@ -56,7 +56,10 @@ exports.statistic = function(req, res, next) {
     }
 
     res.json({
-      count: count
+      // Jun added
+      // count: count
+      active: count,
+      inactive: 0
     });
     return;
   });
