@@ -39,11 +39,12 @@
             </a>
           </div>
           <div class="clear" ng-show="!item.activated">
-            <a href class="btn btn-addon btn-sm btn-success m-t-xs"><i class="fa fa-unlock"></i> 激活 </a>
+            <a href class="btn btn-addon btn-sm btn-info m-t-xs"><i class="fa fa-unlock"></i> 激活 </a>
+            <a href class="btn btn-addon btn-sm pull-right btn-success m-t-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed"><i class="fa fa-playlist"></i> 生成播放清单 </a>
           </div>
-          <div class="clear" ng-show="item.activated">
-          <!-- <div class="clear"> -->
-            <div class="btn-group" ng-controller="SetJobDateRangeModalCtrl">
+          <!--  <div class="clear" ng-show="item.activated"> 
+          <div class="clear">
+            <div class="btn-group" ng-controller="SetDateRangeModalCtrl">
               <a class="btn btn-addon btn-sm btn-success m-t-xs" ng-click="open('md')">
                 <span class="text-sm">生成播放清单</span>
                 <script type="text/ng-template" id="setJobDateRangeModal">
@@ -51,10 +52,60 @@
                 </script>
               </a>
             </div>
-          </div>
+          </div> -->
         </div>
+
+        <!-- start program setting -->
+        <div class="panel-body b" name="settingPanel" ng-show="!isCollapsed">
+            <div class="m-t-none m-b text-center font-thin">播放清单设置</span>
+
+            <form name="form" class="form-horizontal m-t-lg form-validation">
+            <div class="row">
+              <div class="form-group">
+                <label class="col-sm-3 control-label">名称</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control w-sm" ng-model="item.targetProgramName">
+                </div>
+              </div>
+          
+              <div class="line"></div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">开始*</label>
+                <div class="col-sm-9" ng-controller="DatepickerDemoCtrl">
+                  <div class="input-group w-sm">
+                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="item.programStartDate" is-open="opened" datepicker-options="dateOptions" close-text="关闭" required/>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                  </div>
+                </div>                  
+              </div>
+
+              <div class="line"></div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">结束*</label>
+                <div class="col-sm-9" ng-controller="DatepickerDemoCtrl">
+                  <div class="input-group w-sm">
+                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="item.programEndDate" is-open="opened" datepicker-options="dateOptions" close-text="关闭" required/>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                  </div>
+                </div>                  
+              </div>
+
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-sm btn-success text-uc m-t-n-xs" ng-disabled="form.$invalid" ng-click="startGenerate(item)"><strong>开始生成</strong></button>
+              <button type="submit" class="btn btn-sm btn-danger m-l-md text-uc m-t-n-xs" ng-click="isCollapsed = false"><strong>取消</strong></button>
+            </div>
+          </form>
+        </div>
+        <!-- end program setting -->
       </div>
     </div>
+
   </div>
 
 </div>

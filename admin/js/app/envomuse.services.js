@@ -105,6 +105,17 @@ app.factory('ComingJobsImport', ['$resource', function($resource) {
   }
 ]);
 
+app.factory('GenerateProgram', ['$resource', function($resource) {
+    return $resource(
+      '/api/jobs/:jobId/generateProgram', 
+    {
+      jobId:'@_id'
+    },
+    {
+      'generate':{method:'POST',}
+    });
+  }
+]);
 
 
 //Tasks, used for comingjos list page

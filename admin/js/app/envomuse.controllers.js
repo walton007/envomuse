@@ -484,7 +484,36 @@ app.controller('JobsDashboardCtrl', ['$scope', 'Jobs', '$stateParams', function(
 
 }]);
 
-app.controller('JobListCtrl', ['$scope', 'Jobs', '$stateParams', function($scope, Jobs, $stateParams) {
+//Modal controllers
+/*app.controller('SetDateRangeModalCtrl', ['$scope', '$modal', function($scope, $modal) {
+    
+    console.log($scope.$parent.datasource);
+
+  //modal controller part
+    $scope.open = function (size) {
+      var modalInstance = $modal.open({
+        templateUrl: 'setJobDateRangeModal',
+        controller: 'JobListCtrl',
+        size: size,
+        resolve: {
+          
+        }
+      });
+
+      modalInstance.result.then(function () {
+        $scope.startDate = 'A';//$scope.targetDateRange;
+        $scope.endDate = 'B';//$scope.targetName;
+      }, function () {
+        console.log('Modal dismissed at: ' + $scope.endDate + $scope.startDate);
+      });
+
+    };
+
+  }])
+  ; */
+
+
+app.controller('JobListCtrl', ['$scope', 'Jobs', 'GenerateProgram', '$stateParams', function($scope, Jobs, GenerateProgram, $stateParams) {
     
     //TBD: add sort functionalities
 
@@ -511,10 +540,29 @@ app.controller('JobListCtrl', ['$scope', 'Jobs', '$stateParams', function($scope
       Jobs.get(function(res) {
           $scope.datasource = res;
         });
-
     };
 
+    $scope.startGenerate = function(item){
+      var params = {
+        startDate:item.programStartDate.toLocaleDateString(),
+        endDate:item.programEndDate.toLocaleDateString(),
+        name:item.targetProgramName
+      };
+
+      GenerateProgram.generate({'jobId':item._id},params,
+        function(res){
+          //$scope.tasks = res;
+          //console.log(res);
+          
+    });
+
+      //console.log(params);
+    };
+
+
+
   }]);
+
 
 app.controller('JobDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
 
@@ -573,7 +621,6 @@ app.controller('JobDetailCtrl', ['$scope', '$stateParams', function($scope, $sta
 
 }]);
 
-
 app.controller('ProgramDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
 
   $scope.job = $stateParams.jobContent;
@@ -605,6 +652,7 @@ app.controller('BoxDetailCtrl', ['$scope', '$stateParams', function($scope, $sta
 
 }]);
 
+/*
 app.controller('SetJobDateRangeModalCtrl', ['$scope', '$modal', '$log', function($scope, $modal, $log) {
     $scope.items = ['item1', 'item2', 'item3'];
     $scope.open = function (size) {
@@ -626,7 +674,7 @@ app.controller('SetJobDateRangeModalCtrl', ['$scope', '$modal', '$log', function
       });
     };
   }])
-  ; 
+  ; */
 
 //Tasks
 app.controller('TasksDashboardCtrl', ['$scope', 'ComingJobs', '$stateParams', function($scope, ComingJobs, $stateParams) {  
