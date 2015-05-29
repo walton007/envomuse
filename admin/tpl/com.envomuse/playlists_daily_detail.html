@@ -1,0 +1,73 @@
+<div ng-controller="DailyPlaylistDetailCtrl">
+  <!-- breadcrumb -->
+  <div class="row">
+    <div class="bg-light lter">
+      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
+        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
+        <li><a ui-sref="playlists.dash">播放列表管理</a></li>
+        <li><a ui-sref="playlists.list">所有播放列表</a></li>
+        <li class="active">{{dailyPlaylist.displayDate | uppercase }}</li>
+      </ul>
+    </div>
+  </div>
+  <!-- / breadcrumb -->
+
+  <div class="hbox hbox-auto-xs hbox-auto-sm">
+    <!-- main -->
+    <div class="col">
+      <div class="wrapper-md">
+        <h3 class="m-t-none text-black">{{dailyPlaylist.name}}</h3>
+        <p class="text-muted m-b-md">{{dailyPlaylist.description}}</p>
+        <div class="hbox hbox-auto-xs">
+          <div class="col w-sm">
+            <img src="img/b1.jpg" class="img-full m-b">
+          </div>
+          <div class="col">
+            <div class="m-l-md">
+              <!--<div class="clearfix m-b-md">
+                <a class="thumb-sm pull-left m-r">
+                  <img src="img/a0.jpg" class="img-circle">
+                </a>
+                
+                <div class="clear">
+                  <a class="text-info">Mike Mcalidek</a>
+                  <small class="block text-muted">Published: 3 days ago</small>
+                </div>
+              </div>
+              -->
+              <div class="m-b-md">
+                <a class="btn btn-icon btn-rounded btn-info"><i class="fa fa-play m-r-n-xxs"></i></a> 
+                <a class="btn btn-default btn-sm btn-rounded " tooltip="Total tracks">{{dailyPlaylist.playlist.length}}</a>
+              </div>
+              <!--<div>
+                Tags: <a class="badge bg-light">Musik</a> <a class="badge bg-light">Pashion</a>
+              </div>
+              -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white-only">
+        <h4 class="m-n wrapper">曲风盒歌曲列表</h4>
+        <ul class="list-group no-radius no-border list-group-lg">
+          <li class="list-group-item" ng-repeat="track in dailyPlaylist.playlist">
+            <div class="pull-right m-l">
+              <a href="{{track.relativePath}}" class="m-r-sm"><i class="icon-cloud-download"></i></a>
+            </div>
+            <a class="jp-play-me m-r-sm pull-left">
+              <i class="icon-control-play text"></i>
+              <i class="icon-control-pause text-active"></i>
+            </a>
+            <div class="clear text-ellipsis">
+              <span>{{track.relativePath}}</span>
+              <span class="text-muted"> -- {{track.duration}}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- / main -->
+
+  </div>
+
+</div>

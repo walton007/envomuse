@@ -12,13 +12,13 @@
           </a>
         </div>
         <div class="btn-group" ng-show="!item.linkState">    
-          <a class="wrapper-xs block" ui-sref="playlists.associate({playlistId:playlist.id})">
+          <a class="wrapper-xs block" ui-sref="playlists.associate({playlistId:playlist._id,playlistContent:playlist})">
             <i class="block text-md m-t-xs icon-link"></i>
             <span class="text-sm">关联店铺</span>
           </a>
         </div>
         <div class="btn-group" ng-show="item.linkState">    
-          <a class="wrapper-xs block" ui-sref="playlists.associate({playlistId:playlist.id})">
+          <a class="wrapper-xs block" ui-sref="playlists.associate({playlistId:playlist._id})">
             <i class="block text-md m-t-xs icon-link"></i>
             <span class="text-sm">查看已关联店铺</span>
           </a>

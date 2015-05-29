@@ -1,4 +1,4 @@
-<div ng-controller="PlaylistDetailCtrl">
+<div ng-controller="FullcalendarCtrl">
   <!-- breadcrumb -->
   <div class="row">
     <div class="bg-light lter">
@@ -12,36 +12,53 @@
   </div>
   <!-- / breadcrumb -->
 
-  <div class="wrapper-md">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <span class="m-r-lg">原JOB索引：{{playlist.associatedJobId}}</span>
-        <span class="m-r-lg">生成时间：{{playlist.generationDate}}</span>
-        <span class="m-r-lg">开始时间：{{playlist.startDate}}</span>
-        <span class="m-r-lg">结束时间：{{playlist.endDate}}</span>
-        <span class="m-r-lg">关联的客户：{{playlist.associatedBrandName}}</span>
-        <span class="m-r-lg">关联的店铺：{{playlist.associatedStoreName}}</span>
+  <div class="wrapper-md bg-light b-b">
+    <!-- <button type="button" class="btn btn-default btn-addon pull-right m-t-n-xs" ui-toggle-class="show" target="#aside">
+      <i class="fa fa-bars"></i> 列表
+    </button> -->
+    <h1 class="m-n font-thin h3">{{playlist.name | uppercase }} 播排日历</h1>
+  </div>
+  <div class="hbox hbox-auto-xs hbox-auto-sm">
+    <div class="col wrapper-md">
+      <div class="clearfix m-b">
+        <!-- <button type="button" tooltip="Double click on calendar day to create event" class="btn btn-sm btn-primary btn-addon" ng-click="addEvent()">
+          <i class="fa fa-plus"></i>Add
+        </button> -->
+        <div class="pull-right">
+          <button type="button" class="btn btn-sm btn-default" ng-click="today()">今天</button>
+          <div class="btn-group m-l-xs">
+            <!-- <button class="btn btn-sm btn-default" ng-click="changeView('agendaDay')">单日</button> -->
+            <button class="btn btn-sm btn-default" ng-click="changeView('agendaWeek')">周</button>
+            <button class="btn btn-sm btn-default" ng-click="changeView('month')">月</button>
+          </div>
+        </div>
       </div>
-      <table st-table="rowCollectionBasic" class="table table-bordered table-striped">
-        <thead>
-        <tr>
-          <th width="10%">序号</th>
-          <th width="10%">日期</th>
-          <th>曲目</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="row in rowCollectionBasic" st-select-row="row">
-          <td>{{ $index + 1 }}</td>
-          <td>{{row.listDate}}</td>
-          <td>
-            <span ng-repeat="t in row.tracks" class="m-r-sm b">
-             {{t.trackName}}
-            </span>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <div class="pos-rlt">
+        <div class="fc-overlay">
+          <div class="panel bg-white b-a pos-rlt">
+            <span class="arrow"></span>
+            <div class="h4 font-thin m-b-sm">{{event.title}}</div>
+            <div class="line b-b b-light"></div>
+            <div><i class="icon-calendar text-muted m-r-xs"></i> {{event.start | date:'medium'}}</div>
+            <div class="ng-hide" ng-show='event.end'><i class="icon-clock text-muted m-r-xs"></i> {{event.end | date:'medium'}}</div>
+            <div class="line b-b b-light"></div>
+            <div><a ui-sref="playlists.dailydetail({playlistId:event.id,dailyPlaylistContent:event.dailyPlaylistContent,playlistContent:event.playlistContent})"><i class="icon-clock text-muted m-r-xs"></i> 详细信息 </a></div>
+            <!-- <div class="ng-hide" ng-show='event.location'><i class="icon-pointer text-muted m-r-xs"></i> {{event.location}}</div>
+            <div class="m-t-sm">{{event.info}}</div>
+            <div class="m-t-sm">{{event.url}}</div> -->
+          </div>
+        </div>
+        <div class="calendar" ng-model="eventSources" config="uiConfig.calendar" ui-calendar="uiConfig.calendar"></div>
+      </div>
     </div>
+    <!-- <div class="col w-md w-auto-xs bg-light dk bg-auto b-l hide" id="aside">
+      <div class="wrapper">
+        <div ng-repeat="e in events" class="bg-white-only r r-2x m-b-xs wrapper-sm {{e.className[0]}}">          
+          <input ng-model="e.title" class="form-control m-t-n-xs no-border no-padder no-bg">
+          <a class="pull-right text-xs text-muted" ng-click="remove($index)"><i class="fa fa-trash-o"></i></a>
+          <div class="text-xs text-muted">{{e.start | date:"MMM dd"}} - {{e.end | date:"MMM dd"}}</div>
+        </div>
+      </div>
+    </div> -->
   </div>
 </div>

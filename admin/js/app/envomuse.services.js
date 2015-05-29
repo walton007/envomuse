@@ -22,6 +22,25 @@ app.factory('Customers', ['$resource', function($resource) {
   }
 ]);
 
+//get customers basic info ==> for site bind
+app.factory('CustomersBasic', ['$resource', function($resource) {
+    return $resource(
+      '/api/customers/', 
+    {
+      
+    },
+    {
+  
+      /*'get':  {method:'GET'},
+      'save':   {method:'POST'},
+      'query':  {method:'GET', isArray:true},
+      'remove': {method:'DELETE'},
+      'delete': {method:'DELETE'},*/
+      'get':{method:'GET',isArray:true,params:{'basicInfos':''}}
+    });
+  }
+]);
+
 app.factory('CustomerSites', ['$resource', function($resource) {
     return $resource(
       '/api/customers/:customerId/sites', 
@@ -130,14 +149,28 @@ app.factory('Tasks', ['$resource', function($resource) {
   }
 ]);
 
-//Programs
+//Programs - Playlist
 app.factory('Programs', ['$resource', function($resource) {
     return $resource(
       '/api/programs/', 
     {
     },
     {
+      'allPrograms': {method:'GET', isArray:true},
       'getCount': {method:'GET', isArray:false, params:{'statistic':''}}
+      //'getPageData': {method:'GET', isArray:false, params:{'pageNumber':1, 'pageSize':12}}
+    });
+  }
+]);
+
+app.factory('ProgramBindSite', ['$resource', function($resource) {
+    return $resource(
+      '/api/programs/:programId/bindSite', 
+    {
+      programId:'@_id'
+    },
+    {
+      'bind':{method:'POST'}
     });
   }
 ]);

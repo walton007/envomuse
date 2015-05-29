@@ -722,7 +722,7 @@ app.controller('ComingJobsCtrl', ['$scope', 'ComingJobsRefresh', 'Tasks', '$stat
 
 }]);
 
-//Programs
+//Programs - Playlists
 app.controller('ProgramDashboardCtrl', ['$scope', 'Programs', '$stateParams', function($scope, Programs, $stateParams) {  
 
   Programs.getCount(function(res){
@@ -731,8 +731,88 @@ app.controller('ProgramDashboardCtrl', ['$scope', 'Programs', '$stateParams', fu
 
 }]);
 
-app.controller('EnvoMusicCtrl',
-  ["$sce",'$scope', function ($sce, $scope) {    
+app.controller('PlaylistListCtrl', ['$scope', 'Programs', '$stateParams', function($scope, Programs, $stateParams) {
+    
+    Programs.allPrograms({},
+        function(res) {
+          $scope.datasource = res;
+        });
+
+  }]);
+
+app.controller('PlaylistDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
+
+  $scope.playlist = $stateParams.playlistContent;
+
+}]);
+
+app.controller('DailyPlaylistDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
+
+  $scope.dailyPlaylist = $stateParams.dailyPlaylistContent;
+  $scope.playlist = $stateParams.playlistContent;
+  // console.log($scope.playlist);
+
+}]);
+
+app.controller('PlaylistBindCtrl', ['$scope', 'CustomersBasic', 'CustomerSites', 'ProgramBindSite', '$stateParams', function($scope, CustomersBasic, CustomerSites, ProgramBindSite, $stateParams) {
+
+  $scope.init = function(){
+    $scope.playlist = $stateParams.playlistContent;
+    $scope.checkedSites = [];
+
+    //messaging
+    $scope.alerts = [];
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
+      };
+
+    CustomersBasic.get(function(res){
+      $scope.customers = res;
+    });
+  };
+
+  $scope.showStores = function(){
+
+    CustomerSites.getPageData({'customerId':$scope.selectedBrandId},
+        function(res) {
+          $scope.sites = res.data;
+      });
+  };
+
+  //get checked sites
+  $scope.chooseSite = function(id) {
+    var idx = $scope.checkedSites.indexOf(id);
+
+    // is currently selected
+    if (idx > -1) {
+      $scope.checkedSites.splice(idx, 1);
+    }
+    // is newly selected
+    else {
+      $scope.checkedSites.push(id);
+    }
+  };
+
+  //TODO, should use a site array, NOT a single site
+  $scope.startBind = function(){
+
+    var params = {
+      siteId:$scope.checkedSites[0]
+    };
+
+    ProgramBindSite.save({'programId':$scope.playlist._id},params,function(res){
+      $scope.alerts.push({type: 'success', msg: $scope.playlist.name + '绑定成功！'});
+
+      /*{ type: 'danger', msg: 'Well done! You successfully read this important alert message.' },
+      { type: 'info', msg: 'Heads up! This alert needs your attention, but it is not super important.' },
+      { type: 'warning', msg: 'Warning! Best check yo self, you are not looking too good...' }*/
+    });
+  };
+
+}]);
+
+
+app.controller('EnvoMusicCtrl', ["$sce",'$scope', function ($sce, $scope) {    
     $scope.API = null;
     $scope.active = 0;
 
@@ -771,7 +851,7 @@ app.controller('EnvoMusicCtrl',
       title: $scope.audios[0].title,
       repeat: false,
       shuffle: false,
-      autoPlay: true,
+      autoPlay: false,
       theme: {
         url: "js/app/music/videogular.css"
       }

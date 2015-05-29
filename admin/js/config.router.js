@@ -396,19 +396,14 @@ angular.module('app')
                       'footer': {
                           templateUrl: 'tpl/com.envomuse/playlists_list_footer.html'
                       }
-                  },
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad){
-                          return uiLoad.load(['js/app/envomuse.playlist/playlist.js',
-                                              'js/app/envomuse.playlist/playlist-service.js']
-                                             );
-                      }]
                   }                 
               })
               .state('playlists.detail', {
                   url: '/:playlistId/detail',
                   //templateUrl: 'tpl/com.envomuse/playlists_detail.html',
+                  params : {
+                    playlistContent:null
+                  },
                   views: {
                       '': {
                           templateUrl: 'tpl/com.envomuse/playlists_detail.html'
@@ -418,17 +413,55 @@ angular.module('app')
                       }
                   },
                   resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad){
-                          return uiLoad.load(['js/app/envomuse.playlist/playlist.js',
-                                              'js/app/envomuse.playlist/playlist-service.js']
-                                             );
+                      deps: ['$ocLazyLoad', 'uiLoad',
+                        function( $ocLazyLoad, uiLoad ){
+                          return uiLoad.load(
+                            JQ_CONFIG.fullcalendar.concat('js/app/calendar/calendar.js')
+                          ).then(
+                            function(){
+                              return $ocLazyLoad.load('ui.calendar');
+                            }
+                          )
                       }]
                   }                 
               })
+              .state('playlists.dailydetail', {
+                  url: '/dailydetail/:playlistId/',
+                  //templateUrl: 'tpl/com.envomuse/playlists_detail.html',
+                  params : {
+                    dailyPlaylistContent:null,
+                    playlistContent:null
+                  },
+                  //templateUrl: 'tpl/com.envomuse/playlists_daily_detail.html',
+                  views: {
+                      '': {
+                          templateUrl: 'tpl/com.envomuse/playlists_daily_detail.html',
+                      },
+                      'footer': {
+                          templateUrl: 'tpl/com.envomuse/playlists_daily_detail_footer.html'
+                      }
+                  }, 
+                  resolve: {
+                      deps: ['$ocLazyLoad',
+                        function( $ocLazyLoad){
+                          return $ocLazyLoad.load([
+                                              'com.2fdevs.videogular', 
+                                              'com.2fdevs.videogular.plugins.controls', 
+                                              'com.2fdevs.videogular.plugins.overlayplay',
+                                              'com.2fdevs.videogular.plugins.poster',
+                                              'com.2fdevs.videogular.plugins.buffering',
+                                              'js/app/music/ctrl.js', 
+                                              'js/app/music/theme.css'
+                                              ]);
+                      }]
+                  }
+
+              })
               .state('playlists.associate', {
                   url: '/:playlistId/bind',
-                  //templateUrl: 'tpl/com.envomuse/playlists_bind.html',
+                  params : {
+                    playlistContent:null
+                  },
                   views: {
                       '': {
                           templateUrl: 'tpl/com.envomuse/playlists_bind.html'
@@ -436,15 +469,7 @@ angular.module('app')
                       'footer': {
                           templateUrl: 'tpl/com.envomuse/playlists_bind_footer.html'
                       }
-                  },
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad){
-                          return uiLoad.load(['js/app/envomuse.playlist/playlist.js',
-                                              'js/app/envomuse.playlist/playlist-service.js']
-                                             );
-                      }]
-                  }                 
+                  }
               })
 
               //tasks
