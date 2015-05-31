@@ -82,6 +82,12 @@ module.exports = function(Envomuse, app, auth, database) {
   .post(function(req, res, next){
     return sites.site(req, res, next, req.body.siteId);
   }, sites.bindProgram);
+  apiRouter.route('/programs/:programId/bindSites')
+  .post(programs.bindSites);
+
+  apiRouter.route('/programs/:programId/sites')
+  .get(programs.sites);
+
   apiRouter.param('programId', programs.program); 
 
   //Songs

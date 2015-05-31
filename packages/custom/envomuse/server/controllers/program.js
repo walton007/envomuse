@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
   Program = mongoose.model('Program'),
+  Site = mongoose.model('Site'),
   SiteProgram = mongoose.model('SiteProgram'),
   _ = require('lodash');
 
@@ -27,9 +28,9 @@ exports.program = function(req, res, next, id) {
  */
 exports.show = function(req, res) {
   //Expand sites info
-  SiteProgram.find({program: req.program}).sort('-created')
-  .exec(function(err, sitePrograms) {
-    console.log('sitePrograms:', sitePrograms);
+  SiteProgram.count({program: req.program})
+  .exec(function(err, count) {
+    console.log('sitePrograms count:', count);
     if (err) {
       return res.status(500).json({
         error: 'Cannot list the sitePrograms when query program'
@@ -37,9 +38,28 @@ exports.show = function(req, res) {
     }
 
     var jsonObj = req.program.toJSON();
-    jsonObj['sites'] = sitePrograms;
+    jsonObj['sitesCount'] = count;
      
     res.json(jsonObj);
+  });
+};
+
+
+/**
+ * Show an program
+ */
+exports.sites = function(req, res) {
+  //Expand sites info
+  SiteProgram.find({program: req.program})
+  .exec(function(err, sitePrograms) {
+    console.log('sitePrograms ');
+    if (err) {
+      return res.status(500).json({
+        error: 'Cannot list the sitePrograms when query program'
+      });
+    }
+     
+    res.json(sitePrograms);
   });
 };
 
@@ -64,6 +84,65 @@ exports.statistic = function(req, res, next) {
     return;
   });
 };
+
+exports.bindSites = function(req, res) {
+  req.checkBody('sites', 'invalid sites').isJSON();
+
+  var errors = req.validationErrors(true);
+  if (false && errors) {
+    res.send(errors, 400);
+    return;
+  }
+
+  if (req.body.sites.length === 0) {
+    console.log(33);
+    res.send('sites length is zero', 401);
+    return;
+  };
+
+  //Check sites first
+  Site.find({"_id": {$in: req.body.sites}})
+  .exec(function (err, sites) {
+    // body...
+    if (err) {
+      return res.status(500).json({
+        error: 'Query BindSites count error'
+      });
+    }
+    if (sites.length !== req.body.sites.length) {
+      return res.status(400).json({
+        error: 'Invalid sites'
+      });
+    };
+
+    // console.log('sites:', sites);
+
+    var spArr = _.map(sites, function (site) {
+      // body...
+      return {
+        site: site._id,
+        siteName: site.siteName,
+        program: req.program._id,
+        programName: req.program.name
+      };
+    });
+
+    // console.log('spArr:', spArr);
+
+    //Do batch insert
+    SiteProgram.collection.insert(spArr, function(err, sitePrograms) {
+      if (err) {
+        console.log('err is:', err);
+        return res.status(500).json({
+          error: 'SiteProgram insertion failure'
+        });
+      };
+      res.json(sitePrograms);
+    });
+
+  });
+};
+
 
 // /**
 //  * Update an customer
