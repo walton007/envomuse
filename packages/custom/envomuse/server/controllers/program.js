@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
   Program = mongoose.model('Program'),
+  SiteProgram = mongoose.model('SiteProgram'),
   _ = require('lodash');
 
 
@@ -25,7 +26,21 @@ exports.program = function(req, res, next, id) {
  * Show an program
  */
 exports.show = function(req, res) {
-  res.json(req.program);
+  //Expand sites info
+  SiteProgram.find({program: req.program}).sort('-created')
+  .exec(function(err, sitePrograms) {
+    console.log('sitePrograms:', sitePrograms);
+    if (err) {
+      return res.status(500).json({
+        error: 'Cannot list the sitePrograms when query program'
+      });
+    }
+
+    var jsonObj = req.program.toJSON();
+    jsonObj['sites'] = sitePrograms;
+     
+    res.json(jsonObj);
+  });
 };
 
 exports.statistic = function(req, res, next) {

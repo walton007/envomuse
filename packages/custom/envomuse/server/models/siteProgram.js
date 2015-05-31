@@ -14,6 +14,7 @@ var SiteProgramSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Site'
   },
+  siteName: String, 
   program: {
     type: Schema.ObjectId,
     ref: 'Program'

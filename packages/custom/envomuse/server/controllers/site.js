@@ -104,8 +104,9 @@ exports.bindProgram = function(req, res) {
       }
       siteProgram = new SiteProgram({
         site: req.site,
+        siteName: req.site.siteName,
         program: req.program,
-        SiteProgram: req.program.name
+        programName: req.program.name
       });
 
       siteProgram.save(function(err, newObj) {
