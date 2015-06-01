@@ -213,4 +213,5 @@ module.exports = function(Envomuse, app, auth, database) {
 
   //integrate admin module
   app.use('/ui', express.static(config.root + '/admin'));
+  app.use('/home', express.static(config.root + '/home'));
 };
