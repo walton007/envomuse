@@ -157,19 +157,19 @@ module.exports = function(Envomuse, app, auth, database) {
     //update site.license info
     res.json({ok: true});
   });
-  terminalRouter.route('/getTernimalConfig')
+  terminalRouter.route('/config')
   .get(function(req, res, next) {
     //return site.playerSetting
     //once a day 
     res.json({fadeIn: 10, fadeOut:12 });
   });
-  terminalRouter.route('/getJingoList')
+  terminalRouter.route('/jingoList')
   .get(function(req, res, next) {
     //return the site's jingo information
     //once a day 
     res.json({jingo: []});
   });
-  terminalRouter.route('/getPlayList')
+  terminalRouter.route('/playlist')
   .get(function(req, res, next) {
     //query param: version
     //once a day 

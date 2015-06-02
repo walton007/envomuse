@@ -2,4 +2,10 @@ Walton's Task:
 1. start hour, end hour
 2. upload log image for customer
 
+
+1. add duration in ediorJson
+2. parse song duration when parse comingJob
+3. change starthour, endhour to standdate time
+4.  
+
 Jun's Task
