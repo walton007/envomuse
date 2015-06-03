@@ -39,22 +39,16 @@ angular.module('app')
               .state('customers', {
                   abstract: true,
                   url: '/customers',
-                  templateUrl: 'tpl/layout.html',
+                  //templateUrl: 'tpl/layout.html',
+                  templateUrl: 'tpl/app.html',
                   resolve: {
                     deps: ['$ocLazyLoad',
                       function( $ocLazyLoad ){
                         return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
-                                                 'js/app/envomuse.services.js']);
+                                                 'js/app/envomuse.services.js',
+                                                 'js/filters/fromNow.js']);
                     }]
                   }
-                  /*resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad){
-                          return uiLoad.load(['js/app/envomuse.customer/brand.js',
-                                              'js/app/envomuse.customer/brand-service.js']
-                                             );
-                      }]
-                  }*/
               })
               .state('customers.dash', {
                   url: '/dash',
@@ -236,7 +230,8 @@ angular.module('app')
               .state('jobs', {
                   abstract: true,
                   url: '/jobs',
-                  templateUrl: 'tpl/layout.html',
+                  // templateUrl: 'tpl/layout.html',
+                  templateUrl: 'tpl/app.html',
                   resolve: {
                     deps: ['$ocLazyLoad',
                       function( $ocLazyLoad ){
@@ -373,7 +368,8 @@ angular.module('app')
               .state('playlists', {
                   abstract: true,
                   url: '/playlists',
-                  templateUrl: 'tpl/layout.html',
+                  // templateUrl: 'tpl/layout.html',
+                  templateUrl: 'tpl/app.html',
                   resolve: {
                     deps: ['$ocLazyLoad',
                       function( $ocLazyLoad ){
@@ -476,7 +472,8 @@ angular.module('app')
               .state('tasks', {
                   abstract: true,
                   url: '/tasks',
-                  templateUrl: 'tpl/layout.html',
+                  // templateUrl: 'tpl/layout.html',
+                  templateUrl: 'tpl/app.html',
                   resolve: {
                     deps: ['$ocLazyLoad',
                       function( $ocLazyLoad ){

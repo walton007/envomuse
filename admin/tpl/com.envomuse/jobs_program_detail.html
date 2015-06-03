@@ -1,44 +1,116 @@
-<div ng-controller="ProgramDetailCtrl">
-  <!-- breadcrumb -->
-  <div class="row">
-    <div class="bg-light lter">
-      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
-        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
-        <li><a ui-sref="jobs.dash">工作管理</a></li>
-        <li><a ui-sref="jobs.list">所有工作</a></li>
-        <li><a ui-sref="jobs.detail({jobId:job._id,jobContent:job})">{{job.programName | uppercase }}</a></li>
-        <li class="active">{{program.name | uppercase }}</li>
-      </ul>
-    </div>
-  </div>
-  <!-- / breadcrumb -->
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="app.settings.asideFolded = false; app.settings.asideDock = false; isCollapsed = true;" ng-controller="ProgramDetailCtrl">
 
-  <div class="wrapper-md">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <span class="m-r-lg">{{program.name | uppercase }}</span>
-        <span class="m-r-lg">{{program.timePeriods.calcType }}</span>
-        <span class="m-r-lg">{{program.timePeriods.dValues }} </span></div>  
-      <table st-table="rowCollectionBasic" class="table table-bordered table-striped">
-        <thead>
-        <tr>
-          <th width="10%">时间段</th>
-          <th width="10%">情景段</th>
-          <th>曲风盒</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="row in program.dayRuleUnits" st-select-row="row">
-          <td>{{ row.starthour }} --> {{ row.endhour }}</td>
-          <td><a ui-sref="jobs.rule({ruleId:row._id,jobContent:job,programContent:program,ruleContent:row})">{{row.ruleName}}</a></td>
-          <td>
-            <span ng-repeat="r in row.boxes" class="m-r-sm b">
-              <a ui-sref="jobs.box({boxId:r._id,jobContent:job,programContent:program,ruleContent:row,boxContent:r})">{{r.name}}</a>
-            </span>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+  <div class="col">
+    <!-- main header -->
+    <div class="bg-light lter b-b wrapper-md">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black">工作管理</h1>
+          <small class="text-muted"><a ui-sref="jobs.detail({jobId:job._id,jobContent:job})">{{job.programName | uppercase }}</a></small>
+          <small class="text-muted">{{program.name | uppercase }}</small>
+        </div>
+        <div class="col-sm-6 text-right hidden-xs">
+
+          <div class="btn-group dropdown" dropdown>
+            <a class="btn m-b-xs btn-sm btn-primary btn-addon" ng-show="isCollapsed" ng-click="isCollapsed=false"><i class="fa fa-random"></i>生成播放清单</a>
+            <a class="btn m-b-xs btn-sm btn-primary btn-addon" ng-show="!isCollapsed" ng-click="isCollapsed=true"><i class="fa fa-toggle-left"></i>隐藏</a>
+          </div>
+
+        </div>
+      </div>
     </div>
+    <!-- / main header -->
+
+    <!-- program detail -->
+    <div class="col no-padder">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <span class="m-r-lg">{{program.name | uppercase }}</span>
+          <span class="m-r-lg">{{program.timePeriods.calcType }}</span>
+          <span class="m-r-lg">{{program.timePeriods.dValues }} </span>
+        </div>  
+        <table st-table="rowCollectionBasic" class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th width="10%">时间段</th>
+            <th width="10%">情景段</th>
+            <th>曲风盒</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="row in program.dayRuleUnits" st-select-row="row">
+            <td>{{ row.starthour }} --> {{ row.endhour }}</td>
+            <td><a ui-sref="jobs.rule({ruleId:row._id,jobContent:job,programContent:program,ruleContent:row})">{{row.ruleName}}</a></td>
+            <td>
+              <span ng-repeat="r in row.boxes" class="m-r-sm b">
+                <a ui-sref="jobs.box({boxId:r._id,jobContent:job,programContent:program,ruleContent:row,boxContent:r})">{{r.name}}</a>
+              </span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- /program detail-->
+
+    <div class="col-xs-12 m-b-md">
+      <div class="r bg-light dker item hbox no-border">
+      </div>
+    </div>
+
   </div>
+
+  <!-- right col -->
+  <div class="col w-md bg-white-only b-l bg-auto no-border-xs" name="settingPanel" ng-show="!isCollapsed">
+    <!-- start program setting --> 
+    <div class="panel-body b wrapper-md">
+      <h4 class="m-t-none m-b text-center font-thin">新播放清单设置</h4>
+
+      <form name="form" class="form-horizontal m-t-lg form-validation">
+      <div class="row">
+        <div class="form-group">
+          <label class="col-sm-3 control-label">名称</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control w-sm" ng-model="job.targetProgramName">
+          </div>
+        </div>
+    
+        <div class="line"></div>
+        <div class="form-group">
+          <label class="col-sm-3 control-label">开始*</label>
+          <div class="col-sm-9" ng-controller="DatepickerDemoCtrl">
+            <div class="input-group w-sm">
+              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="job.programStartDate" is-open="opened" datepicker-options="dateOptions" close-text="关闭" required/>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </div>
+            </div>                  
+            </div>
+
+            <div class="line"></div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">结束*</label>
+              <div class="col-sm-9" ng-controller="DatepickerDemoCtrl">
+                <div class="input-group w-sm">
+                  <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="job.programEndDate" is-open="opened" datepicker-options="dateOptions" close-text="关闭" required/>
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </div>
+              </div>                  
+            </div>
+
+          </div>
+
+          <div class="form-group text-center">
+            <button type="submit" class="btn btn-sm btn-success text-uc m-t-n-xs" ng-disabled="form.$invalid" ng-click="startGenerate(job)"><strong>开始生成</strong></button>
+            <button class="btn btn-sm btn-danger m-l-md text-uc m-t-n-xs" ng-click="isCollapsed = true"><strong>取消</strong></button>
+          </div>
+        </form>
+      </div>
+    <!-- end program setting -->
+  </div>
+    <!-- / right col -->
+
 </div>

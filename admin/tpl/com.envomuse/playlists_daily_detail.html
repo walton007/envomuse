@@ -1,73 +1,96 @@
-<div ng-controller="DailyPlaylistDetailCtrl">
-  <!-- breadcrumb -->
-  <div class="row">
-    <div class="bg-light lter">
-      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
-        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
-        <li><a ui-sref="playlists.dash">播放列表管理</a></li>
-        <li><a ui-sref="playlists.list">所有播放列表</a></li>
-        <li class="active">{{dailyPlaylist.displayDate | uppercase }}</li>
-      </ul>
-    </div>
-  </div>
-  <!-- / breadcrumb -->
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+    app.settings.asideFolded = false; 
+    app.settings.asideDock = false;
+  " ng-controller="DailyPlaylistDetailCtrl">
 
-  <div class="hbox hbox-auto-xs hbox-auto-sm">
-    <!-- main -->
+  <!-- main -->
+  <div class="col">
+  
+    <!-- main header -->
+    <div class="bg-light lter b-b wrapper-md">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black">播放列表管理</h1>
+          <small class="text-muted">{{dailyPlaylist.displayDate | uppercase }}详细播排清单</small>
+        </div>
+        <div class="col-sm-6 text-right hidden-xs">
+
+           </div>
+      </div>
+    </div>
+
     <div class="col">
-      <div class="wrapper-md">
-        <h3 class="m-t-none text-black">{{dailyPlaylist.name}}</h3>
-        <p class="text-muted m-b-md">{{dailyPlaylist.description}}</p>
-        <div class="hbox hbox-auto-xs">
-          <div class="col w-sm">
-            <img src="img/b1.jpg" class="img-full m-b">
-          </div>
-          <div class="col">
-            <div class="m-l-md">
-              <!--<div class="clearfix m-b-md">
-                <a class="thumb-sm pull-left m-r">
-                  <img src="img/a0.jpg" class="img-circle">
-                </a>
-                
-                <div class="clear">
-                  <a class="text-info">Mike Mcalidek</a>
-                  <small class="block text-muted">Published: 3 days ago</small>
+      <div class="wrapper">
+        <div class="row wrapper">
+
+          <!-- daily program list -->
+          <h4 class="m-t-none text-black">{{dailyPlaylist.name}}</h4>
+          <p class="text-muted m-b-md">{{dailyPlaylist.description}}</p>
+          <div class="hbox hbox-auto-xs">
+            <div class="col w-sm">
+              <img src="img/b1.jpg" class="img-full m-b">
+            </div>
+            <div class="col">
+              <div class="m-l-md">
+                <div class="m-b-md">
+                  <a class="btn btn-icon btn-rounded btn-info"><i class="fa fa-play m-r-n-xxs"></i></a> 
+                  <a class="btn btn-default btn-sm btn-rounded " tooltip="Total tracks">{{dailyPlaylist.playlist.length}}</a>
                 </div>
               </div>
-              -->
-              <div class="m-b-md">
-                <a class="btn btn-icon btn-rounded btn-info"><i class="fa fa-play m-r-n-xxs"></i></a> 
-                <a class="btn btn-default btn-sm btn-rounded " tooltip="Total tracks">{{dailyPlaylist.playlist.length}}</a>
-              </div>
-              <!--<div>
-                Tags: <a class="badge bg-light">Musik</a> <a class="badge bg-light">Pashion</a>
-              </div>
-              -->
             </div>
           </div>
+          <div class="bg-white-only">
+            <h4 class="m-n wrapper">曲风盒歌曲列表</h4>
+            <ul class="list-group no-radius no-border list-group-lg">
+              <li class="list-group-item" ng-repeat="track in dailyPlaylist.playlist">
+                <a class="jp-play-me m-r-sm pull-left">
+                  <i class="icon-control-play text"></i>
+                  <i class="icon-control-pause text-active"></i>
+                </a>
+                <div class="clear text-ellipsis">
+                  <span>{{track.relativePath}}</span>
+                  <span class="text-muted"> -- {{track.duration}}</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!-- /daily program list -->
         </div>
-      </div>
-      <div class="bg-white-only">
-        <h4 class="m-n wrapper">曲风盒歌曲列表</h4>
-        <ul class="list-group no-radius no-border list-group-lg">
-          <li class="list-group-item" ng-repeat="track in dailyPlaylist.playlist">
-            <div class="pull-right m-l">
-              <a href="{{track.relativePath}}" class="m-r-sm"><i class="icon-cloud-download"></i></a>
-            </div>
-            <a class="jp-play-me m-r-sm pull-left">
-              <i class="icon-control-play text"></i>
-              <i class="icon-control-pause text-active"></i>
-            </a>
-            <div class="clear text-ellipsis">
-              <span>{{track.relativePath}}</span>
-              <span class="text-muted"> -- {{track.duration}}</span>
-            </div>
-          </li>
-        </ul>
+          
       </div>
     </div>
-    <!-- / main -->
-
+  </div>
   </div>
 
-</div>
+  <!-- <div class="app-footer navbar navbar-fixed-bottom bg-primary lt b-t">
+    <div class="col-sm-9" ng-controller="EnvoMusicCtrl">
+    <div class="videogular-container bg-light b-l lter">
+      <videogular 
+        vg-player-ready="onPlayerReady" 
+        vg-complete="onComplete" 
+        vg-theme="config.theme.url"  
+        vg-autoplay="config.autoPlay" 
+        class="videogular-container audio">
+        <vg-audio vg-src="config.sources"></vg-audio>
+        <vg-controls>
+          <vg-button ng-show="audios.length-1" ng-click="play('prev')"><i class="fa fa-backward"></i></vg-button>
+          <vg-play-pause-button></vg-play-pause-button>
+          <vg-button ng-show="audios.length-1" ng-click="play('next')"><i class="fa fa-forward"></i></vg-button>
+          <vg-timedisplay class="hidden-xs">{{ currentTime | date:'mm:ss' }}</vg-timedisplay>
+          <vg-scrubBar>
+            <vg-title class="hidden-xs">{{config.title}}</vg-title>
+            <vg-scrubbarcurrenttime class="bg-info" style="height: 4px"></vg-scrubbarcurrenttime>
+          </vg-scrubBar>
+          <vg-timedisplay>{{ timeLeft | date:'mm:ss' }}</vg-timedisplay>
+           
+          <vg-button ng-click="toggleShuffle()" title="Shuffle"><i class="fa fa-random" ng-class="{'text-info':config.shuffle}"></i></vg-button>
+          <vg-button ng-click="toggleRepeat()" title="Repeat"><i class="fa fa-retweet" ng-class="{'text-info':config.repeat}"></i></vg-button>
+
+          <vg-volume>
+            <vg-mutebutton></vg-mutebutton>
+          </vg-volume>
+        </vg-controls>
+      </videogular>
+    </div>
+  </div>
+  </div> -->

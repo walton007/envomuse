@@ -1,111 +1,136 @@
-<div ng-controller="JobListCtrl">
-  <!-- breadcrumb -->
-  <div class="row">
-    <div class="bg-light lter">
-      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
-        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
-        <li><a ui-sref="jobs.dash">工作管理</a></li>
-        <li class="active">{{status | uppercase}} </li>
-      </ul>
-    </div>
-  </div>
-  <!-- / breadcrumb -->
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+    app.settings.asideFolded = false; 
+    app.settings.asideDock = false; init();" ng-controller="JobListCtrl">
 
-  <div class="wrapper-md">
-    <div class="b-b m-b-lg">
+<!-- main -->
+  <div class="col">
+  
+    <!-- main header -->
+    <div class="bg-light lter b-b wrapper-md">
       <div class="row">
-        <div class="col-sm-6 col-xs-12 text-middle">
-          <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-init="init()" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+        <div class="col-sm-6 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black">工作管理</h1>
+          <small class="text-muted">工作列表</small>
+        </div>
+        <div class="col-sm-6 text-right hidden-xs">
         </div>
       </div>
     </div>
-    
-    <div ng-repeat="item in datasource" class="col-sm-3">
-      <div class="panel">
-        <div class="panel-body">
-          <div href class="m-l m-t-xs">
-            <a ui-sref="jobs.detail({jobId:item._id,jobContent:item})" class="text-muted m-b-xs">{{item.programName}}</a>
-          </div>
-          <div href class="m-l m-t-xs">
-            <a href class="text-muted pull-right block m-b-xs" tooltip="DJ"><i class="fa fa-user m-r-sm"></i>{{item.creator}}</a>
-            <span class="text-info block m-b-xs" tooltip="客户"><i class="fa fa-star m-r-sm"></i>{{item.custumorName}}</span>
-          </div>
-        
-          <div class="list-group no-radius alt m-t-sm">
-            <a class="list-group-item" tooltip="该工作生成的播放列表" href ng-show="item.activated">
-              <span class="badge bg-info">{{item.programRule.boxes.length}}</span>
-              <i class="fa fa-random fa-fw text-muted"></i> 
-              播放清单
-            </a>
-          </div>
-          <div class="clear" ng-show="!item.activated">
-            <a href class="btn btn-addon btn-sm btn-info m-t-xs"><i class="fa fa-unlock"></i> 激活 </a>
-            <a href class="btn btn-addon btn-sm pull-right btn-success m-t-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed"><i class="fa fa-playlist"></i> 生成播放清单 </a>
-          </div>
-          <!--  <div class="clear" ng-show="item.activated"> 
-          <div class="clear">
-            <div class="btn-group" ng-controller="SetDateRangeModalCtrl">
-              <a class="btn btn-addon btn-sm btn-success m-t-xs" ng-click="open('md')">
-                <span class="text-sm">生成播放清单</span>
-                <script type="text/ng-template" id="setJobDateRangeModal">
-                  <div ng-include="'tpl/com.envomuse/jobs_set_daterange_modal.html'"></div>
-                </script>
-              </a>
-            </div>
-          </div> -->
-        </div>
+    <!-- / main header -->
 
-        <!-- start program setting -->
-        <div class="panel-body b" name="settingPanel" ng-show="!isCollapsed">
-            <div class="m-t-none m-b text-center font-thin">播放清单设置</span>
+    <!-- main body -->
+    <div class="col">
+      <div class="wrapper-md">
+      <!-- job row -->
+        <div class="row text-center" ng-repeat="item in datasource">
 
-            <form name="form" class="form-horizontal m-t-lg form-validation">
-            <div class="row">
-              <div class="form-group">
-                <label class="col-sm-3 control-label">名称</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control w-sm" ng-model="item.targetProgramName">
+          <!-- basic info -->
+          <div class="col-md-4 text-left">
+            <div class="panel panel-default">
+            <div class="panel-heading">
+              <div class="clearfix">
+                <a ui-sref="jobs.detail({jobId:item._id,jobContent:item})" class="pull-left thumb-md avatar b-3x m-r">
+                  <img src="img/icons/job.png" alt="...">
+                </a>
+                <div class="clear">
+                  <div class="h3 m-t-xs m-b-xs">
+                    <a ui-sref="jobs.detail({jobId:item._id,jobContent:item})">
+                    {{item.programName}}
+                    </a>
+                  </div>
+                  <small class="text-muted clearfix">创建人：{{item.creator}}</small>
+                  <small class="text-muted clearfix">目标客户：{{item.custumorName}}</small>
+                  <small class="text-muted clearfix">已有播放清单：{{item.programRule.boxes.length}}</small>
                 </div>
               </div>
-          
-              <div class="line"></div>
-              <div class="form-group">
-                <label class="col-sm-3 control-label">开始*</label>
-                <div class="col-sm-9" ng-controller="DatepickerDemoCtrl">
-                  <div class="input-group w-sm">
-                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="item.programStartDate" is-open="opened" datepicker-options="dateOptions" close-text="关闭" required/>
-                    <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                  </div>
-                </div>                  
-              </div>
-
-              <div class="line"></div>
-              <div class="form-group">
-                <label class="col-sm-3 control-label">结束*</label>
-                <div class="col-sm-9" ng-controller="DatepickerDemoCtrl">
-                  <div class="input-group w-sm">
-                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="item.programEndDate" is-open="opened" datepicker-options="dateOptions" close-text="关闭" required/>
-                    <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                  </div>
-                </div>                  
-              </div>
-
             </div>
-
-            <div class="form-group">
-              <button type="submit" class="btn btn-sm btn-success text-uc m-t-n-xs" ng-disabled="form.$invalid" ng-click="startGenerate(item)"><strong>开始生成</strong></button>
-              <button type="submit" class="btn btn-sm btn-danger m-l-md text-uc m-t-n-xs" ng-click="isCollapsed = false"><strong>取消</strong></button>
+            <div class="list-group no-radius alt">
+              <a class="list-group-item" href>
+                <span class="badge bg-success">25</span>
+                <i class="fa fa-calendar fa-fw text-muted"></i> 
+                KFC-SUMMER-1
+              </a>
+              <a class="list-group-item" href>
+                <span class="badge bg-info">16</span>
+                <i class="fa fa-calendar fa-fw text-muted"></i> 
+                KFC-SUMMER-2
+              </a>
+              <a class="list-group-item" href>
+                <!-- <span class="badge bg-light">5</span>
+                <i class="fa fa-calendar fa-fw text-muted"></i> 
+                KFC-SUMMER-3 -->
+              </a>
             </div>
-          </form>
+          </div>
         </div>
-        <!-- end program setting -->
-      </div>
+          <!-- /basic info -->
+
+          <!-- start program setting --> 
+          <!-- <div class="col-md-4" name="settingPanel" ng-show="!isCollapsed">
+            <div class="panel-body b">
+              <div class="m-t-none m-b text-center font-thin">播放清单设置</div>
+
+              <form name="form" class="form-horizontal m-t-lg form-validation">
+              <div class="row">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">名称</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control w-sm" ng-model="item.targetProgramName">
+                  </div>
+                </div>
+            
+                <div class="line"></div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">开始*</label>
+                  <div class="col-sm-9" ng-controller="DatepickerDemoCtrl">
+                    <div class="input-group w-sm">
+                      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="item.programStartDate" is-open="opened" datepicker-options="dateOptions" close-text="关闭" required/>
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                      </span>
+                    </div>
+                    </div>                  
+                    </div>
+
+                    <div class="line"></div>
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">结束*</label>
+                      <div class="col-sm-9" ng-controller="DatepickerDemoCtrl">
+                        <div class="input-group w-sm">
+                          <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="item.programEndDate" is-open="opened" datepicker-options="dateOptions" close-text="关闭" required/>
+                          <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                          </span>
+                        </div>
+                      </div>                  
+                    </div>
+
+                  </div>
+
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-sm btn-success text-uc m-t-n-xs" ng-disabled="form.$invalid" ng-click="startGenerate(item)"><strong>开始生成</strong></button>
+                    <button class="btn btn-sm btn-danger m-l-md text-uc m-t-n-xs" ng-click="isCollapsed = true"><strong>取消</strong></button>
+                  </div>
+                </form>
+              </div>
+            </div> -->
+            <!-- end program setting -->
+
+          <div class="col-xs-12 m-b-md">
+            <div class="r bg-light dker item hbox no-border">
+            </div>
+          </div>
+        </div>
+      <!-- / job row -->
     </div>
-
   </div>
+  <!-- /main body -->
 
+  <!-- right col -->
+  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
+    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
+    </div>
+  </div>
+  <!-- / right col -->
+</div>
 </div>

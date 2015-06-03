@@ -1,23 +1,32 @@
-<div ng-controller="ComingJobsCtrl">
-  <!-- breadcrumb -->
-  <div class="row">
-    <div class="bg-light lter">
-      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
-        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
-        <li><a ui-sref="tasks.dash">任务管理</a></li>
-        <li class="active">待处理任务</li>
-      </ul>
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+    app.settings.asideFolded = false; 
+    app.settings.asideDock = false;
+  " ng-controller="ComingJobsCtrl">
+  
+  <!-- main -->
+  <div class="col">
+  
+    <!-- main header -->
+    <div class="bg-light lter b-b wrapper-md">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black">任务管理</h1>
+          <small class="text-muted">待处理任务</small>
+        </div>
+        <div class="col-sm-6 text-right hidden-xs">
+          
+        </div>
+      </div>
     </div>
-  </div>
-  <!-- / breadcrumb -->
+    <!-- / main header -->
 
-  <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="refresh()">
 
-    <!-- main -->
-    <div class="col">
-      <div class="wrapper-md">
-        <div class="row">
-          <div class="panel panel-default">
+<div class="col">
+    <div class="wrapper-md">
+      <!-- stats -->
+        <div class="row row-sm text-center">
+
+          <div class="panel-default">
             <div class="panel-heading">
               <span class="label bg-danger pull-right m-t-xs">{{count}} 个新任务</span>
               任务
@@ -66,16 +75,23 @@
               </tbody>
             </table>
           </div>
+
+          <div class="col-xs-12 m-b-md">
+            <div class="r bg-light dker item hbox no-border">
+            </div>
+          </div>
         </div>
-      </div>
+
+      <!-- / stats -->
     </div>
-    <!-- /main -->
-    <!-- right col -->
-    <!-- <div class="col w-md bg-light dker b-l bg-auto no-border-xs">    
-      <div class="wrapper-md">
-        
-      </div>
-    </div> -->
-    <!-- /right col -->
   </div>
+  <!-- /main -->
+
+  <!-- right col -->
+  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
+    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
+    </div>
+  </div>
+  <!-- / right col -->
+
 </div>

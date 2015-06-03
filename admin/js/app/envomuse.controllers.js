@@ -7,21 +7,22 @@ app.controller('CustomerCountCtrl', ['$scope', 'Customers', 'Sites', '$statePara
       $scope.customers = [];
       
       Customers.getCount(function(resp) {
-        $scope.stat.totalBrand = resp.count;
+        $scope.stat.totalCustomers = resp.count;
+        console.log(resp);
       });
 
-      var startDt = new Date(), endDt = startDt;
+      // var startDt = new Date(), endDt = startDt;
 
-      Customers.getIncrCount({startDate: startDt.toLocaleDateString(),
+      /*Customers.getIncrCount({startDate: startDt.toLocaleDateString(),
         endDate: endDt.toLocaleDateString()}, 
         function(resp) {
           $scope.stat.newBrand = resp.count;
-      });
+      });*/
 
-      Sites.siteStats(function(resp){
-        $scope.stat.newSite = resp.activeStore;
+      /*Sites.siteStats(function(resp){
+        // $scope.stat.newSite = resp.activeStore;
         $scope.stat.totalSite = resp.totalStore;
-      });
+      });*/
   };
 }]);
 
@@ -39,8 +40,27 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
         function(res) {
           $scope.bigTotalItems = res.count;
           $scope.datasource = res.data;
+
+
+          $scope.normalizedDataSource = $scope.datasource.map(function(e){
+            return {
+              _id:e._id,
+              brand:e.brand,
+              industry:e.industry,
+              created:e.created,
+              status:e.status,
+              updatePeriod:e.updatePeriod
+            };
+          });
+
+          // console.log($scope.normalizedDataSource);
+
         });
 
+      /*Customers.getCount({},function(res){
+        $scope.totalItems = res.count;
+        $scope.hidePager = ($scope.totalItems/$scope.pageItems)<=1;
+      });*/
 
       $scope.pageChanged();
     };
@@ -275,6 +295,7 @@ app.controller('StoreListCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites'
       Customers.get({'customerId':$stateParams.brandId},
       function(res) {
         $scope.brand = res;
+
       });
 
       // CustomerSites.getPageData({'customerId':$stateParams.brandId},
@@ -296,6 +317,17 @@ app.controller('StoreListCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites'
         function(res) {
           $scope.bigTotalItems = res.count;
           $scope.datasource = res.data;
+
+          $scope.normalizedDataSource = $scope.datasource.map(function(e){
+            return {
+              _id:e._id,
+              siteName:e.siteName,
+              reference:e.reference,
+              created:e.created
+            };
+          });
+
+
         });
     };
 
@@ -306,13 +338,17 @@ app.controller('StoreDetailCtrl', ['$scope', 'Customers', 'Sites', '$stateParams
   Sites.get({'siteId':$stateParams.storeId},
     function(res) {
       $scope.store = res;
+      console.log($scope.store);
     });
 
   Customers.get({'customerId':$stateParams.brandId},
       function(res) {
         $scope.brand = res;
+        console.log($scope.brand);
       });
 
+  
+  
 }]);
 
 app.controller('StoreDeleteModalCtrl', ['$scope', '$modal', '$log', function($scope, $modal, $log) {
@@ -513,7 +549,7 @@ app.controller('JobsDashboardCtrl', ['$scope', 'Jobs', '$stateParams', function(
   ; */
 
 
-app.controller('JobListCtrl', ['$scope', 'Jobs', 'GenerateProgram', '$stateParams', function($scope, Jobs, GenerateProgram, $stateParams) {
+app.controller('JobListCtrl', ['$scope', 'Jobs', '$stateParams', function($scope, Jobs, $stateParams) {
     
     //TBD: add sort functionalities
 
@@ -541,7 +577,7 @@ app.controller('JobListCtrl', ['$scope', 'Jobs', 'GenerateProgram', '$stateParam
           $scope.datasource = res;
         });
     };
-
+/*
     $scope.startGenerate = function(item){
       var params = {
         startDate:item.programStartDate.toLocaleDateString(),
@@ -557,14 +593,14 @@ app.controller('JobListCtrl', ['$scope', 'Jobs', 'GenerateProgram', '$stateParam
     });
 
       //console.log(params);
-    };
+    };*/
 
 
 
   }]);
 
 
-app.controller('JobDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
+app.controller('JobDetailCtrl', ['$scope', 'GenerateProgram', '$stateParams', function($scope, GenerateProgram, $stateParams) {  
 
   $scope.job = $stateParams.jobContent;
 
@@ -616,6 +652,26 @@ app.controller('JobDetailCtrl', ['$scope', '$stateParams', function($scope, $sta
 
       return e;
     });
+
+  
+    $scope.startGenerate = function(item){
+      var params = {
+        startDate:item.programStartDate.toLocaleDateString(),
+        endDate:item.programEndDate.toLocaleDateString(),
+        name:item.targetProgramName
+      };
+
+      GenerateProgram.generate({'jobId':item._id},params,
+        function(res){
+          alert(res);
+          console.log(res);
+          //$scope.tasks = res;
+          //console.log(res);
+          
+    });
+
+      //console.log(params);
+    };
 
  // console.log($scope.job);
 

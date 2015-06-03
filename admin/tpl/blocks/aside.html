@@ -3,8 +3,26 @@
     <div class="navi-wrap" ui-jq="slimScroll" ui-options="{height:'100%', size:'8px'}">
   -->
   <div class="navi-wrap">
+    <!-- navbar header -->
+      <div class="navbar-header {{app.settings.navbarHeaderColor}}">
+        <button class="pull-right visible-xs dk" ui-toggle-class="show" data-target=".navbar-collapse">
+          <i class="glyphicon glyphicon-cog"></i>
+        </button>
+        <button class="pull-right visible-xs" ui-toggle-class="off-screen" data-target=".app-aside" ui-scroll-to="app">
+          <i class="glyphicon glyphicon-align-justify"></i>
+        </button>
+        <!-- brand -->
+        <a href="#/" class="navbar-brand text-lt">
+          <i class="fa fa-cube"></i>
+          <img src="img/logo.png" alt="." class="hide">
+          <span class="hidden-folded m-l-xs">{{app.name}}</span>
+        </a>
+        <!-- / brand -->
+      </div>
+      <!-- / navbar header -->
+      
     <!-- user -->
-    <div class="clearfix hidden-xs text-center hide" id="aside-user">
+    <div class="clearfix hidden-xs text-center show" id="aside-user">
       <div class="dropdown wrapper" dropdown>
         <a ui-sref="app.page.profile">
           <span class="thumb-lg w-auto-folded avatar m-t-sm">
@@ -59,15 +77,13 @@
     <!-- aside footer -->
     <div class="wrapper m-t">
       <div class="text-center-folded">
-        <span class="pull-right pull-none-folded">60%</span>
-        <span class="hidden-folded" translate="aside.MILESTONE">Milestone</span>
+        <div class="nav navbar-nav hidden-xs">
+          <a href class="btn no-shadow navbar-btn" ng-click="app.settings.asideFolded = !app.settings.asideFolded">
+            <i class="fa {{app.settings.asideFolded ? 'fa-indent' : 'fa-dedent'}} fa-fw"></i>
+          </a>
+        </div>
       </div>
-      <progressbar value="60" class="progress-xxs m-t-sm dk" type="info"></progressbar>
-      <div class="text-center-folded">
-        <span class="pull-right pull-none-folded">35%</span>
-        <span class="hidden-folded" translate="aside.RELEASE">Release</span>
-      </div>
-      <progressbar value="35" class="progress-xxs m-t-sm dk" type="primary"></progressbar>
+
     </div>
     <!-- / aside footer -->
   </div>

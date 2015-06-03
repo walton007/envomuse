@@ -752,7 +752,7 @@ body {
   position: absolute;
   top: 50px;
   bottom: 50px;
-  /*width: auto !important;*/
+  width: auto !important;
   height: auto;
   padding: 0 !important;
   overflow-y: auto;

@@ -7,15 +7,15 @@ app.controller('SignupFormController', ['$scope', '$http', '$state', function($s
     $scope.signup = function() {
       $scope.authError = null;
       // Try to create
-      $http.post('api/signup', {name: $scope.user.name, email: $scope.user.email, password: $scope.user.password})
+      $http.post('/register', {username: $scope.user.name, name: $scope.user.name, email: $scope.user.email, password: $scope.user.password, confirmPassword:$scope.user.confirmPassword})
       .then(function(response) {
         if ( !response.data.user ) {
-          $scope.authError = response;
+          $scope.authError = response.data[0].msg;
         }else{
           $state.go('app.dashboard');
         }
-      }, function(x) {
-        $scope.authError = 'Server Error';
+      }, function(response) {
+        $scope.authError = response.data[0].msg;
       });
     };
   }])

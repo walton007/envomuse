@@ -1,40 +1,43 @@
-<div ng-controller="StoreNewCtrl">
-  <!-- breadcrumb -->
-  <div class="row">
-    <div class="bg-light lter">
-      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
-        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
-        <li><a ui-sref="customers.dash">客户管理</a></li>
-        <li><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></li>
-        <li><a ui-sref="customers.store({brandId:brand._id})"> 店铺 </a></li>
-        <li class="active">新增</li>
-      </ul>
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+    app.settings.asideFolded = false; 
+    app.settings.asideDock = false;" ng-controller="StoreNewCtrl">
+
+<!-- main -->
+  <div class="col">
+    <!-- main header -->
+    <div class="bg-light lter b-b wrapper-md">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black">客户管理</h1>
+          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></small>
+        </div>
+        <div class="col-sm-6 text-right hidden-xs">
+          <div class="btn-group dropdown" dropdown>
+            <a class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="customers.store.add({brandId:brand._id})"><i class="fa fa-plus"></i>添加门店</a>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <!-- / breadcrumb -->
+    <!-- / main header -->
 
-  <div class="hbox hbox-auto-xs hbox-auto-sm">
-  <!-- main -->
-    <div class="col-sm-12">
-      <div class="panel panel-default">
-        <div class="panel-heading font-bold">新增店铺</div>
-          <div class="panel-body">
-
-            <form name="form" class="form-horizontal m-t-lg form-validation">
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">店铺ID</label>
-                <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.reference" placeholder="必填" required>
+    <!-- main -->
+      <div class="row">
+        <div class="wrapper-md">
+          <h4 class="panel-heading font-bold">新增店铺</h4>
+            <div class="panel-body">
+              <form name="form" class="form-horizontal m-t-lg form-validation">
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">店铺ID</label>
+                  <div class="col-lg-8">
+                    <input type="text" class="form-control" ng-model="store.reference" placeholder="必填" required>
+                  </div>
                 </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">店名</label>
-                <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.sitename" placeholder="必填" required>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">店名</label>
+                  <div class="col-lg-8">
+                    <input type="text" class="form-control" ng-model="store.sitename" placeholder="必填" required>
+                  </div>
                 </div>
-              </div>
 
               <!-- <div class="form-group">
                 <label class="col-lg-2 control-label">商圈</label>
@@ -103,7 +106,7 @@
               <div class="line line-dashed b-b line-lg pull-in"></div>
               <div class="form-group">
                 <label class="col-sm-2 control-label">详细描述</label>
-                <div class="col-sm-10">
+                <div class="col-sm-8">
                   <textarea class="form-control h-auto" style="min-height:200px;" ng-model="store.description">{{store.description}}
                   </textarea>
                 </div>
@@ -111,21 +114,20 @@
 
               <div class="form-group">
                 <div class="col-lg-8 col-lg-offset-2">
-                  <button class="btn btn-success w-xs" ng-disabled="form.$invalid" ng-click="createStore()">添加</button>
+                  <button class="btn btn-success w-xs pull-right" ng-disabled="form.$invalid" ng-click="createStore()">添加</button>
                 </div>
               </div>
             </form>
           </div>
+        </div>
       </div>
-    </div>
+  </div>
   <!-- /main -->
 
   <!-- right col -->
-    <div class="col w-md bg-light dker b-l bg-auto no-border-xs">    
-      <div class="wrapper-md">
-         
-      </div>
+  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
+    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
     </div>
-  <!-- /right col -->
   </div>
+  <!-- / right col -->
 </div>

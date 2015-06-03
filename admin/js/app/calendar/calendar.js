@@ -110,7 +110,7 @@ app.controller('FullcalendarCtrl', ['$scope', '$stateParams', function($scope, $
     /* config object */
     $scope.uiConfig = {
       calendar:{
-        height: 800,
+        height: 400,
         firstDay:1,//Monday as first day
         weekNumbers:true,
         editable: false,

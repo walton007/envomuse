@@ -1,66 +1,88 @@
-<div ng-controller="ContactListCtrl">
-  <!-- breadcrumb -->
-  <div class="row">
-    <div class="bg-light lter">
-      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
-        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
-        <li><a ui-sref="customers.dash">客户管理</a></li>
-        <li><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></li>
-        <li class="active">联系人</li>
-      </ul>
-    </div>
-  </div>
-  <!-- / breadcrumb -->
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+    app.settings.asideFolded = false; 
+    app.settings.asideDock = false; init();" ng-controller="ContactListCtrl">
 
-
-  <div class="wrapper-md">
-    <div class="b-b m-b-lg">
+<!-- main -->
+  <div class="col">
+  
+    <!-- main header -->
+    <div class="bg-light lter b-b wrapper-md">
       <div class="row">
-        <div class="col-sm-6 col-xs-12 text-middle">
-          <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-init="init()" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+        <div class="col-sm-6 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black">客户管理</h1>
+          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></small>
+        </div>
+        <div class="col-sm-6 text-right hidden-xs">
+          <div class="btn-group dropdown" dropdown>
+            <a class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="customers.contact.add({brandId:brand._id})"><i class="fa fa-plus"></i>添加联系人</a>
+          </div>
         </div>
       </div>
     </div>
-    
-    <div ng-repeat="item in datasource" class="col-sm-3">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div class="clearfix text-center m-t">
-            <div class="inline">
-              <div class="thumb-lg" style="height: 96px;">
-                <a ui-sref="customers.contact.detail({contactId:item._id,brandContent:brand})">
-                  <img src="img/default_logo.png" class="img-circle" alt="{{item.name}}">
-                  {{brand.brand}}
+    <!-- / main header -->
+
+    <!-- main -->
+      <div class="col">
+        <div class="wrapper-md">
+          <div ng-repeat="item in datasource" class="col-sm-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <div class="clearfix">
+                  <a href class="pull-left thumb-md avatar b-3x m-r">
+                    <img src="img/a2.jpg" alt="...">
+                  </a>
+                  <div class="clear">
+                    <div class="h3 m-t-xs m-b-xs">
+                      {{item.name}}
+                    </div>
+                    <small class="text-muted">{{item.title}}</small>
+                  </div>
+                </div>
+              </div>
+              <div class="list-group no-radius alt">
+                <a class="list-group-item" href>
+                  <span class="badge bg-success">25</span>
+                  <i class="fa fa-comment fa-fw text-muted"></i> 
+                  手机
+                </a>
+                <a class="list-group-item" href>
+                  <span class="badge bg-info">16</span>
+                  <i class="fa fa-envelope fa-fw text-muted"></i> 
+                  Email
+                </a>
+                <a class="list-group-item" href>
+                  <span class="badge bg-light">5</span>
+                  <i class="fa fa-eye fa-fw text-muted"></i> 
+                  微信
+                </a>
+                <a class="list-group-item" href>
+                  <span class="badge bg-light">5</span>
+                  <i class="fa fa-eye fa-fw text-muted"></i> 
+                  QQ
+                </a>
+                <a class="list-group-item" href>
+                  <span class="badge bg-light">5</span>
+                  <i class="fa fa-eye fa-fw text-muted"></i> 
+                  工作电话
+                </a>
+                <a class="list-group-item" href>
+                  <span class="badge bg-light">5</span>
+                  <i class="fa fa-eye fa-fw text-muted"></i> 
+                  微信
                 </a>
               </div>
-              <div class="h4 m-t m-b-xs"><a ui-sref="customers.contact.detail({contactId:item._id,brandContent:brand})">{{item.name}}</a></div>
-              <small class="text-muted m-b">{{item.title}}</small>
-            </div>                      
+            </div>
           </div>
         </div>
-        <footer class="panel-footer bg-info text-center no-padder">
-          <div class="row wrapper no-gutter">
-            {{item.workmobile}}
-          </div>
-          <div class="row no-gutter">
-            <div class="col-xs-4">
-              <div class="wrapper">
-                <small class="text-muted"><i class="fa fa-phone block m-b-xs fa-2x"></i></small>
-              </div>
-            </div>
-            <div class="col-xs-4 dk">
-              <div class="wrapper">
-                <small class="text-muted"><i class="fa fa-wechat block m-b-xs fa-2x"></i></small>
-              </div>
-            </div>
-            <div class="col-xs-4">
-              <div class="wrapper">
-                <small class="text-muted"><i class="fa fa-envelope block m-b-xs fa-2x"></i></small>
-              </div>
-            </div>
-          </div>
-        </footer>
-      </div>
+
     </div>
   </div>
+  <!-- /main -->
+
+  <!-- right col -->
+  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
+    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
+    </div>
+  </div>
+  <!-- / right col -->
 </div>

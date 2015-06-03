@@ -11,10 +11,10 @@ var Envomuse = new Module('envomuse');
  * All MEAN packages require registration
  * Dependency injection is used to define required modules
  */
-Envomuse.register(function(app, auth, database) {
+Envomuse.register(function(app, auth,users, database) {
 
   //We enable routing. By default the Package Object is passed to the routes
-  Envomuse.routes(app, auth, database);
+  Envomuse.routes(app, auth, users, database);
 
   //We are adding a link to the main menu for all authenticated users
   Envomuse.menus.add({

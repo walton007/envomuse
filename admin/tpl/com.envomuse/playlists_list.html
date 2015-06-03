@@ -1,54 +1,74 @@
-<div ng-controller="PlaylistListCtrl">
-  <!-- breadcrumb -->
-  <div class="row">
-    <div class="bg-light lter">
-      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
-        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
-        <li><a ui-sref="playlists.dash">播放列表管理</a></li>
-        <li class="active">{{status | uppercase}} </li>
-      </ul>
-    </div>
-  </div>
-  <!-- / breadcrumb -->
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+    app.settings.asideFolded = false; 
+    app.settings.asideDock = false; init();" ng-controller="PlaylistListCtrl">
 
-  <div class="wrapper-md">
-    <div class="b-b m-b-lg">
-      <!-- <div class="row">
-        <div class="col-sm-6 col-xs-12 text-middle">
-          <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-init="init()" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+<!-- main -->
+  <div class="col">
+  
+    <!-- main header -->
+    <div class="bg-light lter b-b wrapper-md">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black">播放列表管理</h1>
+          <small class="text-muted">所有播放列表</small>
         </div>
-      </div> -->
-    </div>
-
-
-    <div ng-repeat="item in datasource" class="col-sm-3">
-      <div class="panel">
-        <div class="panel-body">
-          <div href class="m-l m-t-xs">
-            <a ui-sref="playlists.detail({playlistId:item._id,playlistContent:item})" class="text-mutedblock m-b-xs">{{item.name}}</a>
-          </div>
-          <div href class="m-l m-t-xs">
-            <a ui-sref="customers.brand.detail({brandId:item.associatedBrandId})" class="text-info block m-b-xs" tooltip="客户"><i class="fa fa-star m-r-sm"></i>{{item.associatedBrandName}}</a>
-          </div>
-          <div class="list-group no-radius alt m-t-sm">
-            <div class="list-group-item">
-              <span class="badge bg-success">{{item.displayStartDate}}</span>
-              开始日期
-            </div>
-            <div class="list-group-item">
-              <span class="badge bg-success">{{item.displayEndDate}}</span>
-              结束日期
-            </div>
-          </div>
-          <!-- <div class="clear" ng-show="!item.linkState"> -->
-          <div class="clear">
-            <a ui-sref="playlists.associate({playlistId:item._id,playlistContent:item})" class="btn btn-addon btn-sm btn-success m-t-xs"><i class="glyphicon glyphicon-link"></i> 关联店铺 </a>
-          </div>
-          <div class="clear" ng-show="item.linkState">
-            <i class="glyphicon glyphicon-link"></i> 已关联店铺
-          </div>
+        <div class="col-sm-6 text-right hidden-xs">
         </div>
       </div>
     </div>
+    <!-- / main header -->
+
+    <!-- main body -->
+    <div class="col">
+      <div class="wrapper-md">
+
+        <!-- program list -->
+        <div class="text-center" ng-repeat="item in datasource">
+          <div class="col-md-4 text-left">
+            <div class="panel panel-default">
+            <div class="panel-heading">
+              <div class="clearfix">
+                <a ui-sref="playlists.detail({playlistId:item._id,playlistContent:item})" class="pull-left thumb-md avatar b-3x m-r">
+                  <img src="img/icons/job.png" alt="...">
+                </a>
+                <div class="panel-body">
+                  <div class="h3 m-t-xs m-b-xs clearfix">
+                    <a ui-sref="playlists.detail({playlistId:item._id,playlistContent:item})">
+                    {{item.name}}
+                    </a>
+                  </div>
+                  <small class="text-muted clearfix">开始：{{item.displayStartDate}}</small>
+                  <small class="text-muted clearfix">结束：{{item.displayEndDate}}</small>
+                  <small class="text-muted clearfix">目标客户：<a ui-sref="customers.brand.detail({brandId:item.associatedBrandId})">{{item.associatedBrandName}}</a></small>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body">
+            <a ui-sref="playlists.associate({playlistId:item._id,playlistContent:item})" class="pull-right btn btn-addon btn-sm btn-success m-t-xs"><i class="glyphicon glyphicon-link"></i> 关联店铺 </a>
+          </div>
+          <div class="clear" ng-show="item.linkState">
+            <i class="glyphicon glyphicon-link"></i> 已关联--COUNT--店铺
+          </div>
+            
+          </div>
+        </div>
+      </div>
+      <!-- /program list -->
+
+        <div class="col-xs-12 m-b-md">
+          <div class="r bg-light dker item hbox no-border">
+          </div>
+        </div>
+      <!-- / job row -->
+    </div>
+  </div>
+  <!-- /main body -->
+
+  <!-- right col -->
+  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
+    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
+    </div>
+  </div>
+  <!-- / right col -->
   </div>
 </div>

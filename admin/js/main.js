@@ -30,7 +30,7 @@ angular.module('app')
           navbarHeaderColor: 'bg-black',
           navbarCollapseColor: 'bg-white-only',
           asideColor: 'bg-black',
-          headerFixed: true,
+          headerFixed: false,
           asideFixed: false,
           asideFolded: false,
           asideDock: false,
@@ -47,7 +47,7 @@ angular.module('app')
       $scope.$watch('app.settings', function(){
         if( $scope.app.settings.asideDock  &&  $scope.app.settings.asideFixed ){
           // aside dock and fixed must set the header fixed.
-          $scope.app.settings.headerFixed = true;
+          $scope.app.settings.headerFixed = false;
         }
         // save to local storage
         $localStorage.settings = $scope.app.settings;

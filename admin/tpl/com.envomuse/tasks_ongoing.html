@@ -1,84 +1,97 @@
-<div>
-  <!-- breadcrumb -->
-  <div class="row">
-    <div class="bg-light lter">
-      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
-        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
-        <li><a ui-sref="tasks.dash">任务管理</a></li>
-        <li class="active">进行中任务</li>
-      </ul>
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+    app.settings.asideFolded = false; 
+    app.settings.asideDock = false;
+  " ng-controller="ComingJobsCtrl">
+  
+  <!-- main -->
+  <div class="col">
+  
+    <!-- main header -->
+    <div class="bg-light lter b-b wrapper-md">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black">任务管理</h1>
+          <small class="text-muted">进行中任务</small>
+        </div>
+        <div class="col-sm-6 text-right hidden-xs">
+          
+        </div>
+      </div>
     </div>
-  </div>
-  <!-- / breadcrumb -->
+    <!-- / main header -->
 
-  <div class="hbox hbox-auto-xs hbox-auto-sm">
 
-    <!-- main -->
-    <div class="col">
-      <div class="wrapper-md">
-        <div class="row">
-          <div class="panel panel-default">
+<div class="col">
+    <div class="wrapper-md">
+      <!-- stats -->
+        <div class="row row-sm text-center">
+
+          <div class="panel-default">
             <div class="panel-heading">
-              <span class="label bg-danger pull-right m-t-xs">4 left</span>
-              Tasks
+              <span class="label bg-danger pull-right m-t-xs">{{count}} 个进行中任务</span>
+              任务
             </div>
             <table class="table table-striped m-b-none">
               <thead>
                 <tr>
-                  <th>Upload date</th>
-                  <th>Start date</th>
-                  <th>Percentage</th>
-                  <th>Result</th>
+                  <th>序号</th>
+                  <th>客户</th>
+                  <th>上传路径</th>
+                  <th>DJ</th>
+                  <th>版本</th>
+                  <th>HASH</th>
+                  <th>状态</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr ng-repeat="r in jobs">
                   <td>
-                    <div class="progress progress-sm progress-striped active m-t-xs m-b-none">
-                      <div class="progress-bar bg-success" data-toggle="tooltip" data-original-title="80%" style="width: 80%"></div>
-                    </div>
+                  {{$index+1}}
                   </td>
-                  <td>App prototype design</td>
-                  <td>App prototype design</td>
-                  <td>App prototype design</td>
-                  <td>Import</td>
-                </tr>
-                <tr>                    
                   <td>
-                    <div class="progress progress-xs m-t-xs m-b-none">
-                      <div class="progress-bar bg-info" data-toggle="tooltip" data-original-title="40%" style="width: 40%"></div>
-                    </div>
+                  {{r.customerName}}
                   </td>
-                  <td>Design documents</td>
-                </tr>
-                <tr>                    
                   <td>
-                    <div class="progress progress-xs m-t-xs m-b-none">
-                      <div class="progress-bar bg-warning" data-toggle="tooltip" data-original-title="20%" style="width: 20%"></div>
-                    </div>
+                  {{r.filepath}}
                   </td>
-                  <td>UI toolkit</td>
-                </tr>
-                <tr>                    
                   <td>
-                    <div class="progress progress-xs m-t-xs m-b-none">
-                      <div class="progress-bar bg-danger" data-toggle="tooltip" data-original-title="15%" style="width: 15%"></div>
-                    </div>
+                  {{r.creator}}
+                  </td>
+                  <td>
+                  {{r.version}}
+                  </td>
+                  <td>
+                  {{r.hash}}
+                  </td>
+                  <td>
+                  {{r.importStatus}}
+                  </td>
+                  <td>
+                    <button class="btn btn-primary" ng-show="{{r.importStatus==='待导入'}}" ng-click="doImport({{}})">导入</button>
+                    <button class="btn btn-info" ng-show="{{r.importStatus==='导入完成'}}">查看</button>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
+
+          <div class="col-xs-12 m-b-md">
+            <div class="r bg-light dker item hbox no-border">
+            </div>
+          </div>
         </div>
-      </div>
+
+      <!-- / stats -->
     </div>
-    <!-- /main -->
-    <!-- right col -->
-    <div class="col w-md bg-light dker b-l bg-auto no-border-xs">    
-      <div class="wrapper-md">
-        
-      </div>
-    </div>
-    <!-- /right col -->
   </div>
+  <!-- /main -->
+
+  <!-- right col -->
+  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
+    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
+    </div>
+  </div>
+  <!-- / right col -->
+
 </div>

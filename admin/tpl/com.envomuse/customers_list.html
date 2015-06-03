@@ -1,6 +1,38 @@
-<div ng-controller="CustomerListCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+    app.settings.asideFolded = false; 
+    app.settings.asideDock = false; init();" ng-controller="CustomerListCtrl">
+
+<!-- main -->
+  <div class="col">
+  
+    <!-- main header -->
+    <div class="bg-light lter b-b wrapper-md">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black">客户管理</h1>
+          <small class="text-muted">所有客户</small>
+        </div>
+        <div class="col-sm-6 text-right hidden-xs">
+          <div class="btn-group dropdown" dropdown>
+            <button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="$state.go('customers.brand.new')"><i class="fa fa-plus"></i>添加客户</button>
+            <!--<button class="btn btn-default" dropdown-toggle><span class="caret"></span></button>
+             <ul class="dropdown-menu">
+              <li><a href>Action</a></li>
+              <li><a href>Another action</a></li>
+              <li><a href>Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href>Separated link</a></li>
+            </ul> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- / main header -->
+
+
+
   <!-- breadcrumb -->
-  <div class="row">
+  <!-- <div class="row">
     <div class="bg-light lter">
       <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
         <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
@@ -8,48 +40,85 @@
         <li class="active">{{listState | uppercase }}</li>
       </ul>
     </div>
-  </div>
+  </div> -->
   <!-- / breadcrumb -->
 
-  <div class="wrapper-md">
-    <div class="b-b m-b-lg">
-      <div class="row">
-        <div class="col-sm-6 col-xs-12 text-middle">
-          <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-init="init()" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
-        </div>
-      </div>
-    </div>
-    
-    <div ng-repeat="item in datasource" class="col-sm-3">
-      <div class="panel b-a">
-        <div class="panel-heading no-border bg-light dker">          
-          <span class="pull-right"><i class="fa fa-leaf"></i> {{item.industry }} </span>
-          <span class="text-lt"><a ui-sref="customers.brand.detail({brandId:item._id})">{{item.brand | uppercase}}</a></span>
-        </div>
-        <div class="item m-l-n-xxs m-r-n-xxs b-b">
-          <div class="panel-body">
-          <div class="clearfix text-center m-t">
-            <div class="inline" style="width: 100px; height: 100px; line-height: 100px;">
-                <a ui-sref="customers.brand.detail({brandId:item._id})">
-                  <div class="thumb-lg m-t-n-xxl">
-                    <img src="{{item.logo}}" alt="LOGO {{item.brand}}">
-                  </div>
-                </a>
-              </div>
-            </div>                      
+    <!-- main -->
+      <div class="col">
+        <div class="wrapper-md">
+          <div class="panel panel-default">
+            <table st-table="rowCollectionBasic" class="table table-striped">
+              <thead>
+              <tr>
+                <th width="15%">客户名</th>
+                <th width="15%">行业</th>
+                <th width="15%">客户状态</th>
+                <th width="15%">更新周期</th>
+                <th width="20%">下次更新时间</th>
+                <th>添加时间</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="row in normalizedDataSource" st-select-row="row">
+                <td><a ui-sref="customers.brand.detail({brandId:row._id})">{{row.brand}}</a></td>
+                <td>{{row.industry}}</td>
+                <td>{{row.status}}</td>
+                <td>{{row.updatePeriod}}</td>
+                <td>{{row.updatePeriod}}</td>
+                <!-- <td>{{row.created |  date:'yyyy-MM-dd HH:mm:ss Z'}}</td> -->
+                <td>{{row.created |  fromNow}}</td>
+              </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-        <div class="hbox text-center b-b b-light text-sm">          
-          <a ui-sref="customers.store({brandId:item.id})" class="col padder-v text-muted b-r b-light">
-            <i class="icon-bag block m-b-xs fa-2x"></i>
-            <span>{{item.storeNumber}}</span>
-          </a>
-          <a href class="col padder-v text-muted">
-            <i class="icon-refresh block m-b-xs fa-2x"></i>
-            <span>{{item.nextUpdateDate | date : "MMM-dd"}}</span>
-          </a>            
-        </div>
+    
+      <!-- pager -->
+      <div class="col-sm-6 col-xs-12 text-middle">
+        <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-init="init()" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
       </div>
+      <!-- /pager -->
+
+      <!-- <div ng-repeat="item in datasource" class="col-sm-3">
+        <div class="panel b-a">
+          <div class="panel-heading no-border bg-light dker">          
+            <span class="pull-right"><i class="fa fa-leaf"></i> {{item.industry }} </span>
+            <span class="text-lt"><a ui-sref="customers.brand.detail({brandId:item._id})">{{item.brand | uppercase}}</a></span>
+          </div>
+          <div class="item m-l-n-xxs m-r-n-xxs b-b">
+            <div class="panel-body">
+            <div class="clearfix text-center m-t">
+              <div class="inline" style="width: 100px; height: 100px; line-height: 100px;">
+                  <a ui-sref="customers.brand.detail({brandId:item._id})">
+                    <div class="thumb-lg m-t-n-xxl">
+                      <img src="{{item.logo}}" alt="LOGO {{item.brand}}">
+                    </div>
+                  </a>
+                </div>
+              </div>                      
+            </div>
+          </div>
+          <div class="hbox text-center b-b b-light text-sm">          
+            <a ui-sref="customers.store({brandId:item.id})" class="col padder-v text-muted b-r b-light">
+              <i class="icon-bag block m-b-xs fa-2x"></i>
+              <span>{{item.storeNumber}}</span>
+            </a>
+            <div class="col padder-v text-muted">
+              <i class="icon-refresh block m-b-xs fa-2x"></i>
+              <span>{{item.nextUpdateDate | date : "MMM-dd"}}</span>
+            </div>            
+          </div>
+        </div>
+      </div> -->
+
     </div>
   </div>
+  <!-- /main -->
+
+  <!-- right col -->
+  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
+    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
+    </div>
+  </div>
+  <!-- / right col -->
 </div>

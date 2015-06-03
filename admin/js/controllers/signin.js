@@ -8,19 +8,15 @@ app.controller('SigninFormController', ['$scope', '$http', '$state', function($s
     $scope.login = function() {
       $scope.authError = null;
       // Try to login
-      $http.post('api/login', {email: $scope.user.email, password: $scope.user.password})
+      $http.post('/login', {email: $scope.user.email, password: $scope.user.password})
       .then(function(response) {
         if ( !response.data.user ) {
-          $scope.authError = 'Email或密码输入有误，请检查';
+          $scope.authError = response.data[0].msg;
         }else{
           $state.go('app.dashboard');
         }
-      }, function(x) {
-        //$scope.authError = 'Server Error';
-        if ($scope.user.email == 'admin@envomuse.com' && $scope.user.password == 'admin')
-          $state.go('app.dashboard'); 
-        else
-          $scope.authError = 'Server Error';
+      }, function(response) {
+          $scope.authError = response.data[0].msg;
       });
     };
   }])

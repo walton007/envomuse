@@ -23,9 +23,10 @@ exports.authCallback = function(req, res) {
  */
 exports.signin = function(req, res) {
   if (req.isAuthenticated()) {
-    return res.redirect('/');
+    // return res.redirect('/');
+    return res.redirect('/admin');
   }
-  res.redirect('#!/login');
+  res.redirect('/login');
 };
 
 /**
@@ -96,7 +97,7 @@ exports.create = function(req, res, next) {
     }
     req.logIn(user, function(err) {
       if (err) return next(err);
-      return res.redirect('/');
+      return res.redirect('/admin');
     });
     res.status(200);
   });
