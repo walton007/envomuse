@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
   Site = mongoose.model('Site'),
   SiteController = require('./site'),
   util = require('util'),
+  Q = require('q'),
   _ = require('lodash');
 
 
@@ -135,6 +136,7 @@ exports.sitesPaginate = function(req, res) {
           error: error
         });
       } else {
+        // get sites related siteProgram
         res.json({
           pageCount: pageCount,
           data: paginatedResults,
@@ -183,21 +185,27 @@ exports.paginate = function(req, res) {
   var pageNumber = req.query.pageNumber,
     pageSize = req.query.pageSize,
     type = req.query.type,
-    callback = function(error, pageCount, paginatedResults, itemCount) {
+    callback = function(error, pageCount, customers, itemCount) {
       if (error) {
         console.error(error);
         res.status(500).json({
           error: error
         });
-      } else {
+        return;
+      }
+
+      getSiteNum(customers)
+      .then(function(customersWithSitesCnt) {
         res.json({
           pageCount: pageCount,
-          data: paginatedResults,
+          data: customersWithSitesCnt,
           count: itemCount
         });
-        console.log('Pages:', pageCount);
-        console.log('itemCount:', itemCount);
-      }
+      }, function(err) {
+        res.json({
+          getSiteNumErr: err
+        }, 400);
+      });
     }
 
   Customer.paginate(useDateQuery ? {
@@ -209,7 +217,7 @@ exports.paginate = function(req, res) {
     } : {deleteFlag: false},
     pageNumber, pageSize, callback, {
       sortBy: '-created',
-      columns: '-__v -__t -deleteFlag'
+      columns: '_id created brand industry address'
     });
 };
 
@@ -272,6 +280,43 @@ exports.analysis = function(req, res, next) {
   return;
 };
 
+function getSiteNum(customers) {
+  // console.log('getSiteNum');
+  var deferred = Q.defer();
+
+  Site.aggregate([{
+    $match: {
+      customer: {$in: _.map(customers, '_id')}
+    }
+  }, {
+    $group: {
+      _id: '$customer',
+      count: {$sum: 1}
+    }
+  }])
+  .exec(function(err, result) {
+    if (err) {
+      deferred.reject(err);
+      return;
+    };
+    var customerSiteCountMap = {};
+    _.each(result, function(obj) {
+      customerSiteCountMap[obj._id] = obj.count;
+    })
+
+    var retCustomers = _.map(customers, function(customer) {
+        var ret = customer.toJSON();
+        ret.sitesCount = customerSiteCountMap[customer._id];
+        console.log(customer._id);
+        return ret;
+      });
+
+    deferred.resolve(retCustomers);
+  });
+
+  return deferred.promise;
+}
+
 exports.basicInfos = function(req, res, next) {
   if (!('basicInfos' in req.query)) {
     next();
@@ -286,7 +331,15 @@ exports.basicInfos = function(req, res, next) {
       });
     }
 
-    res.json(customers);
+    getSiteNum(customers)
+    .then(function(customersWithSitesCnt) {
+      res.json(customersWithSitesCnt);
+    }, function(err) {
+      res.json({
+        getSiteNumErr: err
+      }, 400);
+    });
+
     return;
   });
 };
