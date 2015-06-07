@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
   Customer = mongoose.model('Customer'),
   Site = mongoose.model('Site'),
   SiteController = require('./site'),
+  SiteProgramController = require('./siteProgram'),
   util = require('util'),
   Q = require('q'),
   _ = require('lodash');
@@ -118,6 +119,8 @@ exports.sites = function(req, res) {
     });
 };
 
+
+
 exports.sitesPaginate = function(req, res) {
   req.checkQuery('pageNumber', 'invalid pageNumber').isInt();
   req.checkQuery('pageSize', 'invalid pageSize').isInt();
@@ -129,7 +132,7 @@ exports.sitesPaginate = function(req, res) {
 
   var pageNumber = req.query.pageNumber,
     pageSize = req.query.pageSize,
-    callback = function(error, pageCount, paginatedResults, itemCount) {
+    callback = function(error, pageCount, sites, itemCount) {
       if (error) {
         console.error(error);
         res.status(500).json({
@@ -137,10 +140,17 @@ exports.sitesPaginate = function(req, res) {
         });
       } else {
         // get sites related siteProgram
-        res.json({
-          pageCount: pageCount,
-          data: paginatedResults,
-          count: itemCount
+        SiteProgramController.getSiteProgramlist(sites)
+        .then(function(retSitesInfo) {
+          res.json({
+            pageCount: pageCount,
+            data: retSitesInfo,
+            count: itemCount
+          });
+        }, function(err) {
+          res.json({
+            getSiteProgramInfoErr: err
+          }, 400);
         });
       }
     }
@@ -151,7 +161,7 @@ exports.sitesPaginate = function(req, res) {
     },
     pageNumber, pageSize, callback, {
       sortBy: '-created',
-      columns: '-__v -__t -deleteFlag'
+      columns: '_id siteName reference manager created'
     });
 
 };

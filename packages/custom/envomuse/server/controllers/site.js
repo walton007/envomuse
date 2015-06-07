@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
   Site = mongoose.model('Site'),
   SiteProgram = mongoose.model('SiteProgram'),
+  SiteProgramController = require('./siteProgram'),
   uuid = require('node-uuid'),
   _ = require('lodash');
 
@@ -86,7 +87,17 @@ exports.destroy = function(req, res) {
  * Show an site
  */
 exports.show = function(req, res) {
-  res.json(req.site);
+  //add programSites info
+  var sites = [req.site];
+  SiteProgramController.getSiteProgramlist(sites)
+  .then(function(retSitesInfo) {
+    res.json(retSitesInfo[0]);
+  }, function(err) {
+    res.json({
+      getSiteProgramInfoErr: err
+    }, 400);
+  });
+  
 };
  
 exports.bindProgram = function(req, res) {
@@ -152,14 +163,14 @@ exports.bindLicense = function(req, res) {
     uuid: uuid.v4(),
     activated: false
   };
-  site.save(function(err) {
+  site.save(function(err, newSite) {
     if (err) {
       console.warn('bindLicense error:', err);
       return res.status(500).json({
         error: 'Cannot bindLicense'
       });
     }
-    res.json(site);
+    res.json(newSite);
   });
 };
 
