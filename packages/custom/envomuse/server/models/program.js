@@ -13,6 +13,7 @@ var BaseSchema = commonUtil.BaseSchema;
  
 var ProgramSchema = BaseSchema.extend({
   name: String,
+  customerName: String,
   job: {
     type: Schema.ObjectId,
     ref: 'Job'
@@ -42,6 +43,7 @@ var ProgramSchema = BaseSchema.extend({
   displayStartDate: String,
   endDate: Date,
   displayEndDate: String,
+  inUse: Boolean //indicate whether there's any sites have reference on it
 });
 
 /**

@@ -273,6 +273,7 @@ function generateProgramRecord(job, startDate, endDate, programName, validDays) 
   var deferred = Q.defer();
   var program = new Program({
     name: programName,
+    customerName: job.customerName,
     job: job,
     startDate: startDate,
     displayStartDate: startDate.format('L'),

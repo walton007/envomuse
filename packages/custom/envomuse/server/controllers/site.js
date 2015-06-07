@@ -127,6 +127,9 @@ exports.bindProgram = function(req, res) {
             error: 'Cannot save the siteProgram'
           });
         }
+
+        req.program.inUse = true;
+        req.program.save();
         res.json(newObj);
       });
 

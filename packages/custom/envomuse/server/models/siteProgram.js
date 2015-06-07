@@ -42,4 +42,21 @@ SiteProgramSchema.statics.loadBy = function(site, program, cb) {
   }).exec(cb);
 };
 
+/**
+ * Pre-save hook
+ */
+// SiteProgramSchema.pre('save', function(next) {
+//   console.log(this.program);
+//   if (this.isNew) {
+//     console.log(333);
+//     console.log('this.program:', this.program);
+//     this.program.inUse = true;
+//     this.program.save();
+//   }
+
+//   next();
+
+//   console.log(2);
+// });
+
 mongoose.model('SiteProgram', SiteProgramSchema);

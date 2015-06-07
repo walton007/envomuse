@@ -105,20 +105,34 @@ exports.statistic = function(req, res, next) {
     return;
   }
 
-  Program.count(function(err, count) {
-    if (err) {
-      console.error('Program count error:', err);
-      return res.status(500).json({
-        error: 'count the Program error'
-      });
-    }
+  var bindCount = 0, unbindCount = 0;
 
-    res.json({
-      bindCount: count,
-      unbindCount: 0
+  Program.aggregate([{
+    $group: {
+      _id: '$inUse',
+      count: {$sum: 1}
+    }
+  }])
+  .exec(function(err, result) {
+    if (err) {
+      console.log(4);
+      res.send(err, 400);
+      return;
+    }
+    _.each(result, function(obj) {
+      if (obj._id) {
+        bindCount = obj.count;
+      } else {
+        unbindCount = obj.count;
+      }
     });
-    return;
-  });
+  
+    res.json({
+      bindCount: bindCount,
+      unbindCount: unbindCount
+    });
+  })
+
 };
 
 exports.bindSites = function(req, res) {
@@ -173,6 +187,10 @@ exports.bindSites = function(req, res) {
           error: 'SiteProgram insertion failure'
         });
       };
+
+      //update program inUse property
+      req.program.inUse = true;
+      req.program.save();
       res.json(sitePrograms);
     });
 
@@ -206,7 +224,7 @@ exports.bindSites = function(req, res) {
 exports.all = function(req, res) {
   //collect sites information
   Program.find({
-  }).select('-__t -__v -deleteFlag -modified')
+  }).select('_id name startDate endDate inUse created')
     .exec(function(err, programs) {
       if (err) {
         console.error('find programs error');
