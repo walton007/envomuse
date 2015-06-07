@@ -50,8 +50,8 @@ module.exports = function(Envomuse, app, auth, database) {
       id: 100
     }]);
   });
-  apiRouter.route('/jobs/:jobId/programs')
-  .get(jobs.programs);
+  // apiRouter.route('/jobs/:jobId/programs')
+  // .get(jobs.programs);
   apiRouter.param('jobId', jobs.job); 
 
   //export task

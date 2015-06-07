@@ -8,27 +8,35 @@ var mongoose = require('mongoose'),
   Program = mongoose.model('Program'),
   moment = require('moment-range'),
   Chance = require('chance'),
+  programController = require('./program'),
+  siteProgramController = require('./siteProgram'),
   Q = require('q'),
   _ = require('lodash');
 
 exports.all = function(req, res) {
   console.log('all jobs');
-  Job.find().sort('-created').exec(function(err, jobs) {
+  // return only basic information
+  Job.find().sort('-created')
+  .select('_id creator customerName programName')
+  .exec(function(err, jobs) {
     if (err) {
       return res.status(500).json({
         error: 'Cannot list the jobs'
       });
     }
-    res.json(jobs);
+
+    //Get Program from jobs
+    programController.getProgramCountFromJobs(jobs)
+    .then(function(retJobs) {
+      res.json(retJobs);
+    }, function(err) {
+      return res.status(400).json({
+        error: 'getProgramCountFromJobs failed'
+      });
+    });
   });
 };
 
-/**
- * Show an job
- */
-exports.show = function(req, res) {
-  res.json(req.job);
-};
 /**
  * Find job by id
  */
@@ -340,11 +348,11 @@ exports.generateProgram = function(req, res, next) {
     
   }
 
-exports.programs = function(req, res, next) {
+exports.show = function(req, res, next) {
   Program.find({
     job: req.job
   })
-  .select('-__t -__v -deleteFlag -modified')
+  .select('_id name startDate endDate')
   .exec(function(err, programs) {
     if (err) {
       console.warn('programs err:', err);
@@ -353,6 +361,17 @@ exports.programs = function(req, res, next) {
       }, 400);
       return;
     }
-    res.json(programs);
+
+    siteProgramController.getSiteReferenceCountFrom(programs)
+    .then(function(retPrograms) {
+      var retJob = req.job.toJSON();
+      retJob.programs = retPrograms;
+      res.json(retJob);
+    }, function(err) {
+      res.json({
+        getSiteReferenceCountFrom: err
+      }, 400);
+    });
+    
   });
 }

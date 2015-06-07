@@ -58,3 +58,38 @@ exports.getSiteProgramlist =  function (sites) {
   return deferred.promise;
 
 }
+
+exports.getSiteReferenceCountFrom =  function (programs) {
+  var deferred = Q.defer();
+  SiteProgram.aggregate([{
+    $match: {
+      program: {$in: _.map(programs, '_id')}
+    }
+  }, {
+    $group: {
+      _id: '$program',
+      count: {$sum: 1}
+    }
+  }])
+  .exec(function(err, result) {
+    console.log('result:', result);
+    if (err) {
+      deferred.reject(err);
+      return;
+    };
+    var programCountMap = {};
+    _.each(result, function(obj) {
+      programCountMap[obj._id] = obj.count;
+    })
+
+    var retPrograms = _.map(programs, function(program) {
+        var ret = program.toJSON();
+        ret.siteRefCount = programCountMap[program._id] ? programCountMap[program._id]: 0 ;
+        return ret;
+      });
+
+    deferred.resolve(retPrograms);
+  });
+
+  return deferred.promise;
+}
