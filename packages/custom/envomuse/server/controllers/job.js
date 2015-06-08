@@ -353,7 +353,7 @@ exports.show = function(req, res, next) {
   Program.find({
     job: req.job
   })
-  .select('_id name startDate endDate')
+  .select('_id name startDate endDate created')
   .exec(function(err, programs) {
     if (err) {
       console.warn('programs err:', err);

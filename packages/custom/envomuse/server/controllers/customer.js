@@ -5,9 +5,11 @@
  */
 var mongoose = require('mongoose'),
   Customer = mongoose.model('Customer'),
+  User = mongoose.model('User'),
   Site = mongoose.model('Site'),
   SiteController = require('./site'),
   SiteProgramController = require('./siteProgram'),
+  UserController = require('./user'),
   util = require('util'),
   Q = require('q'),
   _ = require('lodash');
@@ -94,9 +96,22 @@ exports.show = function(req, res) {
         res.send(err, 500);
         return;
       };
-      var jsonObj = req.customer.toJSON();
-      jsonObj['sitesCount'] = count;
-      res.json(jsonObj);
+      
+
+      //expand customer user info
+      UserController.loadUserInfo(req.customer)
+      .then(function(retUser) {
+        var jsonObj = req.customer.toJSON();
+        jsonObj['sitesCount'] = count;
+        jsonObj['user'] = retUser;
+        res.json(jsonObj);
+      }, function(err) {
+        console.error('load user info error');
+        res.send(err, 400);
+        return;
+      })
+
+      
     });
 };
 
@@ -114,7 +129,7 @@ exports.sites = function(req, res) {
         res.send(err, 500);
         return;
       };
-       
+
       res.json(sites);
     });
 };
@@ -141,22 +156,22 @@ exports.sitesPaginate = function(req, res) {
       } else {
         // get sites related siteProgram
         SiteProgramController.getSiteProgramlist(sites)
-        .then(function(retSitesInfo) {
-          res.json({
-            pageCount: pageCount,
-            data: retSitesInfo,
-            count: itemCount
+          .then(function(retSitesInfo) {
+            res.json({
+              pageCount: pageCount,
+              data: retSitesInfo,
+              count: itemCount
+            });
+          }, function(err) {
+            res.json({
+              getSiteProgramInfoErr: err
+            }, 400);
           });
-        }, function(err) {
-          res.json({
-            getSiteProgramInfoErr: err
-          }, 400);
-        });
       }
     }
 
   Site.paginate({
-    customer: req.customer,
+      customer: req.customer,
       deleteFlag: false
     },
     pageNumber, pageSize, callback, {
@@ -205,17 +220,17 @@ exports.paginate = function(req, res) {
       }
 
       getSiteNum(customers)
-      .then(function(customersWithSitesCnt) {
-        res.json({
-          pageCount: pageCount,
-          data: customersWithSitesCnt,
-          count: itemCount
+        .then(function(customersWithSitesCnt) {
+          res.json({
+            pageCount: pageCount,
+            data: customersWithSitesCnt,
+            count: itemCount
+          });
+        }, function(err) {
+          res.json({
+            getSiteNumErr: err
+          }, 400);
         });
-      }, function(err) {
-        res.json({
-          getSiteNumErr: err
-        }, 400);
-      });
     }
 
   Customer.paginate(useDateQuery ? {
@@ -224,7 +239,9 @@ exports.paginate = function(req, res) {
         $gte: req.query.startDate,
         $lte: req.query.endDate,
       }
-    } : {deleteFlag: false},
+    } : {
+      deleteFlag: false
+    },
     pageNumber, pageSize, callback, {
       sortBy: '-created',
       columns: '_id created brand industry address'
@@ -295,34 +312,38 @@ function getSiteNum(customers) {
   var deferred = Q.defer();
 
   Site.aggregate([{
-    $match: {
-      customer: {$in: _.map(customers, '_id')}
-    }
-  }, {
-    $group: {
-      _id: '$customer',
-      count: {$sum: 1}
-    }
-  }])
-  .exec(function(err, result) {
-    if (err) {
-      deferred.reject(err);
-      return;
-    };
-    var customerSiteCountMap = {};
-    _.each(result, function(obj) {
-      customerSiteCountMap[obj._id] = obj.count;
-    })
+      $match: {
+        customer: {
+          $in: _.map(customers, '_id')
+        }
+      }
+    }, {
+      $group: {
+        _id: '$customer',
+        count: {
+          $sum: 1
+        }
+      }
+    }])
+    .exec(function(err, result) {
+      if (err) {
+        deferred.reject(err);
+        return;
+      };
+      var customerSiteCountMap = {};
+      _.each(result, function(obj) {
+        customerSiteCountMap[obj._id] = obj.count;
+      })
 
-    var retCustomers = _.map(customers, function(customer) {
+      var retCustomers = _.map(customers, function(customer) {
         var ret = customer.toJSON();
         ret.sitesCount = customerSiteCountMap[customer._id];
         console.log(customer._id);
         return ret;
       });
 
-    deferred.resolve(retCustomers);
-  });
+      deferred.resolve(retCustomers);
+    });
 
   return deferred.promise;
 }
@@ -333,7 +354,9 @@ exports.basicInfos = function(req, res, next) {
     return;
   };
 
-  Customer.where({deleteFlag: false}).select('_id brand').exec(function(err, customers) {
+  Customer.where({
+    deleteFlag: false
+  }).select('_id brand').exec(function(err, customers) {
     if (err) {
       console.error('customer basicInfos error:', err);
       return res.status(500).json({
@@ -342,14 +365,68 @@ exports.basicInfos = function(req, res, next) {
     }
 
     getSiteNum(customers)
-    .then(function(customersWithSitesCnt) {
-      res.json(customersWithSitesCnt);
-    }, function(err) {
-      res.json({
-        getSiteNumErr: err
-      }, 400);
-    });
+      .then(function(customersWithSitesCnt) {
+        res.json(customersWithSitesCnt);
+      }, function(err) {
+        res.json({
+          getSiteNumErr: err
+        }, 400);
+      });
 
     return;
   });
 };
+
+exports.bindUser = function(req, res, next) {
+  // because we set our user.provider to local our models/user.js validation will always be true
+  req.assert('email', 'You must enter a valid email address').isEmail();
+  req.assert('password', 'Password must be between 8-20 characters long').len(8, 20);
+
+  var errors = req.validationErrors();
+  console.log(1.5, errors);
+  if (errors) {
+    return res.status(400).send(errors);
+  }
+
+  console.log(2);
+
+  var user = new User(req.body);
+  user.provider = 'local';
+  user.username = user.email;
+  user.name = user.email;
+  user.roles = ['customer'];
+  user.save(function(err, retUser) {
+    console.log(3, err);
+    if (err) {
+      switch (err.code) {
+            case 11000:
+            case 11001:
+              res.status(400).json([{
+                msg: 'Username already taken',
+                param: 'username'
+              }]);
+              break;
+            default:
+              var modelErrors = [];
+
+              if (err.errors) {
+
+                for (var x in err.errors) {
+                  modelErrors.push({
+                    param: x,
+                    msg: err.errors[x].message,
+                    value: err.errors[x].value
+                  });
+                }
+
+                res.status(400).json(modelErrors);
+              }
+          }
+      return;
+    }
+
+    res.json(retUser);
+  });
+}
+
+

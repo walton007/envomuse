@@ -9,6 +9,7 @@ var express = require('express'),
    comingJobs = require('../controllers/comingJob'),
    jobs = require('../controllers/job'),
    songs = require('../controllers/song'),
+   users = require('../controllers/user'),
    sitePrograms = require('../controllers/siteProgram');
 
 // The Package is past automatically as first parameter
@@ -121,6 +122,11 @@ module.exports = function(Envomuse, app, auth, database) {
   apiRouter.route('/customers/:customerId/sites')
   .get(customer.sitesPaginate)
   .post(customer.addSite);
+
+  // Add User
+  apiRouter.route('/customers/:customerId/bindUser')
+  .post(customer.bindUser);
+
   apiRouter.param('customerId', customer.customer); 
 
   //Sites
@@ -210,6 +216,11 @@ module.exports = function(Envomuse, app, auth, database) {
       res.send(html);
     });
   });
+
+  //Users Management
+  apiRouter.route('/users/')
+  .get(users.all);
+
 
   //integrate admin module
   app.use('/admin', express.static(config.root + '/admin'));  //admin

@@ -43,9 +43,14 @@ var escapeProperty = function(value) {
  */
 
 var UserSchema = new Schema({
+  customer: {
+    type: Schema.ObjectId,
+    ref: 'Customer'
+  },
+
   name: {
     type: String,
-    required: true,
+    required: false,
     get: escapeProperty
   },
   email: {
@@ -58,8 +63,8 @@ var UserSchema = new Schema({
   },
   username: {
     type: String,
-    unique: true,
-    required: true,
+    unique: false,
+    required: false,
     get: escapeProperty
   },
   roles: {
