@@ -49,6 +49,26 @@ exports.job = function(req, res, next, id) {
   });
 };
 
+exports.box = function(req, res, next) {
+  var uuid = req.param("boxId");
+  if (!uuid) {
+    return res.status(400).json({
+      error: 'boxid needed'
+    });
+  };
+
+  var boxes = _.filter(req.job.programRule.boxes, {uuid: uuid});
+  if (boxes.length) {
+    return res.json(boxes[0]);
+  };
+
+  return res.status(400).json({
+    error: 'no such boxid'
+  });
+
+};
+
+
 exports.statistic = function(req, res, next) {
   if (!('statistic' in req.query)) {
     next();
