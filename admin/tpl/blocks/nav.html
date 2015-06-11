@@ -2,38 +2,60 @@
 <ul class="nav">
   <li>
     <a ui-sref="app.dashboard" class="auto">
-      <i class="glyphicon glyphicon-stats icon"></i>
-      <span class="font-bold" translate="aside.nav.DASHBOARD">Dashboard</span>
+      <i class="icon icon-speedometer"></i>
+      <span class="font-bold">控制面板</span>
     </a>
   </li>
 
   <li>
     <a ui-sref="customers.dash" class="auto">
-      <i class="glyphicon glyphicon-star icon text-success"></i>
+      <i class="icon icon-trophy text-primary"></i>
       <span class="font-bold">客户</span>
     </a>
   </li>
 
   <li>
+    <a ui-sref="tasks.dash" class="auto">
+      <i class="icon icon-drawer text-danger"></i>
+      <span class="font-bold">任务管理</span>
+    </a>
+  </li>
+
+  <li>
     <a ui-sref="jobs.dash" class="auto">
-      <i class="glyphicon glyphicon-time icon text-warning-dker"></i>
-      <span class="font-bold">工作</span>
+      <i class="icon icon-layers text-info"></i>
+      <span class="font-bold">工作包</span>
     </a>
   </li>
 
   <li>
     <a ui-sref="playlists.dash" class="auto">
-      <i class="glyphicon glyphicon-link icon text-info"></i>
+      <i class="icon icon-shuffle text-success"></i>
       <span class="font-bold">播放清单</span>
     </a>
   </li>
+</ul>
 
+<li class="line dk"></li>
+<ul class="nav hidden-xs">
   <li>
-    <a ui-sref="tasks.dash" class="auto">
-      <i class="glyphicon glyphicon-bell icon text-info"></i>
-      <span class="font-bold">任务</span>
+    <div class="nav navbar-nav ">
+      <a href class="btn no-shadow navbar-btn" ng-click="app.settings.asideFolded = !app.settings.asideFolded">
+        <i class="fa {{app.settings.asideFolded ? 'fa-indent' : 'fa-dedent'}} fa-fw"></i>
+        <span class="font-bold" ng-show="!app.settings.asideFolded">隐藏边栏</span>
+      </a>
+    </div>
+  </li>
+</ul>
+
+
+<li class="line dk"></li>
+<ul class="nav">
+  <li>
+    <a ui-sref="app.dashboard" class="auto text-danger">
+      <i class="icon icon-power"></i>
+      <span class="font-thin">注销</span>
     </a>
   </li>
-
 </ul>
 <!-- / list -->

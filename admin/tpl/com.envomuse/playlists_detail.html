@@ -11,7 +11,7 @@
         <div class="col-sm-6 text-right hidden-xs">
 
           <div class="btn-group dropdown" dropdown>
-            <a class="btn m-b-xs btn-sm btn-primary btn-addon" ng-show="isCollapsed" ng-click="isCollapsed=false"><i class="fa fa-random"></i>关联门店</a>
+            <a class="btn m-b-xs btn-sm btn-primary btn-addon" ng-show="isCollapsed" ng-click="isCollapsed=false"><i class="fa fa-random"></i>关联门店{{$scope.precision}}</a>
             <a class="btn m-b-xs btn-sm btn-primary btn-addon" ng-show="!isCollapsed" ng-click="isCollapsed=true"><i class="fa fa-toggle-left"></i>隐藏</a>
           </div>
 
@@ -31,11 +31,11 @@
                     <i class="fa fa-plus"></i>Add
                   </button> -->
                   <div class="pull-right">
-                    <button type="button" class="btn btn-sm btn-default" ng-click="today()">今天</button>
+                    <button type="button" class="btn btn-sm btn-default" ng-click="today()">回到今天</button>
                     <div class="btn-group m-l-xs">
                       <!-- <button class="btn btn-sm btn-default" ng-click="changeView('agendaDay')">单日</button> -->
-                      <button class="btn btn-sm btn-default" ng-click="changeView('agendaWeek')">周</button>
-                      <button class="btn btn-sm btn-default" ng-click="changeView('month')">月</button>
+                      <button class="btn btn-sm btn-default" ng-click="changeView('agendaWeek')">按周显示</button>
+                      <button class="btn btn-sm btn-default" ng-click="changeView('month')">按月显示</button>
                     </div>
                   </div>
                 </div>
@@ -48,10 +48,7 @@
                       <div><i class="icon-calendar text-muted m-r-xs"></i> {{event.start | date:'medium'}}</div>
                       <div class="ng-hide" ng-show='event.end'><i class="icon-clock text-muted m-r-xs"></i> {{event.end | date:'medium'}}</div>
                       <div class="line b-b b-light"></div>
-                      <div><a ui-sref="playlists.dailydetail({playlistId:event.id,dailyPlaylistContent:event.dailyPlaylistContent,playlistContent:event.playlistContent})"><i class="icon-clock text-muted m-r-xs"></i> 详细信息 </a></div>
-                      <!-- <div class="ng-hide" ng-show='event.location'><i class="icon-pointer text-muted m-r-xs"></i> {{event.location}}</div>
-                      <div class="m-t-sm">{{event.info}}</div>
-                      <div class="m-t-sm">{{event.url}}</div> -->
+                      <div><a ui-sref="playlists.dailydetail({programId:programId,dailyplaylistId:event.id})"><i class="icon-clock text-muted m-r-xs"></i> 详细信息 </a></div>
                     </div>
                   </div>
                   <div class="calendar" ng-model="eventSources" config="uiConfig.calendar" ui-calendar="uiConfig.calendar"></div>

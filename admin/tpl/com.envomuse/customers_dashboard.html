@@ -1,8 +1,11 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+<!-- <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
     app.settings.asideFolded = false; 
     app.settings.asideDock = false;init();
   " ng-controller="CustomerCountCtrl">
-  
+ -->  
+
+ <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="init();" ng-controller="CustomerCountCtrl">
+
   <!-- main -->
   <div class="col">
   
@@ -10,94 +13,63 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">客户管理</h1>
-          <small class="text-muted">管理客户</small>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">客户管理</a></h1>
+          <small class="text-muted">新增、修改客户资料，包括门店信息，终端信息等</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
-          
         </div>
       </div>
     </div>
     <!-- / main header -->
 
-  <!-- main -->
-  <div class="col">
-    <div class="wrapper-md">
-      <!-- stats -->
-      <div class="row">
-        <div class="row row-sm text-center">
-          <!-- <div class="col-xs-6">
-            <a ui-sref="customers.brand({listState:'new'})" class="block panel padder-v bg-warning item">
-              <span class="text-white font-thin h1 block">{{stat.newBrand}}</span>
-              <span class="text-muted text-xs">年度新增</span>
-              <span class="bottom text-right w-full">
-                <i class="fa fa-users text-muted m-r-sm"></i>
-              </span>
-            </a>
-          </div> -->
-          <!-- <div class="col-xs-6">
-            <a ui-sref="customers.brand({listState:'all'})" class="block panel padder-v bg-success item">
-              <span class="text-white font-thin h1 block">{{stat.totalBrand}}</span>
-              <span class="text-muted text-xs">总客户数</span>
-              <span class="bottom text-right w-full">
-                <i class="fa fa-users text-muted m-r-sm"></i>
-              </span>
-            </a>
-          </div> -->
+    <!-- main -->
+    <div class="col">
+      <div class="wrapper-md">
+        <!-- stats -->
+        <div class="row wrapper">
+          <div class="row row-sm text-center">
+            <div class="col-md-4" >
+              <a ui-sref="customers.brand({listState:'all'})" class="clearfix text-center m-t">
 
-          <div class="col-md-4" >
-            <div class="panel panel-default bg-light b no-border">
-              <div class="panel-body">
-                <a ui-sref="customers.brand({listState:'all'})" class="clearfix text-center m-t">
+              <div class="panel panel-default bg-white b">
+                <div class="panel-body">
                   <div class="inline">
                     <div class="thumb-xl">
                       <img src="img/icons/customer_list.png" alt="...">
                     </div>
-                    <div class="h4 m-t m-b-xs">已有 {{stat.totalCustomers}} 客户</div>
+                    <div class="h4 m-t m-b-xs">已有 <span class="text-primary bold">{{stat.totalCustomers}}</span> 客户</div>
                     <small class="text-muted">显示系统内已有客户列表</small>
                   </div>                      
+                </div>
+              </div>
+              </a>
+            </div>
+
+            <div class="col-md-3" >
+              <a ui-sref="customers.brand.new" class="clearfix text-center m-t">
+                <div class="panel panel-default bg-light b no-border">
+                  <div class="panel-body">
+                    <div class="inline">
+                      <div class="thumb-xl">
+                        <img src="img/icons/plus.png" alt="...">
+                      </div>
+                      <div class="h4 m-t m-b-xs">新增客户</div>
+                      <small class="text-muted">添加客户并配置基本信息</small>
+                    </div>                      
+                  </div>
                 </a>
               </div>
             </div>
-          </div>
 
-
-          <div class="col-md-3" >
-            <div class="panel panel-default bg-light b no-border">
-              <div class="panel-body">
-                <a ui-sref="customers.brand.new" class="clearfix text-center m-t">
-                  <div class="inline">
-                    <div class="thumb-xl">
-                      <img src="img/icons/plus.png" alt="...">
-                    </div>
-                    <div class="h4 m-t m-b-xs">新增客户</div>
-                    <small class="text-muted">添加客户并配置基本信息</small>
-                  </div>                      
-                </a>
+            <div class="col-xs-12 m-b-md">
+              <div class="r bg-light dker item hbox no-border">
               </div>
-            </div>
-          </div>
-
-
-          <div class="col-md-4">
-          </div>
-
-          <div class="col-xs-12 m-b-md">
-            <div class="r bg-light dker item hbox no-border">
             </div>
           </div>
         </div>
+        <!-- / stats -->
       </div>
-      <!-- / stats -->
     </div>
-  </div>
-  <!-- /main -->
-
-  <!-- right col -->
-  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
-    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
-    </div>
-  </div>
-  <!-- / right col -->
-
+    <!-- /main -->
+    
 </div>

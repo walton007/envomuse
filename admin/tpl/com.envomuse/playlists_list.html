@@ -23,28 +23,29 @@
       <div class="wrapper-md">
 
         <!-- program list -->
-        <div class="text-center" ng-repeat="item in datasource">
+        <div class="text-center" ng-repeat="item in datasource | orderBy:'-created'">
           <div class="col-md-4 text-left">
             <div class="panel panel-default">
             <div class="panel-heading">
               <div class="clearfix">
-                <a ui-sref="playlists.detail({playlistId:item._id,playlistContent:item})" class="pull-left thumb-md avatar b-3x m-r">
+                <a ui-sref="playlists.detail({playlistId:item._id})" class="pull-left thumb-md avatar b-3x m-r">
                   <img src="img/icons/job.png" alt="...">
                 </a>
                 <div class="panel-body">
-                  <div class="h3 m-t-xs m-b-xs clearfix">
-                    <a ui-sref="playlists.detail({playlistId:item._id,playlistContent:item})">
+                  <div class="h4 m-t-xs m-b-xs clearfix">
+                    <a ui-sref="playlists.detail({playlistId:item._id})">
                     {{item.name}}
                     </a>
                   </div>
-                  <small class="text-muted clearfix">开始：{{item.displayStartDate}}</small>
-                  <small class="text-muted clearfix">结束：{{item.displayEndDate}}</small>
+                  <small class="text-muted clearfix">开始：{{item.startDate | date:"yyyy-MM-dd"}}</small>
+                  <small class="text-muted clearfix">结束：{{item.endDate | date:"yyyy-MM-dd"}}</small>
                   <small class="text-muted clearfix">目标客户：<a ui-sref="customers.brand.detail({brandId:item.associatedBrandId})">{{item.associatedBrandName}}</a></small>
+                  <small class="text-muted clearfix">创建时间：{{item.created | fromNow}}</small>
                 </div>
               </div>
             </div>
             <div class="panel-body">
-            <a ui-sref="playlists.associate({playlistId:item._id,playlistContent:item})" class="pull-right btn btn-addon btn-sm btn-success m-t-xs"><i class="glyphicon glyphicon-link"></i> 关联店铺 </a>
+            <a ui-sref="playlists.associate({playlistId:item._id})" class="pull-right btn btn-addon btn-sm btn-success m-t-xs"><i class="glyphicon glyphicon-link"></i> 关联店铺 </a>
           </div>
           <div class="clear" ng-show="item.linkState">
             <i class="glyphicon glyphicon-link"></i> 已关联--COUNT--店铺

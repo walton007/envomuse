@@ -2,88 +2,55 @@
  * calendarDemoApp - 0.1.3
  */
 
-app.controller('FullcalendarCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
+app.controller('FullcalendarCtrl', ['$scope', 'ProgramById', '$stateParams', function($scope, ProgramById, $stateParams) {  
 
-    $scope.playlist = $stateParams.playlistContent;
-    //console.log($stateParams.playlist);
-
-    $scope.events = [];
-
-    var date = new Date();
+  $scope.programId = $stateParams.playlistId;
+  
+  var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
 
-    //will not show track list, only caulculates from start to end time
-    if($scope.playlist !==null){
-      for(var i=0;i<$scope.playlist.dayPrograms.length;i++){
-        
-          var d = $scope.playlist.dayPrograms[i].displayDate;//date string
-          
-          //console.log(end);
-          //console.log(nd);
-          var e={
-            id:$scope.playlist.dayPrograms[i]._id,
-            title: $scope.playlist.dayPrograms[i].displayDate,
-            allDay:true,
-            start:new Date(d),
-            //end:endMoment,
-            className:['b-l b-2x b-info'],
-            editable:false,
-            dailyPlaylistContent:$scope.playlist.dayPrograms[i],
-            playlistContent:$scope.playlist
-          };
-          //console.log(e);
+   
+    $scope.events = [];
 
-          $scope.events.push(e);
-      }
-    }
+    ProgramById.get({'programId':$stateParams.playlistId},
+      function(res) {
+        var playlist = res;
 
-    //parse playlist into events -> high load, change to display program name instead
-   /* if($scope.playlist !==null){
-      for(var i=0;i<$scope.playlist.dayPrograms.length;i++){
-        for(var j=0;j<$scope.playlist.dayPrograms[i].playlist.length;j++){
-          var d = $scope.playlist.dayPrograms[i].displayDate +' '+ $scope.playlist.dayPrograms[i].playlist[j].displayTm ;//date string
-          var endMoment = moment(new Date(d)).add(300, 'seconds');
-          //console.log(end);
-          //console.log(nd);
-          var e={
-            title: i+' '+j,
-            allDay:false,
-            start:new Date(d),
-            end:endMoment,
-            className:['b-l b-2x b-info'],
-            editable:false
-          };
-          //console.log(e);
+        if(playlist !==null){
+          for(var i=0;i<playlist.dayPrograms.length;i++){
+            var d = playlist.dayPrograms[i].date;//date string
+            var e={
+              id:playlist.dayPrograms[i]._id,
+              title: playlist.dayPrograms[i].displayDate,
+              allDay:true,
+              start:new Date(d),
+              //end:endMoment,
+              className:['b-l b-2x b-info'],
+              editable:false
+              // dailyPlaylistContent:playlist.dayPrograms[i]
+              // playlistContent:$scope.playlist
+            };
 
-          $scope.events.push(e);
+            $scope.events.push(e);
+          }
         }
-      }
-    }*/
+      });
+
 
     /* alert on dayClick */
     $scope.precision = 400;
     $scope.lastClickTime = 0;
-    /*$scope.alertOnEventClick = function( date, jsEvent, view ){
-      var time = new Date().getTime();
-      if(time - $scope.lastClickTime <= $scope.precision){
-          $scope.events.push({
-            title: 'New Event',
-            start: date,
-            className: ['b-l b-2x b-info']
-          });
-      }
-      $scope.lastClickTime = time;
-    };*/
+    
     /* alert on Drop */
-    /*$scope.alertOnDrop = function(event, delta, revertFunc, jsEvent, ui, view){
+    $scope.alertOnDrop = function(event, delta, revertFunc, jsEvent, ui, view){
        $scope.alertMessage = ('Event Droped to make dayDelta ' + delta);
-    };*/
+    };
     /* alert on Resize */
-    /*$scope.alertOnResize = function(event, delta, revertFunc, jsEvent, ui, view){
+    $scope.alertOnResize = function(event, delta, revertFunc, jsEvent, ui, view){
        $scope.alertMessage = ('Event Resized to make dayDelta ' + delta);
-    };*/
+    };
 
     $scope.overlay = $('.fc-overlay');
     $scope.alertOnMouseOver = function( event, jsEvent, view ){
@@ -110,36 +77,22 @@ app.controller('FullcalendarCtrl', ['$scope', '$stateParams', function($scope, $
     /* config object */
     $scope.uiConfig = {
       calendar:{
-        height: 400,
-        firstDay:1,//Monday as first day
-        weekNumbers:true,
+        height: 450,
         editable: false,
+        firstDay:1,//Monday as first day
+        weekNumbers:false,
         header:{
           left: 'prev',
           center: 'title',
           right: 'next'
         },
-        //dayClick: $scope.alertOnEventClick,
-        //eventDrop: $scope.alertOnDrop,
-        //eventResize: $scope.alertOnResize,
+        dayClick: $scope.alertOnEventClick,
+        eventDrop: $scope.alertOnDrop,
+        eventResize: $scope.alertOnResize,
         eventMouseover: $scope.alertOnMouseOver
       }
     };
     
-    // /* add custom event*/
-    // $scope.addEvent = function() {
-    //   $scope.events.push({
-    //     title: 'New Event',
-    //     start: new Date(y, m, d),
-    //     className: ['b-l b-2x b-info']
-    //   });
-    // };
-
-    // /* remove event */
-    // $scope.remove = function(index) {
-    //   $scope.events.splice(index,1);
-    // };
-
     /* Change View */
     $scope.changeView = function(view, calendar) {
       $('.calendar').fullCalendar('changeView', view);

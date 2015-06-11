@@ -29,22 +29,22 @@
             <div class="panel panel-default">
             <div class="panel-heading">
               <div class="clearfix">
-                <a ui-sref="jobs.detail({jobId:item._id,jobContent:item})" class="pull-left thumb-md avatar b-3x m-r">
+                <a ui-sref="jobs.detail({jobId:item._id})" class="pull-left thumb-md avatar b-3x m-r">
                   <img src="img/icons/job.png" alt="...">
                 </a>
                 <div class="clear">
                   <div class="h3 m-t-xs m-b-xs">
-                    <a ui-sref="jobs.detail({jobId:item._id,jobContent:item})">
+                    <a ui-sref="jobs.detail({jobId:item._id})">
                     {{item.programName}}
                     </a>
                   </div>
                   <small class="text-muted clearfix">创建人：{{item.creator}}</small>
                   <small class="text-muted clearfix">目标客户：{{item.custumorName}}</small>
-                  <small class="text-muted clearfix">已有播放清单：{{item.programRule.boxes.length}}</small>
+                  <small class="text-muted clearfix">已有播放清单：{{item.programCount}}</small>
                 </div>
               </div>
             </div>
-            <div class="list-group no-radius alt">
+            <!-- <div class="list-group no-radius alt">
               <a class="list-group-item" href>
                 <span class="badge bg-success">25</span>
                 <i class="fa fa-calendar fa-fw text-muted"></i> 
@@ -56,65 +56,14 @@
                 KFC-SUMMER-2
               </a>
               <a class="list-group-item" href>
-                <!-- <span class="badge bg-light">5</span>
+                 <span class="badge bg-light">5</span>
                 <i class="fa fa-calendar fa-fw text-muted"></i> 
-                KFC-SUMMER-3 -->
+                KFC-SUMMER-3 
               </a>
-            </div>
+            </div> -->
           </div>
         </div>
           <!-- /basic info -->
-
-          <!-- start program setting --> 
-          <!-- <div class="col-md-4" name="settingPanel" ng-show="!isCollapsed">
-            <div class="panel-body b">
-              <div class="m-t-none m-b text-center font-thin">播放清单设置</div>
-
-              <form name="form" class="form-horizontal m-t-lg form-validation">
-              <div class="row">
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">名称</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control w-sm" ng-model="item.targetProgramName">
-                  </div>
-                </div>
-            
-                <div class="line"></div>
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">开始*</label>
-                  <div class="col-sm-9" ng-controller="DatepickerDemoCtrl">
-                    <div class="input-group w-sm">
-                      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="item.programStartDate" is-open="opened" datepicker-options="dateOptions" close-text="关闭" required/>
-                      <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                      </span>
-                    </div>
-                    </div>                  
-                    </div>
-
-                    <div class="line"></div>
-                    <div class="form-group">
-                      <label class="col-sm-3 control-label">结束*</label>
-                      <div class="col-sm-9" ng-controller="DatepickerDemoCtrl">
-                        <div class="input-group w-sm">
-                          <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="item.programEndDate" is-open="opened" datepicker-options="dateOptions" close-text="关闭" required/>
-                          <span class="input-group-btn">
-                            <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                          </span>
-                        </div>
-                      </div>                  
-                    </div>
-
-                  </div>
-
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-sm btn-success text-uc m-t-n-xs" ng-disabled="form.$invalid" ng-click="startGenerate(item)"><strong>开始生成</strong></button>
-                    <button class="btn btn-sm btn-danger m-l-md text-uc m-t-n-xs" ng-click="isCollapsed = true"><strong>取消</strong></button>
-                  </div>
-                </form>
-              </div>
-            </div> -->
-            <!-- end program setting -->
 
           <div class="col-xs-12 m-b-md">
             <div class="r bg-light dker item hbox no-border">

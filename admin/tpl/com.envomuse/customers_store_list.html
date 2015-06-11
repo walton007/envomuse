@@ -9,7 +9,7 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">客户管理</h1>
+          <h1 class="m-n font-thin h3 text-black">客户门店管理</h1>
           <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
@@ -25,35 +25,49 @@
       <div class="col">
         <div class="wrapper-md">
           <div class="panel panel-default">
-            <table st-table="rowCollectionBasic" class="table table-striped">
-              <thead>
-              <tr>
-                <th width="20%">门店</th>
-                <th width="20%">REFERENCE</th>
-                <th width="20%">添加时间</th>
-                <th width="20%">播放列表</th>
-                <th width="15%">店长</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr ng-repeat="row in normalizedDataSource" st-select-row="row">
-                <td><a ui-sref="customers.store.detail({brandId:brand._id,storeId:row._id})">{{row.siteName}}</a></td>
-                <td>{{row.reference}}</td>
-                <td>{{row.created |  fromNow}}</td>
-                <td>ABC</td>
-                <td>张三</td>
-              </tr>
-              </tbody>
-            </table>
+            <div class="panel-heading">
+              <div class="row">
+                <div class="col-sm-4">
+                  <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-init="init()" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+                </div>
+                <div class="col-sm-4">
+                  <div class="input-group">
+                    <input type="text" class="input-sm form-control" placeholder="输入查找内容" ng-model="searchText">
+                    <span class="input-group-btn">
+                      <button class="btn btn-sm btn-default" type="button">查找</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="table-responsive">
+              <table class="table table-striped b-t b-light">
+                <thead>
+                  <tr>
+                    <th width="15%">门店</th>
+                    <th width="15%">REFERENCE</th>
+                    <th width="15%">店长</th>
+                    <th width="15%">添加时间</th>
+                    <th width="15%">播放列表数</th>
+                    <th>最后绑定时间</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="row in normalizedDataSource | filter:searchText" st-select-row="row">
+                    <td><a ui-sref="customers.store.detail({brandId:brand._id,storeId:row._id})">{{row.siteName}}</a></td>
+                    <td>{{row.reference}}</td>
+                    <td>{{row.manager.name}}</td>
+                    <td>{{row.created |  fromNow}}</td>
+                    <td>{{row.siteProgramsCount}}</td>
+                    <td>{{row.lastBindDate | fromNow}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
     
-      <!-- pager -->
-      <div class="col-sm-6 col-xs-12 text-middle">
-        <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-init="init()" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
-      </div>
-      <!-- /pager -->
-
     </div>
   </div>
   <!-- /main -->

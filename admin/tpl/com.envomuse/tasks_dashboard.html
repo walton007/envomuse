@@ -36,7 +36,7 @@
                       <img src="img/icons/playlist_128.png" alt="...">
                     </div>
                     <div class="h4 m-t m-b-xs">{{stat.count}}</div>
-                    <small class="text-muted">待处理</small>
+                    <small class="text-muted">待处理任务</small>
                   </div>                      
                 </a>
               </div>
@@ -46,13 +46,13 @@
           <div class="col-md-4" >
             <div class="panel panel-default bg-light b no-border">
               <div class="panel-body">
-                <a ui-sref="tasks.ongoing" class="clearfix text-center m-t">
+                <a ui-sref="tasks.finished" class="clearfix text-center m-t">
                   <div class="inline">
                     <div class="thumb-xl">
                       <img src="img/icons/playlist_128.png" alt="...">
                     </div>
-                    <div class="h4 m-t m-b-xs">{{stat.unbindCount}}</div>
-                    <small class="text-muted">未关联门店的播放清单</small>
+                    <div class="h4 m-t m-b-xs">{{stat.running}}</div>
+                    <small class="text-muted">进行中的任务</small>
                   </div>                      
                 </a>
               </div>

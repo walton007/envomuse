@@ -43,7 +43,7 @@
             <td><a ui-sref="jobs.rule({ruleId:row._id,jobContent:job,programContent:program,ruleContent:row})">{{row.ruleName}}</a></td>
             <td>
               <span ng-repeat="r in row.boxes" class="m-r-sm b">
-                <a ui-sref="jobs.box({boxId:r._id,jobContent:job,programContent:program,ruleContent:row,boxContent:r})">{{r.name}}</a>
+                <a ui-sref="jobs.box({boxId:r._id,jobId:job._id,programId:program._id})">{{r.name}}</a>
               </span>
             </td>
           </tr>

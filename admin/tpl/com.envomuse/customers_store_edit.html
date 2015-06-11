@@ -1,25 +1,31 @@
-<div ng-controller="StoreEditCtrl">
-  <!-- breadcrumb -->
-  <div class="row">
-    <div class="bg-light lter">
-      <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-xs">
-        <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
-        <li><a ui-sref="customers.dash">客户管理</a></li>
-        <li><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></li>
-        <li><a ui-sref="customers.store.detail({brandId:brand._id,storeId:store._id})">{{store.siteName | uppercase}}</a></li>
-        <li class="active">编辑</li>
-      </ul>
-    </div>
-  </div>
-  <!-- / breadcrumb -->
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
+    app.settings.asideFolded = false; 
+    app.settings.asideDock = false;" ng-controller="StoreEditCtrl">
 
-  <div class="hbox hbox-auto-xs hbox-auto-sm">
-  <!-- main -->
-    <div class="col-sm-12">
-      <div class="panel panel-default">
-        <div class="panel-heading font-bold">编辑店铺</div>
-        <div class="panel-body">
-          <form name="editStore" class="form-horizontal m-t-lg">
+<!-- main -->
+  <div class="col">
+    <!-- main header -->
+    <div class="bg-light lter b-b wrapper-md">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black">客户管理</h1>
+          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a> > <a ui-sref="customers.store.detail({brandId:brand._id,storeId:store._id})">{{store.siteName | uppercase}}</a> > 编辑</small>
+        </div>
+        <div class="col-sm-6 text-right hidden-xs">
+          <div class="btn-group dropdown" dropdown>
+            <a class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="customers.brand.new"><i class="fa fa-plus"></i>添加客户</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- / main header -->
+
+    <!-- main -->
+      <div class="row">
+        <div class="wrapper-md">
+          <div class="panel-heading font-bold">编辑门店信息</div>
+            <div class="panel-body">
+              <form name="editStore" class="form-horizontal m-t-lg">
             <div class="form-group">
               <label class="col-lg-2 control-label">品牌</label>
               <div class="col-lg-8">
@@ -63,13 +69,13 @@
             </div>
  -->
             <div class="line line-dashed b-b line-lg pull-in"></div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">详细描述</label>
-                <div class="col-sm-10">
-                  <textarea class="form-control h-auto" style="min-height:200px;" ng-model="store.description">{{store.description}}
-                  </textarea>
-                </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">详细描述</label>
+              <div class="col-sm-10">
+                <textarea class="form-control h-auto" style="min-height:200px;" ng-model="store.description">{{store.description}}
+                </textarea>
               </div>
+            </div>
 
             <div class="form-group">
               <div class="col-lg-8 col-lg-offset-2">
@@ -77,15 +83,16 @@
               </div>
             </div>
           </form>
-        </div>
+            </div>
+          </div>
       </div>
-    </div>
+  </div>
   <!-- /main -->
+
   <!-- right col -->
-    <div class="col w-md bg-light dker b-l bg-auto no-border-xs">    
-      <div class="wrapper-md">
-         <button class="btn m-b-xs btn-sm btn-warning btn-addon" ui-sref="customers.store.detail({brandId:store.brandId,storeId:store.id})"><i class="fa fa-arrow-circle-left"></i>取消</button>
-      </div>
+  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
+    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
     </div>
-  <!-- /right col -->
+  </div>
+  <!-- / right col -->
 </div>

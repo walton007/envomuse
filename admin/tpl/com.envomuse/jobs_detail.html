@@ -1,6 +1,7 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="app.settings.asideFolded = false; app.settings.asideDock = false; isCollapsed = true;" ng-controller="JobDetailCtrl">
 
   <div class="col">
+
     <!-- main header -->
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
@@ -21,67 +22,82 @@
     <!-- / main header -->
 
     <!-- job detail -->
-    <div class="col-md-8 no-padder">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <span class="m-r-lg">客户名称：{{job.custumorName | uppercase }}</span>
-          <span>创作者：{{job.creator}}</span>
+    <div class="row">
+      <!-- <div style="background:url(img/c4.jpg) center center; background-size:cover"> -->
+      <div class="wrapper-lg bg-white-opacity">
+        <div class="row">
+          <div class="col-sm-7">
+            <!-- <a href class="thumb-lg pull-left m-r">
+              <img src="img/a0.jpg" class="img-circle">
+            </a> -->
+            <div class="clear">
+                <span class="h3 text-black">目标客户名称：{{job.custumorName | uppercase }}</span>
+                <small class="m-l">创作者：{{job.creator}}</small>
+            </div>
+          </div>
         </div>
-        <table st-table="rowCollectionBasic" class="table table-bordered table-striped">
-          <thead>
-          <tr>
-            <th width="10%">序号</th>
-            <th width="10%">名称</th>
-            <th width="10%">日期类型</th>
-            <th width="10%">日期定义</th>
-            <th>情景段</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr ng-repeat="row in job.programRule.playlists" st-select-row="row">
-            <td>{{ $index + 1 }}</td>
-            <td><a ui-sref="jobs.program({jobId:job._id,programId:row._id,programContent:row,jobContent:job})">{{row.name}}</a></td>
-            <td>{{row.timePeriods.calcType}}</td>
-            <td>{{row.timePeriods.dValues}}</td>
-            <td>
-              <span ng-repeat="r in row.dayRuleUnits" class="m-r-sm b">
-                <a ui-sref="jobs.rule({ruleId:r._id,jobContent:job,programContent:row,ruleContent:r})">{{r.ruleName}} [{{r.starthour}} --> {{r.endhour}}]</a>
-              </span>
-            </td>
-          </tr>
-          </tbody>
-        </table>
       </div>
-    </div>
-    <!-- /job detail-->
 
-    <!-- generated programs -->
-    <div class="col-md-4">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <span class="m-r-lg">已生成的播放清单</span>
+      <div class="col-sm-8">
+        <tabset class="nav-tabs-alt" justified="true">
+          <tab ng-repeat="row in job.programRule.playlists">
+            <tab-heading>
+              <i class="glyphicon glyphicon-list text-md text-muted wrapper-sm"></i>{{row.name}}
+            </tab-heading>
+              <div class="padder"> 
+                <div class="row wrapper">
+                  <div class="clear wrapper b">
+                      <div class="h5 clear-fix">日期类型：{{row.timePeriods.calcType}}</div>
+                      <div class="h5">选定日期：{{row.timePeriods.dValues}}</div>
+                  </div>
+                </div>
+
+                <div class="streamline b-l b-info m-l-lg m-b padder-v">                
+                  <div ng-repeat="r in row.dayRuleUnits">
+                    <a class="pull-left thumb-sm avatar m-l-n-md">
+                      <img src="img/icons/clock.png" alt="...">
+                    </a>
+                    <div class="m-l-lg panel b-a">
+                      <div class="panel-heading pos-rlt b-b b-light">
+                        <span class="arrow left"></span>
+                        <span>情景段：{{r.ruleName}}</span>
+                        <label class="label bg-light m-l-xs">{{r.starthour}}</label>
+                        <label class="label bg-light m-l-xs">{{r.endhour}}</label>
+                      </div>
+                      <div class="panel-body">
+                        <div class="h5 b" ng-repeat="b in r.boxes">
+                          <!-- <a ui-sref="jobs.box({boxId:b._id,jobId:job._id,programId:r._id})">{{b.name}}</a> -->
+                          {{b.name}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </tab>     
+        </tabset>
+      </div>
+        
+      <!-- <div class="pull-right pull-none-xs text-center"> -->
+      <div class="col-sm-4 bg-auto no-border-xs" ng-show="job.programs.length>0">
+      <!-- generated programs -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="m-r-lg">已生成的播放清单</span>
+          </div>
+          <div class="list-group no-radius alt">
+            <a class="list-group-item" ui-sref="playlists.detail({playlistId:r._id})" ng-repeat="r in job.programs | orderBy: 'created'">
+              <span class="badge bg-success">{{r.siteRefCount}}</span>
+              {{r.name}}
+              <span class="clearfix"><i class="fa fa-angle-double-left fa-fw text-muted"></i>{{r.startDate | date:'yyyy-MM-dd'}} 到
+              {{r.endDate | date:'yyyy-MM-dd'}}<i class="fa fa-angle-double-right fa-fw text-muted"></i></span>
+            </a>
+          </div>
         </div>
-
-      <div class="list-group no-radius alt">
-        <a class="list-group-item" href>
-          <span class="badge bg-success">25</span>
-          <i class="fa fa-calendar fa-fw text-muted"></i> 
-          KFC-SUMMER-1
-        </a>
-        <a class="list-group-item" href>
-          <span class="badge bg-info">16</span>
-          <i class="fa fa-calendar fa-fw text-muted"></i> 
-          KFC-SUMMER-2
-        </a>
-        <a class="list-group-item" href>
-          <!-- <span class="badge bg-light">5</span>
-          <i class="fa fa-calendar fa-fw text-muted"></i> 
-          KFC-SUMMER-3 -->
-        </a>
+      <!-- /generated programs -->
       </div>
-      </div>
-    </div>
-    <!-- /generated programs -->
+  </div>
+    <!-- /job detail -->
 
     <div class="col-xs-12 m-b-md">
       <div class="r bg-light dker item hbox no-border">

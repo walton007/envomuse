@@ -1,110 +1,133 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
-    app.settings.asideFolded = false; 
-    app.settings.asideDock = false;
-  ">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="app.settings.asideFolded = false; app.settings.asideDock = false;">
   <!-- main -->
   <div class="col">
+
     <!-- main header -->
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">控制面板</h1>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="app.dashboard">控制面板</a></h1>
           <small class="text-muted">欢迎使用Envomuse后台</small>
         </div>
+
         <div class="col-sm-6 text-right hidden-xs">
-          
         </div>
       </div>
     </div>
     <!-- / main header -->
-    <div class="wrapper-md" ng-controller="FlotChartDemoCtrl">
-      <!-- stats -->
-      <div class="row">
-        <div class="col-md-5">
-          <div class="row row-sm text-center">
-            <div class="col-xs-6">
-              <div class="panel padder-v item">
-                <div class="h1 text-info font-thin h1">521</div>
-                <span class="text-muted text-xs">品牌</span>
-                <div class="top text-right w-full">
-                  <i class="fa fa-caret-down text-warning m-r-sm"></i>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-6">
-              <a href class="block panel padder-v bg-primary item">
-                <span class="text-white font-thin h1 block">930</span>
-                <span class="text-muted text-xs">音乐</span>
-                <span class="bottom text-right w-full">
-                  <i class="fa fa-cloud-upload text-muted m-r-sm"></i>
-                </span>
-              </a>
-            </div>
-            <div class="col-xs-6">
-              <a href class="block panel padder-v bg-info item">
-                <span class="text-white font-thin h1 block">432</span>
-                <span class="text-muted text-xs">店铺</span>
-                <span class="top text-left">
-                  <i class="fa fa-caret-up text-warning m-l-sm"></i>
-                </span>
-              </a>
-            </div>
-            <div class="col-xs-6">
-              <div class="panel padder-v item">
-                <div class="font-thin h1">129</div>
-                <span class="text-muted text-xs">播放列表</span>
-                <div class="bottom text-left">
-                  <i class="fa fa-caret-up text-warning m-l-sm"></i>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-12 m-b-md">
-              <div class="r bg-light dker item hbox no-border">
-                <div class="col w-xs v-middle hidden-md">
-                  <div ng-init="data1=[60,40]" ui-jq="sparkline" ui-options="{{data1}}, {type:'pie', height:40, sliceColors:['{{app.color.warning}}','#fff']}" class="sparkline inline"></div>
-                </div>
-                <div class="col dk padder-v r-r">
-                  <div class="text-primary-dk font-thin h1"><span>$12,670</span></div>
-                  <span class="text-muted text-xs">Revenue, 60% of the goal</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-7">
-          <div class="panel wrapper">
-            <label class="i-switch bg-warning pull-right" ng-init="showSpline=true">
-              <input type="checkbox" ng-model="showSpline">
-              <i></i>
-            </label>
-            <h4 class="font-thin m-t-none m-b text-muted">Latest Campaign</h4>
-            <div ui-jq="plot" ui-refresh="showSpline" ui-options="
-              [
-                { data: {{d0_1}}, label:'TV', points: { show: true, radius: 1}, splines: { show: showSpline, tension: 0.4, lineWidth: 1, fill: 0.8 } },
-                { data: {{d0_2}}, label:'Mag', points: { show: true, radius: 1}, splines: { show: showSpline, tension: 0.4, lineWidth: 1, fill: 0.8 } }
-              ], 
-              {
-                colors: ['{{app.color.info}}', '{{app.color.primary}}'],
-                series: { shadowSize: 3 },
-                xaxis:{ font: { color: '#a1a7ac' } },
-                yaxis:{ font: { color: '#a1a7ac' }, max:20 },
-                grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#dce5ec' },
-                tooltip: true,
-                tooltipOpts: { content: 'Visits of %x.1 is %y.4',  defaultTheme: false, shifts: { x: 10, y: -25 } }
-              }
-            " style="height:246px" >
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- / stats -->
 
-      <!-- service -->
+    <div class="wrapper-md" ng-controller="FlotChartDemoCtrl">
+      <!-- pannel -->
+      <div class="row">
+        <!-- entry -->
+        <div class="col-md-4">
+          <div class="row row-sm text-center">
+            
+            <div class="col-xs-6">
+              <a ui-sref="customers.dash" class="block panel padder-v item">
+                <span class="text-primary font-thin h1 block">88</span>
+                <span class="text-muted text-xs">客户</span>
+                <span class="bottom text-right w-full">
+                  <i class="icon icon-trophy text-muted m-r-sm"></i>
+                </span>
+              </a>
+            </div>
+
+            <div class="col-xs-6">
+              <a ui-sref="tasks.dash" class="block panel padder-v item">
+                <span class="text-danger  font-thin h1 block">930</span>
+                <span class="text-muted text-xs">任务</span>
+                <span class="bottom text-left w-full">
+                  <i class="icon icon-drawer text-muted m-l-sm"></i>
+                </span>
+              </a>
+            </div>
+
+
+            <div class="col-xs-6">
+              <a ui-sref="jobs.dash" class="block panel padder-v item">
+                <span class="text-info font-thin h1 block">432</span>
+                <span class="text-muted text-xs">工作包</span>
+                <span class="top text-right w-full">
+                  <i class="icon icon-layers text-muted m-r-sm"></i>
+                </span>
+              </a>
+            </div>
+
+            <div class="col-xs-6">
+              <a ui-sref="playlists.dash" class="block panel padder-v item">
+                <span class="text-success font-thin h1 block">432</span>
+                <span class="text-muted text-xs">播放清单</span>
+                <span class="top text-left w-full">
+                  <i class="icon icon-shuffle text-muted m-l-sm"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- /entry -->
+
+        <!-- customer stats -->
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading font-bold">
+              客户状态分类
+            </div>
+            <div class="panel-body text-center">
+              <div ui-jq="plot" ui-options="
+                {{d3}},
+                {
+                  series: { pie: { show: true, innerRadius: 0.5, stroke: { width: 0 }, label: { show: true, threshold: 0.05 } } },
+                  colors: ['{{app.color.primary}}','{{app.color.info}}','{{app.color.success}}','{{app.color.warning}}','{{app.color.danger}}'],
+                  grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },   
+                  tooltip: true,
+                  tooltipOpts: { content: '%s: %p.0%' }
+                }
+              " style="height:188px"></div>
+            </div>
+          </div>
+        </div>
+        <!-- customer stats -->
+
+        <!-- sites delivery stats -->
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading font-bold">
+              门店交付状态统计
+            </div>
+            <div class="panel-body text-center">
+              <div class="inline">
+                <div ui-jq="easyPieChart"  ui-options="{
+                          percent: 68,
+                          lineWidth: 10,
+                          trackColor: '{{app.color.light}}',
+                          barColor: '{{app.color.success}}',
+                          scaleColor: '{{app.color.light}}',
+                          size: 188,
+                          lineCap: 'butt',
+                          animate: 2000
+                        }">
+                  <div>
+                    <span class="h2 m-l-sm step">68</span>%
+                    <div class="text text-sm">已安装终端</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /sites delivery stats -->
+
+
+      </div>
+      <!-- / panel -->
+
+      <!-- sites stats -->
       <div class="panel hbox hbox-auto-xs no-border">
         <div class="col wrapper">
           <i class="fa fa-circle-o text-info m-r-sm pull-right"></i>
-          <h4 class="font-thin m-t-none m-b-none text-primary-lt">Managed Services</h4>
-          <span class="m-b block text-sm text-muted">Service report of this year (updated 1 hour ago)</span>
+          <h4 class="font-thin m-t-none m-b-none text-primary-lt">播放器状态</h4>
+          <span class="m-b block text-sm text-muted">播放器连接状态统计 （五分钟前更新）</span>
           <div ui-jq="plot" ui-options="
             [
               { data: {{d4}}, lines: { show: true, lineWidth: 1, fill:true, fillColor: { colors: [{opacity: 0.2}, {opacity: 0.8}] } } }
@@ -122,168 +145,32 @@
           </div>
         </div>
         <div class="col wrapper-lg w-lg bg-light dk r-r">
-          <h4 class="font-thin m-t-none m-b">Reports</h4>
+          <h4 class="font-thin m-t-none m-b">统计</h4>
           <div class="">
             <div class="">
-              <span class="pull-right text-primary">60%</span>
-              <span>Consulting</span>
+              <span class="pull-right text-success">60%</span>
+              <span>在线</span>
             </div>
-            <progressbar value="60" class="progress-xs m-t-sm bg-white" animate="true" type="primary"></progressbar>
+            <progressbar value="60" class="progress-xs m-t-sm bg-white" animate="true" type="success"></progressbar>
             <div class="">
               <span class="pull-right text-info">35%</span>
-              <span>Online tutorials</span>
+              <span>本地播放</span>
             </div>
             <progressbar value="35" class="progress-xs m-t-sm bg-white" animate="true" type="info"></progressbar>
             <div class="">
               <span class="pull-right text-warning">25%</span>
-              <span>EDU management</span>
+              <span>离线</span>
             </div>
-            <progressbar value="25" class="progress-xs m-t-sm bg-white" animate="true" type="warning"></progressbar>
+            <progressbar value="25" class="progress-xs m-t-sm bg-white" animate="true" type="danger"></progressbar>
           </div>
-          <p class="text-muted">Dales nisi nec adipiscing elit. Morbi id neque quam. Aliquam sollicitudin venenatis</p>
         </div>
       </div>
       <!-- / service -->
-
-      <!-- tasks -->
-      <div class="panel wrapper">
-        <div class="row">
-          <div class="col-md-6 b-r b-light no-border-xs">
-            <a href class="text-muted pull-right text-lg"><i class="icon-arrow-right"></i></a>
-            <h4 class="font-thin m-t-none m-b-md text-muted">My Tasks</h4>
-            <div class=" m-b">
-              <div class="m-b">
-                <span class="label text-base bg-warning pos-rlt m-r"><i class="arrow right arrow-warning"></i> 19:30</span>
-                <a href>Feed cat</a>
-              </div>
-              <div class="m-b">
-                <span class="label text-base bg-info pos-rlt m-r"><i class="arrow right arrow-info"></i> 12:30</span>
-                <a href>Fishing Time</a>
-              </div>
-              <div class="m-b">
-                <span class="label text-base bg-primary pos-rlt m-r"><i class="arrow right arrow-primary"></i> 10:30</span>
-                <a href>Kick-off meeting</a>
-              </div>
-              <div class="m-b">
-                <span class="label text-base bg-light pos-rlt m-r"><i class="arrow right arrow-light"></i> 07:30</span>
-                <a href>Morning running</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">            
-            <div class="row row-sm">
-              <div class="col-xs-6 text-center">
-                <div ui-jq="easyPieChart" ui-options="{
-                    percent: 75,
-                    lineWidth: 4,
-                    trackColor: '{{app.color.light}}',
-                    barColor: '{{app.color.primary}}',
-                    scaleColor: false,
-                    size: 115,
-                    rotate: 90,
-                    lineCap: 'butt'
-                  }" class="inline m-t">
-                  <div>
-                    <span class="text-primary h4">75%</span>
-                  </div>
-                </div>
-                <div class="text-muted font-bold text-xs m-t m-b">Work Done</div>
-              </div>
-              <div class="col-xs-6 text-center">
-                <div ui-jq="easyPieChart" ui-options="{
-                    percent: 50,
-                    lineWidth: 4,
-                    trackColor: '{{app.color.light}}',
-                    barColor: '{{app.color.info}}',
-                    scaleColor: false,
-                    size: 115,
-                    rotate: 180,
-                    lineCap: 'butt'
-                  }" class="inline m-t">
-                  <div>
-                    <span class="text-info h4">50%</span>
-                  </div>
-                </div>
-                <div class="text-muted font-bold text-xs m-t m-b">Started</div>
-              </div>
-            </div>            
-          </div>
-        </div>
-      </div>
-      <!-- / tasks -->
     </div>
 
   </div>
   <!-- / main -->
   <!-- right col -->
-  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
-    <tabset class="nav-tabs-alt" justified="true">
-      <tab>
-        <tab-heading>
-          <i class="glyphicon glyphicon-transfer text-md text-muted wrapper-sm"></i>
-        </tab-heading>
-      </tab>      
-    </tabset>
-    <div class="padder-md">      
-      <!-- streamline -->
-      <div class="m-b text-md">Recent Activity</div>
-      <div class="streamline b-l m-b">
-        <div class="sl-item">
-          <div class="m-l">
-            <div class="text-muted">5 minutes ago</div>
-            <p><a href class="text-info">Jessi</a> commented your post.</p>
-          </div>
-        </div>
-        <div class="sl-item">
-          <div class="m-l">
-            <div class="text-muted">11:30</div>
-            <p>Join comference</p>
-          </div>
-        </div>
-        <div class="sl-item b-success b-l">
-          <div class="m-l">
-            <div class="text-muted">10:30</div>
-            <p>Call to customer <a href class="text-info">Jacob</a> and discuss the detail.</p>
-          </div>
-        </div>
-        <div class="bg-info wrapper-sm m-l-n m-r-n m-b r r-2x">
-          Create tasks for the team
-        </div>
-        <div class="sl-item b-primary b-l">
-          <div class="m-l">
-            <div class="text-muted">Wed, 25 Mar</div>
-            <p>Finished task <a href class="text-info">Testing</a>.</p>
-          </div>
-        </div>
-        <div class="sl-item b-warning b-l">
-          <div class="m-l">
-            <div class="text-muted">Thu, 10 Mar</div>
-            <p>Trip to the moon</p>
-          </div>
-        </div>
-        <div class="sl-item b-info b-l">
-          <div class="m-l">
-            <div class="text-muted">Sat, 5 Mar</div>
-            <p>Prepare for presentation</p>
-          </div>
-        </div>
-        <div class="sl-item b-l">
-          <div class="m-l">
-            <div class="text-muted">Sun, 11 Feb</div>
-            <p><a href class="text-info">Jessi</a> assign you a task <a href class="text-info">Mockup Design</a>.</p>
-          </div>
-        </div>
-        <div class="sl-item b-l">
-          <div class="m-l">
-            <div class="text-muted">Thu, 17 Jan</div>
-            <p>Follow up to close deal</p>
-          </div>
-        </div>
-      </div>
-      <!-- / streamline -->
-    </div>
-    <div data-ng-include=" 'tpl/blocks/aside.right.html' ">
-    </div>
-  </div>
+  
   <!-- / right col -->
 </div>

@@ -17,7 +17,7 @@
 
           <div class="btn-group dropdown" dropdown>
             <a class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="customers.store.add(({brandId:brand._id}))"><i class="fa fa-plus"></i>添加门店</a>
-            <button class="btn m-b-xs btn-sm btn-default" dropdown-toggle><span class="caret"></span></button>
+            <button class="btn m-b-xs btn-sm btn-primary" dropdown-toggle><span class="caret"></span></button>
              <ul class="dropdown-menu">
               <li><a ui-sref="customers.contact.add({brandId:brand._id})">添加联系人</a></li>
               <li class="divider"></li>
@@ -25,207 +25,189 @@
               <li><a href>删除</a></li>
               <li class="divider"></li>
               <li><a ui-sref="customers.invoice({brandId:brand._id})">查看发票</a></li>
+              <li class="divider"></li>
+              <li><a href>设置客户管理员</a></li>
             </ul>
           </div>
 
-        <!-- <div class="btn-group" ng-controller="CustomerDeleteModalCtrl">
-          <a class="wrapper-xs block" ng-click="open('sm',brand._id)">
-            <i class="block text-md m-t-xs icon-trash"></i>
-            <span class="text-sm">删除{{customerId}}</span>
-              <script type="text/ng-template" id="deleteCustomerConfirmModal">
-                <div ng-include="'tpl/com.envomuse/customers_brand_delete_confirm_modal.html'"></div>
-              </script>
-          </a>
-        </div> -->
-
-           <!-- breadcrumb -->
-          <!-- <div class="row">
-            <div class="bg-light lter">
-              <ul class="breadcrumb bg-white b-b wrapper-md m-l m-b-none">
-                <li><a ui-sref="app.dashboard"><i class="fa fa-home"></i> Dashboard </a></li>
-                <li><a ui-sref="customers.dash">客户管理</a></li>
-                <li class="active">{{brand.brand | uppercase }}</li>
-              </ul>
-            </div>
-          </div> -->
-          <!-- / breadcrumb -->
         </div>
       </div>
     </div>
     <!-- / main header -->
 
   <!-- main -->
-    <div class="col">
-      <div class="wrapper">
-        <div class="row wrapper">
-          <h4 class="font-bold">品牌信息</h4>
-          <div class="panel-body">
-            <div class="clearfix text-center m-t col-md-2">
-              <div class="inline" style="width: 100px; height: 100px; line-height: 100px;">
-                <a ui-sref="customers.brand.detail({brandId:brand._id})">
-                  <div class="thumb-lg m-t-n-xxl">
-                    <img src="{{brand.logo}}" alt="LOGO {{brand.brand}}">
-                  </div>
-                </a>
-              </div>
-            </div>                     
-            <div class="col-md-9">
-              {{brand.description}}
+  <div class="row wrapper">
+    <div class="wrapper">
+      <div class="row wrapper">
+        <h4 class="font-bold">品牌信息</h4>
+        <div class="panel-body">
+          <div class="clearfix text-center m-t col-md-2">
+            <div class="inline" style="width: 100px; height: 100px; line-height: 100px;">
+              <a ui-sref="customers.brand.detail({brandId:brand._id})">
+                <div class="thumb-lg m-t-n-xxl">
+                  <img src="{{brand.logo}}" alt="LOGO {{brand.brand}}">
+                </div>
+              </a>
             </div>
-          </div>
-
-          <div class="col-md-2">
-          </div>
+          </div>                     
           <div class="col-md-9">
-            <div class="col-md-6">
-              <div class="list-group no-radius">
-                <span class="list-group-item bg-light no-border">
-                  <span class="badge bg-success">{{brand.industry}}</span>
-                  <i class="fa fa-tag fa-fw text-muted"></i> 
-                  客户所属行业
-                </span>
-                <span class="list-group-item bg-light no-border">
-                  <span class="badge bg-success"></span>
-                  <i class="fa fa-user fa-fw text-muted"></i> 
-                  对口销售人员
-                </span>
-                <span class="list-group-item bg-light no-border">
-                  <span class="badge bg-success">{{brand.created | fromNow}}</span>
-                  <i class="fa fa-clock-o fa-fw text-muted"></i> 
-                  添加时间
-                </span>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="list-group no-radius">
-                <span class="list-group-item bg-light no-border">
-                  <span class="badge bg-success">{{brand.status}}</span>
-                  <i class="fa fa-tag fa-fw text-muted"></i> 
-                  客户状态
-                </span>
-                <span class="list-group-item bg-light no-border">
-                  <span class="badge bg-success">{{brand.updatePeriod}}</span>
-                  <i class="fa fa-user fa-fw text-muted"></i> 
-                  更新周期
-                </span>
-                <span class="list-group-item bg-light no-border">
-                  <span class="badge bg-success">{{brand.nextUpdateDate | fromNow}}</span>
-                  <i class="fa fa-clock-o fa-fw text-muted"></i> 
-                  下次更新时间
-                </span>
-              </div>
-            </div>
+          品牌简介：
+            {{brand.description}}
           </div>
         </div>
-          
-        <div class="row">
+
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-9">
           <div class="col-md-6">
-            <h4 class="font-bold">门店信息</h4>
-            <div class="row wrapper text-center">
-              <div class="col-md-8" >
-                <div class="panel panel-default bg-light b no-border">
-                  <div class="panel-body">
-                    <a ui-sref="customers.store({brandId:brand._id})" class="clearfix text-center m-t">
-                      <div class="inline">
-                        <div class="thumb-xl">
-                          <img src="img/icons/customer_list.png" alt="...">
-                        </div>
-                        <div class="h4 m-t m-b-xs">已有 {{brand.sitesCount}} 门店</div>
-                        <small class="text-muted">客户已有门店列表</small>
-                      </div>                      
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-4" >
-                <div class="panel panel-default bg-light b no-border">
-                  <div class="panel-body">
-                    <a ui-sref="customers.store.add(({brandId:brand._id}))" class="clearfix text-center m-t">
-                      <div class="inline">
-                        <div class="thumb-xl">
-                          <img src="img/icons/plus.png" alt="...">
-                        </div>
-                        <div class="h4 m-t m-b-xs">添加门店</div>
-                      </div>                      
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <h4 class="font-bold">联系人</h4>
-            <div class="row wrapper text-center">
-              <div class="col-md-8" >
-                <div class="panel panel-default bg-light b no-border">
-                  <div class="panel-body">
-                    <a ui-sref="customers.contact({brandId:brand._id})" class="clearfix text-center m-t">
-                      <div class="inline">
-                        <div class="thumb-xl">
-                          <img src="img/icons/customer_list.png" alt="...">
-                        </div>
-                        <div class="h4 m-t m-b-xs">已有 {{brand.contacts.length}} 联系人</div>
-                        <small class="text-muted">客户所有联系人列表</small>
-                      </div>                      
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-4" >
-                <div class="panel panel-default bg-light b no-border">
-                  <div class="panel-body">
-                    <a ui-sref="customers.contact.add({brandId:brand._id})" class="clearfix text-center m-t">
-                      <div class="inline">
-                        <div class="thumb-xl">
-                          <img src="img/icons/plus.png" alt="...">
-                        </div>
-                        <div class="h4 m-t m-b-xs">添加联系人</div>
-                      </div>                      
-                    </a>
-                  </div>
-                </div>
-              </div>
+            <div class="list-group no-radius">
+              <span class="list-group-item bg-light no-border">
+                <span class="badge bg-success">{{brand.industry}}</span>
+                <i class="fa fa-tag fa-fw text-muted"></i> 
+                客户所属行业
+              </span>
+              <span class="list-group-item bg-light no-border">
+                <span class="badge bg-success"></span>
+                <i class="fa fa-user fa-fw text-muted"></i> 
+                对口销售人员
+              </span>
+              <span class="list-group-item bg-light no-border">
+                <span class="badge bg-success">{{brand.created | fromNow}}</span>
+                <i class="fa fa-clock-o fa-fw text-muted"></i> 
+                添加时间
+              </span>
             </div>
           </div>
-
           <div class="col-md-6">
-            <h4 class="font-bold">播放器状态</h4>
-            <div class="list-group">
-              <a href class="list-group-item no-border bg-light">
-                <span class="badge badge-empty">201</span>
-                <i class="fa fa-envelope fa-fw m-r-xs"></i> 未生成LICENSE
-              </a>
-              <a href class="list-group-item no-border bg-light">
-                <span class="badge bg-info">5021</span>
-                <i class="fa fa-eye fa-fw m-r-xs"></i> 待安装
-              </a>
-              <a href class="list-group-item no-border bg-light">
-                <span class="badge bg-success">14</span>
-                <i class="fa fa-phone fa-fw m-r-xs"></i> 待激活
-              </a>
-              <a href class="list-group-item no-border bg-light">
-                <span class="badge bg-dark">20</span>
-                <i class="fa fa-comments-o fa-fw m-r-xs"></i> 在线
-              </a>
-              <a href class="list-group-item no-border bg-light">
-                <span class="badge bg-warning">14</span>
-                <i class="fa fa-bookmark fa-fw m-r-xs"></i> 离线
-              </a>
-              <a href class="list-group-item no-border bg-light">
-                <span class="badge bg-info">30</span>
-                <i class="fa fa-bell fa-fw m-r-xs"></i> 暂停
-              </a>
-              <a href class="list-group-item no-border bg-light">
-                <span class="badge bg-danger">10</span>
-                <i class="fa fa-clock-o fa-fw m-r-xs"></i> 终止服务
-              </a>
+            <div class="list-group no-radius">
+              <span class="list-group-item bg-light no-border">
+                <span class="badge bg-success">{{brand.status}}</span>
+                <i class="fa fa-tag fa-fw text-muted"></i> 
+                客户状态
+              </span>
+              <span class="list-group-item bg-light no-border">
+                <span class="badge bg-success">{{brand.updatePeriod}}</span>
+                <i class="fa fa-user fa-fw text-muted"></i> 
+                更新周期
+              </span>
+              <span class="list-group-item bg-light no-border">
+                <span class="badge bg-success">{{brand.nextUpdateDate | fromNow}}</span>
+                <i class="fa fa-clock-o fa-fw text-muted"></i> 
+                下次更新时间
+              </span>
             </div>
-            
           </div>
         </div>
       </div>
+        
+      <div class="row">
+        <div class="col-md-6">
+          <h4 class="font-bold">门店信息</h4>
+          <div class="row wrapper text-center">
+            <div class="col-md-8" >
+              <div class="panel panel-default bg-light b no-border">
+                <div class="panel-body">
+                  <a ui-sref="customers.store({brandId:brand._id})" class="clearfix text-center m-t">
+                    <div class="inline">
+                      <div class="thumb-xl">
+                        <img src="img/icons/customer_list.png" alt="...">
+                      </div>
+                      <div class="h4 m-t m-b-xs">已有 {{brand.sitesCount}} 门店</div>
+                      <small class="text-muted">客户已有门店列表</small>
+                    </div>                      
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4" >
+              <div class="panel panel-default bg-light b no-border">
+                <div class="panel-body">
+                  <a ui-sref="customers.store.add(({brandId:brand._id}))" class="clearfix text-center m-t">
+                    <div class="inline">
+                      <div class="thumb-xl">
+                        <img src="img/icons/plus.png" alt="...">
+                      </div>
+                      <div class="h4 m-t m-b-xs">添加门店</div>
+                    </div>                      
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h4 class="font-bold">联系人</h4>
+          <div class="row wrapper text-center">
+            <div class="col-md-8" >
+              <div class="panel panel-default bg-light b no-border">
+                <div class="panel-body">
+                  <a ui-sref="customers.contact({brandId:brand._id})" class="clearfix text-center m-t">
+                    <div class="inline">
+                      <div class="thumb-xl">
+                        <img src="img/icons/customer_list.png" alt="...">
+                      </div>
+                      <div class="h4 m-t m-b-xs">已有 {{brand.contacts.length}} 联系人</div>
+                      <small class="text-muted">客户所有联系人列表</small>
+                    </div>                      
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4" >
+              <div class="panel panel-default bg-light b no-border">
+                <div class="panel-body">
+                  <a ui-sref="customers.contact.add({brandId:brand._id})" class="clearfix text-center m-t">
+                    <div class="inline">
+                      <div class="thumb-xl">
+                        <img src="img/icons/plus.png" alt="...">
+                      </div>
+                      <div class="h4 m-t m-b-xs">添加联系人</div>
+                    </div>                      
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <h4 class="font-bold">播放器状态</h4>
+          <div class="list-group">
+            <a href class="list-group-item no-border bg-light">
+              <span class="badge badge-empty">201</span>
+              <i class="fa fa-envelope fa-fw m-r-xs"></i> 未生成LICENSE
+            </a>
+            <a href class="list-group-item no-border bg-light">
+              <span class="badge bg-info">5021</span>
+              <i class="fa fa-eye fa-fw m-r-xs"></i> 待安装
+            </a>
+            <a href class="list-group-item no-border bg-light">
+              <span class="badge bg-success">14</span>
+              <i class="fa fa-phone fa-fw m-r-xs"></i> 待激活
+            </a>
+            <a href class="list-group-item no-border bg-light">
+              <span class="badge bg-dark">20</span>
+              <i class="fa fa-comments-o fa-fw m-r-xs"></i> 在线
+            </a>
+            <a href class="list-group-item no-border bg-light">
+              <span class="badge bg-warning">14</span>
+              <i class="fa fa-bookmark fa-fw m-r-xs"></i> 离线
+            </a>
+            <a href class="list-group-item no-border bg-light">
+              <span class="badge bg-info">30</span>
+              <i class="fa fa-bell fa-fw m-r-xs"></i> 暂停
+            </a>
+            <a href class="list-group-item no-border bg-light">
+              <span class="badge bg-danger">10</span>
+              <i class="fa fa-clock-o fa-fw m-r-xs"></i> 终止服务
+            </a>
+          </div>
+          
+        </div>
+      </div>
     </div>
+  </div>
     <!-- /main -->
   <!-- /main -->
 

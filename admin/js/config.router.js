@@ -51,7 +51,7 @@ angular.module('app')
                   }
               })
               .state('customers.dash', {
-                  url: '/dash',
+                  url: '/',
                   templateUrl: 'tpl/com.envomuse/customers_dashboard.html',
                   /*resolve: {
                     deps: ['$ocLazyLoad',
@@ -62,7 +62,7 @@ angular.module('app')
                   }*/
               })
               .state('customers.brand', {
-                  url: '/list/:listState',
+                  url: '/list/',
                   views: {
                       '': {
                           templateUrl: 'tpl/com.envomuse/customers_list.html'
@@ -133,6 +133,9 @@ angular.module('app')
 
               .state('customers.store', {
                   url: '/:brandId/store',
+                  params : {
+                    brandId:null
+                  },
                   views: {
                       '': {
                           templateUrl: 'tpl/com.envomuse/customers_store_list.html'
@@ -143,8 +146,11 @@ angular.module('app')
                   }
               })
               .state('customers.store.detail', {
-                  url: '/:brandId/store/:storeId/detail',
+                  url: '/:brandId/store/:storeId/',
                   parent: 'customers',
+                  // params : {
+                  //   brandId:null
+                  // },
                   views: {
                       '': {
                           templateUrl: 'tpl/com.envomuse/customers_store_detail.html'
@@ -167,7 +173,10 @@ angular.module('app')
                   }
               })
               .state('customers.store.edit', {
-                  url: '/:brandId/store/:storeId/edit',
+                  url: '/store/:storeId/edit',
+                  params : {
+                    brandId:null
+                  },
                   parent: 'customers',
                   templateUrl: 'tpl/com.envomuse/customers_store_edit.html'
               })
@@ -245,7 +254,7 @@ angular.module('app')
                   templateUrl: 'tpl/com.envomuse/jobs_dashboard.html'
               })
               .state('jobs.list', {
-                  url: '/list/:jobStatus',
+                  url: '/',
                   views: {
                       '': {
                           templateUrl: 'tpl/com.envomuse/jobs_list.html'
@@ -256,9 +265,9 @@ angular.module('app')
                   }
               })
               .state('jobs.detail', {
-                  url: '/job/:jobId/detail',
+                  url: '/:jobId/',
                   params : {
-                    jobContent:null
+                    // jobContent:null
                   },
                   views: {
                       '': {
@@ -300,7 +309,7 @@ angular.module('app')
                   }
               })
 
-              .state('jobs.rule', {
+              /*.state('jobs.rule', {
                   url: '/rule/:ruleId/detail',
                   params : {
                     ruleContent:null,
@@ -329,16 +338,15 @@ angular.module('app')
                                               ]);
                       }]
                   }
-              })
+              })*/
               
               .state('jobs.box', {
-                  url: '/box/:boxId/detail',
+                  url: '/box/:boxId/',
                   templateUrl: 'tpl/com.envomuse/jobs_box_detail.html',
                   params : {
-                    boxContent:null,
-                    ruleContent:null,
-                    programContent:null,
-                    jobContent:null
+                    boxId:null,
+                    programId:null,
+                    jobId:null
                   },
                   views: {
                       '': {
@@ -379,11 +387,11 @@ angular.module('app')
                   }
               })
               .state('playlists.dash', {
-                  url: '/dash',
+                  url: '/',
                   templateUrl: 'tpl/com.envomuse/playlists_dashboard.html'
               })
               .state('playlists.list', {
-                  url: '/list/:linkState',
+                  url: '/:linkState',
                   //templateUrl: 'tpl/com.envomuse/playlists_list.html',
                   views: {
                       '': {
@@ -395,11 +403,11 @@ angular.module('app')
                   }                 
               })
               .state('playlists.detail', {
-                  url: '/:playlistId/detail',
+                  url: '/:playlistId/',
                   //templateUrl: 'tpl/com.envomuse/playlists_detail.html',
-                  params : {
+                  /*params : {
                     playlistContent:null
-                  },
+                  },*/
                   views: {
                       '': {
                           templateUrl: 'tpl/com.envomuse/playlists_detail.html'
@@ -419,15 +427,21 @@ angular.module('app')
                             }
                           )
                       }]
-                  }                 
+                  }    
+                  /*resolve: {
+                      deps: ['$ocLazyLoad',
+                        function( $ocLazyLoad ){
+                            return $ocLazyLoad.load('ui.calendar');
+                          }]
+                  }  */           
               })
               .state('playlists.dailydetail', {
-                  url: '/dailydetail/:playlistId/',
+                  url: '/:programId/:dailyplaylistId/',
                   //templateUrl: 'tpl/com.envomuse/playlists_detail.html',
-                  params : {
+                  /*params : {
                     dailyPlaylistContent:null,
                     playlistContent:null
-                  },
+                  },*/
                   //templateUrl: 'tpl/com.envomuse/playlists_daily_detail.html',
                   views: {
                       '': {
@@ -497,8 +511,8 @@ angular.module('app')
                       }
                   },
               })
-              .state('tasks.ongoing', {
-                  url: '/ongoing',
+              .state('tasks.finished', {
+                  url: '/finished',
                   views: {
                       '': {
                           templateUrl: 'tpl/com.envomuse/tasks_ongoing.html'

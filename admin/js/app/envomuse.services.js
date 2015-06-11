@@ -74,6 +74,35 @@ app.factory('Sites', ['$resource', function($resource) {
   }
 ]);
 
+app.factory('SiteLicense', ['$resource', function($resource) {
+    return $resource(
+      '/api/sites/:siteId/bindLicense', 
+    {
+      siteId: '@_id'
+    },
+    {
+      'save':   {method:'POST'}
+    });
+  }
+]);
+
+//Activate license
+app.factory('License', ['$resource', function($resource) {
+    return $resource(
+      '/api/sites/:siteId/license/activate', 
+    {
+      siteId: '@_id'
+    },
+    {
+      'generate': {method: 'POST'},
+      'siteStats': {method:'GET', isArray:false, params:{'statistic':true}},
+      'getPageData': {method:'GET', isArray:false, params:{'pageNumber':1, 'pageSize':12}}
+    });
+  }
+]);
+
+
+
 //Jobs
 app.factory('Jobs', ['$resource', function($resource) {
     return $resource(
@@ -87,6 +116,21 @@ app.factory('Jobs', ['$resource', function($resource) {
   }
 ]);
 
+app.factory('JobById', ['$resource', function($resource) {
+    return $resource(
+      '/api/jobs/:jobId', 
+    {
+      jobId: '@_id'
+    },
+    {
+      // 'get': {method:'GET', isArray:false},
+      // 'getCount':{method:'GET', isArray:false, params:{'statistic':0}}
+    });
+  }
+]);
+
+
+
 //ComingJobs, used for dash statistic
 app.factory('ComingJobs', ['$resource', function($resource) {
     return $resource(
@@ -95,7 +139,8 @@ app.factory('ComingJobs', ['$resource', function($resource) {
     },
     {
       //'get': {method:'GET', isArray:false},
-      'getCount':{method:'GET', isArray:false}
+      // 'getCount':{method:'GET', isArray:true}
+      'getCount': {method:'GET', isArray:false, params:{'statistic':''}}
     });
   }
 ]);
@@ -159,6 +204,18 @@ app.factory('Programs', ['$resource', function($resource) {
       'allPrograms': {method:'GET', isArray:true},
       'getCount': {method:'GET', isArray:false, params:{'statistic':''}}
       //'getPageData': {method:'GET', isArray:false, params:{'pageNumber':1, 'pageSize':12}}
+    });
+  }
+]);
+
+app.factory('ProgramById', ['$resource', function($resource) {
+    return $resource(
+      '/api/programs/:programId/', 
+    {
+      programId: '@_id'
+    },
+    {
+      
     });
   }
 ]);

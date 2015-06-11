@@ -8,21 +8,7 @@ app.controller('CustomerCountCtrl', ['$scope', 'Customers', 'Sites', '$statePara
       
       Customers.getCount(function(resp) {
         $scope.stat.totalCustomers = resp.count;
-        console.log(resp);
       });
-
-      // var startDt = new Date(), endDt = startDt;
-
-      /*Customers.getIncrCount({startDate: startDt.toLocaleDateString(),
-        endDate: endDt.toLocaleDateString()}, 
-        function(resp) {
-          $scope.stat.newBrand = resp.count;
-      });*/
-
-      /*Sites.siteStats(function(resp){
-        // $scope.stat.newSite = resp.activeStore;
-        $scope.stat.totalSite = resp.totalStore;
-      });*/
   };
 }]);
 
@@ -41,7 +27,6 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
           $scope.bigTotalItems = res.count;
           $scope.datasource = res.data;
 
-
           $scope.normalizedDataSource = $scope.datasource.map(function(e){
             return {
               _id:e._id,
@@ -49,18 +34,12 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
               industry:e.industry,
               created:e.created,
               status:e.status,
-              updatePeriod:e.updatePeriod
+              updatePeriod:e.updatePeriod,
+              sitesCount:e.sitesCount!=null?e.sitesCount:0
             };
           });
 
-          // console.log($scope.normalizedDataSource);
-
         });
-
-      /*Customers.getCount({},function(res){
-        $scope.totalItems = res.count;
-        $scope.hidePager = ($scope.totalItems/$scope.pageItems)<=1;
-      });*/
 
       $scope.pageChanged();
     };
@@ -80,7 +59,7 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
 
       Customers.getPageData({},
         function(res) {
-          //$scope.bigTotalItems = res.count;
+          $scope.totalPages = res.pageCount;
           $scope.datasource = res.data;
         });
     };
@@ -111,7 +90,7 @@ app.controller('CustomerNewCtrl', ['$scope', '$state', 'Customers', function($sc
 
     var newCustomer = {
       brand: $scope.brand.name,
-      logoData: $scope.myCroppedImage,
+      logo: $scope.myCroppedImage,
       industry: $scope.brand.industry,
       status: $scope.brand.status,
       updatePeriod: $scope.brand.updatePeriod,
@@ -142,6 +121,13 @@ app.controller('CustomerEditCtrl', ['$scope', '$state', 'Customers', '$statePara
       $scope.brand = res;
     });
 
+  //messaging
+    $scope.alerts = [];
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
+      };
+
+
   $scope.industrylist = [
     "奢侈品","酒店/宾馆","餐饮","服装业", "服务","美容","媒体","零售","设计","银行","金融","因特网","咨询","其它"
   ];
@@ -171,9 +157,9 @@ app.controller('CustomerEditCtrl', ['$scope', '$state', 'Customers', '$statePara
 
     var customer = new Customers(customerUpdated);
     customer.$update(function(customer) {
-      //alert('edit customer success');
       $state.go('customers.brand.detail',{brandId:customer._id});
     });
+
   };
 
 }]);
@@ -323,7 +309,10 @@ app.controller('StoreListCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites'
               _id:e._id,
               siteName:e.siteName,
               reference:e.reference,
-              created:e.created
+              created:e.created,
+              siteProgramsCount:e.programs.length,
+              lastBindDate:e.programs[0]!=null?e.programs[0].bindDate:null,
+              manager:e.manager
             };
           });
 
@@ -334,20 +323,24 @@ app.controller('StoreListCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites'
   }]);
 
 
-app.controller('StoreDetailCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', function($scope, Customers, Sites, $stateParams) {
+app.controller('StoreDetailCtrl', ['$scope', 'Customers', 'Sites', 'SiteLicense', '$stateParams', function($scope, Customers, Sites, SiteLicense, $stateParams) {
+
   Sites.get({'siteId':$stateParams.storeId},
     function(res) {
       $scope.store = res;
-      console.log($scope.store);
     });
 
   Customers.get({'customerId':$stateParams.brandId},
       function(res) {
         $scope.brand = res;
-        console.log($scope.brand);
       });
 
-  
+  $scope.bindLicense = function(storeId){
+    // console.log(storeId);
+    SiteLicense.save({'siteId':storeId},function(res){
+      console.log(res);
+    })
+  };
   
 }]);
 
@@ -520,50 +513,13 @@ app.controller('JobsDashboardCtrl', ['$scope', 'Jobs', '$stateParams', function(
 
 }]);
 
-//Modal controllers
-/*app.controller('SetDateRangeModalCtrl', ['$scope', '$modal', function($scope, $modal) {
-    
-    console.log($scope.$parent.datasource);
-
-  //modal controller part
-    $scope.open = function (size) {
-      var modalInstance = $modal.open({
-        templateUrl: 'setJobDateRangeModal',
-        controller: 'JobListCtrl',
-        size: size,
-        resolve: {
-          
-        }
-      });
-
-      modalInstance.result.then(function () {
-        $scope.startDate = 'A';//$scope.targetDateRange;
-        $scope.endDate = 'B';//$scope.targetName;
-      }, function () {
-        console.log('Modal dismissed at: ' + $scope.endDate + $scope.startDate);
-      });
-
-    };
-
-  }])
-  ; */
-
 
 app.controller('JobListCtrl', ['$scope', 'Jobs', '$stateParams', function($scope, Jobs, $stateParams) {
-    
-    //TBD: add sort functionalities
 
     $scope.init = function(){
       $scope.maxSize = 5; //total buttons displayed
       $scope.bigCurrentPage = 1;  //current page
       $scope.datasource = [];
-
-      // Jobs.get({},
-      //   function(res) {
-      //     $scope.datasource = res;
-
-      //     $scope.pageChanged();
-      //   });
 
       $scope.pageChanged();
     };
@@ -577,34 +533,19 @@ app.controller('JobListCtrl', ['$scope', 'Jobs', '$stateParams', function($scope
           $scope.datasource = res;
         });
     };
-/*
-    $scope.startGenerate = function(item){
-      var params = {
-        startDate:item.programStartDate.toLocaleDateString(),
-        endDate:item.programEndDate.toLocaleDateString(),
-        name:item.targetProgramName
-      };
-
-      GenerateProgram.generate({'jobId':item._id},params,
-        function(res){
-          //$scope.tasks = res;
-          //console.log(res);
-          
-    });
-
-      //console.log(params);
-    };*/
-
-
 
   }]);
 
 
-app.controller('JobDetailCtrl', ['$scope', 'GenerateProgram', '$stateParams', function($scope, GenerateProgram, $stateParams) {  
+app.controller('JobDetailCtrl', ['$scope', 'JobById', 'GenerateProgram', '$stateParams', function($scope, JobById, GenerateProgram, $stateParams) {  
 
-  $scope.job = $stateParams.jobContent;
+  // $scope.job = $stateParams.jobContent;
 
-  $scope.job.programRule.playlists = $scope.job.programRule.playlists.filter(function(e){
+  JobById.get({'jobId':$stateParams.jobId},
+    function(res) {
+      $scope.job = res;
+
+      $scope.job.programRule.playlists = $scope.job.programRule.playlists.filter(function(e){
       switch(e.timePeriods.calcType){
         case 'multipleDates':
           e.timePeriods.calcType="日期";
@@ -653,6 +594,9 @@ app.controller('JobDetailCtrl', ['$scope', 'GenerateProgram', '$stateParams', fu
       return e;
     });
 
+        console.log($scope.job);
+    });
+
   
     $scope.startGenerate = function(item){
       var params = {
@@ -663,11 +607,7 @@ app.controller('JobDetailCtrl', ['$scope', 'GenerateProgram', '$stateParams', fu
 
       GenerateProgram.generate({'jobId':item._id},params,
         function(res){
-          alert(res);
-          console.log(res);
-          //$scope.tasks = res;
-          //console.log(res);
-          
+          $state.go('jobs.detail',{jobId:item._id});
     });
 
       //console.log(params);
@@ -677,16 +617,16 @@ app.controller('JobDetailCtrl', ['$scope', 'GenerateProgram', '$stateParams', fu
 
 }]);
 
-app.controller('ProgramDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
+/*app.controller('ProgramDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
 
   $scope.job = $stateParams.jobContent;
   $scope.program = $stateParams.programContent;
 
   //console.log($scope.program);
 
-}]);
+}]);*/
 
-app.controller('RuleDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
+/*app.controller('RuleDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
 
   $scope.job = $stateParams.jobContent;
   $scope.program = $stateParams.programContent;
@@ -694,9 +634,9 @@ app.controller('RuleDetailCtrl', ['$scope', '$stateParams', function($scope, $st
 
   // console.log($scope.program);
 
-}]);
+}]);*/
 
-app.controller('BoxDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
+/*app.controller('BoxDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
 
   $scope.job = $stateParams.jobContent;
   $scope.program = $stateParams.programContent;
@@ -706,7 +646,7 @@ app.controller('BoxDetailCtrl', ['$scope', '$stateParams', function($scope, $sta
   //console.log($scope.program);
   console.log($scope.box);
 
-}]);
+}]);*/
 
 /*
 app.controller('SetJobDateRangeModalCtrl', ['$scope', '$modal', '$log', function($scope, $modal, $log) {
@@ -737,6 +677,7 @@ app.controller('TasksDashboardCtrl', ['$scope', 'ComingJobs', '$stateParams', fu
 
   ComingJobs.getCount(function(res){
     $scope.stat = res;
+    // console.log($scope.stat);
   });
 
 }]);
@@ -791,22 +732,148 @@ app.controller('PlaylistListCtrl', ['$scope', 'Programs', '$stateParams', functi
     
     Programs.allPrograms({},
         function(res) {
-          $scope.datasource = res;
+          $scope.datasource = res.filter(function(e){
+            if($stateParams.linkState==='active')
+              return e.inUse;
+            else
+              return !(e.inUse);
+          });
         });
 
   }]);
 
-app.controller('PlaylistDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
+/*app.controller('PlaylistDetailCtrl', ['$scope', 'ProgramById', '$stateParams', function($scope, ProgramById, $stateParams) {  
 
-  $scope.playlist = $stateParams.playlistContent;
+  // $scope.playlist = $stateParams.playlistContent;
 
-}]);
+  ProgramById.get({'programId':$stateParams.playlistId},
+    function(res) {
+      $scope.playlist = res;
+      // console.log($scope.playlist);
+    });
+}]);*/
 
-app.controller('DailyPlaylistDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
+/*app.controller('PlaylistDetailCtrl', ['$scope', 'ProgramById', '$stateParams', function($scope, ProgramById, $stateParams) {  
 
-  $scope.dailyPlaylist = $stateParams.dailyPlaylistContent;
-  $scope.playlist = $stateParams.playlistContent;
-  // console.log($scope.playlist);
+// console.log($stateParams.playlist);
+  $scope.generateEvents = function(res){
+
+    $scope.playlist = res;
+    // console.log($scope.playlist);
+
+    $scope.events = [];
+
+    var date = new Date();
+    var d = date.getDate();
+    var m = date.getMonth();
+    var y = date.getFullYear();
+
+    //will not show track list, only caulculates from start to end time
+    if($scope.playlist !==null){
+      for(var i=0;i<$scope.playlist.dayPrograms.length;i++){
+        
+        var d = $scope.playlist.dayPrograms[i].displayDate;//date string
+        
+        //console.log(end);
+        //console.log(nd);
+        var e={
+          id:$scope.playlist.dayPrograms[i]._id,
+          title: $scope.playlist.dayPrograms[i].displayDate,
+          allDay:true,
+          start:new Date(d),
+          //end:endMoment,
+          className:['b-l b-2x b-info'],
+          editable:false,
+          dailyPlaylistContent:$scope.playlist.dayPrograms[i]
+          // playlistContent:$scope.playlist
+        };
+        //console.log(e);
+
+        $scope.events.push(e);
+      }
+    }
+
+    /* alert on dayClick */
+  //   $scope.precision = 400;
+  //   $scope.lastClickTime = 0;
+
+  //   $scope.overlay = $('.fc-overlay');
+  //   $scope.alertOnMouseOver = function( event, jsEvent, view ){
+  //     $scope.event = event;
+  //     $scope.overlay.removeClass('left right top').find('.arrow').removeClass('left right top pull-up');
+  //     var wrap = $(jsEvent.target).closest('.fc-event');
+  //     var cal = wrap.closest('.calendar');
+  //     var left = wrap.offset().left - cal.offset().left;
+  //     var right = cal.width() - (wrap.offset().left - cal.offset().left + wrap.width());
+  //     var top = cal.height() - (wrap.offset().top - cal.offset().top + wrap.height());
+  //     if( right > $scope.overlay.width() ) { 
+  //       $scope.overlay.addClass('left').find('.arrow').addClass('left pull-up')
+  //     }else if ( left > $scope.overlay.width() ) {
+  //       $scope.overlay.addClass('right').find('.arrow').addClass('right pull-up');
+  //     }else{
+  //       $scope.overlay.find('.arrow').addClass('top');
+  //     }
+  //     if( top < $scope.overlay.height() ) { 
+  //       $scope.overlay.addClass('top').find('.arrow').removeClass('pull-up').addClass('pull-down')
+  //     }
+  //     (wrap.find('.fc-overlay').length == 0) && wrap.append( $scope.overlay );
+  //   };
+
+  //   /* config object */
+  //   $scope.uiConfig = {
+  //     calendar:{
+  //       height: 400,
+  //       firstDay:1,//Monday as first day
+  //       weekNumbers:true,
+  //       editable: false,
+  //       header:{
+  //         left: 'prev',
+  //         center: 'title',
+  //         right: 'next'
+  //       },
+  //       eventMouseover: $scope.alertOnMouseOver
+  //     }
+  //   };
+
+  //   /* Change View */
+  //   $scope.changeView = function(view, calendar) {
+  //     $('.calendar').fullCalendar('changeView', view);
+  //   };
+
+  //   $scope.today = function(calendar) {
+  //     $('.calendar').fullCalendar('today');
+  //   };
+
+  // };
+
+  // return ProgramById.get({'programId':$stateParams.playlistId}).$promise.then(
+  //   function(res){
+  //     $scope.generateEvents(res);
+  //   });
+
+
+//   ProgramById.get({'programId':$stateParams.playlistId},
+//     function(res){
+//       $scope.generateEvents(res);
+//       console.log(res);
+//     });
+
+//   /* event sources array*/
+//     $scope.eventSources = [$scope.events];
+
+// }]);*/
+
+
+app.controller('DailyPlaylistDetailCtrl', ['$scope', 'ProgramById', '$stateParams', function($scope, ProgramById, $stateParams) {  
+
+  ProgramById.get({'programId':$stateParams.programId},
+    function(res) {
+
+      $scope.dailyPlaylist = res.dayPrograms.filter(function(e){
+        return e._id===$stateParams.dailyplaylistId;
+      });
+      console.log($scope.dailyPlaylist);
+    });
 
 }]);
 

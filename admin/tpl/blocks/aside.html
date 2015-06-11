@@ -5,12 +5,6 @@
   <div class="navi-wrap">
     <!-- navbar header -->
       <div class="navbar-header {{app.settings.navbarHeaderColor}}">
-        <button class="pull-right visible-xs dk" ui-toggle-class="show" data-target=".navbar-collapse">
-          <i class="glyphicon glyphicon-cog"></i>
-        </button>
-        <button class="pull-right visible-xs" ui-toggle-class="off-screen" data-target=".app-aside" ui-scroll-to="app">
-          <i class="glyphicon glyphicon-align-justify"></i>
-        </button>
         <!-- brand -->
         <a href="#/" class="navbar-brand text-lt">
           <i class="fa fa-cube"></i>
@@ -26,45 +20,17 @@
       <div class="dropdown wrapper" dropdown>
         <a ui-sref="app.page.profile">
           <span class="thumb-lg w-auto-folded avatar m-t-sm">
-            <img src="img/a0.jpg" class="img-full" alt="...">
+            <img src="img/logo/hermes.png" class="img-full" alt="...">
           </span>
         </a>
         <a href class="dropdown-toggle hidden-folded" dropdown-toggle>
           <span class="clear">
             <span class="block m-t-sm">
-              <strong class="font-bold text-lt">John.Smith</strong> 
-              <b class="caret"></b>
+              <strong class="font-bold text-lt">张三</strong> 
             </span>
-            <span class="text-muted text-xs block">Art Director</span>
+            <span class="text-muted text-xs block">市场总监</span>
           </span>
         </a>
-        <!-- dropdown -->
-        <ul class="dropdown-menu animated fadeInRight w hidden-folded">
-          <li class="wrapper b-b m-b-sm bg-info m-t-n-xs">
-            <span class="arrow top hidden-folded arrow-info"></span>
-            <div>
-              <p>300mb of 500mb used</p>
-            </div>
-            <progressbar value="60" type="white" class="progress-xs m-b-none dker"></progressbar>
-          </li>
-          <li>
-            <a href>Settings</a>
-          </li>
-          <li>
-            <a ui-sref="app.page.profile">Profile</a>
-          </li>
-          <li>
-            <a href>
-              <span class="badge bg-danger pull-right">3</span>
-              Notifications
-            </a>
-          </li>
-          <li class="divider"></li>
-          <li>
-            <a ui-sref="access.signin">Logout</a>
-          </li>
-        </ul>
-        <!-- / dropdown -->
       </div>
       <div class="line dk hidden-folded"></div>
     </div>
@@ -74,17 +40,5 @@
     <nav ui-nav class="navi clearfix" ng-include="'tpl/blocks/nav.html'"></nav>
     <!-- nav -->
 
-    <!-- aside footer -->
-    <div class="wrapper m-t">
-      <div class="text-center-folded">
-        <div class="nav navbar-nav hidden-xs">
-          <a href class="btn no-shadow navbar-btn" ng-click="app.settings.asideFolded = !app.settings.asideFolded">
-            <i class="fa {{app.settings.asideFolded ? 'fa-indent' : 'fa-dedent'}} fa-fw"></i>
-          </a>
-        </div>
-      </div>
-
-    </div>
-    <!-- / aside footer -->
   </div>
 </div>
