@@ -158,13 +158,13 @@ exports.all = function(req, res) {
  */
 exports.bindLicense = function(req, res) {
   var site = req.site;
-  if (site.license) {
+  if (site.license && site.license.uuid) {
+    console.log('bindLicense early return');
     return res.json(site);
   };
 
   site.license = {
-    uuid: uuid.v4(),
-    activated: false
+    uuid: uuid.v4()
   };
   site.save(function(err, newSite) {
     if (err) {
