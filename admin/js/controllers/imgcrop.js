@@ -1,4 +1,4 @@
-app.controller('ImgCropCtrl', ['$scope', function($scope) {
+app.controller('ImgCropCtrl', ['$scope', '$rootScope', function($scope,$rootScope) {
     $scope.myImage='';
     $scope.myCroppedImage='';
     $scope.cropType="circle";
@@ -9,6 +9,7 @@ app.controller('ImgCropCtrl', ['$scope', function($scope) {
       reader.onload = function (evt) {
         $scope.$apply(function($scope){
           $scope.myImage=evt.target.result;
+          $rootScope.myCroppedImage = $scope.myCroppedImage;
         });
       };
       reader.readAsDataURL(file);

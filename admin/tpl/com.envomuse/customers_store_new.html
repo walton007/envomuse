@@ -1,6 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
-    app.settings.asideFolded = false; 
-    app.settings.asideDock = false;" ng-controller="StoreNewCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="StoreNewCtrl">
 
 <!-- main -->
   <div class="col">
@@ -8,12 +6,15 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">客户管理</h1>
-          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></small>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">客户管理</a></h1>
+          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a> 新增门店</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
           <div class="btn-group dropdown" dropdown>
             <a class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="customers.store.add({brandId:brand._id})"><i class="fa fa-plus"></i>添加门店</a>
+          </div>
+          <div class="btn-group m-l-sm">
+            <a class="btn m-b-xs btn-sm btn-info btn-addon" ng-click="showHelp=!showHelp"><i class="fa fa-question"></i>帮助</a>
           </div>
         </div>
       </div>
@@ -125,9 +126,25 @@
   <!-- /main -->
 
   <!-- right col -->
-  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
-    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
+  <div class="col w-md bg-white-only b-l bg-auto no-border-xs" ng-show="showHelp">
+    <!-- help -->
+    <div class="padder-md m-t">      
+      <div class="m-b text-md">新增门店帮助</div>
+      <div class="streamline b-l m-b">
+        <div class="sl-item">
+          <div class="m-l">
+            <p>门店名称为必填。</p>
+          </div>
+        </div>
+        <div class="sl-item">
+          <div class="m-l">
+            <p>店铺ID为客户提供的编码，方便客户识别门店。</p>
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- /help -->
+
   </div>
   <!-- / right col -->
 </div>

@@ -51,38 +51,18 @@ angular.module('app')
                   }
               })
               .state('customers.dash', {
-                  url: '/',
-                  templateUrl: 'tpl/com.envomuse/customers_dashboard.html',
-                  /*resolve: {
-                    deps: ['$ocLazyLoad',
-                      function( $ocLazyLoad ){
-                        return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
-                                                 'js/app/envomuse.services.js']);
-                    }]
-                  }*/
+                url: '/',
+                templateUrl: 'tpl/com.envomuse/customers_dashboard.html'
               })
               .state('customers.brand', {
                   url: '/list/',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/customers_list.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/customers_list_footer.html'
-                      }
-                  }
+                  templateUrl: 'tpl/com.envomuse/customers_list.html'
               })
+              
               .state('customers.brand.new', {
-                  url: '/brand/new',
+                  url: '/add',
                   parent: 'customers',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/customers_brand_new.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/customers_brand_new_footer.html'
-                      }
-                  },
+                  templateUrl: 'tpl/com.envomuse/customers_brand_new.html',
                   resolve: {
                       deps: ['$ocLazyLoad',
                         function( $ocLazyLoad){
@@ -94,146 +74,85 @@ angular.module('app')
                       }]
                   }
               })
-              .state('customers.brand.edit', {
-                  url: '/brand/:brandId/edit',
-                  parent: 'customers',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/customers_brand_edit.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/customers_brand_edit_footer.html'
-                      }
-                  }
-              })
               .state('customers.brand.detail', {
                   url: '/:brandId/detail',
                   parent: 'customers',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/customers_brand_detail.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/customers_brand_detail_footer.html'
-                      }
-                  }
+                  templateUrl: 'tpl/com.envomuse/customers_brand_detail.html'
               })
+
+              .state('customers.brand.edit', {
+                  url: '/:brandId/edit',
+                  parent: 'customers',
+                  templateUrl: 'tpl/com.envomuse/customers_brand_edit.html'
+              })
+
               .state('customers.invoice', {
                   url: '/:brandId/invoice',
                   parent: 'customers',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/customers_invoice.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/customers_invoice_footer.html'
-                      }
-                  }
+                  templateUrl: 'tpl/com.envomuse/customers_invoice.html'
               })
 
               .state('customers.store', {
                   url: '/:brandId/store',
-                  params : {
-                    brandId:null
-                  },
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/customers_store_list.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/customers_store_list_footer.html'
-                      }
-                  }
+                  templateUrl: 'tpl/com.envomuse/customers_store_list.html'
               })
+
+              .state('customers.store.add', {
+                  url: '/:brandId/store/new',
+                  parent: 'customers',
+                  templateUrl: 'tpl/com.envomuse/customers_store_new.html'
+              })
+
               .state('customers.store.detail', {
                   url: '/:brandId/store/:storeId/',
                   parent: 'customers',
-                  // params : {
-                  //   brandId:null
-                  // },
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/customers_store_detail.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/customers_store_detail_footer.html'
-                      }
-                  }
+                  templateUrl: 'tpl/com.envomuse/customers_store_detail.html'
               })
-              .state('customers.store.add', {
-                  url: '/:brandId/addStore',
-                  parent: 'customers',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/customers_store_new.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/customers_store_new_footer.html'
-                      }
-                  }
-              })
+              
               .state('customers.store.edit', {
-                  url: '/store/:storeId/edit',
-                  params : {
-                    brandId:null
-                  },
+                  url: '/:brandId/store/:storeId/edit',
                   parent: 'customers',
                   templateUrl: 'tpl/com.envomuse/customers_store_edit.html'
               })
+
               .state('customers.contact', {
                   url: '/:brandId/contacts',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/customers_contact_list.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/customers_contact_list_footer.html'
-                      }
-                  }
+                  templateUrl: 'tpl/com.envomuse/customers_contact_list.html'
               })
-              .state('customers.contact.detail', {
-                  url: '/contact/:contactId/detail',
-                  parent: 'customers',
-                  params : {
-                    brandContent:null
-                  },
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/customers_contact_detail.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/customers_contact_detail_footer.html'
-                      }
-                  }
-              })
+
               .state('customers.contact.add', {
                   url: '/:brandId/addContact',
                   parent: 'customers',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/customers_contact_new.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/customers_contact_new_footer.html'
-                      }
-                  },
-              })
-              .state('customers.contact.edit', {
-                  url: '/contact/:contactId/edit',
-                  parent: 'customers',
-                  params : {
-                    brandContent:null
-                  },
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/customers_contact_edit.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/customers_contact_edit_footer.html'
-                      }
-                  }
+                  templateUrl: 'tpl/com.envomuse/customers_contact_new.html'
               })
 
+              //tasks
+              .state('tasks', {
+                  abstract: true,
+                  url: '/tasks',
+                  // templateUrl: 'tpl/layout.html',
+                  templateUrl: 'tpl/app.html',
+                  resolve: {
+                    deps: ['$ocLazyLoad',
+                      function( $ocLazyLoad ){
+                        return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
+                                                 'js/app/envomuse.services.js']);
+                    }]
+                  }
+              })
+              .state('tasks.dash', {
+                  url: '/',
+                  templateUrl: 'tpl/com.envomuse/tasks_dashboard.html'
+              })
+
+              .state('tasks.incoming', {
+                  url: '/incoming',
+                  templateUrl: 'tpl/com.envomuse/tasks_incoming.html'
+              })
+              .state('tasks.running', {
+                  url: '/running',
+                  templateUrl: 'tpl/com.envomuse/tasks_running.html'
+              })
 
               //jobs
               .state('jobs', {
@@ -249,105 +168,25 @@ angular.module('app')
                     }]
                   }
               })
+
               .state('jobs.dash', {
-                  url: '/dash',
+                  url: '/',
                   templateUrl: 'tpl/com.envomuse/jobs_dashboard.html'
               })
+
               .state('jobs.list', {
-                  url: '/',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/jobs_list.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/jobs_list_footer.html'
-                      }
-                  }
+                  url: '/list',
+                  templateUrl: 'tpl/com.envomuse/jobs_list.html'
               })
+
               .state('jobs.detail', {
                   url: '/:jobId/',
-                  params : {
-                    // jobContent:null
-                  },
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/jobs_detail.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/jobs_detail_footer.html'
-                      }
-                  }
+                  templateUrl: 'tpl/com.envomuse/jobs_detail.html'
               })
-
-              .state('jobs.program', {
-                  url: '/program/:programId/detail',
-                  params : {
-                    programContent:null,
-                    jobContent:null
-                  },
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/jobs_program_detail.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/jobs_program_detail_footer.html'
-                      }
-                  },
-                  resolve: {
-                      deps: ['$ocLazyLoad',
-                        function( $ocLazyLoad){
-                          return $ocLazyLoad.load([
-                                              'com.2fdevs.videogular', 
-                                              'com.2fdevs.videogular.plugins.controls', 
-                                              'com.2fdevs.videogular.plugins.overlayplay',
-                                              'com.2fdevs.videogular.plugins.poster',
-                                              'com.2fdevs.videogular.plugins.buffering',
-                                              'js/app/music/ctrl.js', 
-                                              'js/app/music/theme.css'
-                                              ]);
-                      }]
-                  }
-              })
-
-              /*.state('jobs.rule', {
-                  url: '/rule/:ruleId/detail',
-                  params : {
-                    ruleContent:null,
-                    programContent:null,
-                    jobContent:null
-                  },
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/jobs_rule_detail.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/jobs_rule_detail_footer.html'
-                      }
-                  },
-                  resolve: {
-                      deps: ['$ocLazyLoad',
-                        function( $ocLazyLoad){
-                          return $ocLazyLoad.load([
-                                              'com.2fdevs.videogular', 
-                                              'com.2fdevs.videogular.plugins.controls', 
-                                              'com.2fdevs.videogular.plugins.overlayplay',
-                                              'com.2fdevs.videogular.plugins.poster',
-                                              'com.2fdevs.videogular.plugins.buffering',
-                                              'js/app/music/ctrl.js', 
-                                              'js/app/music/theme.css'
-                                              ]);
-                      }]
-                  }
-              })*/
               
               .state('jobs.box', {
-                  url: '/box/:boxId/',
+                  url: '/:jobId/box/:boxId/',
                   templateUrl: 'tpl/com.envomuse/jobs_box_detail.html',
-                  params : {
-                    boxId:null,
-                    programId:null,
-                    jobId:null
-                  },
                   views: {
                       '': {
                           templateUrl: 'tpl/com.envomuse/jobs_box_detail.html'
@@ -482,46 +321,7 @@ angular.module('app')
                   }
               })
 
-              //tasks
-              .state('tasks', {
-                  abstract: true,
-                  url: '/tasks',
-                  // templateUrl: 'tpl/layout.html',
-                  templateUrl: 'tpl/app.html',
-                  resolve: {
-                    deps: ['$ocLazyLoad',
-                      function( $ocLazyLoad ){
-                        return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
-                                                 'js/app/envomuse.services.js']);
-                    }]
-                  }
-              })
-              .state('tasks.dash', {
-                  url: '/dash',
-                  templateUrl: 'tpl/com.envomuse/tasks_dashboard.html'
-              })
-              .state('tasks.incoming', {
-                  url: '/incoming',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/tasks_incoming.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/tasks_incoming_footer.html'
-                      }
-                  },
-              })
-              .state('tasks.finished', {
-                  url: '/finished',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/tasks_ongoing.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/tasks_ongoing_footer.html'
-                      }
-                  },
-              })
+              
 
               
               // pages

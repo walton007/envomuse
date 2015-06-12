@@ -10,8 +10,8 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">任务管理</h1>
-          <small class="text-muted">进行中任务</small>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="tasks.dash">任务管理</a></h1>
+          <small class="text-muted">所有已开始运行但并未导入完成的任务均显示在此，可在此查看这些任务的状态</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
           
@@ -28,8 +28,8 @@
 
           <div class="panel-default">
             <div class="panel-heading">
-              <span class="label bg-danger pull-right m-t-xs">{{count}} 个进行中任务</span>
-              任务
+              <span class="label bg-info pull-right m-t-xs">{{count}} 个正在运行的任务</span>
+              任务列表
             </div>
             <table class="table table-striped m-b-none">
               <thead>
@@ -68,7 +68,6 @@
                   {{r.importStatus}}
                   </td>
                   <td>
-                    <button class="btn btn-primary" ng-show="{{r.importStatus==='待导入'}}" ng-click="doImport({{}})">导入</button>
                     <button class="btn btn-info" ng-show="{{r.importStatus==='导入完成'}}">查看</button>
                   </td>
                 </tr>
@@ -89,8 +88,28 @@
 
   <!-- right col -->
   <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
-    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
+    <!-- help -->
+    <div class="padder-md m-t">      
+      <div class="m-b text-md">帮助</div>
+      <div class="streamline b-l m-b">
+        <div class="sl-item">
+          <div class="m-l">
+            <p>任务为管理员穿到系统中的未导入系统的压缩文件包</p>
+          </div>
+        </div>
+        <div class="sl-item">
+          <div class="m-l">
+            <p>任务由DJ使用编辑器生成，并经过审核方可传至系统。</p>
+          </div>
+        </div>
+        <div class="sl-item">
+          <div class="m-l">
+            <p>开始导入后，系统对任务压缩包进行校验，解压缩，写入系统数据库等操作，根据压缩包内容多少将耗费的时间不等。</p>
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- /help -->
   </div>
   <!-- / right col -->
 

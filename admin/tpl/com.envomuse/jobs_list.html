@@ -1,6 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
-    app.settings.asideFolded = false; 
-    app.settings.asideDock = false; init();" ng-controller="JobListCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="init();" ng-controller="JobListCtrl">
 
 <!-- main -->
   <div class="col">
@@ -9,8 +7,8 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">工作管理</h1>
-          <small class="text-muted">工作列表</small>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="jobs.dash">工作包管理</a></h1>
+          <small class="text-muted">系统内所有可用的工作包</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
         </div>
@@ -41,26 +39,10 @@
                   <small class="text-muted clearfix">创建人：{{item.creator}}</small>
                   <small class="text-muted clearfix">目标客户：{{item.custumorName}}</small>
                   <small class="text-muted clearfix">已有播放清单：{{item.programCount}}</small>
+                  <small class="text-muted clearfix">导入时间：{{item.created | fromNow}}</small>
                 </div>
               </div>
             </div>
-            <!-- <div class="list-group no-radius alt">
-              <a class="list-group-item" href>
-                <span class="badge bg-success">25</span>
-                <i class="fa fa-calendar fa-fw text-muted"></i> 
-                KFC-SUMMER-1
-              </a>
-              <a class="list-group-item" href>
-                <span class="badge bg-info">16</span>
-                <i class="fa fa-calendar fa-fw text-muted"></i> 
-                KFC-SUMMER-2
-              </a>
-              <a class="list-group-item" href>
-                 <span class="badge bg-light">5</span>
-                <i class="fa fa-calendar fa-fw text-muted"></i> 
-                KFC-SUMMER-3 
-              </a>
-            </div> -->
           </div>
         </div>
           <!-- /basic info -->
@@ -76,10 +58,10 @@
   <!-- /main body -->
 
   <!-- right col -->
-  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
+  <!-- <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
     <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
     </div>
-  </div>
+  </div> -->
   <!-- / right col -->
-</div>
+  </div>
 </div>

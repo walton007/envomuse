@@ -1,7 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
-    app.settings.asideFolded = false; 
-    app.settings.asideDock = false;
-  " ng-controller="BoxDetailCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="BoxDetailCtrl">
 
   <!-- main -->
   <div class="col">
@@ -10,12 +7,10 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">工作管理</h1>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="jobs.dash">工作包管理</a></h1>
           <small class="text-muted">{{brand.brand | uppercase}}</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
-
-          
 
         </div>
       </div>

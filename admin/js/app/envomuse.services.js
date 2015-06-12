@@ -8,16 +8,10 @@ app.factory('Customers', ['$resource', function($resource) {
       customerId: '@_id'
     },
     {
-  
-      /*'get':  {method:'GET'},
-      'save':   {method:'POST'},
-      'query':  {method:'GET', isArray:true},
-      'remove': {method:'DELETE'},
-      'delete': {method:'DELETE'},*/
       'update': {method: 'PUT'},
       'getIncrCount':  {method:'GET', isArray:false, params:{'increase': true, startDate:1, endDate:1}},
       'getCount': {method:'GET', isArray:false, params:{'count':0}},
-      'getPageData': {method:'GET', isArray:false, params:{'pageNumber':1, 'pageSize':12}}
+      'getPageData': {method:'GET', isArray:false, params:{'pageNumber':1, 'pageSize':10}}
     });
   }
 ]);
@@ -121,6 +115,21 @@ app.factory('JobById', ['$resource', function($resource) {
       '/api/jobs/:jobId', 
     {
       jobId: '@_id'
+    },
+    {
+      // 'get': {method:'GET', isArray:false},
+      // 'getCount':{method:'GET', isArray:false, params:{'statistic':0}}
+    });
+  }
+]);
+
+//boxById
+app.factory('BoxById', ['$resource', function($resource) {
+    return $resource(
+      '/api/jobs/:jobId/boxes/:boxId', 
+    {
+      jobId: '@_id',
+      boxId: '@_id'
     },
     {
       // 'get': {method:'GET', isArray:false},

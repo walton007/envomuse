@@ -10,8 +10,8 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">任务管理</h1>
-          <small class="text-muted">待处理任务</small>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="tasks.dash">任务管理</a></h1>
+          <small class="text-muted">所有待处理任务均显示在此，可在此导入这些任务</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
           
@@ -29,7 +29,7 @@
           <div class="panel-default">
             <div class="panel-heading">
               <span class="label bg-danger pull-right m-t-xs">{{count}} 个新任务</span>
-              任务
+              任务列表
             </div>
             <table class="table table-striped m-b-none">
               <thead>
@@ -89,8 +89,23 @@
 
   <!-- right col -->
   <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
-    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
+    <!-- help -->
+    <div class="padder-md m-t">      
+      <div class="m-b text-md">帮助</div>
+      <div class="streamline b-l m-b">
+        <div class="sl-item">
+          <div class="m-l">
+            <p>任务为管理员穿到系统中的未导入系统的压缩文件包</p>
+          </div>
+        </div>
+        <div class="sl-item">
+          <div class="m-l">
+            <p>任务由DJ使用编辑器生成，并经过审核方可传至系统。</p>
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- /help -->
   </div>
   <!-- / right col -->
 

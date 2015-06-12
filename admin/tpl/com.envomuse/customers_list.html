@@ -8,7 +8,7 @@
       <div class="row">
         <div class="col-sm-6 col-xs-12">
           <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">客户管理</a></h1>
-          <small class="text-muted">查看客户列表</small>
+          <small class="text-muted">客户列表，显示客户基本信息</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
           <div class="btn-group dropdown" dropdown>
@@ -24,9 +24,9 @@
         <div class="wrapper-md">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <div class="row">
+              <div class="row m-t-md">
                 <div class="col-sm-4">
-                  <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-init="init()" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+                  <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
                 </div>
                 <div class="col-sm-4">
                   <div class="input-group">
@@ -41,7 +41,7 @@
             
             <div class="table-responsive">
               <table class="table table-striped b-t b-light">
-                <thead>
+                <thead class="bg-light">
                   <tr>
                     <th width="15%">客户名</th>
                     <th width="15%">行业</th>
@@ -49,17 +49,17 @@
                     <th width="15%">更新周期</th>
                     <th width="15%">下次更新时间</th>
                     <th width="10%">门店数</th>
-                    <th >添加时间</th>
+                    <th >创建时间</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr ng-repeat="row in normalizedDataSource | filter:searchText" st-select-row="row">
-                    <td><a ui-sref="customers.brand.detail({brandId:row._id})">{{row.brand}}</a></td>
+                    <td><a ui-sref="customers.brand.detail({brandId:row._id})">{{row.brand | uppercase}}</a></td>
                     <td>{{row.industry}}</td>
                     <td>{{row.status}}</td>
                     <td>{{row.updatePeriod}}</td>
                     <td>{{row.updatePeriod}}</td>
-                    <td>{{row.sitesCount}}</td>
+                    <td><span class="badge bg-{{row.sitesCount==0?'dk':'success'}}">{{row.sitesCount}}</span></td>
                     <td>{{row.created |  fromNow}}</td>
                   </tr>
                 </tbody>

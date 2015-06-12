@@ -1,6 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
-    app.settings.asideFolded = false; 
-    app.settings.asideDock = false;" ng-controller="ContactNewCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="ContactNewCtrl">
 
 <!-- main -->
   <div class="col">
@@ -8,8 +6,8 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">客户管理</h1>
-          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></small>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">客户管理</a></h1>
+          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a> 添加联系人</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
           <div class="btn-group dropdown" dropdown>
@@ -133,8 +131,23 @@
 
   <!-- right col -->
   <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
-    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
+    <!-- help -->
+    <div class="padder-md m-t">      
+      <div class="m-b text-md">新增联系人帮助</div>
+      <div class="streamline b-l m-b">
+        <div class="sl-item">
+          <div class="m-l">
+            <p>显示为必填项的必填。</p>
+          </div>
+        </div>
+        <div class="sl-item">
+          <div class="m-l">
+            <p>每个门店均需要设置店长，每个客户设置客户主要联系人。</p>
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- /help -->
   </div>
   <!-- / right col -->
 </div>

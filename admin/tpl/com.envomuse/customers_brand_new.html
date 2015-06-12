@@ -1,6 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
-    app.settings.asideFolded = false; 
-    app.settings.asideDock = false;" ng-controller="CustomerNewCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="showHelp=false" ng-controller="CustomerNewCtrl">
 
 <!-- main -->
   <div class="col">
@@ -8,12 +6,15 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">客户管理</h1>
-          <small class="text-muted">新增客户</small>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">客户管理</a></h1>
+          <small class="text-muted">新增客户，并配置该客户基本信息</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
           <div class="btn-group dropdown" dropdown>
             <a class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="customers.brand.new"><i class="fa fa-plus"></i>添加客户</a>
+          </div>
+          <div class="btn-group m-l-sm">
+            <a class="btn m-b-xs btn-sm btn-info btn-addon" ng-click="showHelp=!showHelp"><i class="fa fa-question"></i>帮助</a>
           </div>
         </div>
       </div>
@@ -21,144 +22,160 @@
     <!-- / main header -->
 
     <!-- main -->
-      <div class="row">
-        <div class="wrapper-md">
-          <h4 class="panel-heading font-bold">新增客户</h4>
-          <div class="panel-body">
-            <form name="form" class="form-horizontal m-t-lg form-validation">
-              <div class="form-group">
-                <label class="col-lg-2 control-label">客户名称</label>
-                <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="brand.name" placeholder="必填" required>
-                </div>
+    <div class="row">
+      <div class="wrapper-md">
+        <h4 class="panel-heading font-bold">新增客户</h4>
+        <div class="panel-body">
+          <form name="form" class="form-horizontal m-t-lg form-validation">
+            <div class="form-group">
+              <label class="col-lg-2 control-label">客户名称</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="brand.name" placeholder="必填" required>
               </div>
+            </div>
 
-              <div class="form-group">
-                <div class="wrapper-md" ng-controller="ImgCropCtrl">
-                  <label class="col-lg-2 control-label">设置客户LOGO</label>
-                  <div class="col-lg-8">
-                    <div class="m-b">
-                      <input type="file" id="fileInput" />
-                    </div>
-                    <div class="hbox hbox-auto-xs">
-                      <div class="col">
-                        <div class="wrapper-sm b-a bg-white m-r-xs m-b-xs">
-                          <div class="bg-light" style="height:160px">
-                            <img-crop 
-                              image="myImage" 
-                              result-image="myCroppedImage"
-                              result-image-size="100"
-                              area-type="{{cropType}}"
-                            ></img-crop>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="inline bg-white wrapper-sm b-a">
-                          <div class="bg-light" ng-model="myCroppedImage">
-                            <img ng-src="{{myCroppedImage}}" />
-                          </div>
+            <div class="form-group">
+              <div class="wrapper-md" ng-controller="ImgCropCtrl">
+                <label class="col-lg-2 control-label">设置客户LOGO</label>
+                <div class="col-lg-8">
+                  <div class="m-b">
+                    <input type="file" id="fileInput" />
+                  </div>
+                  <div class="hbox hbox-auto-xs">
+                    <div class="col">
+                      <div class="wrapper-sm b-a bg-white m-r-xs m-b-xs">
+                        <div class="bg-light" style="height:160px">
+                          <img-crop 
+                            image="myImage" 
+                            result-image="myCroppedImage"
+                            result-image-size="100"
+                            area-type="{{cropType}}"
+                          ></img-crop>
                         </div>
                       </div>
                     </div>
-                    {{myCroppedImage}}
-                    <div class="btn-group m-t">
-                        <label class="btn btn-default" ng-model="cropType" btn-radio="'circle'">圆形</label>
-                        <label class="btn btn-default" ng-model="cropType" btn-radio="'square'">方形</label>
+                    <div class="col">
+                      <div class="inline bg-white wrapper-sm b-a">
+                        <div class="bg-light" ng-model="myCroppedImage">
+                          <img ng-src="{{myCroppedImage}}" />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">所属行业</label>
-                <div class="col-lg-8">
-                  <select ui-jq="chosen" class="form-control" ng-model="brand.industry" placeholder="必填" required>
-                    <option ng-repeat="list in industrylist" value="{{list}}">{{list}}</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">客户状态</label>
-                <div class="col-lg-8">
-                  <select ui-jq="chosen" class="form-control" ng-model="brand.status" placeholder="必填" required>
-                    <option ng-repeat="list in statuslist" value="{{list}}">{{list}}</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">曲目更新周期</label>
-                <div class="col-lg-8">
-                  <select ui-jq="chosen" class="form-control" ng-model="brand.updatePeriod" placeholder="必填" required>
-                    <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list}}</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="form-group">
-                <label class="col-sm-2 control-label">合同开始日期</label>
-                <div class="col-sm-10" ng-controller="DatepickerDemoCtrl">
-                  <div class="input-group w-md">
-                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="brand.contractdate" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
-                    <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
+                  <div class="btn-group m-t">
+                      <label class="btn btn-default" ng-model="cropType" btn-radio="'circle'">圆形</label>
+                      <label class="btn btn-default" ng-model="cropType" btn-radio="'square'">方形</label>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div class="line line-dashed b-b line-lg pull-in"></div>
-              <div class="form-group">
-                <label class="col-lg-2 control-label">设计费</label>
-                <div class="col-lg-8">
-                  <input type="number" class="form-control" placeholder="必填" ng-model="brand.designFee" required >
-                </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">所属行业</label>
+              <div class="col-lg-8">
+                <select ui-jq="chosen" class="form-control" ng-model="brand.industry" placeholder="必填" required>
+                  <option ng-repeat="list in industrylist" value="{{list}}">{{list}}</option>
+                </select>
               </div>
-              <div class="form-group">
-                <label class="col-lg-2 control-label">安装费</label>
-                <div class="col-lg-8">
-                  <input type="number" class="form-control" placeholder="必填" ng-model="brand.setupFee" required >
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-lg-2 control-label">月服务费</label>
-                <div class="col-lg-8">
-                  <input type="number" class="form-control" placeholder="必填" ng-model="brand.monthServiceFee" required >
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-lg-2 control-label">其它费用</label>
-                <div class="col-lg-8">
-                  <input type="number" class="form-control" placeholder="必填" ng-model="brand.otherFee" required >
-                </div>
-              </div>
+            </div>
 
-              <div class="line line-dashed b-b line-lg pull-in"></div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">详细描述</label>
-                <div class="col-sm-8">
-                  <textarea class="form-control h-auto" style="min-height:200px;" ng-model="brand.description">{{brand.description}}
-                  </textarea>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">客户状态</label>
+              <div class="col-lg-8">
+                <select ui-jq="chosen" class="form-control" ng-model="brand.status" placeholder="必填" required>
+                  <option ng-repeat="list in statuslist" value="{{list}}">{{list}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">曲目更新周期</label>
+              <div class="col-lg-8">
+                <select ui-jq="chosen" class="form-control" ng-model="brand.updatePeriod" placeholder="必填" required>
+                  <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list}}</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-sm-2 control-label">合同开始日期</label>
+              <div class="col-sm-10" ng-controller="DatepickerDemoCtrl">
+                <div class="input-group w-md">
+                  <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="brand.contractdate" is-open="opened" datepicker-options="dateOptions" ng-required="false" close-text="Close" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
                 </div>
               </div>
-              <div class="form-group">
-                <div class="col-lg-8 col-lg-offset-2">
-                  <button type="submit" class="btn btn-success pull-right" ng-disabled="form.$invalid" ng-click="createBrand()">添加</button>
-                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">设计费</label>
+              <div class="col-lg-8">
+                <input type="number" class="form-control" ng-model="brand.designFee" >
               </div>
-            </form>  
-          </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">安装费</label>
+              <div class="col-lg-8">
+                <input type="number" class="form-control" ng-model="brand.setupFee" >
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">月服务费</label>
+              <div class="col-lg-8">
+                <input type="number" class="form-control" ng-model="brand.monthServiceFee" >
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">其它费用</label>
+              <div class="col-lg-8">
+                <input type="number" class="form-control" ng-model="brand.otherFee" >
+              </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">详细描述</label>
+              <div class="col-sm-8">
+                <textarea class="form-control h-auto" style="min-height:200px;" ng-model="brand.description">{{brand.description}}
+                </textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-lg-8 col-lg-offset-2">
+                <button type="submit" class="btn btn-success pull-right" ng-disabled="form.$invalid" ng-click="createBrand()">添加</button>
+              </div>
+            </div>
+          </form>  
         </div>
       </div>
+    </div>
   </div>
   <!-- /main -->
 
   <!-- right col -->
-  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
-    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
+  <div class="col w-md bg-white-only b-l bg-auto no-border-xs" ng-show="showHelp">
+
+    <!-- help -->
+    <div class="padder-md m-t">      
+      <div class="m-b text-md">新增用户帮助</div>
+      <div class="streamline b-l m-b">
+        <div class="sl-item">
+          <div class="m-l">
+            <p>客户名称为必填。</p>
+          </div>
+        </div>
+        <div class="sl-item">
+          <div class="m-l">
+            <p>客户的logo不是必填信息。若提供图片，为保证质量，请尽量使用正方形图。</p>
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- /help -->
+
   </div>
   <!-- / right col -->
 </div>

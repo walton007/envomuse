@@ -6,8 +6,8 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">工作管理</h1>
-          <small class="text-muted">{{job.programName | uppercase }}</small>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="jobs.dash">工作包管理</a></h1>
+          <small class="text-muted">{{job.programName | uppercase }} 详细信息</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
 
@@ -24,15 +24,13 @@
     <!-- job detail -->
     <div class="row">
       <!-- <div style="background:url(img/c4.jpg) center center; background-size:cover"> -->
-      <div class="wrapper-lg bg-white-opacity">
+      <div class="wrapper-lg bg-white-opacity" style="background:url(img/sheet_music.jpg) center center; background-size:cover">
         <div class="row">
           <div class="col-sm-7">
-            <!-- <a href class="thumb-lg pull-left m-r">
-              <img src="img/a0.jpg" class="img-circle">
-            </a> -->
             <div class="clear">
-                <span class="h3 text-black">目标客户名称：{{job.custumorName | uppercase }}</span>
-                <small class="m-l">创作者：{{job.creator}}</small>
+              <span class="h4 text-black m-r"><i class="icon icon-layers m-r"></i>{{job.programName | uppercase }}</span>
+              <span class="h4 text-black">目标客户：{{job.custumorName | uppercase }}</span>
+              <small class="m-l">创作者：{{job.creator}}</small>
             </div>
           </div>
         </div>
@@ -42,13 +40,13 @@
         <tabset class="nav-tabs-alt" justified="true">
           <tab ng-repeat="row in job.programRule.playlists">
             <tab-heading>
-              <i class="glyphicon glyphicon-list text-md text-muted wrapper-sm"></i>{{row.name}}
+              <i class="glyphicon glyphicon-list text-md text-muted wrapper-sm"></i>{{row.name | uppercase }}
             </tab-heading>
               <div class="padder"> 
                 <div class="row wrapper">
                   <div class="clear wrapper b">
-                      <div class="h5 clear-fix">日期类型：{{row.timePeriods.calcType}}</div>
-                      <div class="h5">选定日期：{{row.timePeriods.dValues}}</div>
+                    <div class="h5 clear-fix">日期类型：{{row.timePeriods.calcType}}</div>
+                    <div class="h5">选定日期：{{row.timePeriods.dValues}}</div>
                   </div>
                 </div>
 
@@ -65,9 +63,12 @@
                         <label class="label bg-light m-l-xs">{{r.endhour}}</label>
                       </div>
                       <div class="panel-body">
-                        <div class="h5 b" ng-repeat="b in r.boxes">
-                          <!-- <a ui-sref="jobs.box({boxId:b._id,jobId:job._id,programId:r._id})">{{b.name}}</a> -->
-                          {{b.name}}
+                        <div class="h5" >
+                          <div class="list-group no-radius alt" ng-repeat="b in r.boxes">
+                            <a class="list-group-item" ui-sref="jobs.box({boxId:b._id,jobId:job._id})">
+                              {{b.name}}
+                            </a>
+                          </div>
                         </div>
                       </div>
                     </div>

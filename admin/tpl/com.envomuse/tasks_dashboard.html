@@ -10,8 +10,8 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">任务管理</h1>
-          <small class="text-muted">管理待处理任务</small>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="tasks.dash">任务管理</a></h1>
+          <small class="text-muted">查看待处理的压缩包（任务）及正在导入中的任务</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
           
@@ -22,45 +22,42 @@
 
   <!-- main -->
   <div class="col">
-    <div class="wrapper-md">
-      <!-- stats -->
-      <div class="row">
-        <div class="row row-sm text-center">
+      <div class="wrapper-md">
+        <!-- stats -->
+        <div class="row wrapper">
+          <div class="row row-sm text-center">
 
-          <div class="col-md-4" >
-            <div class="panel panel-default bg-light b no-border">
-              <div class="panel-body">
-                <a ui-sref="tasks.incoming" class="clearfix text-center m-t">
-                  <div class="inline">
-                    <div class="thumb-xl">
-                      <img src="img/icons/playlist_128.png" alt="...">
-                    </div>
-                    <div class="h4 m-t m-b-xs">{{stat.count}}</div>
-                    <small class="text-muted">待处理任务</small>
-                  </div>                      
-                </a>
-              </div>
+
+            <div class="col-md-4" >
+              <a ui-sref="tasks.incoming" class="clearfix text-center m-t">
+                <div class="panel panel-default bg-white b">
+                  <div class="panel-body">
+                    <div class="inline">
+                      <div class="thumb-xl">
+                        <img src="img/icons/tasks.png" alt="...">
+                      </div>
+                      <div class="h4 m-t m-b-xs">{{stat.count}}</div>
+                      <small class="text-muted">待处理任务</small>
+                    </div>                      
+                  </div>
+                </div>
+              </a>
             </div>
-          </div>
 
           <div class="col-md-4" >
-            <div class="panel panel-default bg-light b no-border">
-              <div class="panel-body">
-                <a ui-sref="tasks.finished" class="clearfix text-center m-t">
+            <a ui-sref="tasks.running" class="clearfix text-center m-t">
+              <div class="panel panel-default bg-white b">
+                <div class="panel-body">
                   <div class="inline">
                     <div class="thumb-xl">
-                      <img src="img/icons/playlist_128.png" alt="...">
+                      <img src="img/icons/task_running_64.png" alt="...">
                     </div>
                     <div class="h4 m-t m-b-xs">{{stat.running}}</div>
                     <small class="text-muted">进行中的任务</small>
                   </div>                      
-                </a>
+                </div>
               </div>
-            </div>
-          </div>
-
-
-          <div class="col-md-4">
+            </a>
           </div>
 
           <div class="col-xs-12 m-b-md">
@@ -69,16 +66,9 @@
           </div>
         </div>
       </div>
-      <!-- / stats -->
+        <!-- / stats -->
     </div>
   </div>
   <!-- /main -->
-
-  <!-- right col -->
-  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
-    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
-    </div>
-  </div>
-  <!-- / right col -->
 
 </div>

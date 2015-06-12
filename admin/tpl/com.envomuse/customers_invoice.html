@@ -1,7 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
-    app.settings.asideFolded = false; 
-    app.settings.asideDock = false;
-  " ng-controller="CustomerDetailCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="CustomerDetailCtrl">
 
   <!-- main -->
   <div class="col">
@@ -10,8 +7,8 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">客户管理</h1>
-          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase }}</a></small>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">客户管理</a></h1>
+          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase }}</a> 单据</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
 

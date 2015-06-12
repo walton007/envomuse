@@ -20,9 +20,18 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
       $scope.maxSize = 5; //total buttons displayed
       $scope.bigCurrentPage = 1;  //current page
       $scope.datasource = [];
-      $scope.pageItems = 12;
+      $scope.pageItems = 10;
 
-      Customers.getPageData({},
+      $scope.pageChanged();
+    };
+    
+    $scope.pageChanged = function() {
+
+      $scope.setPage = function (pageNo) {
+        $scope.bigCurrentPage = pageNo;
+      };
+
+      Customers.getPageData({pageNumber:$scope.bigCurrentPage,pageSize:$scope.pageItems},
         function(res) {
           $scope.bigTotalItems = res.count;
           $scope.datasource = res.data;
@@ -40,28 +49,6 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
           });
 
         });
-
-      $scope.pageChanged();
-    };
-
-    $scope.setPage = function (pageNo) {
-      $scope.bigCurrentPage = pageNo;
-    };
-
-    $scope.pageChanged = function() {
-
-      switch($stateParams.listState){
-        case 'new':$scope.listState = '本年新增';break;
-        case 'all':
-        default:$scope.listState = '全部客户';
-          break;
-      }
-
-      Customers.getPageData({},
-        function(res) {
-          $scope.totalPages = res.pageCount;
-          $scope.datasource = res.data;
-        });
     };
 
   }]);
@@ -73,29 +60,29 @@ app.controller('CustomerDetailCtrl', ['$scope', 'Customers', '$stateParams', fun
     });
 }]);
 
-app.controller('CustomerNewCtrl', ['$scope', '$state', 'Customers', function($scope,$state, Customers) {
+app.controller('CustomerNewCtrl', ['$scope', '$rootScope', '$state', 'Customers', function($scope,$rootScope, $state, Customers) {
   $scope.brand = {};
 
   $scope.industrylist = [
     "奢侈品","酒店/宾馆","餐饮","服装业", "服务","美容","媒体","零售","设计","银行","金融","因特网","咨询","其它"
   ];
   $scope.statuslist = [
-    "目标客户","初步接触","DEMO展示","PILOT试用","现有","合同已终止","其它"
+    "目标客户","初步接触","DEMO展示","PILOT试用","合同中","合同终止","其它"
   ];
   $scope.updateperiodlist = [
-    "每周更新","每月更新","每季度更新","半年更新","其它"
+    "每月更新","每季度更新","半年更新","其它"
   ];
 
   $scope.createBrand = function(){
 
     var newCustomer = {
       brand: $scope.brand.name,
-      logo: $scope.myCroppedImage,
+      logo:   $rootScope.myCroppedImage,
       industry: $scope.brand.industry,
       status: $scope.brand.status,
       updatePeriod: $scope.brand.updatePeriod,
       crmInfo: {
-        contractDate: $scope.brand.contractdate.getTime()
+        contractDate: ($scope.brand.contractdate!=null)?$scope.brand.contractdate.getTime():null
       },
       designFee: $scope.brand.designFee,
       setupFee: $scope.brand.setupFee,
@@ -104,6 +91,8 @@ app.controller('CustomerNewCtrl', ['$scope', '$state', 'Customers', function($sc
       description: $scope.brand.description
     };
 
+    // console.log(newCustomer);
+
     var customer = new Customers(newCustomer);
     customer.$save(function(customer) {
       if(customer){
@@ -111,6 +100,7 @@ app.controller('CustomerNewCtrl', ['$scope', '$state', 'Customers', function($sc
       }
     });
   };
+
 
 }]);
 
@@ -276,30 +266,23 @@ app.controller('StoreListCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites'
       $scope.maxSize = 5; //total buttons displayed
       $scope.bigCurrentPage = 1;  //current page
       $scope.datasource = [];
-      $scope.pageItems = 12;
+      $scope.pageItems = 5;
 
       Customers.get({'customerId':$stateParams.brandId},
-      function(res) {
-        $scope.brand = res;
-
-      });
-
-      // CustomerSites.getPageData({'customerId':$stateParams.brandId},
-      //   function(res) {
-      //     $scope.bigTotalItems = res.count;
-      //     $scope.datasource = res;
-      //   });
+        function(res) {
+          $scope.brand = res;
+        });
 
       $scope.pageChanged();
     };
 
-    $scope.setPage = function (pageNo) {
-      $scope.bigCurrentPage = pageNo;
-    };
-
     $scope.pageChanged = function() {
 
-      CustomerSites.getPageData({'customerId':$stateParams.brandId},
+      $scope.setPage = function (pageNo) {
+        $scope.bigCurrentPage = pageNo;
+      };
+
+      CustomerSites.getPageData({'customerId':$stateParams.brandId,pageNumber:$scope.bigCurrentPage,pageSize:$scope.pageItems},
         function(res) {
           $scope.bigTotalItems = res.count;
           $scope.datasource = res.data;
@@ -315,30 +298,50 @@ app.controller('StoreListCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites'
               manager:e.manager
             };
           });
-
-
         });
     };
 
   }]);
 
 
-app.controller('StoreDetailCtrl', ['$scope', 'Customers', 'Sites', 'SiteLicense', '$stateParams', function($scope, Customers, Sites, SiteLicense, $stateParams) {
+app.controller('StoreDetailCtrl', ['$scope', '$state', 'Customers', 'Sites', 'SiteLicense', '$stateParams', function($scope, $state, Customers, Sites, SiteLicense, $stateParams) {
 
   Sites.get({'siteId':$stateParams.storeId},
     function(res) {
       $scope.store = res;
     });
 
+  //messaging
+  $scope.alerts = [];
+  $scope.closeAlert = function(index) {
+    $scope.alerts.splice(index, 1);
+  };
+
   Customers.get({'customerId':$stateParams.brandId},
-      function(res) {
-        $scope.brand = res;
-      });
+    function(res) {
+      $scope.brand = res;
+    });
+
+  $scope.setManager = function(chosenManager){
+
+    var updatedStore = {
+      _id:$scope.store._id,
+      manager:$scope.chosenManager
+    };
+
+    var store = new Sites(updatedStore);
+    store.$update(function(site) {
+      showSetManager = false;
+      $scope.alerts.push({type: 'success', msg: $scope.store.siteName + '修改成功！'});
+      $state.go('customers.store.detail',{brandId:$stateParams.brandId,storeId:$stateParams.storeId},{reload: true});
+    });
+  };
+
 
   $scope.bindLicense = function(storeId){
     // console.log(storeId);
     SiteLicense.save({'siteId':storeId},function(res){
-      console.log(res);
+      // console.log(res);
     })
   };
   
@@ -409,7 +412,7 @@ app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', '$state
 
 }]);
 
-app.controller('ContactEditCtrl', ['$scope', 'Customers', '$stateParams', '$state', function($scope, Customers, $stateParams, $state) {
+/*app.controller('ContactEditCtrl', ['$scope', 'Customers', '$stateParams', '$state', function($scope, Customers, $stateParams, $state) {
   
   $scope.brand = $stateParams.brandContent;
   getContact = function(){
@@ -431,42 +434,50 @@ app.controller('ContactEditCtrl', ['$scope', 'Customers', '$stateParams', '$stat
     });
   };
 
-}]);
+}]);*/
 
 app.controller('ContactListCtrl', ['$scope', 'Customers', '$stateParams', function($scope, Customers, $stateParams) {
 
-    //for footer controller
-    $scope.brandId = $stateParams.brandId;
+  //for footer controller
+  $scope.brandId = $stateParams.brandId;
+  
+  //messaging
+  $scope.alerts = [];
+  $scope.closeAlert = function(index) {
+    $scope.alerts.splice(index, 1);
+  };
 
-    $scope.init = function(){
-      $scope.maxSize = 5; //total buttons displayed
-      $scope.bigCurrentPage = 1;  //current page
-      $scope.datasource = [];
-      $scope.pageItems = 12;
+  Customers.get({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.brand = res;
+      $scope.datasource = $scope.brand.contacts;
+    }); 
 
+  $scope.editItem = function(item){
+    item.editing = true;
+    $scope.itemToEdit = item;
+    $scope.showEdit = true;
+  };
 
-      Customers.get({'customerId':$stateParams.brandId},
-        function(res) {
-          $scope.brand = res;
-          $scope.bigTotalItems = $scope.brand.contacts.length;
-          $scope.datasource = $scope.brand.contacts.slice(($scope.bigCurrentPage-1)*$scope.pageItems,($scope.bigTotalItems-($scope.bigCurrentPage-1)*$scope.pageItems)/$scope.pageItems>1?$scope.pageItems:$scope.bigTotalItems);
+  //save customer to save contacts
+  $scope.saveContact = function(){
+    $scope.showEdit = false;
 
-          $scope.pageChanged();
-        });      
+    var customerUpdated = {
+      _id: $scope.brand._id,
+      contacts:$scope.datasource
     };
 
-    $scope.setPage = function (pageNo) {
-      $scope.bigCurrentPage = pageNo;
-    };
+    var customer = new Customers(customerUpdated);
+    customer.$update(function(customer) {
+      $scope.alerts.push({type: 'success', msg: $scope.itemToEdit.name + '修改成功！'});
+      $state.go('customers.contact',{brandId:customer._id});
+    });
 
-    $scope.pageChanged = function() {
-      $scope.datasource = $scope.brand.contacts.slice(
-          ($scope.bigCurrentPage-1)*$scope.pageItems,
-          ($scope.bigTotalItems-($scope.bigCurrentPage-1)*$scope.pageItems)/$scope.pageItems>1?$scope.pageItems:$scope.bigTotalItems);
-    };
+  };
 
-  }])
-;
+
+}]);
 
 app.controller('ContactDetailCtrl', ['$scope', 'Customers', '$stateParams', function($scope, Customers, $stateParams) {
 
@@ -636,17 +647,18 @@ app.controller('JobDetailCtrl', ['$scope', 'JobById', 'GenerateProgram', '$state
 
 }]);*/
 
-/*app.controller('BoxDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
+app.controller('BoxDetailCtrl', ['$scope', 'BoxById', '$stateParams', function($scope,BoxById, $stateParams) {  
 
-  $scope.job = $stateParams.jobContent;
-  $scope.program = $stateParams.programContent;
-  $scope.rule = $stateParams.ruleContent;
-  $scope.box = $stateParams.boxContent;
+  BoxById.get({'jobId':$stateParams.jobId,'boxId':$stateParams.boxId},
+    function(res) {
+      $scope.box = res;
+      console.log($scope.box);
+      });
 
   //console.log($scope.program);
   console.log($scope.box);
 
-}]);*/
+}]);
 
 /*
 app.controller('SetJobDateRangeModalCtrl', ['$scope', '$modal', '$log', function($scope, $modal, $log) {

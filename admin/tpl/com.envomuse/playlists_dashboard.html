@@ -24,42 +24,39 @@
   <div class="col">
     <div class="wrapper-md">
       <!-- stats -->
-      <div class="row">
+      <div class="row wrapper">
         <div class="row row-sm text-center">
 
           <div class="col-md-4" >
-            <div class="panel panel-default bg-light b no-border">
-              <div class="panel-body">
-                <a ui-sref="playlists.list({linkState:'active'})" class="clearfix text-center m-t">
+            <a ui-sref="playlists.list({linkState:'active'})" class="clearfix text-center m-t">
+              <div class="panel panel-default no-border">
+                <div class="panel-body">
                   <div class="inline">
                     <div class="thumb-xl">
-                      <img src="img/icons/calendar-clock.png" alt="...">
+                      <img src="img/icons/binded_64.png" alt="...">
                     </div>
                     <div class="h4 m-t m-b-xs">{{stat.bindCount}}</div>
                     <small class="text-muted">已关联门店的播放清单</small>
                   </div>                      
-                </a>
+                </div> 
               </div>
-            </div>
+            </a>
           </div>
 
           <div class="col-md-4" >
-            <div class="panel panel-default bg-light b no-border">
-              <div class="panel-body">
-                <a ui-sref="playlists.list({linkState:'inactive'})" class="clearfix text-center m-t">
+            <a ui-sref="playlists.list({linkState:'inactive'})" class="clearfix text-center m-t">
+              <div class="panel panel-default no-border">
+                <div class="panel-body">
                   <div class="inline">
                     <div class="thumb-xl">
-                      <img src="img/icons/calendar-clock.png" alt="...">
+                      <img src="img/icons/tobind_64.png" alt="...">
                     </div>
                     <div class="h4 m-t m-b-xs">{{stat.unbindCount}}</div>
                     <small class="text-muted">未关联门店的播放清单</small>
                   </div>                      
-                </a>
+                </div>
               </div>
-            </div>
-          </div>
-
-          <div class="col-md-4">
+            </a>            
           </div>
 
           <div class="col-xs-12 m-b-md">
@@ -72,12 +69,5 @@
     </div>
   </div>
   <!-- /main -->
-
-  <!-- right col -->
-  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
-    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
-    </div>
-  </div>
-  <!-- / right col -->
 
 </div>

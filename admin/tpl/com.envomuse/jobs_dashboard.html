@@ -1,7 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
-    app.settings.asideFolded = false; 
-    app.settings.asideDock = false;
-  " ng-controller="JobsDashboardCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="JobsDashboardCtrl">
   
   <!-- main -->
   <div class="col">
@@ -10,8 +7,8 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">工作管理</h1>
-          <small class="text-muted">管理工作</small>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="jobs.dash">工作包管理</a></h1>
+          <small class="text-muted">工作包是已经导入系统内的任务，用于生成播放清单</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
           
@@ -24,44 +21,23 @@
   <div class="col">
     <div class="wrapper-md">
       <!-- stats -->
-      <div class="row">
+      <div class="row wrapper">
         <div class="row row-sm text-center">
 
           <div class="col-md-4" >
-            <div class="panel panel-default bg-light b no-border">
-              <div class="panel-body">
-                <a ui-sref="jobs.list({jobStatus:'active'})" class="clearfix text-center m-t">
+            <a ui-sref="jobs.list({jobStatus:'active'})" class="clearfix text-center m-t">
+              <div class="panel panel-default no-border">
+                <div class="panel-body">
                   <div class="inline">
                     <div class="thumb-xl">
-                      <img src="img/icons/job_128.png" alt="...">
+                      <img src="img/icons/jobs_64.png" alt="...">
                     </div>
                     <div class="h4 m-t m-b-xs">已有 {{stat.active}} 工作</div>
                     <small class="text-muted">显示工作列表</small>
                   </div>                      
-                </a>
+                </div>
               </div>
-            </div>
-          </div>
-
-<!-- 
-          <div class="col-md-3" >
-            <div class="panel panel-default bg-light b no-border">
-              <div class="panel-body">
-                <a ui-sref="customers.brand.new" class="clearfix text-center m-t">
-                  <div class="inline">
-                    <div class="thumb-xl">
-                      <img src="img/icons/plus.png" alt="...">
-                    </div>
-                    <div class="h4 m-t m-b-xs">新增工作</div>
-                    <small class="text-muted">添加客户并配置基本信息</small>
-                  </div>                      
-                </a>
-              </div>
-            </div>
-          </div> -->
-
-
-          <div class="col-md-4">
+            </a>
           </div>
 
           <div class="col-xs-12 m-b-md">
@@ -74,12 +50,5 @@
     </div>
   </div>
   <!-- /main -->
-
-  <!-- right col -->
-  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
-    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
-    </div>
-  </div>
-  <!-- / right col -->
 
 </div>

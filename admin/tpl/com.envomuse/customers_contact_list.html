@@ -1,6 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
-    app.settings.asideFolded = false; 
-    app.settings.asideDock = false; init();" ng-controller="ContactListCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="showEdit=false;" ng-controller="ContactListCtrl">
 
 <!-- main -->
   <div class="col">
@@ -9,8 +7,8 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black">客户管理</h1>
-          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></small>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">客户管理</a></h1>
+          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a> 所有联系人</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
           <div class="btn-group dropdown" dropdown>
@@ -24,51 +22,54 @@
     <!-- main -->
       <div class="col">
         <div class="wrapper-md">
+
+          <!-- alert -->
+          <div class="m-b-md">
+            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+          </div>
+          <!-- / alert -->
+
           <div ng-repeat="item in datasource" class="col-sm-4">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <div class="clearfix">
-                  <a href class="pull-left thumb-md avatar b-3x m-r">
+                  <div class="pull-left thumb-md avatar b-3x m-r">
                     <img src="img/a2.jpg" alt="...">
-                  </a>
+                  </div>
                   <div class="clear">
                     <div class="h3 m-t-xs m-b-xs">
                       {{item.name}}
                     </div>
                     <small class="text-muted">{{item.title}}</small>
+                    <a href ng-click="editItem(item)"><i class="pull-right fa fa-edit"></i></a>
                   </div>
                 </div>
               </div>
               <div class="list-group no-radius alt">
                 <a class="list-group-item" href>
-                  <span class="badge bg-success">25</span>
-                  <i class="fa fa-comment fa-fw text-muted"></i> 
-                  手机
-                </a>
-                <a class="list-group-item" href>
-                  <span class="badge bg-info">16</span>
-                  <i class="fa fa-envelope fa-fw text-muted"></i> 
-                  Email
-                </a>
-                <a class="list-group-item" href>
-                  <span class="badge bg-light">5</span>
-                  <i class="fa fa-eye fa-fw text-muted"></i> 
-                  微信
-                </a>
-                <a class="list-group-item" href>
-                  <span class="badge bg-light">5</span>
-                  <i class="fa fa-eye fa-fw text-muted"></i> 
-                  QQ
-                </a>
-                <a class="list-group-item" href>
-                  <span class="badge bg-light">5</span>
-                  <i class="fa fa-eye fa-fw text-muted"></i> 
+                  <span class="pull-right">{{item.workmobile}}</span>
+                  <i class="fa fa-phone fa-fw text-muted"></i> 
                   工作电话
                 </a>
                 <a class="list-group-item" href>
-                  <span class="badge bg-light">5</span>
-                  <i class="fa fa-eye fa-fw text-muted"></i> 
+                  <span class="pull-right">{{item.email}}</span>
+                  <i class="fa fa-envelope-o fa-fw text-muted"></i> 
+                  Email
+                </a>
+                <a class="list-group-item" href >
+                  <span class="pull-right">{{item.wechat}}</span>
+                  <i class="fa fa-wechat fa-fw text-muted"></i> 
                   微信
+                </a>
+                <a class="list-group-item" href>
+                  <span class="pull-right">{{item.qq}}</span>
+                  <i class="fa fa-qq fa-fw text-muted"></i> 
+                  QQ
+                </a>
+                <a class="list-group-item" href>
+                  <span class="pull-right">{{item.privatemobile}}</span>
+                  <i class="fa fa-mobile fa-fw text-muted"></i> 
+                  私人电话
                 </a>
               </div>
             </div>
@@ -80,9 +81,76 @@
   <!-- /main -->
 
   <!-- right col -->
-  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
-    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
+  <div class="col w-lg bg-white-only b-l bg-auto no-border-xs" ng-show="showEdit">
+    <!-- edit contact -->
+    <div class="padder-md m-t">      
+      <h4 class="panel-heading font-bold">编辑联系人</h4>
+      <div class="panel-body">
+        <form name="form" class="form-horizontal m-t-lg form-validation ">
+
+          <div class="input-group m-b">
+            <span class="input-group-addon"><i class="fa fa-user fa-fw text-muted"></i></span>
+            <input type="text" class="form-control" ng-model="itemToEdit.name" placeholder="姓名">
+          </div>
+
+          <div class="input-group m-b">
+            <div class="radio inline m-r-md">
+              <label class="i-checks">
+                <input type="radio" name="gender" ng-model="itemToEdit.gender" value="M">
+                <i></i>
+                男
+              </label>
+            </div>
+            <div class="radio inline">
+              <label class="i-checks">
+                <input type="radio" name="gender" ng-model="itemToEdit.gender" value="F">
+                <i></i>
+                女
+              </label>
+            </div>
+          </div>
+        
+          <div class="input-group m-b">
+            <span class="input-group-addon">职位</span>
+            <input type="text" class="form-control" ng-model="itemToEdit.title" placeholder="职位">
+          </div>
+
+          <div class="input-group m-b">
+            <span class="input-group-addon"><i class="fa fa-phone fa-fw text-muted"></i></span>
+            <input type="text" class="form-control" ng-model="itemToEdit.workmobile" placeholder="工作电话">
+          </div>
+
+          <div class="input-group m-b">
+            <span class="input-group-addon"><i class="fa fa-mobile fa-fw text-muted"></i></span>
+            <input type="text" class="form-control" ng-model="itemToEdit.privatemobile" placeholder="私人电话">
+          </div>
+
+          <div class="input-group m-b">
+            <span class="input-group-addon"><i class="fa fa-qq fa-fw text-muted"></i></span>
+            <input type="text" class="form-control" ng-model="itemToEdit.qq" placeholder="QQ">
+          </div>
+
+          <div class="input-group m-b">
+            <span class="input-group-addon"><i class="fa fa-wechat fa-fw text-muted"></i></span>
+            <input type="text" class="form-control" ng-model="itemToEdit.wechat" placeholder="微信">
+          </div>
+
+          <div class="input-group m-b">
+            <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw text-muted"></i></span>
+            <input type="text" class="form-control" ng-model="itemToEdit.email" placeholder="Email">
+          </div>
+
+          <div class="form-group">
+            <div class="col-lg-8 col-lg-offset-2">
+              <button type="submit" class="btn btn-sm btn-success pull-right" ng-disabled="form.$invalid" ng-click="saveContact()">保存修改</button>
+              <button type="submit" class="btn btn-sm btn-danger" ng-click="showEdit=false;">取消</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
+    <!-- /edit contact -->
   </div>
   <!-- / right col -->
+
 </div>
