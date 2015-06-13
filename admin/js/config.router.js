@@ -390,6 +390,11 @@ angular.module('app')
                   url: '/404',
                   templateUrl: 'tpl/page_404.html'
               })
+              .state('access.logout', {        
+                controller: function () {
+                  window.location = '/logout';
+                }
+              })
 
               // fullCalendar
               .state('app.calendar', {
