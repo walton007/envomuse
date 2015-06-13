@@ -74,11 +74,14 @@ exports.statistic = function(req, res, next) {
     next();
     return;
   }
-  zmqAgent.sendCmd('comingJobs', ['statistic'], function(comingJobsCount) {
-    //res.json({count: comingJobsCount});
+  zmqAgent.sendCmd('comingJobs', ['statistic'], function(rst) {
+    console.log(rst);
     res.json({
-      count: comingJobsCount,
-      running: 0});
+      'notImport': (rst.notImport ? rst.notImport : 0),
+      'importing': (rst.importing ? rst.importing : 0),
+      'imported': (rst.imported ? rst.imported : 0),
+      'badzip': (rst.badzip ? rst.badzip : 0),
+       });
   });
 };
 

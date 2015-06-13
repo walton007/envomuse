@@ -9,11 +9,15 @@ mongoosePaginate = require('mongoose-paginate'),
 
 var BaseSchema = commonUtil.BaseSchema,
 ContactSchema = commonUtil.ContactSchema;
+
 var CustomerSchema = BaseSchema.extend({
+  companyName: String,
   brand: String,
   address: String,
   industry: String,
   updatePeriod: String,
+  telephone: String,
+  fax: String,
 
   contacts: [ContactSchema],
   // contacts: [],
@@ -21,13 +25,12 @@ var CustomerSchema = BaseSchema.extend({
     type:String,
     default:"img/default_logo.png"
   },
-  status: String,
-  /*{
+  status: {
     type: String,
     required: true,
     default: 'prospect',
-    enum: ['prospect', 'meeting', 'demo', 'pilot', 'active', 'inactive'],
-  },*/
+    enum: ['prospect', 'demo', 'signed', 'inactive'],
+  },
   crmInfo: {
     // manager: ContactSchema, //brand manager
     firstContactDate: Date,
@@ -43,6 +46,7 @@ var CustomerSchema = BaseSchema.extend({
   setupFee: Number,
   monthServiceFee: Number,
   otherFee: Number,
+  otherFeeComment: String,
   description: String
 });
 

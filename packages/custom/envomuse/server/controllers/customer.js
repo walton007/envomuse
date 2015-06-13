@@ -176,9 +176,8 @@ exports.sitesPaginate = function(req, res) {
     },
     pageNumber, pageSize, callback, {
       sortBy: '-created',
-      columns: '_id siteName reference manager created'
+      columns: '_id siteName reference created playerStatus exportTime'
     });
-
 };
 
 exports.addSite = function(req, res) {

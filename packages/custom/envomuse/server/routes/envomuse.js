@@ -10,6 +10,7 @@ var express = require('express'),
    jobs = require('../controllers/job'),
    songs = require('../controllers/song'),
    users = require('../controllers/user'),
+   dashboard = require('../controllers/dashboard'),
    sitePrograms = require('../controllers/siteProgram');
 
 // The Package is past automatically as first parameter
@@ -20,6 +21,10 @@ module.exports = function(Envomuse, app, auth, database) {
 
   var apiRouter = express.Router();
   app.use('/api', apiRouter);
+
+  //all Tasksx`
+  apiRouter.route('/dashboard/')
+  .get(dashboard.analysis);
 
   //Coming Jobs
   apiRouter.route('/comingJobs')
@@ -149,6 +154,15 @@ module.exports = function(Envomuse, app, auth, database) {
   .get(function(req, res, next) {
     res.json([{id:2}]);
   });
+  apiRouter.route('/sites/:siteId/refreshPlayerStatus')
+  .post(function(req, res, next) {
+    res.json({playerStatus: 'online'});
+  });
+  apiRouter.route('/sites/:siteId/timelineLogs')
+  .get(function(req, res, next) {
+    res.json([{playerStatus: 'online'}]);
+  });
+
   apiRouter.route('/sites/:siteId/programs')
   .get(sites.programs);
   apiRouter.param('siteId', sites.site);
@@ -222,9 +236,24 @@ module.exports = function(Envomuse, app, auth, database) {
   apiRouter.route('/users/')
   .get(users.all);
 
+  var adminRouter = express.Router();
+  app.use('/admin', adminRouter);
+  //auth.requiresLogin,
+  adminRouter.use(
+    // auth.requiresLogin, 
+    function(req, res, next) {
+      // if (!req.isAuthenticated()) {
+      //   return res.status(401).send('User is not authorized');
+      // }
+      if (req.url === '/' || req.url === '/index.html') {
+        return dashboard.render(req, res);
+      }
+      next();
+    }, 
+    express.static(config.root + '/admin'));
 
   //integrate admin module
-  app.use('/admin', express.static(config.root + '/admin'));  //admin
+  // app.use('/admin', express.static(config.root + '/admin'));  //admin
   app.use('/', express.static(config.root + '/home'));  //home
 
 };

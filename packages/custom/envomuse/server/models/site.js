@@ -31,6 +31,7 @@ var SiteSchema = BaseSchema.extend({
   latitude: String,
   longitude: String,
   description: String,
+  exportTime: Date,
 
   license: {
     uuid: String,
@@ -38,12 +39,7 @@ var SiteSchema = BaseSchema.extend({
     deviceInfo: {
       mac: String
     },
-    sshkey: String,
-    // playerStatus: {
-    //   type: String,
-    //   default: 'local',
-    //   enum: ['updated', 'local', 'partialUpate'],
-    // }
+    sshkey: String
   },
 
   lastHeartbeat: {
@@ -60,7 +56,14 @@ var SiteSchema = BaseSchema.extend({
   playerSetting: {
     startSyncTm: String,
     retryCnt: Number
-  }
+  },
+
+  playerStatus: {
+    type: String,
+    required: true,
+    default: 'offline',
+    enum: ['online', 'offline', 'local'],
+  },
 });
 
 /**

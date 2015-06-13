@@ -99,6 +99,11 @@ var ContactSchema = {
   department: {
     type: String
   },
+  isLeader: {
+    required: true,
+    default: false,
+    type: Boolean
+  }
 }; 
 
 module.exports = exports = {

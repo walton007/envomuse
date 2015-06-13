@@ -58,17 +58,30 @@ function allComingJobs(respCallback, respErrorback) {
 function ComingJobsStatistic(respCallback, respErrorback) {
 	console.log('ComingJobsStatistic');
 	// body...
-	ComingJob.find({
-			outdate: false
-		})
-		.count()
-		.exec(function(err, count) {
-			if (err) {
-				respErrorback && respErrorback('err:' + err);
-			} else {
-				respCallback && respCallback(count);
-			}
-		});
+
+	ComingJob.aggregate([{
+    $match: {
+      outdate: false
+    }
+  }, {
+    $group: {
+      _id: '$importStatus',
+      count: {$sum: 1}
+    }
+  }])
+  .exec(function(err, result) {
+    console.log('result:', result);
+    if (err) {
+      respErrorback && respErrorback('err:' + err);
+      return;
+    };
+    var statusMap = {};
+    _.each(result, function(obj) {
+      statusMap[obj._id] = obj.count;
+    });
+
+    respCallback && respCallback(statusMap);
+  });
 }
 
 function findByMd5(hash, callback) {

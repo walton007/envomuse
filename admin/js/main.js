@@ -3,17 +3,17 @@
 /* Controllers */
 
 angular.module('app')
-  .controller('AppCtrl', ['$scope', '$translate', '$localStorage', '$window', 
-    function(              $scope,   $translate,   $localStorage,   $window ) {
-
-      // $rootScope.$state = $state;
-      // $rootScope.$stateParams = $stateParams; 
-
+  .controller('AppCtrl', ['$scope', '$translate', '$localStorage', '$window', '$location', 
+    function($scope,   $translate,   $localStorage,   $window, $location ) {
       // add 'ie' classes to html
       var isIE = !!navigator.userAgent.match(/MSIE/i);
       isIE && angular.element($window.document.body).addClass('ie');
       isSmartDevice( $window ) && angular.element($window.document.body).addClass('smart');
 
+      if (!window.user._id) {
+        return $location.url('/access/signin');
+      }
+      
       // config
       $scope.app = {
         name: 'Envomuse',

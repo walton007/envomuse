@@ -12,7 +12,11 @@ var BaseSchema = commonUtil.BaseSchema;
 //----------- program, music related information  ----------------//
  
 var ProgramSchema = BaseSchema.extend({
-  name: String,
+  name: {
+    type: String,
+    required: true,
+    unique: true
+  },
   customerName: String,
   job: {
     type: Schema.ObjectId,

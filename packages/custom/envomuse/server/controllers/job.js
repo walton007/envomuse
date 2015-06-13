@@ -17,7 +17,7 @@ exports.all = function(req, res) {
   console.log('all jobs');
   // return only basic information
   Job.find().sort('-created')
-  .select('_id creator customerName programName')
+  .select('_id creator customerName programName created')
   .exec(function(err, jobs) {
     if (err) {
       return res.status(500).json({
