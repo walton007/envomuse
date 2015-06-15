@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
 
 exports.all = function(req, res) {
   User.find().sort('-created').select('_id email created customer')
-  // .populate('customer', 'brand')
+  .populate('customer', 'brand')
   .exec(function(err, users) {
     if (err) {
       return res.status(500).json({

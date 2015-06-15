@@ -390,6 +390,7 @@ exports.bindUser = function(req, res, next) {
   console.log(2);
 
   var user = new User(req.body);
+  user.customer = req.customer;
   user.provider = 'local';
   user.username = user.email;
   user.name = user.email;
