@@ -32,6 +32,12 @@ var SiteSchema = BaseSchema.extend({
   longitude: String,
   description: String,
   exportTime: Date,
+  deliveryState: {
+    type: String,
+    required: true,
+    default: 'deliveryYes',
+    enum: ['deliveryYes', 'deliveryNo'],
+  },
 
   license: {
     uuid: String,

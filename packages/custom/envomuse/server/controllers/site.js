@@ -247,20 +247,32 @@ exports.statistic = function(req, res, next) {
     return next();
   }
 
-  Site.count(function(err, count) {
+  Site.aggregate([{
+      $match: {
+        deleteFlag: false
+      }
+    }, {
+      $group: {
+        _id: '$playerStatus',
+        count: {
+          $sum: 1
+        }
+      }
+    }])
+  .exec(function(err, val) {
     if (err) {
-      console.error('site count error:', err);
-      return res.status(500).json({
-        error: 'count the site error'
+      return res.status(400).json({
+        error: 'statistic the site error'
       });
     }
-
-    //online store
-    res.json({
-      totalStore: count,
-      activeStore: count
+    var statusDict = {
+      'online': 0,
+      'offline': 0,
+      'local': 0
+    };
+    _.each(val, function(obj) {
+      statusDict[obj._id] = obj.count;
     });
-    return;
+    res.json(statusDict);
   });
-
 };
