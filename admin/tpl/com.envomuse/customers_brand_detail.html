@@ -1,4 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="CustomerDetailCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="showSetManager=false;" ng-controller="CustomerDetailCtrl">
 
   <!-- main -->
   <div class="col">
@@ -7,7 +7,7 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">客户管理</a></h1>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">品牌管理</a></h1>
           <small class="text-muted">查看客户详细信息，包括门店以、联系人以及该客户所有播放终端状态</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
@@ -23,7 +23,7 @@
               <li class="divider"></li>
               <li><a ui-sref="customers.invoice({brandId:brand._id})">查看发票</a></li>
               <li class="divider"></li>
-              <li><a href>设置客户管理员</a></li>
+              <li><a href ng-click="showSetManager=!showSetManager">设置客户管理员</a></li>
             </ul>
           </div>
 
@@ -41,6 +41,10 @@
         <div class="wrapper">
           <div class="col-md-4">
             <div class="panel panel-default">
+              <div class="panel-heading">
+                <a ui-sref="customers.brand.edit({brandId:brand._id})" class="m-r" tooltip="修改"><i class="fa fa-edit text-muted m-r-sm"></i></a>
+                <a ui-sref="customers.contact.add({brandId:brand._id})" class="m-r" tooltip="添加联系人"><i class="icon icon-user-follow text-muted m-r-sm"></i></a>
+              </div>
               <div class="panel-body">
                 <div class="clearfix text-center m-t">
                   <div class="inline">
@@ -56,10 +60,10 @@
                 </div>
               </div>
               <div class="list-group no-radius alt">
-                <a class="list-group-item" href>
-                  <span class="badge bg-success">张三</span>
+                <a ui-sref="customers.contact({brandId:brand._id})" class="list-group-item">
+                  <span class="badge bg-success">{{leader.name}}</span>
                   <i class="fa fa-user fa-fw text-muted"></i> 
-                  主要联系人
+                  联系人
                 </a>
                 <a class="list-group-item" href>
                   <span class="badge bg-info">{{brand.created | fromNow}}</span>
@@ -126,7 +130,7 @@
                 </div>
               </div>
 
-              <h4 class="font-bold">联系人</h4>
+             <!--  <h4 class="font-bold">联系人</h4>
               <div class="row text-center">
                 <div class="col-md-6" >
                   <a ui-sref="customers.contact({brandId:brand._id})" class="clearfix text-center m-t">
@@ -156,13 +160,35 @@
                     </a>
                   </div>
                 </div>
-              </div>
+              </div> -->
             
             <!-- /stores + contacts -->
 
             <!-- player stats -->
-            
-              <h4 class="font-bold">播放器状态</h4>
+            <div class="row text-center">
+            <div class="col-md-8">
+              <div class="panel panel-default">
+                <div class="panel-heading font-bold">
+                  播放器状态
+                </div>
+                <div class="panel-body text-center">
+                  <div ui-jq="plot" ui-options="
+                    {{d3}},
+                    {
+                      series: { pie: { show: true, innerRadius: 0.5, stroke: { width: 0 }, label: { show: true, threshold: 0.05 } } },
+                      colors: ['{{app.color.primary}}','{{app.color.info}}','{{app.color.success}}','{{app.color.warning}}','{{app.color.danger}}'],
+                      grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },   
+                      tooltip: true,
+                      tooltipOpts: { content: '%s: %p.0%' }
+                    }
+                  " style="height:188px"></div>
+                </div>
+              </div>
+            </div>
+            </div>
+
+
+              <!-- <h4 class="font-bold"></h4>
               <div class="list-group">
                 <div href class="list-group-item no-border bg-light">
                   <span class="badge badge-empty">201</span>
@@ -192,7 +218,7 @@
                   <span class="badge bg-danger">10</span>
                   <i class="fa fa-clock-o fa-fw m-r-xs"></i> 终止服务
                 </a>
-              </div>
+              </div> -->
               
             
             <!-- /player stats -->
@@ -208,10 +234,34 @@
     <!-- /main -->
 
   <!-- right col -->
-  <!-- <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
-    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
+  <div class="col w-lg bg-white-only b-l bg-auto no-border-xs" ng-show="showSetManager">
+    <!-- edit contact -->
+    <div class="padder-md m-t">      
+      <h4 class="panel-heading font-bold">管理员账号设置</h4>
+      <div class="panel-body">
+        <form name="form" class="form-horizontal m-t-lg form-validation ">
+
+          <div class="input-group m-b">
+            <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw text-muted"></i></span>
+            <input type="text" class="form-control" ng-model="manager.email" placeholder="Email">
+          </div>
+
+          <div class="input-group m-b">
+            <span class="input-group-addon"><i class="fa fa-key fa-fw text-muted"></i></span>
+            <input type="password" class="form-control" ng-model="manager.password" placeholder="密码">
+          </div>
+
+          <div class="form-group">
+            <div class="col-lg-8 col-lg-offset-2">
+              <button type="submit" class="btn btn-sm btn-success pull-right" ng-disabled="form.$invalid" ng-click="setManager()">设置</button>
+              <button type="submit" class="btn btn-sm btn-danger" ng-click="showSetManager=false;">取消</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
-  </div> -->
+    <!-- /edit contact -->
+  </div>
   <!-- / right col -->
 
 </div>

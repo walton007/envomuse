@@ -7,7 +7,7 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">客户管理</a></h1>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">品牌管理</a></h1>
           <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a> 所有门店</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
@@ -43,24 +43,26 @@
               <table class="table table-striped b-t b-light">
                 <thead class="bg-light">
                   <tr>
-                    <th width="15%">客户</th>
+                    <!-- <th width="15%">品牌</th> -->
                     <th width="15%">门店</th>
                     <th width="15%">门店编码</th>
-                    <th width="10%">店长</th>
                     <th width="15%">添加时间</th>
-                    <th width="15%">关联播放列表数</th>
-                    <th>最后绑定时间</th>
+                    <!-- <th width="15%">关联播放列表数</th> -->
+                    <th width="10%" class="text-center">交付状态</th>
+                    <th width="10%" class="text-center">连接状态</th>
+                    <!-- <th>最后绑定时间</th> -->
                   </tr>
                 </thead>
                 <tbody>
                   <tr ng-repeat="row in normalizedDataSource | filter:searchText" st-select-row="row">
-                    <td><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></td>
+                    <!-- <td><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></td> -->
                     <td><a ui-sref="customers.store.detail({brandId:brand._id,storeId:row._id})">{{row.siteName}}</a></td>
                     <td>{{row.reference}}</td>
-                    <td>{{row.manager.name}}</td>
                     <td>{{row.created |  fromNow}}</td>
-                    <td>{{row.siteProgramsCount}}</td>
-                    <td><span ng-show="row.lastBindDate!=null">{{row.lastBindDate | fromNow}}</span></td>
+                    <!-- <td>{{row.siteProgramsCount}}</td> -->
+                    <td class="text-center"><i class="fa fa-circle text-success text-xs m-t-sm"></i></td>
+                    <td class="text-center"><i class="fa fa-circle text-success text-xs m-t-sm"></i></td>
+                    <!-- <td><span ng-show="row.lastBindDate!=null">{{row.lastBindDate | fromNow}}</span></td> -->
                   </tr>
                 </tbody>
               </table>

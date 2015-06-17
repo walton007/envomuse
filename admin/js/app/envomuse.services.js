@@ -1,5 +1,26 @@
 'use strict';
 
+
+//get customers basic info ==> for site bind
+app.factory('DashStats', ['$resource', function($resource) {
+    return $resource(
+      '/api/dashboard/', 
+    {
+      
+    },
+    {
+  
+      /*'get':  {method:'GET'},
+      'save':   {method:'POST'},
+      'query':  {method:'GET', isArray:true},
+      'remove': {method:'DELETE'},
+      'delete': {method:'DELETE'},*/
+      'get':{method:'GET',isArray:false}
+    });
+  }
+]);
+
+
 //Customers service : Customer REST endpoint
 app.factory('Customers', ['$resource', function($resource) {
     return $resource(
@@ -43,6 +64,18 @@ app.factory('CustomerSites', ['$resource', function($resource) {
     },
     {
       'getPageData': {method:'GET', isArray:false, params:{'pageNumber':1, 'pageSize':12}}
+    });
+  }
+]);
+
+app.factory('CustomerManager', ['$resource', function($resource) {
+    return $resource(
+      '/api/customers/:customerId/bindUser', 
+    {
+      customerId: '@_id'
+    },
+    {
+      'save':   {method:'POST'}
     });
   }
 ]);
@@ -237,6 +270,21 @@ app.factory('ProgramBindSite', ['$resource', function($resource) {
     },
     {
       'bind':{method:'POST'}
+    });
+  }
+]);
+
+//users
+
+///customers/:customerId/bindUser
+app.factory('Users', ['$resource', function($resource) {
+    return $resource(
+      '/api/users', 
+    {
+      
+    },
+    {
+      'allUsers': {method:'GET', isArray:true},
     });
   }
 ]);

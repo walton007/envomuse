@@ -20,7 +20,7 @@
     <!-- / main header -->
 
     <!-- main -->
-      <div class="col">
+      <div class="row">
         <div class="wrapper-md">
 
           <!-- alert -->
@@ -39,9 +39,10 @@
                   <div class="clear">
                     <div class="h3 m-t-xs m-b-xs">
                       {{item.name}}
+                      <i class="fa fa-circle text-{{item.isLeader?'success':'dker'}} pull-right text-xs m-t-sm"></i>
                     </div>
                     <small class="text-muted">{{item.title}}</small>
-                    <a href ng-click="editItem(item)"><i class="pull-right fa fa-edit"></i></a>
+                    <a href ng-click="editItem(item)"><i class="pull-right fa fa-edit" tooltip="修改"></i></a>
                   </div>
                 </div>
               </div>
@@ -91,7 +92,15 @@
           <div class="input-group m-b">
             <span class="input-group-addon"><i class="fa fa-user fa-fw text-muted"></i></span>
             <input type="text" class="form-control" ng-model="itemToEdit.name" placeholder="姓名">
+              <div class="checkbox">
+                <label class="i-checks">
+                  <input type="checkbox" ng-model="itemToEdit.isLeader" ng-checked="itemToEdit.isLeader">
+                  <i></i>
+                  品牌主要联系人
+                </label>
+              </div>
           </div>
+                
 
           <div class="input-group m-b">
             <div class="radio inline m-r-md">

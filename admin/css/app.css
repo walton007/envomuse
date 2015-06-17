@@ -5175,3 +5175,9 @@ a.text-#000000:hover {
     background-color: #7266ba;
   }
 }
+
+/*envomuse*/
+.fc-left,
+.fc-right{
+  display:none !important;
+}

@@ -1,4 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="app.settings.asideFolded = false; app.settings.asideDock = false;">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="app.settings.asideFolded = false; app.settings.asideDock = false;load();" ng-controller="DashboardCtrl">
   <!-- main -->
   <div class="col">
 
@@ -16,7 +16,7 @@
     </div>
     <!-- / main header -->
 
-    <div class="wrapper-md" ng-controller="FlotChartDemoCtrl">
+    <div class="wrapper-md">
       <!-- pannel -->
       <div class="row">
         <!-- entry -->
@@ -25,8 +25,8 @@
             
             <div class="col-xs-6">
               <a ui-sref="customers.dash" class="block panel padder-v item">
-                <span class="text-primary font-thin h1 block">88</span>
-                <span class="text-muted text-xs">客户</span>
+                <span class="text-primary font-thin h1 block">{{stats.totalCustomer}}</span>
+                <span class="text-muted text-xs">品牌</span>
                 <span class="bottom text-right w-full">
                   <i class="icon icon-trophy text-muted m-r-sm"></i>
                 </span>
@@ -35,7 +35,7 @@
 
             <div class="col-xs-6">
               <a ui-sref="tasks.dash" class="block panel padder-v item">
-                <span class="text-danger  font-thin h1 block">930</span>
+                <span class="text-danger  font-thin h1 block">{{stats.totalTask}}</span>
                 <span class="text-muted text-xs">任务</span>
                 <span class="bottom text-left w-full">
                   <i class="icon icon-drawer text-muted m-l-sm"></i>
@@ -46,7 +46,7 @@
 
             <div class="col-xs-6">
               <a ui-sref="jobs.dash" class="block panel padder-v item">
-                <span class="text-info font-thin h1 block">432</span>
+                <span class="text-info font-thin h1 block">{{stats.totalJobs}}</span>
                 <span class="text-muted text-xs">工作包</span>
                 <span class="top text-right w-full">
                   <i class="icon icon-layers text-muted m-r-sm"></i>
@@ -56,7 +56,7 @@
 
             <div class="col-xs-6">
               <a ui-sref="playlists.dash" class="block panel padder-v item">
-                <span class="text-success font-thin h1 block">432</span>
+                <span class="text-success font-thin h1 block">{{stats.totalPrograms}}</span>
                 <span class="text-muted text-xs">播放清单</span>
                 <span class="top text-left w-full">
                   <i class="icon icon-shuffle text-muted m-l-sm"></i>
@@ -71,11 +71,11 @@
         <div class="col-md-4">
           <div class="panel panel-default">
             <div class="panel-heading font-bold">
-              客户状态分类
+              品牌状态分类
             </div>
             <div class="panel-body text-center">
               <div ui-jq="plot" ui-options="
-                {{d3}},
+                {{dataCustomerStatus}},
                 {
                   series: { pie: { show: true, innerRadius: 0.5, stroke: { width: 0 }, label: { show: true, threshold: 0.05 } } },
                   colors: ['{{app.color.primary}}','{{app.color.info}}','{{app.color.success}}','{{app.color.warning}}','{{app.color.danger}}'],
@@ -97,18 +97,17 @@
             </div>
             <div class="panel-body text-center">
               <div class="inline">
-                <div ui-jq="easyPieChart"  ui-options="{
-                          percent: 68,
+                <div ui-jq="easyPieChart"  data-percent="{{siteDeliveryStats}}" ui-options="{
                           lineWidth: 10,
                           trackColor: '{{app.color.light}}',
                           barColor: '{{app.color.success}}',
                           scaleColor: '{{app.color.light}}',
                           size: 188,
                           lineCap: 'butt',
-                          animate: 2000
+                          animate: 1500
                         }">
                   <div>
-                    <span class="h2 m-l-sm step">68</span>%
+                    <span class="h2 m-l-sm step" >{{siteDeliveryStats}}</span>%
                     <div class="text text-sm">已安装终端</div>
                   </div>
                 </div>
@@ -123,7 +122,7 @@
       <!-- / panel -->
 
       <!-- sites stats -->
-      <div class="panel hbox hbox-auto-xs no-border">
+      <div class="panel hbox hbox-auto-xs no-border" ng-controller="FlotChartDemoCtrl">
         <div class="col wrapper">
           <i class="fa fa-circle-o text-info m-r-sm pull-right"></i>
           <h4 class="font-thin m-t-none m-b-none text-primary-lt">播放器状态</h4>

@@ -30,8 +30,50 @@ angular.module('app')
                   resolve: {
                     deps: ['$ocLazyLoad',
                       function( $ocLazyLoad ){
-                        return $ocLazyLoad.load(['js/controllers/chart.js']);
+                        return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
+                                                 'js/app/envomuse.services.js',
+                                                 'js/controllers/chart.js']);
                     }]
+                  }
+              })
+
+              .state('me', {
+                  abstract: true,
+                  url: '/me',
+                  templateUrl: 'tpl/app.me.html'
+              })
+              .state('me.home', {
+                  url: '/home',
+                  // templateUrl: 'tpl/com.envomuse/userhome.html',
+                  views: {
+                      '': {
+                          templateUrl: 'tpl/com.envomuse/userhome.html',
+                      },
+                      'footer': {
+                          templateUrl: 'tpl/com.envomuse/userhome.footer.html'
+                      }
+                  },
+                  resolve: {
+                      deps: ['$ocLazyLoad', 'uiLoad',
+                        function( $ocLazyLoad, uiLoad ){
+                          return uiLoad.load(
+                            JQ_CONFIG.fullcalendar.concat('js/app/calendar/calendar.me.js')
+                          ).then(
+                            function(){
+                              return $ocLazyLoad.load(['ui.calendar',
+                                              'com.2fdevs.videogular', 
+                                              'com.2fdevs.videogular.plugins.controls', 
+                                              'com.2fdevs.videogular.plugins.overlayplay',
+                                              'com.2fdevs.videogular.plugins.poster',
+                                              'com.2fdevs.videogular.plugins.buffering',
+                                              'js/app/music/ctrl.js', 
+                                              'js/app/music/theme.css',
+                                                 'js/app/envomuse.controllers.js',
+                                                 'js/app/envomuse.services.js']
+                                                 );
+                            }
+                          )
+                      }]
                   }
               })
 
@@ -125,7 +167,7 @@ angular.module('app')
                   parent: 'customers',
                   templateUrl: 'tpl/com.envomuse/customers_contact_new.html'
               })
-
+            
               //tasks
               .state('tasks', {
                   abstract: true,
@@ -321,7 +363,24 @@ angular.module('app')
                   }
               })
 
-              
+              /*//users
+              .state('users', {
+                abstract: true,
+                  url: '/users',
+                  // templateUrl: 'tpl/layout.html',
+                  templateUrl: 'tpl/app.html',
+                  resolve: {
+                    deps: ['$ocLazyLoad',
+                      function( $ocLazyLoad ){
+                        return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
+                                                 'js/app/envomuse.services.js']);
+                    }]
+                  }
+              })
+              .state('users.list', {
+                  url: '/',
+                  templateUrl: 'tpl/com.envomuse/users_list.html'
+              })  */  
 
               
               // pages

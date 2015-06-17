@@ -1,4 +1,42 @@
 //Customer-Brand
+app.controller('DashboardCtrl', ['$scope', 'DashStats', '$stateParams', 
+  function($scope, DashStats, $stateParams) {  
+
+    $scope.load = function() {
+      // $scope.stat = {};
+      
+      DashStats.get(function(res) {
+        // console.log(res);
+        $scope.stats = res.stats;
+        $scope.siteDeliveryStats = res.siteDeliveryStats.delivered===0?0:100*res.siteDeliveryStats.delivered/(res.siteDeliveryStats.delivered+res.siteDeliveryStats.undelivered);
+        $scope.customerStatus = res.customerStatus;
+
+        $scope.dataCustomerStatus = [ 
+          { label: "目标客户", data: res.customerStatus.目标客户 }, 
+          { label: "样品测试", data: res.customerStatus.demo },
+          { label: "签约客户", data: res.customerStatus.signed },
+          { label: "合约终止", data: res.inactive }
+        ];
+
+        // console.log($scope.siteDeliveryStats);
+      });
+  };
+}]);
+
+app.controller('UserHomeCtrl', ['$scope', 'Customers', 'CustomerManager', '$stateParams', function($scope, Customers, CustomerManager, $stateParams) {
+
+    $scope.d3 = [ 
+      { label: "LICENSE未激活", data: 20 }, 
+      { label: "待激活", data: 20 },
+      { label: "在线", data: 40 },
+      { label: "本地播放", data: 10 },
+      { label: "离线", data: 10 }
+    ];
+
+}]);
+
+
+//Customer-Brand
 app.controller('CustomerCountCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', 
   function($scope, Customers, Sites, $stateParams) {  
 
@@ -53,41 +91,85 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
 
   }]);
 
-app.controller('CustomerDetailCtrl', ['$scope', 'Customers', '$stateParams', function($scope, Customers, $stateParams) {
+app.controller('CustomerDetailCtrl', ['$scope', 'Customers', 'CustomerManager', '$stateParams', function($scope, Customers, CustomerManager, $stateParams) {
   Customers.get({'customerId':$stateParams.brandId},
     function(res) {
       $scope.brand = res;
+      $scope.leader = $scope.brand.contacts.filter(function(e){
+        return e.isLeader;
+      })[0];
+
+      // console.log($scope.leader);
     });
+  
+    $scope.d3 = [ 
+      { label: "LICENSE未激活", data: 20 }, 
+      { label: "待激活", data: 20 },
+      { label: "在线", data: 40 },
+      { label: "本地播放", data: 10 },
+      { label: "离线", data: 10 }
+    ];
+
+    //messaging
+  $scope.alerts = [];
+  $scope.closeAlert = function(index) {
+    $scope.alerts.splice(index, 1);
+  };
+
+
+  $scope.editItem = function(item){
+    $scope.itemToEdit = item;
+    $scope.showSetManager = true;
+  };
+
+  //save customer to save contacts
+  $scope.setManager = function(){
+    $scope.showSetManager = false;
+
+    CustomerManager.save({customerId:$scope.brand._id},function() {
+      $scope.alerts.push({type: 'success', msg: '成功设置管理员，请将密码交给管理员！'});
+    });
+
+  };
+
+
+
 }]);
 
 app.controller('CustomerNewCtrl', ['$scope', '$rootScope', '$state', 'Customers', function($scope,$rootScope, $state, Customers) {
   $scope.brand = {};
 
   $scope.industrylist = [
-    "奢侈品","酒店/宾馆","餐饮","服装业", "服务","美容","媒体","零售","设计","银行","金融","因特网","咨询","其它"
+    "奢侈品","时尚-服饰","美容美发","餐饮","零售","银行","酒店宾馆","汽车","航空","其它"
   ];
   $scope.statuslist = [
-    "目标客户","初步接触","DEMO展示","PILOT试用","合同中","合同终止","其它"
+    "目标客户","样品测试","签约客户","合约终止"
   ];
   $scope.updateperiodlist = [
-    "每月更新","每季度更新","半年更新","其它"
+    "每月更新","每2月更新","每季度更新","半年更新"
   ];
 
   $scope.createBrand = function(){
 
     var newCustomer = {
       brand: $scope.brand.name,
+      companyName: $scope.brand.companyName,
       logo:   $rootScope.myCroppedImage,
       industry: $scope.brand.industry,
       status: $scope.brand.status,
       updatePeriod: $scope.brand.updatePeriod,
       crmInfo: {
-        contractDate: ($scope.brand.contractdate!=null)?$scope.brand.contractdate.getTime():null
+        contractDate: ($scope.brand.contractStartDate!=null)?$scope.brand.contractStartDate.getTime():null,
+        endContractDate: ($scope.brand.contractEndDate!=null)?$scope.brand.contractEndDate.getTime():null
       },
       designFee: $scope.brand.designFee,
       setupFee: $scope.brand.setupFee,
       monthServiceFee: $scope.brand.monthServiceFee,
       otherFee: $scope.brand.otherFee,
+      otherFeeComment: $scope.brand.otherFeeComment,
+      telephone:$scope.brand.telephone,
+      fax:$scope.brand.fax,
+      address:$scope.brand.address,
       description: $scope.brand.description
     };
 
@@ -117,31 +199,33 @@ app.controller('CustomerEditCtrl', ['$scope', '$state', 'Customers', '$statePara
         $scope.alerts.splice(index, 1);
       };
 
-
   $scope.industrylist = [
-    "奢侈品","酒店/宾馆","餐饮","服装业", "服务","美容","媒体","零售","设计","银行","金融","因特网","咨询","其它"
+    "奢侈品","时尚-服饰","美容美发","餐饮","零售","银行","酒店宾馆","汽车","航空","其它"
   ];
   $scope.statuslist = [
-    "目标客户","初步接触","DEMO展示","PILOT试用","现有","合同已终止","其它"
+    "目标客户","样品测试","签约客户","合约终止"
   ];
   $scope.updateperiodlist = [
-    "每周更新","每月更新","每季度更新","半年更新","其它"
+    "每月更新","每2月更新","每季度更新","半年更新"
   ];
 
   $scope.saveBrand = function(){
     var customerUpdated = {
       _id: $scope.brand._id,
-      brand: $scope.brand.name,
-      industry: $scope.brand.industry,
-      status: $scope.brand.status,
-      updatePeriod: $scope.brand.updateperiod,
+      
+      companyName: $scope.brand.companyName,
       crmInfo: {
-        contractDate: $scope.brand.crmInfo.contractDate
+        contractDate: ($scope.brand.contractDate!=null)?$scope.brand.contractDate.getTime():null,
+        endContractDate: ($scope.brand.contractEndDate!=null)?$scope.brand.contractEndDate.getTime():null
       },
       designFee: $scope.brand.designFee,
       setupFee: $scope.brand.setupFee,
       monthServiceFee: $scope.brand.monthServiceFee,
       otherFee: $scope.brand.otherFee,
+      otherFeeComment: $scope.brand.otherFeeComment,
+      telephone:$scope.brand.telephone,
+      fax:$scope.brand.fax,
+      address:$scope.brand.address,
       description: $scope.brand.description
     };
 
@@ -390,6 +474,7 @@ app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', '$state
 
     var newContact = {
       name: $scope.contact.name,
+      isLeader: $scope.contact.isLeader,
       gender: $scope.contact.gender,
       birthday: $scope.contact.birthday !=null ? $scope.contact.birthday.getTime():"",
       workmobile: $scope.contact.workmobile,
@@ -652,11 +737,11 @@ app.controller('BoxDetailCtrl', ['$scope', 'BoxById', '$stateParams', function($
   BoxById.get({'jobId':$stateParams.jobId,'boxId':$stateParams.boxId},
     function(res) {
       $scope.box = res;
-      console.log($scope.box);
+      // console.log($scope.box);
       });
 
   //console.log($scope.program);
-  console.log($scope.box);
+  // console.log($scope.box);
 
 }]);
 
@@ -943,6 +1028,47 @@ app.controller('PlaylistBindCtrl', ['$scope', 'CustomersBasic', 'CustomerSites',
       { type: 'warning', msg: 'Warning! Best check yo self, you are not looking too good...' }*/
     });
   };
+
+}]);
+
+
+app.controller('UserListCtrl', ['$scope', 'Users', '$stateParams', function($scope, Users, $stateParams) {
+
+  //messaging
+    $scope.alerts = [];
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
+      };
+
+  Users.allUsers({},
+    function(res) {
+      // console.log(res);
+      $scope.datasource = res;
+    }); 
+
+  $scope.editItem = function(item){
+    item.editing = true;
+    $scope.itemToEdit = item;
+    $scope.showEdit = true;
+  };
+
+  //save customer to save contacts
+  $scope.saveUser = function(){
+    $scope.showEdit = false;
+
+    /*var userUpdated = {
+      _id: $scope.brand._id,
+      contacts:$scope.datasource
+    };
+
+    var customer = new Customers(customerUpdated);
+    customer.$update(function(customer) {
+      $scope.alerts.push({type: 'success', msg: $scope.itemToEdit.name + '修改成功！'});
+      $state.go('customers.contact',{brandId:customer._id});
+    });*/
+
+  };
+
 
 }]);
 

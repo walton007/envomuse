@@ -65,7 +65,7 @@
                       <div class="panel-body">
                         <div class="h5" >
                           <div class="list-group no-radius alt" ng-repeat="b in r.boxes">
-                            <a class="list-group-item" ui-sref="jobs.box({boxId:b._id,jobId:job._id})">
+                            <a class="list-group-item" ui-sref="jobs.box({boxId:b.name,jobId:job._id})">
                               {{b.name}}
                             </a>
                           </div>
