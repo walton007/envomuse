@@ -23,7 +23,7 @@ app.controller('FullcalendarCtrl', ['$scope', 'ProgramById', '$stateParams', fun
             var d = playlist.dayPrograms[i].date;//date string
             var e={
               id:playlist.dayPrograms[i]._id,
-              title: playlist.dayPrograms[i].displayDate,
+              title: playlist.name,
               allDay:true,
               start:new Date(d),
               //end:endMoment,
@@ -77,7 +77,10 @@ app.controller('FullcalendarCtrl', ['$scope', 'ProgramById', '$stateParams', fun
     /* config object */
     $scope.uiConfig = {
       calendar:{
-        height: 450,
+        minTime: '8:00',
+        maxTime: '23:00',
+        allDaySlot: false,
+        height: 600,
         editable: false,
         firstDay:1,//Monday as first day
         weekNumbers:false,

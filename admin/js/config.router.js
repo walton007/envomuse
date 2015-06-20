@@ -350,17 +350,7 @@ angular.module('app')
               })
               .state('playlists.associate', {
                   url: '/:playlistId/bind',
-                  params : {
-                    playlistContent:null
-                  },
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/playlists_bind.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/playlists_bind_footer.html'
-                      }
-                  }
+                  templateUrl: 'tpl/com.envomuse/playlists_bind.html'
               })
 
               /*//users

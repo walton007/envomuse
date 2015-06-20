@@ -63,11 +63,11 @@ app.controller('FullMecalendarCtrl', ['$scope', 'ProgramById', '$stateParams', f
     /* config object */
     $scope.uiConfig = {
       calendar:{
-        minTime: '6:00',
+        minTime: '8:00',
         maxTime: '23:00',
         allDaySlot: false,
         defaultView: 'agendaWeek',
-        height: 400,
+        height: 600,
         editable: false,
         firstDay:1,//Monday as first day
         weekNumbers:false,

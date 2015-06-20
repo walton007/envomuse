@@ -74,6 +74,8 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
           $scope.bigTotalItems = res.count;
           $scope.datasource = res.data;
 
+          console.log(res.data);
+
           $scope.normalizedDataSource = $scope.datasource.map(function(e){
             return {
               _id:e._id,
@@ -143,7 +145,10 @@ app.controller('CustomerNewCtrl', ['$scope', '$rootScope', '$state', 'Customers'
     "奢侈品","时尚-服饰","美容美发","餐饮","零售","银行","酒店宾馆","汽车","航空","其它"
   ];
   $scope.statuslist = [
-    "目标客户","样品测试","签约客户","合约终止"
+    {key:"prospect", value:"目标客户"},
+    {key:"demo", value:"样品测试"},
+    {key:"singed", value:"签约客户"},
+    {key:"inactive", value:"合约终止"}
   ];
   $scope.updateperiodlist = [
     "每月更新","每2月更新","每季度更新","半年更新"
@@ -974,10 +979,15 @@ app.controller('DailyPlaylistDetailCtrl', ['$scope', 'ProgramById', '$stateParam
 
 }]);
 
-app.controller('PlaylistBindCtrl', ['$scope', 'CustomersBasic', 'CustomerSites', 'ProgramBindSite', '$stateParams', function($scope, CustomersBasic, CustomerSites, ProgramBindSite, $stateParams) {
+app.controller('PlaylistBindCtrl', ['$scope', 'ProgramById','CustomersBasic', 'CustomerSites', 'ProgramBindSite', '$stateParams', function($scope,ProgramById, CustomersBasic, CustomerSites, ProgramBindSite, $stateParams) {
 
   $scope.init = function(){
-    $scope.playlist = $stateParams.playlistContent;
+
+    ProgramById.get({'programId':$stateParams.playlistId},
+    function(res) {
+      $scope.playlist = res;
+    });
+
     $scope.checkedSites = [];
 
     //messaging

@@ -16,6 +16,7 @@ app.controller('SigninFormController', ['$scope', '$http', '$state', function($s
           $state.go('app.dashboard');
         }
       }, function(response) {
+          console.log(response);
           $scope.authError = response.data[0].msg;
       });
     };

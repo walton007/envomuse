@@ -1,9 +1,9 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="app.settings.asideFolded = false; app.settings.asideDock = true;" ng-controller="UserHomeCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="app.settings.asideFolded = false; app.settings.asideDock = true; showSiteStatistic=false" ng-controller="UserHomeCtrl">
 
   <!-- main -->
   <div class="col">
     <div class="row wrapper">
-      <div class="col-md-4">
+      <div class="col-md-4" ng-show="showSiteStatistic">
         <div class="panel panel-default">
           <div class="panel-heading font-bold">
             门店状态
@@ -24,16 +24,16 @@
         </div> 
 
         
-        <!-- <div class="panel panel-default">
+        <div class="panel panel-default">
           <div class="panel-heading font-bold">
             门店列表
           </div>
           <div class="panel-heading">
             <div class="row m-t-md">
-              <div class="col-sm-4">
+              <div class="col-sm-6">
                 <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
               </div>
-              <div class="col-sm-4">
+              <div class="col-sm-6">
                 <div class="input-group">
                   <input type="text" class="input-sm form-control" placeholder="输入查找内容" ng-model="searchText">
                   <span class="input-group-btn">
@@ -50,8 +50,6 @@
                 <tr>
                   <th width="15%">门店</th>
                   <th width="15%">门店编码</th>
-                  <th width="15%">添加时间</th>
-                  <th width="10%" class="text-center">交付状态</th>
                   <th width="10%" class="text-center">连接状态</th>
                 </tr>
               </thead>
@@ -59,23 +57,23 @@
                 <tr ng-repeat="row in normalizedDataSource | filter:searchText" st-select-row="row">
                   <td><a ui-sref="customers.store.detail({brandId:brand._id,storeId:row._id})">{{row.siteName}}</a></td>
                   <td>{{row.reference}}</td>
-                  <td>{{row.created |  fromNow}}</td>
-                  <td class="text-center"><i class="fa fa-circle text-success text-xs m-t-sm"></i></td>
                   <td class="text-center"><i class="fa fa-circle text-success text-xs m-t-sm"></i></td>
                 </tr>
               </tbody>
             </table>
           </div>
-        </div> -->
+        </div>
       </div> 
 
-      <div class="col-md-8">
+      <div class="col">
         <div class="panel panel-default">
           <div class="panel-heading font-bold">
             本周播放日历
+            <button class="btn m-b-xs btn-sm btn-info btn-addon m-l" ng-click="showSiteStatistic=true" ng-show="!showSiteStatistic"><i class="fa fa-angle-left"></i>显示门店信息</button>
+            <button class="btn m-b-xs btn-sm btn-info btn-addon m-l" ng-click="showSiteStatistic=false" ng-show="showSiteStatistic"><i class="fa fa-angle-right"></i>隐藏门店信息</button>
           </div>
           <div class="panel-body text-center" ng-controller="FullMecalendarCtrl">
-            <div class="pos-rlt">
+            <div class="pos-rlt userhome">
               <div class="fc-overlay">
                 <div class="panel bg-white b-a pos-rlt">
                   <span class="arrow"></span>

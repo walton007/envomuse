@@ -39,7 +39,7 @@
                   </div>
                   <small class="text-muted clearfix">开始：{{item.startDate | date:"yyyy-MM-dd"}}</small>
                   <small class="text-muted clearfix">结束：{{item.endDate | date:"yyyy-MM-dd"}}</small>
-                  <small class="text-muted clearfix">目标客户：<a ui-sref="customers.brand.detail({brandId:item.associatedBrandId})">{{item.associatedBrandName}}</a></small>
+                  <small class="text-muted clearfix">目标品牌：<a ui-sref="customers.brand.detail({brandId:item.associatedBrandId})">{{item.associatedBrandName}}</a></small>
                   <small class="text-muted clearfix">创建时间：{{item.created | fromNow}}</small>
                 </div>
               </div>
@@ -66,10 +66,10 @@
   <!-- /main body -->
 
   <!-- right col -->
-  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
+  <!-- <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
     <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
     </div>
-  </div>
+  </div> -->
   <!-- / right col -->
   </div>
 </div>

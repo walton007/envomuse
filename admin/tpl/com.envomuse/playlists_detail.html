@@ -11,8 +11,8 @@
         <div class="col-sm-6 text-right hidden-xs">
 
           <div class="btn-group dropdown" dropdown>
-            <a class="btn m-b-xs btn-sm btn-primary btn-addon" ng-show="isCollapsed" ng-click="isCollapsed=false"><i class="fa fa-random"></i>关联门店{{$scope.precision}}</a>
-            <a class="btn m-b-xs btn-sm btn-primary btn-addon" ng-show="!isCollapsed" ng-click="isCollapsed=true"><i class="fa fa-toggle-left"></i>隐藏</a>
+            <a ui-sref="playlists.associate({playlistId:programId})" class="btn m-b-xs btn-sm btn-primary btn-addon"><i class="fa fa-random"></i>关联门店</a>
+            <!-- <a class="btn m-b-xs btn-sm btn-primary btn-addon" ng-show="!isCollapsed" ng-click="isCollapsed=true"><i class="fa fa-toggle-left"></i>隐藏</a> -->
           </div>
 
         </div>

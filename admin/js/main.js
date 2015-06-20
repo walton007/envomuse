@@ -4,15 +4,30 @@
 
 angular.module('app')
   .controller('AppCtrl', ['$scope', '$translate', '$localStorage', '$window', '$location', 
-    function($scope,   $translate,   $localStorage,   $window, $location ) {
+    function($scope, $translate,   $localStorage,   $window, $location ) {
       // add 'ie' classes to html
       var isIE = !!navigator.userAgent.match(/MSIE/i);
       isIE && angular.element($window.document.body).addClass('ie');
       isSmartDevice( $window ) && angular.element($window.document.body).addClass('smart');
 
+      //demo user for dev
+      //TODO: to delte after dev completed
+      window.user = {
+        _id:"557bd7f5fe16550f326cc0d4",
+        name:"aaaaaaaa@qq.com",
+        username:"aaaaaaaa@qq.com",
+        email:"aaaaaaaa@qq.com",
+        __v:0,
+        provider:"local",
+        roles:["customer"],
+        redirect:false,
+        brandId:"5563f5e9aeeb1ae705846c93"
+      }
+
       if (!window.user._id) {
         return $location.url('/access/signin');
       }
+
       
       // config
       $scope.app = {

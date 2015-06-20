@@ -7,8 +7,8 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">品牌管理</a></h1>
-          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a> {{store.siteName | uppercase}}店</small>
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">门店管理</a></h1>
+          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a> > <a ui-sref="customers.store({brandId:brand._id})">门店管理</a> > {{store.siteName | uppercase}}店</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
 

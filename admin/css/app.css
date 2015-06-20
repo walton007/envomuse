@@ -5177,7 +5177,7 @@ a.text-#000000:hover {
 }
 
 /*envomuse*/
-.fc-left,
-.fc-right{
+.userhome .fc-left,
+.userhome .fc-right{
   display:none !important;
 }

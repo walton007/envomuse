@@ -29,14 +29,14 @@
           <div class="col-sm-7">
             <div class="clear">
               <span class="h4 text-black m-r"><i class="icon icon-layers m-r"></i>{{job.programName | uppercase }}</span>
-              <span class="h4 text-black">目标客户：{{job.custumorName | uppercase }}</span>
+              <span class="h4 text-black">目标品牌：{{job.custumorName | uppercase }}</span>
               <small class="m-l">创作者：{{job.creator}}</small>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="col-sm-8">
+      <div class="col">
         <tabset class="nav-tabs-alt" justified="true">
           <tab ng-repeat="row in job.programRule.playlists">
             <tab-heading>
@@ -80,23 +80,7 @@
       </div>
         
       <!-- <div class="pull-right pull-none-xs text-center"> -->
-      <div class="col-sm-4 bg-auto no-border-xs" ng-show="job.programs.length>0">
-      <!-- generated programs -->
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <span class="m-r-lg">已生成的播放清单</span>
-          </div>
-          <div class="list-group no-radius alt">
-            <a class="list-group-item" ui-sref="playlists.detail({playlistId:r._id})" ng-repeat="r in job.programs | orderBy: 'created'">
-              <span class="badge bg-success">{{r.siteRefCount}}</span>
-              {{r.name}}
-              <span class="clearfix"><i class="fa fa-angle-double-left fa-fw text-muted"></i>{{r.startDate | date:'yyyy-MM-dd'}} 到
-              {{r.endDate | date:'yyyy-MM-dd'}}<i class="fa fa-angle-double-right fa-fw text-muted"></i></span>
-            </a>
-          </div>
-        </div>
-      <!-- /generated programs -->
-      </div>
+     
   </div>
     <!-- /job detail -->
 
@@ -108,7 +92,7 @@
   </div>
 
   <!-- right col -->
-  <div class="col w-md bg-white-only b-l bg-auto no-border-xs" name="settingPanel" ng-show="!isCollapsed">
+  <div class="col w-lg-x bg-white-only bg-auto no-border-xs" name="settingPanel" ng-show="!isCollapsed">
     <!-- start program setting --> 
     <div class="panel-body b wrapper-md">
       <h4 class="m-t-none m-b text-center font-thin">新播放清单设置</h4>
@@ -156,6 +140,24 @@
           </div>
         </form>
       </div>
+
+      <!-- generated programs -->
+      <div class="panel-body b wrapper-md" ng-show="job.programs.length>0">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="m-r-lg">已生成的播放清单</span>
+          </div>
+          <div class="list-group no-radius alt">
+            <a class="list-group-item" ui-sref="playlists.detail({playlistId:r._id})" ng-repeat="r in job.programs | orderBy: '-created'">
+              <span class="badge bg-{{r.siteRefCount>0?'success':'dark'}}">{{r.siteRefCount}}</span>
+              {{r.name}} <span class="badge bg-light m-l">{{r.created | fromNow}}</span>
+              <span class="clearfix"><i class="fa fa-angle-double-left fa-fw text-muted"></i>{{r.startDate | date:'yyyy-MM-dd'}} 到
+              {{r.endDate | date:'yyyy-MM-dd'}}<i class="fa fa-angle-double-right fa-fw text-muted"></i></span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- /generated programs -->
     <!-- end program setting -->
   </div>
     <!-- / right col -->

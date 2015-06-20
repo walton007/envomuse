@@ -46,9 +46,9 @@
                 <div class="panel-body">
 
                   <div class="form-group">
-                    <label class="col-lg-2 control-label">客户</label>
+                    <label class="col-lg-2 control-label">品牌</label>
                     <div class="col-lg-8">
-                      <select ui-jq="chosen" ng-change="showStores()" data-placeholder="选择客户" class="form-control" ng-model="selectedBrandId">
+                      <select ui-jq="chosen" ng-change="showStores()" data-placeholder="选择品牌" class="form-control" ng-model="selectedBrandId">
                         <option ng-repeat="b in customers" value="{{b._id}}">{{b.brand}}</option>
                       </select>
                     </div>
@@ -63,7 +63,7 @@
 
                       <div class="panel-body">
                         <div ng-show="sites.length === 0">
-                          该客户暂时没有店铺，请先添加店铺再绑定。
+                          该品牌暂时没有店铺，请先添加店铺再绑定。
                           <span class="text-lt"><a ui-sref="customers.brand.detail({brandId:selectedBrandId})">>去添加店铺</a></span>
                         </div>
                         <div class="col-sm-4" ng-repeat="s in sites">
