@@ -3,13 +3,16 @@
 /**
  * Module dependencies.
  */
-var comingJobsCommand = require('../../../../../zeromq/comingJobsCommand');
+var mongoose = require('mongoose'),
+  zmqAgent = require('../zmqclient/client'),
+  _ = require('lodash');
+
 
 /**
  * Get allTasks
  */
 exports.allTasks = function(req, res) {
-  comingJobsCommand.allTasks(function (tasks) {
+  zmqAgent.sendCmd('comingJobs', ['allTasks'], function(tasks) {
     res.json(tasks);
   });
 };
@@ -19,10 +22,27 @@ exports.allTasks = function(req, res) {
  */
 exports.import = function(req, res) {
   var comingJobsId = req.comingJobsId;
-  comingJobsCommand.doImport(function (taskId) {
+  zmqAgent.sendCmd('comingJobs', ['doImport', comingJobsId], function(taskId) {
     res.json({
       taskId: taskId
     });
+  });
+};
+
+/**
+ * Delete an customer
+ */
+exports.destroy = function(req, res) {
+  var customer = req.customer;
+
+  customer.remove(function(err) {
+    if (err) {
+      return res.status(500).json({
+        error: 'Cannot delete the customer'
+      });
+    }
+    res.json(customer);
+
   });
 };
 
@@ -30,7 +50,8 @@ exports.import = function(req, res) {
  * forceRefresh
  */
 exports.forceRefresh = function(req, res) {
-  comingJobsCommand.forceRefresh(function (comingJobs) {
+  zmqAgent.sendCmd('comingJobs', ['forceRefresh'], function(comingJobs) {
+    // console.log('forceRefresh comingJobs:', comingJobs);
     res.json(comingJobs);
   });
 };
@@ -40,7 +61,7 @@ exports.forceRefresh = function(req, res) {
  * List of comingJobs
  */
 exports.all = function(req, res) {
-  comingJobsCommand.all(function (comingJobs) {
+  zmqAgent.sendCmd('comingJobs', ['all'], function(comingJobs) {
     res.json(comingJobs);
   });
 };
@@ -53,8 +74,8 @@ exports.statistic = function(req, res, next) {
     next();
     return;
   }
-
-  comingJobsCommand.statistic(function (rst) {
+  zmqAgent.sendCmd('comingJobs', ['statistic'], function(rst) {
+    console.log(rst);
     res.json({
       'notImport': (rst.notImport ? rst.notImport : 0),
       'importing': (rst.importing ? rst.importing : 0),

@@ -3,20 +3,22 @@
 /* jshint -W098 */
 var express = require('express'),
    mean = require('meanio'),
+   config = mean.loadConfig(),
    customer = require('../controllers/customer'),
    sites = require('../controllers/site'),
    programs = require('../controllers/program'),
-   comingJobs = require('../controllers/comingJob'),
    jobs = require('../controllers/job'),
    songs = require('../controllers/song'),
    users = require('../controllers/user'),
    dashboard = require('../controllers/dashboard'),
-   sitePrograms = require('../controllers/siteProgram');
+   sitePrograms = require('../controllers/siteProgram'),
+   comingJobs = (config.enableZmq) ? require('../controllers/comingJobZmq') : require('../controllers/comingJob');
+
 
 // The Package is past automatically as first parameter
 module.exports = function(Envomuse, app, auth, database) {
   //Set musicAssert
-  var config = mean.loadConfig();
+  
   app.use('/musicAssert', express.static(config.root + '/'+ config.musicAssert));
 
   var apiRouter = express.Router();
