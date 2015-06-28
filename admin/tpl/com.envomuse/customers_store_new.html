@@ -1,131 +1,107 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="StoreNewCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="showHelp=false;" ng-controller="StoreNewCtrl">
 
-<!-- main -->
   <div class="col">
-    <!-- main header -->
-    <div class="bg-light lter b-b wrapper-md">
-      <div class="row">
-        <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">品牌管理</a></h1>
-          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a> > <a ui-sref="customers.store({brandId:brand._id})">门店管理</a> > 新增门店</small>
-        </div>
-        <div class="col-sm-6 text-right hidden-xs">
-          <div class="btn-group dropdown" dropdown>
-            <a class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="customers.store.add({brandId:brand._id})"><i class="fa fa-plus"></i>添加门店</a>
+    <div class="wrapper-md">
+      <h4 class="panel-heading font-bold">新增店铺<a href><small class="text-muted m-l" ng-click="showHelp=true;" ng-show="!showHelp">显示帮助</small><small class="text-muted m-l" ng-click="showHelp=false;" ng-show="showHelp">隐藏帮助</small></a></h4></h4>
+        <div class="panel-body">
+          <form name="form" class="form-horizontal m-t-lg form-validation">
+            <div class="form-group">
+              <label class="col-lg-2 control-label">店铺ID</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="store.reference" placeholder="必填" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">店名</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="store.sitename" placeholder="必填" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+            <label class="col-lg-2 control-label">省份</label>
+            <div class="col-lg-8">
+              <select ui-jq="chosen" class="form-control" ng-model="store.province">
+                <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list}}</option>
+              </select>
+            </div>
           </div>
-          <div class="btn-group m-l-sm">
-            <a class="btn m-b-xs btn-sm btn-info btn-addon" ng-click="showHelp=!showHelp"><i class="fa fa-question"></i>帮助</a>
+
+          <div class="form-group">
+            <label class="col-lg-2 control-label">城市</label>
+            <div class="col-lg-8">
+              <select ui-jq="chosen" class="form-control" ng-model="store.city">
+                <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list}}</option>
+              </select>
+            </div>
           </div>
-        </div>
+
+          <div class="form-group">
+            <label class="col-lg-2 control-label">详细地址</label>
+            <div class="col-lg-8">
+              <input type="text" class="form-control" ng-model="store.address" placeholder="必填" required>
+            </div>
+          </div>
+
+          <!-- <div class="form-group">
+            <label class="col-lg-2 control-label">商圈</label>
+            <div class="col-lg-8">
+              <input type="text" class="form-control" ng-model="store.businesscenter" placeholder="必填" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-2 control-label">店长</label>
+            <div class="col-lg-8">
+              <select ui-jq="chosen" class="form-control" ng-model="store.manager" placeholder="必填" required>
+                <option ng-repeat="list in contacts" value="{{list}}">{{list.name}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-2 control-label">国家</label>
+            <div class="col-lg-8">
+              <select ui-jq="chosen" class="form-control" ng-model="store.country" >
+                <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list}}</option>
+              </select>
+            </div>
+          </div>
+
+          
+
+          <div class="form-group">
+            <label class="col-lg-2 control-label">经度</label>
+            <div class="col-lg-8">
+              <input type="text" class="form-control" ng-model="store.latitude">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-2 control-label">纬度</label>
+            <div class="col-lg-8">
+              <input type="text" class="form-control" ng-model="store.longitude">
+            </div>
+          </div> -->
+
+          <div class="line line-dashed b-b line-lg pull-in"></div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">详细描述</label>
+            <div class="col-sm-8">
+              <textarea class="form-control h-auto" style="min-height:200px;" ng-model="store.description">{{store.description}}
+              </textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-lg-8 col-lg-offset-2">
+              <button class="btn btn-success w-xs pull-right" ng-disabled="form.$invalid" ng-click="createStore()">添加</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-    <!-- / main header -->
-
-    <!-- main -->
-      <div class="row">
-        <div class="wrapper-md">
-          <h4 class="panel-heading font-bold">新增店铺</h4>
-            <div class="panel-body">
-              <form name="form" class="form-horizontal m-t-lg form-validation">
-                <div class="form-group">
-                  <label class="col-lg-2 control-label">店铺ID</label>
-                  <div class="col-lg-8">
-                    <input type="text" class="form-control" ng-model="store.reference" placeholder="必填" required>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-lg-2 control-label">店名</label>
-                  <div class="col-lg-8">
-                    <input type="text" class="form-control" ng-model="store.sitename" placeholder="必填" required>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                <label class="col-lg-2 control-label">省份</label>
-                <div class="col-lg-8">
-                  <select ui-jq="chosen" class="form-control" ng-model="store.province">
-                    <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list}}</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">城市</label>
-                <div class="col-lg-8">
-                  <select ui-jq="chosen" class="form-control" ng-model="store.city">
-                    <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list}}</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">详细地址</label>
-                <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.address" placeholder="必填" required>
-                </div>
-              </div>
-
-              <!-- <div class="form-group">
-                <label class="col-lg-2 control-label">商圈</label>
-                <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.businesscenter" placeholder="必填" required>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">店长</label>
-                <div class="col-lg-8">
-                  <select ui-jq="chosen" class="form-control" ng-model="store.manager" placeholder="必填" required>
-                    <option ng-repeat="list in contacts" value="{{list}}">{{list.name}}</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">国家</label>
-                <div class="col-lg-8">
-                  <select ui-jq="chosen" class="form-control" ng-model="store.country" >
-                    <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list}}</option>
-                  </select>
-                </div>
-              </div>
-
-              
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">经度</label>
-                <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.latitude">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">纬度</label>
-                <div class="col-lg-8">
-                  <input type="text" class="form-control" ng-model="store.longitude">
-                </div>
-              </div> -->
-
-              <div class="line line-dashed b-b line-lg pull-in"></div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">详细描述</label>
-                <div class="col-sm-8">
-                  <textarea class="form-control h-auto" style="min-height:200px;" ng-model="store.description">{{store.description}}
-                  </textarea>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <div class="col-lg-8 col-lg-offset-2">
-                  <button class="btn btn-success w-xs pull-right" ng-disabled="form.$invalid" ng-click="createStore()">添加</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
   </div>
-  <!-- /main -->
 
   <!-- right col -->
   <div class="col w-md bg-white-only b-l bg-auto no-border-xs" ng-show="showHelp">

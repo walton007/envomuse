@@ -77,6 +77,26 @@ angular.module('app')
                   }
               })
 
+              //channels
+              .state('channels', {
+                  abstract: true,
+                  url: '/channels',
+                  //templateUrl: 'tpl/layout.html',
+                  templateUrl: 'tpl/app.html',
+                  resolve: {
+                    deps: ['$ocLazyLoad',
+                      function( $ocLazyLoad ){
+                        return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
+                                                 'js/app/envomuse.services.js',
+                                                 'js/filters/fromNow.js']);
+                    }]
+                  }
+              })
+              .state('channels.list', {
+                  url: '/',
+                  templateUrl: 'tpl/com.envomuse/channels_dash.html'
+              })
+
               //customer
               .state('customers', {
                   abstract: true,
@@ -92,10 +112,10 @@ angular.module('app')
                     }]
                   }
               })
-              .state('customers.dash', {
+              /*.state('customers.dash', {
                 url: '/',
                 templateUrl: 'tpl/com.envomuse/customers_dashboard.html'
-              })
+              })*/
               .state('customers.brand', {
                   url: '/list/',
                   templateUrl: 'tpl/com.envomuse/customers_list.html'

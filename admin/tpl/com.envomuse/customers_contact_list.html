@@ -2,81 +2,62 @@
 
 <!-- main -->
   <div class="col">
-  
-    <!-- main header -->
-    <div class="bg-light lter b-b wrapper-md">
-      <div class="row">
-        <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">品牌管理</a></h1>
-          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a> 所有联系人</small>
-        </div>
-        <div class="col-sm-6 text-right hidden-xs">
-          <div class="btn-group dropdown" dropdown>
-            <a class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="customers.contact.add({brandId:brand._id})"><i class="fa fa-plus"></i>添加联系人</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- / main header -->
 
     <!-- main -->
-      <div class="row">
-        <div class="wrapper-md">
+    <div class="wrapper">
 
-          <!-- alert -->
-          <div class="m-b-md">
-            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
-          </div>
-          <!-- / alert -->
+      <!-- alert -->
+      <div class="m-b-md">
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+      </div>
+      <!-- / alert -->
 
-          <div ng-repeat="item in datasource" class="col-sm-4">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <div class="clearfix">
-                  <div class="pull-left thumb-md avatar b-3x m-r">
-                    <img src="img/a2.jpg" alt="...">
-                  </div>
-                  <div class="clear">
-                    <div class="h3 m-t-xs m-b-xs">
-                      {{item.name}}
-                      <i class="fa fa-circle text-{{item.isLeader?'success':'dker'}} pull-right text-xs m-t-sm"></i>
-                    </div>
-                    <small class="text-muted">{{item.title}}</small>
-                    <a href ng-click="editItem(item)"><i class="pull-right fa fa-edit" tooltip="修改"></i></a>
-                  </div>
-                </div>
+      <div ng-repeat="item in datasource" class="col-sm-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="clearfix">
+              <div class="pull-left thumb-md avatar b-3x m-r">
+                <img src="img/a2.jpg" alt="...">
               </div>
-              <div class="list-group no-radius alt">
-                <a class="list-group-item" href>
-                  <span class="pull-right">{{item.workmobile}}</span>
-                  <i class="fa fa-phone fa-fw text-muted"></i> 
-                  工作电话
-                </a>
-                <a class="list-group-item" href>
-                  <span class="pull-right">{{item.email}}</span>
-                  <i class="fa fa-envelope-o fa-fw text-muted"></i> 
-                  Email
-                </a>
-                <a class="list-group-item" href >
-                  <span class="pull-right">{{item.wechat}}</span>
-                  <i class="fa fa-wechat fa-fw text-muted"></i> 
-                  微信
-                </a>
-                <a class="list-group-item" href>
-                  <span class="pull-right">{{item.qq}}</span>
-                  <i class="fa fa-qq fa-fw text-muted"></i> 
-                  QQ
-                </a>
-                <a class="list-group-item" href>
-                  <span class="pull-right">{{item.privatemobile}}</span>
-                  <i class="fa fa-mobile fa-fw text-muted"></i> 
-                  私人电话
-                </a>
+              <div class="clear">
+                <div class="h3 m-t-xs m-b-xs">
+                  {{item.name}}
+                  <i class="fa fa-circle text-{{item.isLeader?'success':'dker'}} pull-right text-xs m-t-sm"></i>
+                </div>
+                <small class="text-muted">{{item.title}}</small>
+                <a href ng-click="editItem(item)"><i class="pull-right fa fa-edit" tooltip="修改"></i></a>
               </div>
             </div>
           </div>
+          <div class="list-group no-radius alt">
+            <a class="list-group-item" href>
+              <span class="pull-right">{{item.workmobile}}</span>
+              <i class="fa fa-phone fa-fw text-muted"></i> 
+              工作电话
+            </a>
+            <a class="list-group-item" href>
+              <span class="pull-right">{{item.email}}</span>
+              <i class="fa fa-envelope-o fa-fw text-muted"></i> 
+              Email
+            </a>
+            <a class="list-group-item" href >
+              <span class="pull-right">{{item.wechat}}</span>
+              <i class="fa fa-wechat fa-fw text-muted"></i> 
+              微信
+            </a>
+            <a class="list-group-item" href>
+              <span class="pull-right">{{item.qq}}</span>
+              <i class="fa fa-qq fa-fw text-muted"></i> 
+              QQ
+            </a>
+            <a class="list-group-item" href>
+              <span class="pull-right">{{item.privatemobile}}</span>
+              <i class="fa fa-mobile fa-fw text-muted"></i> 
+              私人电话
+            </a>
+          </div>
         </div>
-
+      </div>
     </div>
   </div>
   <!-- /main -->

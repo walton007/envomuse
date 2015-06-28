@@ -1,0 +1,61 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="ChannelsDashCtrl">
+  <div class="col">
+
+    <!-- main header -->
+    <div class="bg-light lter b-b wrapper-md">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.brand">频道管理</a></h1>
+          <small class="text-muted">管理各品牌频道及播放编排</small>
+        </div>
+        <div class="col-sm-6 text-right hidden-xs">
+
+        </div>
+      </div>
+    </div>
+    <!-- / main header -->
+
+    <!-- brand list -->
+    <div class="col w-lg bg-light b-r bg-auto" style="height:500px">
+      <div class="vbox">
+        <div class="wrapper-md dker b-b">
+          <div class="input-group">
+             <input type="text" class="form-control" ng-model="brandSearchText" placeholder="品牌名称">
+             <div class="input-group-btn">
+                <button type="button" class="btn btn-default">查找</button>
+             </div>
+          </div>
+        </div>
+        <div class="row-row">
+          <div class="cell">
+            <div class="cell-inner">
+
+              <accordion close-others="true">
+                <accordion-group ng-repeat="b in customerDataItems | filter:brandSearchText">
+                  <accordion-heading><i class="icon icon-trophy text-muted m-r"></i>{{b.brand | uppercase}}</accordion-heading>
+                    <button class="btn btn-default btn-sm">添加频道</button>
+                    <ul class="list-group">
+                      <a ng-click="showChannel(b._id,123)" class="list-group-item b-b">
+                        <span class="label m-l bg-success">标准频道</span>
+                        优先级：1
+                      </a>
+                      <a ng-click="showChannel(b._id,456)" class="list-group-item b-b">
+                        <span class="label m-l bg-success">通用频道</span>
+                        优先级：2
+                      </a>
+                    </ul>
+                </accordion-group>
+              </accordion>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /brand list -->
+
+    <div class="col">
+      <div data-ng-include="partial"></div>
+    </div>
+  </div>
+</div>

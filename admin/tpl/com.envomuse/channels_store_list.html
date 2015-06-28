@@ -1,0 +1,40 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="ChannelsCtrl">
+  <!-- main -->
+  <div class="col">
+    <div class="panel panel-default no-border">
+      <div class="panel-heading">
+        <div class="row m-t-md">
+          <div class="col-sm-4">
+            <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+          </div>
+          <div class="col-sm-4">
+            <div class="input-group">
+              <input type="text" class="input-sm form-control" placeholder="输入查找内容" ng-model="searchText">
+              <span class="input-group-btn">
+                <button class="btn btn-sm btn-default" type="button">查找</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped b-t b-light">
+          <thead class="bg-light">
+            <tr>
+              <th width="15%">门店</th>
+              <th width="15%">门店编码</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="row in normalizedDataSource | filter:searchText" st-select-row="row">
+              <td>{{row.siteName}} </td>
+              <td>{{row.reference}}</a> </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div> 
+  </div>
+  <!-- /main -->
+</div>

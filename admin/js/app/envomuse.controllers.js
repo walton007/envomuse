@@ -58,7 +58,7 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
       $scope.maxSize = 5; //total buttons displayed
       $scope.bigCurrentPage = 1;  //current page
       $scope.datasource = [];
-      $scope.pageItems = 10;
+      $scope.pageItems = 12;
 
       $scope.pageChanged();
     };
@@ -74,7 +74,7 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
           $scope.bigTotalItems = res.count;
           $scope.datasource = res.data;
 
-          console.log(res.data);
+          // console.log(res.data);
 
           $scope.normalizedDataSource = $scope.datasource.map(function(e){
             return {
@@ -93,7 +93,197 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
 
   }]);
 
+
+app.controller('ChannelsDashCtrl', ['$scope', 'CustomersBasic', '$stateParams', function($scope, CustomersBasic, $stateParams) {
+
+  CustomersBasic.get(function(res){
+      $scope.customerDataItems = res;
+    });
+
+  $scope.showChannel = function(brandId,channelId){
+    $scope.brandId = brandId;
+    $scope.channelId = channelId;
+
+    $scope.partial = 'tpl/com.envomuse/channels_list.html';
+  }
+
+}]);
+
+app.controller('ChannelsListCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {
+  console.log($scope.brandId);
+  console.log($scope.channelId);
+  
+  //demo data
+  //API get channels by brandid
+  $scope.channels = [
+    {
+      '_id':123,
+      'channelName':"默认-公用",
+      'dayTemplate':[
+        {
+        '_id':1234,
+        'no':23424,
+        'startDate':'20150801',
+        'endDate':'20150901',
+        'note':"八月",
+        'created':'20150701'
+      },
+      {
+        '_id':1234,
+        'no':23424,
+        'startDate':'20150801',
+        'endDate':'20150901',
+        'note':"八月",
+        'created':'20150701'
+      },
+      {
+        '_id':1234,
+        'no':23424,
+        'startDate':'20150801',
+        'endDate':'20150901',
+        'note':"八月",
+        'created':'20150701'
+      },
+      {
+        '_id':1234,
+        'no':23424,
+        'startDate':'20150801',
+        'endDate':'20150901',
+        'note':"八月",
+        'created':'20150701'
+      }
+      ]
+
+    },
+    {
+      '_id':456,
+      'channelName':"个性频道-1",
+      'dayTemplate':[
+        {
+        '_id':1234,
+        'no':23424,
+        'startDate':'20150801',
+        'endDate':'20150901',
+        'note':"八月",
+        'created':'20150701'
+      },
+      {
+        '_id':1234,
+        'no':23424,
+        'startDate':'20150801',
+        'endDate':'20150901',
+        'note':"八月",
+        'created':'20150701'
+      },
+      {
+        '_id':1234,
+        'no':23424,
+        'startDate':'20150801',
+        'endDate':'20150901',
+        'note':"八月",
+        'created':'20150701'
+      },
+      {
+        '_id':1234,
+        'no':23424,
+        'startDate':'20150801',
+        'endDate':'20150901',
+        'note':"八月",
+        'created':'20150701'
+      }
+      ]
+    },
+    {
+      '_id':789,
+      'channelName':"特别频道",
+      'dayTemplate':[
+        {
+        '_id':1234,
+        'no':23424,
+        'startDate':'20150801',
+        'endDate':'20150901',
+        'note':"八月",
+        'created':'20150701'
+      },
+      {
+        '_id':1234,
+        'no':23424,
+        'startDate':'20150801',
+        'endDate':'20150901',
+        'note':"八月",
+        'created':'20150701'
+      },
+      {
+        '_id':1234,
+        'no':23424,
+        'startDate':'20150801',
+        'endDate':'20150901',
+        'note':"八月",
+        'created':'20150701'
+      },
+      {
+        '_id':1234,
+        'no':23424,
+        'startDate':'20150801',
+        'endDate':'20150901',
+        'note':"八月",
+        'created':'20150701'
+      }
+      ]
+    }
+  ];
+
+}]);
+
 app.controller('CustomerDetailCtrl', ['$scope', 'Customers', 'CustomerManager', '$stateParams', function($scope, Customers, CustomerManager, $stateParams) {
+
+  $scope.init = function(){
+    $scope.displayItemList = {
+      "contact":false,
+      "store":true,
+      "channel":false,
+      "addcontact":false,
+      "editBrand":false,
+      "addStore":false,
+      "storeDetail":false,
+      "editStore":false
+    };
+
+    $scope.partial = 'tpl/com.envomuse/customers_store_list.html';
+  };
+
+  $scope.showItem = function(item,params){
+    for(var key in $scope.displayItemList){
+       $scope.displayItemList[key] = false;
+    }
+
+    $scope.displayItemList[item] = true;
+
+    if(item==='storeDetail')
+      $scope.storeId = params;
+    // console.log($scope.storeId);
+
+    $scope.partial = $scope.getPartial();
+  };
+
+  $scope.getPartial = function () {
+    if($scope.displayItemList.contact)
+      return 'tpl/com.envomuse/customers_contact_list.html';
+    else if($scope.displayItemList.addcontact)
+      return 'tpl/com.envomuse/customers_contact_new.html';
+    if($scope.displayItemList.store)
+      return 'tpl/com.envomuse/customers_store_list.html';
+    if($scope.displayItemList.addStore)
+      return 'tpl/com.envomuse/customers_store_new.html';
+    if($scope.displayItemList.storeDetail)
+      return 'tpl/com.envomuse/customers_store_detail.html';
+    if($scope.displayItemList.editBrand)
+      return 'tpl/com.envomuse/customers_brand_edit.html';
+    if($scope.displayItemList.editStore)
+      return 'tpl/com.envomuse/customers_store_edit.html';
+  }
+
+
   Customers.get({'customerId':$stateParams.brandId},
     function(res) {
       $scope.brand = res;
@@ -103,14 +293,6 @@ app.controller('CustomerDetailCtrl', ['$scope', 'Customers', 'CustomerManager', 
 
       // console.log($scope.leader);
     });
-  
-    $scope.d3 = [ 
-      { label: "LICENSE未激活", data: 20 }, 
-      { label: "待激活", data: 20 },
-      { label: "在线", data: 40 },
-      { label: "本地播放", data: 10 },
-      { label: "离线", data: 10 }
-    ];
 
     //messaging
   $scope.alerts = [];
@@ -208,7 +390,10 @@ app.controller('CustomerEditCtrl', ['$scope', '$state', 'Customers', '$statePara
     "奢侈品","时尚-服饰","美容美发","餐饮","零售","银行","酒店宾馆","汽车","航空","其它"
   ];
   $scope.statuslist = [
-    "目标客户","样品测试","签约客户","合约终止"
+    {key:"prospect", value:"目标客户"},
+    {key:"demo", value:"样品测试"},
+    {key:"singed", value:"签约客户"},
+    {key:"inactive", value:"合约终止"}
   ];
   $scope.updateperiodlist = [
     "每月更新","每2月更新","每季度更新","半年更新"
@@ -300,7 +485,7 @@ app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites',
     var store = new CustomerSites(newStore);
     store.$save({'customerId':  $stateParams.brandId}, function(site) {
       //alert('add site success');
-      $state.go('customers.store.detail',{brandId:$stateParams.brandId,storeId:site._id});
+      $state.go('customers.brand.detail',{brandId:$scope.brand._id},{reload: true});
     });
   };
 
@@ -315,7 +500,7 @@ app.controller('StoreEditCtrl', ['$scope', 'Customers', 'Sites', '$stateParams',
       $scope.contacts = $scope.brand.contacts;
     });
 
-  Sites.get({'siteId':$stateParams.storeId},
+  Sites.get({'siteId':$scope.$parent.storeId},
     function(res) {
       $scope.store = res;
     });
@@ -341,27 +526,56 @@ app.controller('StoreEditCtrl', ['$scope', 'Customers', 'Sites', '$stateParams',
     var store = new Sites(updatedStore);
     store.$update(function(site) {
       //alert('add site success');
-      $state.go('customers.store.detail',{brandId:$stateParams.brandId,storeId:$stateParams.storeId});
+      $state.go('customers.brand.detail',{brandId:$stateParams.brandId},{reload: true});
     });
   };
 
 }]);
 
 
-app.controller('StoreListCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites', '$stateParams', function($scope, Customers, Sites, CustomerSites, $stateParams) {
+app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams', function($scope, CustomerSites, $stateParams) {
     
-    //TBD: add sort
+     //TBD: add sort
     $scope.init = function(){
       $scope.maxSize = 5; //total buttons displayed
       $scope.bigCurrentPage = 1;  //current page
       $scope.datasource = [];
       $scope.pageItems = 5;
 
-      Customers.get({'customerId':$stateParams.brandId},
-        function(res) {
-          $scope.brand = res;
-        });
+      $scope.pageChanged();
+    };
+    
+    $scope.pageChanged = function() {
 
+      $scope.setPage = function (pageNo) {
+        $scope.bigCurrentPage = pageNo;
+      };
+
+      CustomerSites.getPageData({'customerId':$stateParams.brandId,pageNumber:$scope.bigCurrentPage,pageSize:$scope.pageItems},
+        function(res) {
+          $scope.bigTotalItems = res.count;
+          $scope.datasource = res.data;
+
+          // console.log(res.data);
+
+          $scope.normalizedDataSource = $scope.datasource.map(function(e){
+            return {
+              _id:e._id,
+              siteName:e.siteName,
+              reference:e.reference,
+              lastBindDate:e.programs[0]!=null?e.programs[0].bindDate:null
+            };
+          });
+
+        });
+    };
+
+    /*$scope.init = function(){
+      $scope.maxSize = 5; //total buttons displayed
+      $scope.bigCurrentPage = 1;  //current page
+      $scope.datasource = [];
+      $scope.pageItems = 5;
+    
       $scope.pageChanged();
     };
 
@@ -381,21 +595,20 @@ app.controller('StoreListCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites'
               _id:e._id,
               siteName:e.siteName,
               reference:e.reference,
-              created:e.created,
-              siteProgramsCount:e.programs.length,
-              lastBindDate:e.programs[0]!=null?e.programs[0].bindDate:null,
-              manager:e.manager
+              lastBindDate:e.programs[0]!=null?e.programs[0].bindDate:null
             };
           });
         });
-    };
+    };*/
 
   }]);
 
 
 app.controller('StoreDetailCtrl', ['$scope', '$state', 'Customers', 'Sites', 'SiteLicense', '$stateParams', function($scope, $state, Customers, Sites, SiteLicense, $stateParams) {
 
-  Sites.get({'siteId':$stateParams.storeId},
+  $scope.siteId = $scope.$parent.storeId;
+
+  Sites.get({'siteId':$scope.siteId},
     function(res) {
       $scope.store = res;
     });

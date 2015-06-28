@@ -1,171 +1,76 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="showSetManager=false;showSetProgram=false;" ng-controller="StoreDetailCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="showSetManager=false;" ng-controller="StoreDetailCtrl">
 
-  <!-- main -->
   <div class="col">
-  
-    <!-- main header -->
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
-        <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">门店管理</a></h1>
-          <small class="text-muted"><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a> > <a ui-sref="customers.store({brandId:brand._id})">门店管理</a> > {{store.siteName | uppercase}}店</small>
-        </div>
-        <div class="col-sm-6 text-right hidden-xs">
-
-          <div class="btn-group dropdown" dropdown>
-            <a class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="customers.store.add(({brandId:brand._id}))"><i class="fa fa-plus"></i>添加门店</a>
-            <button class="btn m-b-xs btn-sm btn-primary" dropdown-toggle><span class="caret"></span></button>
-             <ul class="dropdown-menu">
-              <li><a href ng-click="showSetManager=true;">设置店长</a></li>
-              <li class="divider"></li>
-              <li><a href>生成LICENSE</a></li>
-              <li><a href ng-click="showSetProgram=true;">关联播放列表</a></li>
-              <li class="divider"></li>
-              <li><a href>导出</a></li>
-              <li class="divider"></li>
-              <li><a ui-sref="customers.store.edit({brandId:brand._id,storeId:store._id})">编辑</a></li>
-              <li><a href>删除</a></li>
-            </ul>
+        <div class="col-sm-8 col-xs-12">
+          <div class="h4 m-t-xs m-b-xs">
+            {{store.siteName | uppercase}}店
           </div>
-
+          <small class="text-muted">{{store.reference}}</small>
+          <small class="text-muted">经理：{{store.manager.name}}</small>
+          <small class="text-muted">店铺地址：{{store.address}}</small>
+          <small class="text-muted">创建时间：{{store.created | fromNow}}</small>
+          <span class="label bg-primary m-l-sm">频道：{{store.channel}}</span>
+        </div>
+        <div class="col-sm-4 text-right hidden-xs">
+          <div class="wrapper-sm">
+            <a ng-click="showItem('editStore')" class="m-r" tooltip="修改"><i class="fa fa-edit text-muted m-r-sm"></i></a>
+          </div>
         </div>
       </div>
     </div>
-    <!-- / main header -->
 
-      <!-- main -->
-  <div class="row wrapper">
-    <div class="wrapper">
+  <div class="row padder">
+    
 
       <!-- alert -->
-      <div class="m-b-md">
-        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+      <div class="m-b-md" ng-show="alert.msg!=null">
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{}}</alert>
       </div>
-      <!-- / alert -->
+      <!-- /alert -->
 
-      <!-- basic info -->
-      <div class="row">
-        <div class="wrapper">
-          <div class="col-md-4">
-            <div class="panel panel-default bg-light no-border">
-              <div class="panel-body">
-                <div class="clearfix text-center m-t">
-                  <div class="inline">
-                    <div class="inline" style="width: 100px; height: 100px; line-height: 100px;">
-                      <div class="thumb-lg m-t-n-xxl">
-                        <!-- <img src="{{brand.logo}}" alt="LOGO {{brand.brand}}"> -->
-                        <img data-ng-src="{{brand.logo}}"/>
-                      </div>
-                    </div>
-                    <div class="h4 m-t m-b-xs">{{brand.brand | uppercase}}</div>
-                    <small class="text-muted m-b">{{brand.industry}}</small>
-                    {{store.siteName | uppercase}}
-                    {{store.reference | uppercase}}
-                  </div>                      
-                </div>
+      <!-- license row -->
+      <div class="wrapper b-b">
+        <h4 class="font-bold">播放器</h4>
+        <div class="panel panel-default bg-light b no-border">
+          <div class="panel-body">
+            <div class="inline">
+              <div class="thumb-xl">
+                <img src="img/icons/license.png" alt="...">
               </div>
-              <div class="list-group no-radius alt">
-                <a class="list-group-item bg-light no-border" href>
-                  <span class="badge bg-success">{{store.manager.name}}</span>
-                  <i class="fa fa-user fa-fw text-muted"></i> 
-                  门店经理
-                </a>
-                <a class="list-group-item bg-light no-border" href>
-                  <span class="badge bg-success">徐家汇</span>
-                  <i class="fa fa-circle-o fa-fw text-muted"></i> 
-                  商圈
-                </a>
-                <a class="list-group-item bg-light no-border" href>
-                  <span class="badge bg-success">中国-上海-肇嘉浜路1110号</span>
-                  <i class="fa fa-map-marker fa-fw text-muted"></i> 
-                  地址
-                </a>
-                <a class="list-group-item bg-light no-border" href>
-                  <span class="badge bg-success">{{store.created | fromNow}}</span>
-                  <i class="fa fa-clock-o fa-fw text-muted"></i> 
-                  创建时间
-                </a>
-                <a class="list-group-item bg-light no-border" href>
-                  <span class="badge bg-success">未安装</span>
-                  <i class="fa fa-desktop fa-fw text-muted"></i> 
-                  播放器安装状态
-                </a>
-              </div>
-              <footer class="panel-footer bg-light bg-lt">
-                <div class="row no-gutter">
-                  {{store.description}}
-                </div>
-              </footer>
-            </div>
-          </div>                     
-          <div class="col-md-7 m-l">
-            <!-- Player license info -->                
-            <h4 class="font-bold">LICENSE信息</h4>
-            <div class="row wrapper text-center">
-              <div class="col-md-8" >
-                <div class="panel panel-default bg-light b no-border">
-                  <div class="panel-body">
-                    <div class="inline">
-                      <div class="thumb-xl">
-                        <img src="img/icons/license.png" alt="...">
-                      </div>
-                      <div class="h4 m-t m-b-xs">233AD-BADC-ASDF23-23ASDF</div>
-                    </div>                      
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-xs-3">
-                <a href class="block panel padder-v bg-primary lt item" ng-click="bindLicense(store._id)">
-                  <span class="text-muted text-xs"><i class="fa fa-key text-muted m-r-sm"></i>生成LICENSE</span>
-                </a>
-              </div>
-            </div>
-            <!-- /Player license info -->
-
-            <!-- connection status -->
-            <h4 class="font-bold">门店连接状态</h4>
-            <div class="row wrapper text-center">
-              <div class="col-xs-4">
-                <div class="block panel padder-v bg-danger lt item">
-                  <span class="text-white font-thin h1 block">离线</span>
-                </div>
-              </div>
-
-              <div class="col-md-8 text-left" >
-                <div class="list-group">
-                  <div class="list-group-item no-border bg-light">
-                    <span class="badge badge-empty">201</span>
-                    <i class="fa fa-envelope fa-fw m-r-xs"></i> 激活时间
-                  </div>
-                  <div class="list-group-item no-border bg-light">
-                    <span class="badge bg-info">5021</span>
-                    <i class="fa fa-eye fa-fw m-r-xs"></i> 首次连接
-                  </div>
-                  <div class="list-group-item no-border bg-light">
-                    <span class="badge bg-success">14</span>
-                    <i class="fa fa-phone fa-fw m-r-xs"></i> 最后同步
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- /connection status -->
+              <div class="h4 m-t m-b-xs">{{store.key==null?'暂未生成KEY':store.key}}</div>
+            </div>                      
           </div>
         </div>
-
-        </div>
       </div>
-      <!-- /basic info -->
-        
-    </div>
-  </div>
-    <!-- /main -->
+      <!-- /license row -->
 
-<!-- right col  SET MANAGER-->
-  <div class="col w-lg bg-white-only b-l bg-auto no-border-xs" ng-show="showSetManager">
-      <h4 class="panel-heading font-bold text-center b-b">设置店长</h4>
-      <div class="panel-body">
-        <form name="form" class="form-horizontal form-validation">
+      <!-- player row -->
+      <div class="wrapper b-b">
+        <h4 class="font-bold">License</h4>
+        <div class="panel panel-default bg-light b no-border">
+          <div class="panel-body">
+            <div class="inline">
+              <div class="thumb-xl">
+                <img src="img/icons/license.png" alt="...">
+              </div>
+              <div class="h4 m-t m-b-xs">{{store.key==null?'暂未生成KEY':store.key}}</div>
+            </div>                      
+          </div>
+        </div>
+        <a href class="block panel padder-v bg-success lt item" ng-click="bindLicense(store._id)">
+          <span class="text-muted text-xs"><i class="fa fa-key text-muted m-r-sm"></i>生成LICENSE</span>
+        </a>
+      </div>
+      <!-- /player row -->
+      </div>
+
+      <!-- right col  SET MANAGER-->
+      <!-- <div class="col w-lg bg-white-only b-l bg-auto no-border-xs" ng-show="showSetManager">
+        <h4 class="panel-heading font-bold text-center b-b">设置店长</h4>
+        <div class="panel-body">
+          <form name="form" class="form-horizontal form-validation">
             <div class="radio list-group-item bg-light no-border" ng-repeat="c in brand.contacts">
               <label class="i-checks i-checks-sm">
                 <input type="radio" name="manager" ng-value="{{c}}" ng-model="$parent.chosenManager">
@@ -174,20 +79,24 @@
               </label>
             </div>
 
-          <div class="line line-dashed b-b line-lg pull-in"></div>
-          <div class="form-group">
-            <div class="col-lg-8 col-lg-offset-2">
-              <button type="submit" class="btn btn-sm btn-success pull-right" ng-click="setManager($parent.chosenManager)">设置</button>
-              <button type="submit" class="btn btn-sm btn-danger" ng-click="showSetManager=false;">取消</button>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+              <div class="col-lg-8 col-lg-offset-2">
+                <button type="submit" class="btn btn-sm btn-success pull-right" ng-click="setManager($parent.chosenManager)">设置</button>
+                <button type="submit" class="btn btn-sm btn-danger" ng-click="showSetManager=false;">取消</button>
+              </div>
             </div>
-          </div>
-        </form>
-      </div>
+          </form>
+        </div>
+      </div> -->
+      <!-- / right col  SET MANAGER-->
   </div>
-  <!-- / right col  SET MANAGER-->
+    <!-- /main -->
+
+
 
   <!-- right col  SET PROGRAM -->
-  <div class="col w-lg bg-white-only b-l bg-auto no-border-xs" ng-show="showSetProgram">
+  <!-- <div class="col w-lg bg-white-only b-l bg-auto no-border-xs" ng-show="showSetProgram">
     <div class="padder-md m-t">      
       <h4 class="panel-heading font-bold">关联播放列表</h4>
       <div class="panel-body">
@@ -217,7 +126,7 @@
         </form>
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- / right col  SET PROGRAM -->
 
 
