@@ -11,8 +11,12 @@ var BaseSchema = commonUtil.BaseSchema,
 ContactSchema = commonUtil.ContactSchema;
 
 var CustomerSchema = BaseSchema.extend({
-  companyName: String,
-  brand: String,
+  brand:{
+    type: String,
+    required: true,
+    unique: true
+  },
+   
   address: String,
   industry: String,
   updatePeriod: String,

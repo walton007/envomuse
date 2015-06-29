@@ -7,8 +7,9 @@ var mongoose = require('mongoose'),
   Customer = mongoose.model('Customer'),
   User = mongoose.model('User'),
   Site = mongoose.model('Site'),
+  Channel = mongoose.model('Channel'),
   SiteController = require('./site'),
-  SiteProgramController = require('./siteProgram'),
+  ChannelController = require('./channel'),
   UserController = require('./user'),
   util = require('util'),
   Q = require('q'),
@@ -34,15 +35,26 @@ exports.create = function(req, res) {
   var customer = new Customer(req.body);
   customer.user = req.user;
 
-  customer.save(function(err) {
+  customer.save(function(err, retCustomer) {
     if (err) {
       console.warn('create err:', err);
-      return res.status(500).json({
+      return res.status(400).json({
         error: 'Cannot save the customer'
       });
     }
-    res.json(customer);
 
+    // Create a default channel for this customer
+    ChannelController.addDefChannelForCustomer(retCustomer,
+      function(err, channel) {
+        if (err) {
+          return res.status(400).json({
+            error: 'Cannot create the default channel'
+          });
+        };
+
+        res.json(retCustomer);
+      }
+    );
   });
 };
 
@@ -147,6 +159,7 @@ exports.sitesPaginate = function(req, res) {
 
   var pageNumber = req.query.pageNumber,
     pageSize = req.query.pageSize,
+    filterChannelName = req.query.channelName,
     callback = function(error, pageCount, sites, itemCount) {
       if (error) {
         console.error(error);
@@ -154,57 +167,99 @@ exports.sitesPaginate = function(req, res) {
           error: error
         });
       } else {
-        // get sites related siteProgram
-        SiteProgramController.getSiteProgramlist(sites)
-          .then(function(retSitesInfo) {
-            res.json({
-              pageCount: pageCount,
-              data: retSitesInfo,
-              count: itemCount
-            });
-          }, function(err) {
-            res.json({
-              getSiteProgramInfoErr: err
-            }, 400);
-          });
+        res.json({
+          pageCount: pageCount,
+          data: sites,
+          count: itemCount
+        });
       }
-    }
+    };
 
-  Site.paginate({
-      customer: req.customer,
-      deleteFlag: false
-    },
+  var filterCond = filterChannelName ? {
+    customer: req.customer,
+    channelName: filterChannelName,
+  } : {
+    customer: req.customer,
+  };
+
+  Site.paginate(filterCond,
     pageNumber, pageSize, callback, {
       sortBy: '-created',
-      columns: '_id siteName reference created playerStatus exportTime'
+      columns: '_id siteName reference created playerStatus deliveryState channel channelName channelType'
     });
 };
 
 exports.addSite = function(req, res) {
   req.body.customer = req.customer;
-  SiteController.create(req, res);
+  ChannelController.getCustomerDefChannel(req.customer,
+    function(err, channel) {
+      if (err) {
+        console.warn('getCustomerDefChannel err:', err);
+        return res.status(400).json({
+          error: 'Cannot get CustomerDefChannel'
+        });
+      }
+
+      req.body.channel = channel;
+      req.body.channelName = channel.name;
+      req.body.channelType = channel.type;
+      SiteController.create(req, res);
+    });
 };
 
+function getSiteNum(customers) {
+  var deferred = Q.defer();
+
+  Site.aggregate([{
+      $match: {
+        customer: {
+          $in: _.map(customers, '_id')
+        }
+      }
+    }, {
+      $group: {
+        _id: '$customer',
+        count: {
+          $sum: 1
+        }
+      }
+    }])
+    .exec(function(err, result) {
+      console.log('result:', result);
+      if (err) {
+        deferred.reject(err);
+        return;
+      };
+      var customerSiteCountMap = {};
+      _.each(result, function(obj) {
+        customerSiteCountMap[obj._id] = obj.count;
+      })
+
+      var retCustomers = _.map(customers, function(customer) {
+        var ret = customer.toJSON();
+        ret.sitesCount = customerSiteCountMap[customer._id];
+        ret.sitesCount = ret.sitesCount ? ret.sitesCount: 0;
+        return ret;
+      });
+
+      deferred.resolve(retCustomers);
+    });
+
+  return deferred.promise;
+}
+
 /**
- * List of Articles
+ * List of Customers
  */
 exports.paginate = function(req, res) {
   req.checkQuery('pageNumber', 'invalid pageNumber').isInt();
   req.checkQuery('pageSize', 'invalid pageSize').isInt();
-  req.checkQuery('startDate', 'invalid startDate').optional().isDate();
-  req.checkQuery('endDate', 'invalid endDate').optional().isDate();
-  console.log('startDate:', req.query.startDate);
 
   var errors = req.validationErrors(true);
   if (errors) {
     res.send(errors, 400);
     return;
   }
-
-  var useDateQuery = false;
-  if (req.query.startDate && req.query.endDate) {
-    useDateQuery = true;
-  };
 
   var pageNumber = req.query.pageNumber,
     pageSize = req.query.pageSize,
@@ -232,18 +287,12 @@ exports.paginate = function(req, res) {
         });
     }
 
-  Customer.paginate(useDateQuery ? {
-      deleteFlag: false,
-      created: {
-        $gte: req.query.startDate,
-        $lte: req.query.endDate,
-      }
-    } : {
+  Customer.paginate({
       deleteFlag: false
     },
     pageNumber, pageSize, callback, {
       sortBy: '-created',
-      columns: '_id created brand industry address'
+      columns: '_id created logo name brand status industry'
     });
 };
 
@@ -306,43 +355,30 @@ exports.analysis = function(req, res, next) {
   return;
 };
 
-function getSiteNum(customers) {
-  // console.log('getSiteNum');
+function getChannelsInfo(customers) {
   var deferred = Q.defer();
+  var jsonObj, channelObj, customersMap = {};
+  _.each(customers, function(obj) {
+    jsonObj = obj.toJSON();
+    jsonObj.channels = [];
+    customersMap[jsonObj._id] = jsonObj;
+  })
 
-  Site.aggregate([{
-      $match: {
-        customer: {
-          $in: _.map(customers, '_id')
-        }
-      }
-    }, {
-      $group: {
-        _id: '$customer',
-        count: {
-          $sum: 1
-        }
-      }
-    }])
-    .exec(function(err, result) {
-      if (err) {
-        deferred.reject(err);
-        return;
-      };
-      var customerSiteCountMap = {};
-      _.each(result, function(obj) {
-        customerSiteCountMap[obj._id] = obj.count;
-      })
-
-      var retCustomers = _.map(customers, function(customer) {
-        var ret = customer.toJSON();
-        ret.sitesCount = customerSiteCountMap[customer._id];
-        console.log(customer._id);
-        return ret;
-      });
-
-      deferred.resolve(retCustomers);
+  Channel.find({})
+  .exec(function(err, channels) {
+    if (err) {
+      deferred.reject(err);
+      return;
+    };
+    
+    _.each(channels, function(channel) {
+      channelObj = _.pick(channel, ['_id', 'name', 'type']);
+      jsonObj = customersMap[channel.customer];
+      jsonObj.channels.push(channelObj);
     });
+
+    deferred.resolve(_.values(customersMap));
+  });
 
   return deferred.promise;
 }
@@ -355,20 +391,20 @@ exports.basicInfos = function(req, res, next) {
 
   Customer.where({
     deleteFlag: false
-  }).select('_id brand').exec(function(err, customers) {
+  }).select('_id name brand logo').exec(function(err, customers) {
     if (err) {
       console.error('customer basicInfos error:', err);
       return res.status(500).json({
         error: 'count the basicInfos error'
-      });
+      });ba
     }
 
-    getSiteNum(customers)
-      .then(function(customersWithSitesCnt) {
-        res.json(customersWithSitesCnt);
+    getChannelsInfo(customers)
+      .then(function(valueArr) {
+        res.json(valueArr);
       }, function(err) {
         res.json({
-          getSiteNumErr: err
+          getChannelsInfoErr: err
         }, 400);
       });
 
@@ -428,5 +464,3 @@ exports.bindUser = function(req, res, next) {
     res.json(retUser);
   });
 }
-
-

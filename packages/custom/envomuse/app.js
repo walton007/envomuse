@@ -24,7 +24,7 @@ Envomuse.register(function(app, auth,users, database) {
     menu: 'main'
   });
   
-  Envomuse.aggregateAsset('css', 'envomuse.css');
+  // Envomuse.aggregateAsset('css', 'envomuse.css');
 
   /**
     //Uncomment to use. Requires meanio@0.3.7 or above

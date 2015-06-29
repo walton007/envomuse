@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
   Site = mongoose.model('Site'),
   SiteProgram = mongoose.model('SiteProgram'),
-  SiteProgramController = require('./siteProgram'),
+  ChannelController = require('./channel'),
   uuid = require('node-uuid'),
   _ = require('lodash');
 
@@ -27,17 +27,14 @@ exports.site = function(req, res, next, id) {
  */
 exports.create = function(req, res) {
   var site = new Site(req.body);
-  site.user = req.user;
-
-  site.save(function(err) {
+  site.save(function(err, retSite) {
     if (err) {
       console.warn('create err:', err);
-      return res.status(500).json({
+      return res.status(400).json({
         error: 'Cannot save the site'
       });
     }
-    res.json(site);
-
+    res.json(retSite);
   });
 };
 
@@ -88,53 +85,7 @@ exports.destroy = function(req, res) {
  */
 exports.show = function(req, res) {
   //add programSites info
-  var sites = [req.site];
-  SiteProgramController.getSiteProgramlist(sites)
-  .then(function(retSitesInfo) {
-    res.json(retSitesInfo[0]);
-  }, function(err) {
-    res.json({
-      getSiteProgramInfoErr: err
-    }, 400);
-  });
-  
-};
- 
-exports.bindProgram = function(req, res) {
-  SiteProgram.loadBy(req.site, req.program,
-    function(err, siteProgram) {
-      if (err) {
-        console.warn('SiteProgram.loadBy err:', err);
-        return res.status(500).json({
-          error: err
-        });
-      }  
-      if (siteProgram) {
-        res.json(siteProgram);
-        return;
-      }
-      siteProgram = new SiteProgram({
-        site: req.site,
-        siteName: req.site.siteName,
-        program: req.program,
-        programName: req.program.name
-      });
-
-      siteProgram.save(function(err, newObj) {
-        if (err) {
-          console.warn('create err:', err);
-          return res.status(500).json({
-            error: 'Cannot save the siteProgram'
-          });
-        }
-
-        req.program.inUse = true;
-        req.program.save();
-        res.json(newObj);
-      });
-
-    })
-  
+  res.json(req.site);
 };
 
 /**
@@ -174,21 +125,6 @@ exports.bindLicense = function(req, res) {
       });
     }
     res.json(newSite);
-  });
-};
-
-exports.programs = function(req, res) {
-  SiteProgram.find({
-    site: req.site
-  })
-  .exec(function(err, sites) {
-    if (err) {
-      console.warn('site find programs error:', err);
-      return res.status(500).json({
-        error: err
-      });
-    }
-    res.json(sites);
   });
 };
 

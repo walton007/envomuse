@@ -11,25 +11,39 @@ var BaseSchema = commonUtil.BaseSchema;
 
 //----------- program, music related information  ----------------//
  
-var ProgramSchema = BaseSchema.extend({
+var ProgramSchema = new Schema({
   name: {
     type: String,
     required: true,
     unique: true
   },
-  customerName: String,
   job: {
     type: Schema.ObjectId,
     ref: 'Job'
   },
+  channel: {
+    type: Schema.ObjectId,
+    ref: 'Channel'
+  },
+  startDate: Date,
+  endDate: Date,
+  createDate: {
+    type: Date,
+    default: Date.now,
+    required: true
+  },
+
   dayPrograms: [{
     guid: String,
     date: Date,
     displayDate: String,
+    dayTemplateName: String,
     playlist: [{
       song: {
         type: Schema.ObjectId,
-        ref: 'Song'
+        ref: 'Song',
+
+        boxtag: 'box1Tag box2Tag'
       },
       title: String,
       hour: String,
@@ -38,16 +52,10 @@ var ProgramSchema = BaseSchema.extend({
       fadeIn: Number,
       fadeOut: Number,
       duration: Number,
-      displayTm: String,
+      // displayTm: String,
       url:String,
     }],
-  }],
-   
-  startDate: Date,
-  displayStartDate: String,
-  endDate: Date,
-  displayEndDate: String,
-  inUse: Boolean //indicate whether there's any sites have reference on it
+  }]
 });
 
 /**

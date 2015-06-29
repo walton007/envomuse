@@ -6,12 +6,12 @@ var express = require('express'),
    config = mean.loadConfig(),
    customer = require('../controllers/customer'),
    sites = require('../controllers/site'),
+   channels = require('../controllers/channel'),
    programs = require('../controllers/program'),
    jobs = require('../controllers/job'),
    songs = require('../controllers/song'),
    users = require('../controllers/user'),
    dashboard = require('../controllers/dashboard'),
-   sitePrograms = require('../controllers/siteProgram'),
    comingJobs = (config.enableZmq) ? require('../controllers/comingJobZmq') : require('../controllers/comingJob');
 
 
@@ -81,23 +81,23 @@ module.exports = function(Envomuse, app, auth, database) {
   .get(comingJobs.allTasks);
 
   //Programs
-  apiRouter.get('/programs', programs.statistic, programs.all);
+  // apiRouter.get('/programs', programs.statistic, programs.all);
   apiRouter.route('/programs/:programId')
   .get(programs.show)
   .delete(function(req, res, next) {
     res.send(200);
   });
-  apiRouter.route('/programs/:programId/bindSite')
-  .post(function(req, res, next){
-    return sites.site(req, res, next, req.body.siteId);
-  }, sites.bindProgram);
-  apiRouter.route('/programs/:programId/bindSites')
-  .post(programs.bindSites);
+  // apiRouter.route('/programs/:programId/bindSite')
+  // .post(function(req, res, next){
+  //   return sites.site(req, res, next, req.body.siteId);
+  // }, sites.bindProgram);
+  // apiRouter.route('/programs/:programId/bindSites')
+  // .post(programs.bindSites);
 
-  apiRouter.route('/programs/:programId/sites')
-  .get(programs.sites);
+  // apiRouter.route('/programs/:programId/sites')
+  // .get(programs.sites);
 
-  apiRouter.param('programId', programs.program); 
+  // apiRouter.param('programId', programs.program); 
 
   //Songs
   apiRouter.route('/songs')
@@ -120,7 +120,7 @@ module.exports = function(Envomuse, app, auth, database) {
 
   //Customers
   apiRouter.route('/customers/')
-  .get(customer.count, customer.analysis, customer.basicInfos, customer.paginate)
+  .get(customer.basicInfos, customer.paginate)
   .post(customer.create);
   // .put(customer.update);  //added jun
   apiRouter.route('/customers/:customerId')
@@ -137,20 +137,28 @@ module.exports = function(Envomuse, app, auth, database) {
 
   apiRouter.param('customerId', customer.customer); 
 
+  //Channels
+  apiRouter.route('/customers/:customerId/channels')
+  .get(channels.basicChannelInfo)
+  .post(channels.addChannel);
+  apiRouter.route('/channels/:channelId/')
+  .get(channels.getChannelProgramInfo);
+
+  apiRouter.route('/channels/:channelId/bindSites')
+  .post(channels.bindSites);
+
+  apiRouter.param('channelId', channels.channel);
+  
   //Sites
-  apiRouter.route('/sites/')
-  .get(sites.statistic, sites.all)
   apiRouter.route('/sites/:siteId')
   .get(sites.show)
   .put(sites.update)
   .delete(sites.destroy);
   apiRouter.route('/sites/:siteId/bindLicense')
   .post(sites.bindLicense);
-  apiRouter.route('/sites/:siteId/bindProgram')
-  .post(function(req, res, next) {
-    return programs.program(req, res, next, req.body.programId);
-  }, sites.bindProgram);
-  apiRouter.route('/sites/:siteId/license/activate')
+  
+
+  apiRouter.route('/sites/:siteId/licenseActivate')
   .post(sites.licenseActivate);
   apiRouter.route('/sites/:siteId/connectionLogs')
   .get(function(req, res, next) {
@@ -165,8 +173,6 @@ module.exports = function(Envomuse, app, auth, database) {
     res.json([{playerStatus: 'online'}]);
   });
 
-  apiRouter.route('/sites/:siteId/programs')
-  .get(sites.programs);
   apiRouter.param('siteId', sites.site);
 
   //All Terminal Player related interface will be moved to another dedicated server 
@@ -215,23 +221,6 @@ module.exports = function(Envomuse, app, auth, database) {
     // 30 miniutes once a day: for statistic purpose
     // this will update site.lastHeartbeat
     res.json({ok: true});
-  });
-
-  //For Debug
-  apiRouter.route('/debug/siteProgram')
-  .get(sitePrograms.all);
-
-  app.get('/envomuse/example/admin', auth.requiresAdmin, function(req, res, next) {
-    res.send('Only users with Admin role can access this');
-  });
-
-  app.get('/envomuse/example/render', function(req, res, next) {
-    Envomuse.render('index', {
-      package: 'envomuse'
-    }, function(err, html) {
-      //Rendering a view from the Package server/views
-      res.send(html);
-    });
   });
 
   //Users Management

@@ -19,28 +19,7 @@ var mongoose = require('mongoose'),
  */
 exports.analysis = function(req, res) {
   var promise, promiseArr = [];
-
-  // get totalCustomer
-  promise = Customer.find({
-    deleteFlag: false
-  }).count().exec();
-  promiseArr.push(promise);
-
-  // get totalTask
-  promise = Task.find({
-  }).count().exec();
-  promiseArr.push(promise);
-
-  // get totalJobs
-  promise = Job.find({
-  }).count().exec();
-  promiseArr.push(promise);
-
-  // get totalPlaylist
-  promise = Program.find({
-  }).count().exec();
-  promiseArr.push(promise);
-
+  
   // get customerStatus 
   promise = Customer.aggregate([{
       $match: {
@@ -74,31 +53,21 @@ exports.analysis = function(req, res) {
   // Wait all done
   Q.all(promiseArr)
   .done(function (values) {
-    var totalCustomer = values[0];
-    var totalTask = values[1];
-    var totalJobs = values[2];
-    var totalPrograms = values[3];
     var customerStatus = {
       'prospect': 0,  'demo': 0, 'signed' : 0, 'inactive': 0
     };
-    _.each(values[4], function(obj) {
+    _.each(values[0], function(obj) {
       customerStatus[obj._id] = obj.count;
     });
 
     var siteDeliveryStats = {
       'delivered': 0,  'undelivered': 0
     };
-    _.each(values[5], function(obj) {
+    _.each(values[1], function(obj) {
       siteDeliveryStats[obj._id] = obj.count;
     });
 
-    var ret = { 
-      stats:{
-        totalCustomer:totalCustomer, 
-        totalTask:totalTask, 
-        totalJobs:totalJobs,
-        totalPrograms:totalPrograms
-      },
+    var ret = {
       customerStatus: customerStatus, 
       siteDeliveryStats: siteDeliveryStats
     }; 

@@ -8,29 +8,33 @@ mongoosePaginate = require('mongoose-paginate'),
   Schema = mongoose.Schema,
   commonUtil = require('./commonUtil');
 
-var BaseSchema = commonUtil.BaseSchema,
-ContactSchema= commonUtil.ContactSchema;
-
-
-var SiteSchema = BaseSchema.extend({
+var SiteSchema = commonUtil.BaseSchema.extend({
+  channel: {
+    type: Schema.ObjectId,
+    required: true,
+    ref: 'Channel'
+  },
+  channelName: String,
+  channelType: String,
   customer: {
     type: Schema.ObjectId,
     required: true,
     ref: 'Customer'
   },
-  siteName:String,
-  businesscenter:String,
+  customerName: String,
+
+  siteName:{
+    type: String,
+    required: true,
+    unique: true
+  },
   reference: String,
-  manager: ContactSchema,
+  manager: commonUtil.ContactSchema,
   phone: String,
   address: String,
-  country: String,
   province: String,
   city: String,
-  zipcode: String,
-  latitude: String,
-  longitude: String,
-  description: String,
+   
   exportTime: Date,
   deliveryState: {
     type: String,
@@ -41,16 +45,16 @@ var SiteSchema = BaseSchema.extend({
 
   license: {
     uuid: String,
-    activatedDate: Date,
     deviceInfo: {
       mac: String
     },
     sshkey: String
   },
 
+  licenseActivatedDate: Date,
   lastHeartbeat: {
-    time: Date,
-    song: String  
+    date: Date,
+    version: String
   },
 
   disable: {
@@ -68,8 +72,8 @@ var SiteSchema = BaseSchema.extend({
     type: String,
     required: true,
     default: 'offline',
-    enum: ['online', 'offline', 'local'],
-  },
+    enum: ['online', 'offline'],
+  }
 });
 
 /**
