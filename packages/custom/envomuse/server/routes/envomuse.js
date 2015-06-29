@@ -128,7 +128,7 @@ module.exports = function(Envomuse, app, auth, database) {
   .put(customer.update)
   .delete(customer.destroy);
   apiRouter.route('/customers/:customerId/sites')
-  .get(customer.sitesPaginate)
+  .get(sites.basicInfos, customer.sitesPaginate)
   .post(customer.addSite);
 
   // Add User

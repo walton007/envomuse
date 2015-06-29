@@ -89,17 +89,24 @@ exports.show = function(req, res) {
 };
 
 /**
- * List of Sites
+ * List basic Infos of Sites
  */
-exports.all = function(req, res) {
-  Site.find().sort('-created').exec(function(err, sites) {
+exports.basicInfos = function(req, res, next) {
+  console.log('basic');
+  if (!('basicInfos' in req.query)) {
+    next();
+    return;
+  };
+
+  Site.find({disable: false})
+  .select('_id siteName reference channelType')
+  .sort('-created').exec(function(err, sites) {
     if (err) {
-      return res.status(500).json({
+      return res.status(400).json({
         error: 'Cannot list the sites'
       });
     }
     res.json(sites);
-
   });
 };
 
