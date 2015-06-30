@@ -68,7 +68,7 @@ function getSitesCount(channels) {
 
   Site.aggregate([{
       $match: {
-        customer: {
+        channel: {
           $in: _.map(channels, '_id')
         }
       }
