@@ -1,0 +1,64 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="showHelp=false;" ng-controller="ChannelNewCtrl">
+
+  <div class="col">
+    <div class="wrapper">
+      <h4 class="panel-heading">新增频道<a href><small class="text-muted m-l" ng-click="showHelp=true;" ng-show="!showHelp">显示帮助</small><small class="text-muted m-l" ng-click="showHelp=false;" ng-show="showHelp">隐藏帮助</small></a></h4>
+      <div class="panel-body">
+        <form name="form" class="form-horizontal m-t-lg form-validation ">
+          <div class="form-group">
+            <label class="col-lg-2 control-label">频道名</label>
+            <div class="col-lg-4">
+              <input type="text" class="form-control" ng-model="channel.name" placeholder="必填" required>
+            </div>
+            <div class="col-lg-4 ">
+              <div class="checkbox">
+                <label class="i-checks">
+                  <input type="checkbox" ng-model="channel.special">
+                  <i></i>
+                  是否特殊频道
+                </label>
+              </div>
+            </div>
+          </div>              
+
+          <div class="form-group">
+            <label class="col-lg-2 control-label">备注</label>
+            <div class="col-lg-8">
+              <input type="text" class="form-control" ng-model="channel.comment" >
+            </div>
+          </div>
+
+          <div class="line line-dashed b-b line-lg pull-in"></div>
+
+          <div class="form-group">
+            <div class="col-lg-8 col-lg-offset-2">
+              <button type="submit" class="btn btn-success pull-right" ng-disabled="form.$invalid" ng-click="createChannel()">添加</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- right col -->
+  <div class="col w-md bg-white-only b-l bg-auto no-border-xs" ng-show="showHelp">
+    <!-- help -->
+    <div class="padder-md m-t">      
+      <div class="m-b text-md">新增频道帮助</div>
+      <div class="streamline b-l m-b">
+        <div class="sl-item">
+          <div class="m-l">
+            <p>显示为必填项的必填。</p>
+          </div>
+        </div>
+        <div class="sl-item">
+          <div class="m-l">
+            <p>频道用于管理品牌下需要不放不同内容音乐的门店。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /help -->
+  </div>
+  <!-- / right col -->
+</div>

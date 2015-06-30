@@ -68,6 +68,43 @@ app.factory('CustomerSites', ['$resource', function($resource) {
   }
 ]);
 
+app.factory('CustomerChannels', ['$resource', function($resource) {
+    return $resource(
+      '/api/customers/:customerId/channels', 
+    {
+      customerId: '@_id'
+    },
+    {
+      'getChannels': {method:'GET', isArray:true},
+      'saveChannel': {method:'POST'}
+    });
+  }
+]);
+
+app.factory('ChannelsBindSite', ['$resource', function($resource) {
+    return $resource(
+      '/api/channels/:channelId/bindSites', 
+    {
+      channelId: '@_id'
+    },
+    {
+      'bind': {method:'POST'}
+    });
+  }
+]);
+
+app.factory('ChannelsProgramList', ['$resource', function($resource) {
+    return $resource(
+      '/api/channels/:channelId/', 
+    {
+      channelId: '@_id'
+    },
+    {
+      'getPrograms': {method:'GET', isArray:true}
+    });
+  }
+]);
+
 app.factory('CustomerManager', ['$resource', function($resource) {
     return $resource(
       '/api/customers/:customerId/bindUser', 

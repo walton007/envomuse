@@ -16,52 +16,53 @@
     </div>
     <!-- / main header -->
 
-    <!-- main body -->
-    <div class="col">
-      <div class="wrapper-md">
-      <!-- job row -->
-        <div class="row text-center" ng-repeat="item in datasource">
-
-          <!-- basic info -->
-          <div class="col-md-4 text-left">
-            <div class="panel panel-default">
-            <div class="panel-heading">
-              <div class="clearfix">
-                <a ui-sref="jobs.detail({jobId:item._id})" class="pull-left thumb-md avatar b-3x m-r">
-                  <img src="img/icons/job.png" alt="...">
-                </a>
-                <div class="clear">
-                  <div class="h3 m-t-xs m-b-xs">
-                    <a ui-sref="jobs.detail({jobId:item._id})">
-                    {{item.programName}}
-                    </a>
-                  </div>
-                  <small class="text-muted clearfix">创建人：{{item.creator}}</small>
-                  <small class="text-muted clearfix">目标品牌：{{item.custumorName}}</small>
-                  <small class="text-muted clearfix">已有播放清单：{{item.programCount}}</small>
-                  <small class="text-muted clearfix">导入时间：{{item.created | fromNow}}</small>
+    <div class="row">
+      <div class="wrapper-md m-t-n">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="row m-t-md">
+              <div class="col-sm-6">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="icon text-mute icon-magnifier"></i></span>
+                  <input type="text" class="input-sm form-control" placeholder="输入查找内容" ng-model="searchText">
                 </div>
               </div>
             </div>
           </div>
         </div>
-          <!-- /basic info -->
-
-          <div class="col-xs-12 m-b-md">
-            <div class="r bg-light dker item hbox no-border">
+        <div class="col-sm-3" ng-repeat="item in datasource | filter:searchText">
+          <div class="panel panel-default">
+            <a ui-sref="jobs.detail({jobId:item._id})">
+            <div class="panel-heading">
+              <div class="clearfix">
+                <div class="pull-left thumb-md avatar b-3x m-r">
+                  <img src="img/icons/job.png" alt="...">
+                </div>
+                <div class="clear">
+                  <div class="h4 m-t-xs m-b-xs">
+                    {{item.programName | uppercase}}
+                  </div>
+                  <small class="text-muted clearfix">导入时间：{{item.created | fromNow}}</small>
+                </div>
+              </div>
+            </div>
+            </a>
+            <div class="list-group no-radius alt">
+              <div class="list-group-item">
+                <span class="pull-right"><span class="badge bg-light">{{item.custumorName}}</span></span>
+                <i class="icon icon-trophy text-muted"></i> 
+                目标品牌
+              </div>
+              <div class="list-group-item">
+                <span class="pull-right"><span class="badge bg-light">{{item.creator}}</span></span>
+                <i class="icon icon-earphones text-muted"></i> 
+                创建人
+              </div>
             </div>
           </div>
         </div>
-      <!-- / job row -->
+      </div>
     </div>
-  </div>
-  <!-- /main body -->
 
-  <!-- right col -->
-  <!-- <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
-    <div data-ng-include=" 'tpl/com.envomuse/customers_dashboard_aside.html' ">
-    </div>
-  </div> -->
-  <!-- / right col -->
   </div>
 </div>

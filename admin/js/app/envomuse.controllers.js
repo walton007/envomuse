@@ -97,145 +97,30 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
 app.controller('ChannelsDashCtrl', ['$scope', 'CustomersBasic', '$stateParams', function($scope, CustomersBasic, $stateParams) {
 
   CustomersBasic.get(function(res){
-      $scope.customerDataItems = res;
+    $scope.customerDataItems = res;
+  });
+
+  $scope.showChannel = function(id){
+    $scope.channelId = id;
+    $scope.partial = 'tpl/com.envomuse/channels_detail.html';
+  };
+}]);
+
+app.controller('ChannelsDetailCtrl', ['$scope', 'ChannelsProgramList', '$stateParams', function($scope, ChannelsProgramList, $stateParams) {
+  
+  ChannelsProgramList.get(function(res){
+    $scope.customerDataItems = res;
+  });
+
+  ChannelsProgramList.getPrograms({'channelId':$scope.channelId},
+    function(res) {
+      $scope.programs = res;
+      console.log($scope.programs);
     });
 
-  $scope.showChannel = function(brandId,channelId){
-    $scope.brandId = brandId;
-    $scope.channelId = channelId;
-
-    $scope.partial = 'tpl/com.envomuse/channels_list.html';
-  }
-
 }]);
 
-app.controller('ChannelsListCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {
-  console.log($scope.brandId);
-  console.log($scope.channelId);
-  
-  //demo data
-  //API get channels by brandid
-  $scope.channels = [
-    {
-      '_id':123,
-      'channelName':"默认-公用",
-      'dayTemplate':[
-        {
-        '_id':1234,
-        'no':23424,
-        'startDate':'20150801',
-        'endDate':'20150901',
-        'note':"八月",
-        'created':'20150701'
-      },
-      {
-        '_id':1234,
-        'no':23424,
-        'startDate':'20150801',
-        'endDate':'20150901',
-        'note':"八月",
-        'created':'20150701'
-      },
-      {
-        '_id':1234,
-        'no':23424,
-        'startDate':'20150801',
-        'endDate':'20150901',
-        'note':"八月",
-        'created':'20150701'
-      },
-      {
-        '_id':1234,
-        'no':23424,
-        'startDate':'20150801',
-        'endDate':'20150901',
-        'note':"八月",
-        'created':'20150701'
-      }
-      ]
-
-    },
-    {
-      '_id':456,
-      'channelName':"个性频道-1",
-      'dayTemplate':[
-        {
-        '_id':1234,
-        'no':23424,
-        'startDate':'20150801',
-        'endDate':'20150901',
-        'note':"八月",
-        'created':'20150701'
-      },
-      {
-        '_id':1234,
-        'no':23424,
-        'startDate':'20150801',
-        'endDate':'20150901',
-        'note':"八月",
-        'created':'20150701'
-      },
-      {
-        '_id':1234,
-        'no':23424,
-        'startDate':'20150801',
-        'endDate':'20150901',
-        'note':"八月",
-        'created':'20150701'
-      },
-      {
-        '_id':1234,
-        'no':23424,
-        'startDate':'20150801',
-        'endDate':'20150901',
-        'note':"八月",
-        'created':'20150701'
-      }
-      ]
-    },
-    {
-      '_id':789,
-      'channelName':"特别频道",
-      'dayTemplate':[
-        {
-        '_id':1234,
-        'no':23424,
-        'startDate':'20150801',
-        'endDate':'20150901',
-        'note':"八月",
-        'created':'20150701'
-      },
-      {
-        '_id':1234,
-        'no':23424,
-        'startDate':'20150801',
-        'endDate':'20150901',
-        'note':"八月",
-        'created':'20150701'
-      },
-      {
-        '_id':1234,
-        'no':23424,
-        'startDate':'20150801',
-        'endDate':'20150901',
-        'note':"八月",
-        'created':'20150701'
-      },
-      {
-        '_id':1234,
-        'no':23424,
-        'startDate':'20150801',
-        'endDate':'20150901',
-        'note':"八月",
-        'created':'20150701'
-      }
-      ]
-    }
-  ];
-
-}]);
-
-app.controller('CustomerDetailCtrl', ['$scope', 'Customers', 'CustomerManager', '$stateParams', function($scope, Customers, CustomerManager, $stateParams) {
+app.controller('CustomerDetailCtrl', ['$scope', 'Customers', 'CustomerManager', 'CustomerChannels', '$stateParams', function($scope, Customers, CustomerManager, CustomerChannels, $stateParams) {
 
   $scope.init = function(){
     $scope.displayItemList = {
@@ -246,7 +131,9 @@ app.controller('CustomerDetailCtrl', ['$scope', 'Customers', 'CustomerManager', 
       "editBrand":false,
       "addStore":false,
       "storeDetail":false,
-      "editStore":false
+      "editStore":false,
+      "channel":false,
+      "addchannel":false
     };
 
     $scope.partial = 'tpl/com.envomuse/customers_store_list.html';
@@ -281,6 +168,10 @@ app.controller('CustomerDetailCtrl', ['$scope', 'Customers', 'CustomerManager', 
       return 'tpl/com.envomuse/customers_brand_edit.html';
     if($scope.displayItemList.editStore)
       return 'tpl/com.envomuse/customers_store_edit.html';
+    if($scope.displayItemList.channel)
+      return 'tpl/com.envomuse/customers_channel_list.html';
+    if($scope.displayItemList.addchannel)
+      return 'tpl/com.envomuse/customers_channel_new.html';
   }
 
 
@@ -292,6 +183,11 @@ app.controller('CustomerDetailCtrl', ['$scope', 'Customers', 'CustomerManager', 
       })[0];
 
       // console.log($scope.leader);
+    });
+
+  CustomerChannels.getChannels({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.channels = res;
     });
 
     //messaging
@@ -563,7 +459,7 @@ app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams', func
               _id:e._id,
               siteName:e.siteName,
               reference:e.reference,
-              lastBindDate:e.programs[0]!=null?e.programs[0].bindDate:null
+              // lastBindDate:e.programs[0]!=null?e.programs[0].bindDate:null
             };
           });
 
@@ -676,6 +572,77 @@ app.controller('StoreDeleteModalCtrl', ['$scope', '$modal', '$log', function($sc
     };
   }])
   ; 
+
+
+//Channels
+app.controller('ChannelNewCtrl', ['$scope', 'CustomerChannels', '$stateParams', '$state', function($scope, CustomerChannels,$stateParams, $state) {
+  
+  $scope.channel = {};
+
+  $scope.createChannel = function(){
+
+    var newChannel = {
+      name: $scope.channel.name,
+      type: 'normal'
+    };
+
+    CustomerChannels.saveChannel({customerId:$stateParams.brandId},newChannel,function() {
+      $state.go('customers.brand.detail',{brandId:$stateParams.brandId},{reload: true});
+    });
+  };
+
+
+}]);
+
+app.controller('ChannelListCtrl', ['$scope', 'CustomerSites', 'CustomerChannels', 'ChannelsBindSite', '$stateParams', '$state', function($scope, CustomerSites, CustomerChannels,ChannelsBindSite,$stateParams, $state) {
+  
+  $scope.init = function(){
+    $scope.channel = {};
+    $scope.checkedSites = [];
+    $scope.formValid = false;
+  };
+
+  //get checked sites
+  $scope.chooseSite = function(name) {
+    var idx = $scope.checkedSites.indexOf(name);
+
+    // is currently selected
+    if (idx > -1) {
+      $scope.checkedSites.splice(idx, 1);
+    }
+    // is newly selected
+    else {
+      $scope.checkedSites.push(name);
+    }
+
+    $scope.formValid = $scope.checkedSites.length>0;
+  };
+
+  CustomerChannels.getChannels({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.channels = res;
+      console.log($scope.channels);
+    });
+
+  $scope.showSites = function(id){
+    $scope.showSiteList = true;
+    $scope.channelId = id;
+    
+    CustomerSites.getPageData({'customerId':$stateParams.brandId},
+      function(res) {
+        $scope.sites = res.data;
+    });
+  };
+
+  $scope.startBind = function(){
+    console.log($scope.checkedSites);
+
+    ChannelsBindSite.save({'channelId':$scope.channelId},{"sites":$scope.checkedSites},function() {
+      $state.go('customers.brand.detail',{brandId:$stateParams.brandId},{reload: true});
+    });
+  };
+
+}]);
 
 
 //Contacts
@@ -842,7 +809,6 @@ app.controller('JobListCtrl', ['$scope', 'Jobs', '$stateParams', function($scope
       $scope.bigCurrentPage = pageNo;
     };
     $scope.pageChanged = function() {
-
       Jobs.get(function(res) {
           $scope.datasource = res;
         });

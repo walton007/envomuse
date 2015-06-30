@@ -1,0 +1,57 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="init();" ng-controller="ChannelListCtrl">
+  <!-- main -->
+  <div class="col">
+    <div class="row wrapper">
+      <div class="panel panel-default no-border">
+        <div class="table-responsive">
+          <table class="table table-striped b-t b-light">
+            <thead class="bg-light">
+              <tr>
+                <th width="20%">名称</th>
+                <th>频道类型</th>
+                <th>门店数</th>
+                <th>备注</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in channels">
+                <td><a ui-sref="channels.dash({channelId:row._id})">{{row.name}}</a></td>
+                <td>{{row.type}}</td>
+                <td><span class="badge bg-{{channels.length==0?'dk':'info'}}">{{row.sitesCount}}</span></td>
+                <td>{{row.comment}}</td>
+                <td class="text-center"><a class="label bg-info" ng-click="showSites(row._id)"><i class="fa fa-plus"></i>选择门店</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div> 
+    </div>
+    <!--sites list-->
+    <div class="row wrapper" ng-show="showSiteList">
+      <form name="form" class="form-validation">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group">
+              <div class="col-sm-3" ng-repeat="s in sites">
+                <div class="checkbox">
+                  <label class="i-checks">
+                    <input type="checkbox" value="{{s.siteName}}" ng-checked="checkedSites.indexOf(s.siteName)>-1" ng-click="chooseSite(s.siteName)">
+                    <i></i>
+                    {{s.siteName}}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer class="panel-footer text-right bg-light lter">
+            <button type="submit" class="btn btn-success" ng-disabled="!formValid" ng-click="startBind()">关联</button>
+          </footer>
+        </div>
+      </form>
+    </div>
+    <!--/sites list-->
+  </div>
+  <!-- /main -->
+
+</div>

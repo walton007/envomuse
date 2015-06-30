@@ -84,17 +84,28 @@ angular.module('app')
                   //templateUrl: 'tpl/layout.html',
                   templateUrl: 'tpl/app.html',
                   resolve: {
-                    deps: ['$ocLazyLoad',
-                      function( $ocLazyLoad ){
+                    deps: ['$ocLazyLoad','uiLoad',
+                      function( $ocLazyLoad,uiLoad ){
                         return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
                                                  'js/app/envomuse.services.js',
-                                                 'js/filters/fromNow.js']);
+                                                 'js/filters/fromNow.js',
+                                                 'js/app/envomuse.select.js'])
+                        .then(function(){
+                              return $ocLazyLoad.load('ui.select');
+                            });
                     }]
                   }
               })
-              .state('channels.list', {
-                  url: '/',
+              .state('channels.dash', {
+                  url: '/:channelId',
                   templateUrl: 'tpl/com.envomuse/channels_dash.html'
+              })
+              .state('channels.detail', {
+                  url: '/:channelId/detail',
+                  parent:'channels',
+                  templateUrl: 'tpl/com.envomuse/channels_detail.html',
+                  
+                  
               })
 
               //customer

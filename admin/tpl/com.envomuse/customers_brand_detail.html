@@ -1,4 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="init()" ng-controller="CustomerDetailCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="init();" ng-controller="CustomerDetailCtrl">
   <div class="col">
 
     <!-- main header -->
@@ -14,6 +14,8 @@
             <a class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="showItem('addStore')"><i class="fa fa-plus"></i>添加门店</a>
             <button class="btn m-b-xs btn-sm btn-primary" dropdown-toggle><span class="caret"></span></button>
              <ul class="dropdown-menu">
+              <li><a ng-click="showItem('addchannel')">添加频道</a></li>
+              <li class="divider"></li>
               <li><a ng-click="showItem('addcontact')">添加联系人</a></li>
               <li class="divider"></li>
               <li><a ng-click="showItem('editBrand')">编辑</a></li>
@@ -37,21 +39,6 @@
         <a ng-click="showItem('addcontact')" class="m-r" tooltip="添加联系人"><i class="icon icon-user-follow text-muted m-r-sm"></i></a>
         <a ng-click="showItem('addStore')" class="m-r" tooltip="添加门店"><i class="fa fa-bank fw text-muted m-r-sm"></i></a>
       </div>
-
-      <!-- <div class="panel-body">
-        <div class="clearfix text-center m-t">
-          <div class="inline">
-            <div class="inline" style="width: 100px; height: 100px; line-height: 100px;">
-              <div class="thumb-lg m-t-n-xxl">
-                <img data-ng-src="{{brand.logo}}"/>
-              </div>
-            </div>
-            <div class="h4 m-t m-b-xs">{{brand.brand | uppercase}}</div>
-            <small class="text-muted m-b clearfix">{{brand.industry}}</small>
-            <small class="text-muted m-b clearfix">{{brand.status}}</small>
-          </div>                      
-        </div>
-      </div> -->
 
       <div class="panel-heading b-b wrapper-md">
         <div class="clearfix">
@@ -78,6 +65,12 @@
           <span class="badge bg-success">{{brand.sitesCount}}</span>
           <i class="fa fa-bank fa-fw text-muted"></i> 
           门店
+        </a>
+
+        <a ng-click="showItem('channel')" class="list-group-item bg-light">
+          <span class="badge bg-{{channels.length==0?'dk':'info'}}">{{channels.length}}</span>
+          <i class="fa fa-list fa-fw text-muted"></i> 
+          频道
         </a>
 
         <a ng-click="showItem('contact')" class="list-group-item bg-light">
