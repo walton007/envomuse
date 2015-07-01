@@ -3,6 +3,17 @@
   <div class="col">
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
+        <div class="col-sm-2">
+          <div class="w-auto-xl w-auto-xs center-block">
+            <div class="btn-group btn-group-justified text-center text-sm">
+              <div class="btn-group">    
+                <a class="wrapper-xs block" tooltip="返回" ng-click="hideMe()">
+                  <i class="block text-md m-t-xs icon-arrow-left"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="col-sm-8 col-xs-12">
           <div class="h4 m-t-xs m-b-xs">
             {{store.siteName | uppercase}}店
@@ -11,9 +22,9 @@
           <small class="text-muted">经理：{{store.manager.name}}</small>
           <small class="text-muted">店铺地址：{{store.address}}</small>
           <small class="text-muted">创建时间：{{store.created | fromNow}}</small>
-          <span class="label bg-primary m-l-sm">频道：{{store.channel}}</span>
+          <span class="label bg-primary m-l-sm">频道：{{store.channelName}}</span>
         </div>
-        <div class="col-sm-4 text-right hidden-xs">
+        <div class="col-sm-2 text-right hidden-xs">
           <div class="wrapper-sm">
             <a ng-click="showItem('editStore')" class="m-r" tooltip="修改"><i class="fa fa-edit text-muted m-r-sm"></i></a>
           </div>

@@ -12,7 +12,7 @@
           <small class="text-muted">经理：{{store.manager.name}}</small>
           <small class="text-muted">店铺地址：{{store.address}}</small>
           <small class="text-muted">创建时间：{{store.created | fromNow}}</small>
-          <span class="label bg-primary m-l-sm">频道：{{store.channel}}</span>
+          <span class="label bg-primary m-l-sm">频道：{{store.channelName}}</span>
         </div>
         <div class="col-sm-4 text-right hidden-xs">
           <div class="wrapper-sm">
@@ -81,6 +81,7 @@
 
             <div class="form-group">
               <div class="col-lg-8 col-lg-offset-2">
+                <button type="submit" class="btn btn-danger" ng-click="hideMe()">取消编辑</button>
                 <button class="btn btn-success pull-right w-xs" ng-click="saveStore()">保存</button>
               </div>
             </div>

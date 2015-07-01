@@ -1,6 +1,19 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="init();" ng-controller="ChannelListCtrl">
   <!-- main -->
   <div class="col">
+    
+    <div class="row">
+      <div class="w-auto-xl w-auto-xs center-block">
+        <div class="btn-group btn-group-justified text-center text-sm">
+          <div class="btn-group">    
+            <a class="wrapper-xs block" tooltip="返回" ng-click="hideMe()">
+              <i class="block text-md m-t-xs icon-arrow-left"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="row wrapper">
       <div class="panel panel-default no-border">
         <div class="table-responsive">
@@ -18,7 +31,7 @@
               <tr ng-repeat="row in channels">
                 <td><a ui-sref="channels.dash({channelId:row._id})">{{row.name}}</a></td>
                 <td>{{row.type}}</td>
-                <td><span class="badge bg-{{channels.length==0?'dk':'info'}}">{{row.sitesCount}}</span></td>
+                <td><span class="badge bg-{{row.sitesCount>0?'info':'light'}}">{{row.sitesCount}}</span></td>
                 <td>{{row.comment}}</td>
                 <td class="text-center"><a class="label bg-info" ng-click="showSites(row._id)"><i class="fa fa-plus"></i>选择门店</a></td>
               </tr>

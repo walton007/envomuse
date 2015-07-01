@@ -141,6 +141,9 @@ app.controller('CustomerDetailCtrl', ['$scope', 'Customers', 'CustomerManager', 
 
   $scope.showItem = function(item,params){
     for(var key in $scope.displayItemList){
+       if($scope.displayItemList[key])
+          $scope.previousItem = key;
+
        $scope.displayItemList[key] = false;
     }
 
@@ -151,6 +154,12 @@ app.controller('CustomerDetailCtrl', ['$scope', 'Customers', 'CustomerManager', 
     // console.log($scope.storeId);
 
     $scope.partial = $scope.getPartial();
+  };
+
+  $scope.hideMe = function(){
+    console.log($scope.previousItem);
+
+    $scope.showItem($scope.previousItem);
   };
 
   $scope.getPartial = function () {
@@ -423,6 +432,7 @@ app.controller('StoreEditCtrl', ['$scope', 'Customers', 'Sites', '$stateParams',
     store.$update(function(site) {
       //alert('add site success');
       $state.go('customers.brand.detail',{brandId:$stateParams.brandId},{reload: true});
+      showItem('storeDetail',$scope.store._id);
     });
   };
 
@@ -459,9 +469,15 @@ app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams', func
               _id:e._id,
               siteName:e.siteName,
               reference:e.reference,
+              channelName:e.channelName,
+              channelType:e.channelType==='normal'?'light':(e.channelType==='special'?'primary':'info'),
+              deliverState:e.deliveryState==='deliveryYes'?'success':'light',
+              playerStatus:e.playerStatus==='offline'?'danger':'success'
               // lastBindDate:e.programs[0]!=null?e.programs[0].bindDate:null
             };
           });
+
+          console.log($scope.normalizedDataSource);
 
         });
     };
@@ -671,11 +687,17 @@ app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', '$state
       department: $scope.contact.department
     };
 
+    switch($scope.brand.status){
+      case "目标客户":$scope.brand.status='prospect';break;
+      case "样品测试":$scope.brand.status='demo';break;
+      case "签约客户":$scope.brand.status='signed';break;
+      case "合约终止":$scope.brand.status='inactive';break;
+    }
+
     $scope.brand.contacts.push(newContact);
 
     $scope.brand.$update(function(customer) {
-      //alert('Add contact success');
-      $state.go('customers.brand.detail',{brandId:customer._id});
+      $state.go('customers.brand.detail',{brandId:$scope.brand._id},{reload: true});
     });
   };
 

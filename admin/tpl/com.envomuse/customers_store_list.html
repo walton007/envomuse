@@ -40,11 +40,11 @@
               <!-- <td><a ui-sref="customers.store.detail({brandId:brand._id,storeId:row._id})">{{row.siteName}}</a> </td> -->
               <td><a ng-click="showItem('storeDetail','{{row._id}}')">{{row.siteName}}</a> </td>
               <td>{{row.reference}}</td>
-              <td class="text-center">默认</td>
+              <td class="text-center"><span class="label bg-{{row.channelType}}">{{row.channelName}}</span></td>
               <!-- <td>{{row.created |  fromNow}}</td> -->
               <!-- <td>{{row.siteProgramsCount}}</td> -->
-              <td class="text-center"><i class="fa fa-circle text-success text-xs m-t-sm"></i></td>
-              <td class="text-center"><i class="fa fa-circle text-success text-xs m-t-sm"></i></td>
+              <td class="text-center"><i class="fa fa-circle text-{{row.deliverState}} text-xs m-t-sm"></i></td>
+              <td class="text-center"><i class="fa fa-circle text-{{row.playerStatus}} text-xs m-t-sm"></i></td>
               <td class="text-center"><a class="btn btn-sm btn-info btn-addon" href><i class="fa fa-download"></i>导出</a></td>
               <!-- <td><span ng-show="row.lastBindDate!=null">{{row.lastBindDate | fromNow}}</span></td> -->
             </tr>
