@@ -52,29 +52,23 @@ app.controller('CustomerCountCtrl', ['$scope', 'Customers', 'Sites', '$statePara
 
 app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams', 
   function($scope, Customers, $stateParams) {
-    
-    //TBD: add sort
-    $scope.init = function(){
-      $scope.maxSize = 5; //total buttons displayed
-      $scope.bigCurrentPage = 1;  //current page
-      $scope.datasource = [];
-      $scope.pageItems = 12;
 
+    $scope.maxSize = 5; //total buttons displayed
+    $scope.bigCurrentPage = 1;  //current page
+    $scope.datasource = [];
+    $scope.pageItems = 12;
+    $scope.bigTotalItems = 0;
+
+    $scope.init = function(){
       $scope.pageChanged();
     };
-    
-    $scope.pageChanged = function() {
 
-      $scope.setPage = function (pageNo) {
-        $scope.bigCurrentPage = pageNo;
-      };
+    $scope.pageChanged = function() {
 
       Customers.getPageData({pageNumber:$scope.bigCurrentPage,pageSize:$scope.pageItems},
         function(res) {
-          $scope.bigTotalItems = res.count;
           $scope.datasource = res.data;
-
-          // console.log(res.data);
+          $scope.bigTotalItems = res.count;
 
           $scope.normalizedDataSource = $scope.datasource.map(function(e){
             return {
@@ -123,9 +117,10 @@ app.controller('ChannelsDetailCtrl', ['$scope', 'ChannelsProgramList', '$statePa
 app.controller('CustomerDetailCtrl', ['$scope', 'Customers', 'CustomerManager', 'CustomerChannels', '$stateParams', function($scope, Customers, CustomerManager, CustomerChannels, $stateParams) {
 
   $scope.init = function(){
+
     $scope.displayItemList = {
       "contact":false,
-      "store":true,
+      "store":false,
       "channel":false,
       "addcontact":false,
       "editBrand":false,
@@ -136,10 +131,16 @@ app.controller('CustomerDetailCtrl', ['$scope', 'Customers', 'CustomerManager', 
       "addchannel":false
     };
 
-    $scope.partial = 'tpl/com.envomuse/customers_store_list.html';
+    if($stateParams.partial!=='store'){
+      $scope.showItem($stateParams.partial,$stateParams.storeId);
+    }
+    else{
+      $scope.showItem('store');
+    }
   };
 
   $scope.showItem = function(item,params){
+
     for(var key in $scope.displayItemList){
        if($scope.displayItemList[key])
           $scope.previousItem = key;
@@ -151,14 +152,11 @@ app.controller('CustomerDetailCtrl', ['$scope', 'Customers', 'CustomerManager', 
 
     if(item==='storeDetail')
       $scope.storeId = params;
-    // console.log($scope.storeId);
-
-    $scope.partial = $scope.getPartial();
+      $scope.partial = $scope.getPartial();
   };
 
   $scope.hideMe = function(){
-    console.log($scope.previousItem);
-
+    // console.log($scope.previousItem);
     $scope.showItem($scope.previousItem);
   };
 
@@ -361,8 +359,8 @@ app.controller('CustomerDeleteModalCtrl', ['$scope', '$modal', '$log', function(
 }]); 
 
 //STORES-Sites
-app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites', '$stateParams', '$state',
-  function($scope, Customers, Sites, CustomerSites, $stateParams,$state) {
+app.controller('StoreNewCtrl', ['$scope', 'Customers', 'CustomerChannels', 'Sites', 'CustomerSites', '$stateParams', '$state',
+  function($scope, Customers, CustomerChannels, Sites, CustomerSites, $stateParams,$state) {
 
   Customers.get({'customerId':$stateParams.brandId},
     function(res) {
@@ -370,21 +368,28 @@ app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites',
       $scope.contacts = $scope.brand.contacts;
     });
 
+  CustomerChannels.getChannels({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.channels = res;
+    });
+
+
   $scope.createStore = function(){
     var newStore = {
       customerId: $scope.brand._id,
       siteName: $scope.store.sitename,
       reference: $scope.store.reference,
+      channel:$scope.selectedChannel,
       // businesscenter: $scope.store.businesscenter,
       // manager: $scope.store.contact,
-      // address: $scope.store.address,
+      address: $scope.store.address
       // country: $scope.store.country,
       // province: $scope.store.province,
       // city: $scope.store.city,
       // zipcode: $scope.store.zipcode,
       // latitude: $scope.store.latitude,
       // longitude: $scope.store.longitude,
-      description: $scope.store.description
+      // description: $scope.store.description
     };
 
     var store = new CustomerSites(newStore);
@@ -396,19 +401,22 @@ app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites',
 
 }]);
 
-app.controller('StoreEditCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', '$state',
-  function($scope, Customers, Sites, $stateParams,$state) {
-
-  Customers.get({'customerId':$stateParams.brandId},
-    function(res) {
-      $scope.brand = res;
-      $scope.contacts = $scope.brand.contacts;
-    });
+app.controller('StoreEditCtrl', ['$scope', 'Sites', 'CustomerChannels', '$stateParams', '$state',
+  function($scope, Sites, CustomerChannels, $stateParams,$state) {
 
   Sites.get({'siteId':$scope.$parent.storeId},
     function(res) {
       $scope.store = res;
+      // console.log($scope.store);
+
+      CustomerChannels.getChannels({'customerId':$stateParams.brandId},
+      function(res) {
+        $scope.channels = res;
+        // console.log($scope.channels);
+        // console.log($scope.channels.map(function(x) {return x._id; }).indexOf($scope.store.channel));
+        $scope.selectedChannel = $scope.channels[$scope.channels.map(function(x) {return x._id; }).indexOf($scope.store.channel)];
     });
+  });  
 
   $scope.saveStore = function(){
     var updatedStore = {
@@ -416,104 +424,103 @@ app.controller('StoreEditCtrl', ['$scope', 'Customers', 'Sites', '$stateParams',
       customerId: $scope.brand._id,
       siteName: $scope.store.siteName,
       reference: $scope.store.reference,
+      channel:$scope.selectedChannel._id,
       // businesscenter: $scope.store.businesscenter,
       // manager: $scope.store.contact,
-      // address: $scope.store.address,
+      address: $scope.store.address
       // country: $scope.store.country,
       // province: $scope.store.province,
       // city: $scope.store.city,
       // zipcode: $scope.store.zipcode,
       // latitude: $scope.store.latitude,
       // longitude: $scope.store.longitude,
-      description: $scope.store.description
+      //description: $scope.store.description
     };
+
+    // console.log(updatedStore);
 
     var store = new Sites(updatedStore);
     store.$update(function(site) {
-      //alert('add site success');
-      $state.go('customers.brand.detail',{brandId:$stateParams.brandId},{reload: true});
-      showItem('storeDetail',$scope.store._id);
+      // $state.go('customers.brand.detail',{brandId:$stateParams.brandId},{reload: true});
+      $state.go('customers.brand.detail',{brandId:$scope.brand._id,partial:'storeDetail',storeId:$scope.store._id},{reload: true});
+      // $scope.$parent.showItem('storeDetail',$scope.store._id);
     });
   };
 
 }]);
 
 
-app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams', function($scope, CustomerSites, $stateParams) {
-    
-     //TBD: add sort
+app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams', 
+  function($scope, Customers, $stateParams) {
+
+    $scope.maxSize = 5; //total buttons displayed
+    $scope.bigCurrentPage = 1;  //current page
+    $scope.datasource = [];
+    $scope.pageItems = 12;
+    $scope.bigTotalItems = 0;
+
     $scope.init = function(){
-      $scope.maxSize = 5; //total buttons displayed
-      $scope.bigCurrentPage = 1;  //current page
-      $scope.datasource = [];
-      $scope.pageItems = 5;
-
-      $scope.pageChanged();
-    };
-    
-    $scope.pageChanged = function() {
-
-      $scope.setPage = function (pageNo) {
-        $scope.bigCurrentPage = pageNo;
-      };
-
-      CustomerSites.getPageData({'customerId':$stateParams.brandId,pageNumber:$scope.bigCurrentPage,pageSize:$scope.pageItems},
-        function(res) {
-          $scope.bigTotalItems = res.count;
-          $scope.datasource = res.data;
-
-          // console.log(res.data);
-
-          $scope.normalizedDataSource = $scope.datasource.map(function(e){
-            return {
-              _id:e._id,
-              siteName:e.siteName,
-              reference:e.reference,
-              channelName:e.channelName,
-              channelType:e.channelType==='normal'?'light':(e.channelType==='special'?'primary':'info'),
-              deliverState:e.deliveryState==='deliveryYes'?'success':'light',
-              playerStatus:e.playerStatus==='offline'?'danger':'success'
-              // lastBindDate:e.programs[0]!=null?e.programs[0].bindDate:null
-            };
-          });
-
-          console.log($scope.normalizedDataSource);
-
-        });
-    };
-
-    /*$scope.init = function(){
-      $scope.maxSize = 5; //total buttons displayed
-      $scope.bigCurrentPage = 1;  //current page
-      $scope.datasource = [];
-      $scope.pageItems = 5;
-    
       $scope.pageChanged();
     };
 
     $scope.pageChanged = function() {
 
-      $scope.setPage = function (pageNo) {
-        $scope.bigCurrentPage = pageNo;
-      };
-
-      CustomerSites.getPageData({'customerId':$stateParams.brandId,pageNumber:$scope.bigCurrentPage,pageSize:$scope.pageItems},
+      Customers.getPageData({pageNumber:$scope.bigCurrentPage,pageSize:$scope.pageItems},
         function(res) {
-          $scope.bigTotalItems = res.count;
           $scope.datasource = res.data;
+          $scope.bigTotalItems = res.count;
 
           $scope.normalizedDataSource = $scope.datasource.map(function(e){
             return {
               _id:e._id,
-              siteName:e.siteName,
-              reference:e.reference,
-              lastBindDate:e.programs[0]!=null?e.programs[0].bindDate:null
+              brand:e.brand,
+              industry:e.industry,
+              created:e.created,
+              status:e.status,
+              updatePeriod:e.updatePeriod,
+              sitesCount:e.sitesCount!=null?e.sitesCount:0
             };
           });
+
         });
-    };*/
+    };
 
   }]);
+
+
+app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams', 
+  function($scope, CustomerSites, $stateParams) {
+  
+  $scope.maxSize = 5; //total buttons displayed
+  $scope.bigCurrentPage = 1;  //current page
+  $scope.datasource = [];
+  $scope.pageItems = 50;
+  $scope.bigTotalItems = 0;
+
+  $scope.init = function(){
+    $scope.pageChanged();
+  };
+
+  $scope.pageChanged = function() {
+
+    CustomerSites.getPageData({'customerId':$stateParams.brandId,pageNumber:$scope.bigCurrentPage,pageSize:$scope.pageItems},
+      function(res) {
+      $scope.bigTotalItems = res.count;
+      $scope.datasource = res.data;
+      $scope.normalizedDataSource = $scope.datasource.map(function(e){
+        return {
+          _id:e._id,
+          siteName:e.siteName,
+          reference:e.reference,
+          channelName:e.channelName,
+          channelType:e.channelType==='normal'?'light':(e.channelType==='special'?'primary':'info'),
+          deliverState:e.deliveryState==='deliveryYes'?'success':'light',
+          playerStatus:e.playerStatus==='offline'?'danger':'success'
+        };
+      });
+    });
+  };
+}]);
 
 
 app.controller('StoreDetailCtrl', ['$scope', '$state', 'Customers', 'Sites', 'SiteLicense', '$stateParams', function($scope, $state, Customers, Sites, SiteLicense, $stateParams) {
@@ -637,7 +644,7 @@ app.controller('ChannelListCtrl', ['$scope', 'CustomerSites', 'CustomerChannels'
   CustomerChannels.getChannels({'customerId':$stateParams.brandId},
     function(res) {
       $scope.channels = res;
-      console.log($scope.channels);
+      // console.log($scope.channels);
     });
 
   $scope.showSites = function(id){
@@ -662,7 +669,8 @@ app.controller('ChannelListCtrl', ['$scope', 'CustomerSites', 'CustomerChannels'
 
 
 //Contacts
-app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', '$state', function($scope, Customers, $stateParams, $state) {
+app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', '$state', 
+  function($scope, Customers, $stateParams, $state) {
   
   $scope.contact = {};
 
@@ -697,7 +705,7 @@ app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', '$state
     $scope.brand.contacts.push(newContact);
 
     $scope.brand.$update(function(customer) {
-      $state.go('customers.brand.detail',{brandId:$scope.brand._id},{reload: true});
+      $state.go('customers.brand.detail',{brandId:$scope.brand._id,partial:'contact'},{reload: true});
     });
   };
 

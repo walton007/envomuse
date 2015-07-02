@@ -1,57 +1,55 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="init();" ng-controller="StoreListCtrl">
-  <!-- main -->
   <div class="col">
-    <div class="panel panel-default no-border">
-      <div class="panel-heading">
-        <div class="row m-t-md">
-          <div class="col-sm-4">
-            <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+
+    <div class="bg-light b-r bg-auto no-padder" style="height:500px">
+      <div class="vbox">
+        <div class="wrapper-md b-b">
+          <div class="row">
+            <div class="col-sm-6">
+              <pagination total-items="bigTotalItems" items-per-page="pageItems" num-pages="numPages"  max-size="maxSize" ng-model="bigCurrentPage" ng-change="pageChanged()" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+            </div>
+            <div class="col-sm-6">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="icon text-mute icon-magnifier"></i></span>
+                <input type="text" class="input-sm form-control" placeholder="输入查找内容" ng-model="searchText">
+              </div>
+            </div>
           </div>
-          <div class="col-sm-4">
-            <div class="input-group">
-              <input type="text" class="input-sm form-control" placeholder="输入查找内容" ng-model="searchText">
-              <span class="input-group-btn">
-                <button class="btn btn-sm btn-default" type="button">查找</button>
-              </span>
+        </div>
+        <div class="row-row">
+          <div class="cell">
+            <div class="cell-inner">
+
+              <div class="table-responsive">
+                <table class="table table-striped  m-b-none" ui-jq="footable" data-filter="#filter" data-page-size="5">
+                  <thead>
+                    <tr>
+                      <th data-toggle="true">门店</th>
+                      <th data-toggle="true" data-hide="phone,tablet">门店编码</th>
+                      <th data-toggle="true">频道</th>
+                      <th data-toggle="true">交付状态</th>
+                      <th data-toggle="true">连接状态</th>
+                      <th data-toggle="false">导出</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="row in normalizedDataSource | filter:searchText" st-select-row="row">
+                      <td><a ng-click="showItem('storeDetail','{{row._id}}')">{{row.siteName}}</a> </td>
+                      <td>{{row.reference}}</td>
+                      <td class="text-center"><span class="label bg-{{row.channelType}}">{{row.channelName}}</span></td>
+                      <td class="text-center"><i class="fa fa-circle text-{{row.deliverState}} text-xs m-t-sm"></i></td>
+                      <td class="text-center"><i class="fa fa-circle text-{{row.playerStatus}} text-xs m-t-sm"></i></td>
+                      <td class="text-center"><a class="btn btn-sm btn-info btn-addon" href><i class="fa fa-download"></i>导出</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="table-responsive">
-        <table class="table table-striped b-t b-light">
-          <thead class="bg-light">
-            <tr>
-              <!-- <th width="15%">品牌</th> -->
-              <th width="15%">门店</th>
-              <th width="15%">门店编码</th>
-              <th width="15%" class="text-center">频道</th>
-              <!-- <th width="15%">添加时间</th> -->
-              <!-- <th width="15%">关联播放列表数</th> -->
-              <th width="15%" class="text-center">交付状态</th>
-              <th width="15%" class="text-center">连接状态</th>
-              <th class="text-center">导出</th>
-              <!-- <th>最后绑定时间</th> -->
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="row in normalizedDataSource | filter:searchText" st-select-row="row">
-              <!-- <td><a ui-sref="customers.brand.detail({brandId:brand._id})">{{brand.brand | uppercase}}</a></td> -->
-              <!-- <td><a ui-sref="customers.store.detail({brandId:brand._id,storeId:row._id})">{{row.siteName}}</a> </td> -->
-              <td><a ng-click="showItem('storeDetail','{{row._id}}')">{{row.siteName}}</a> </td>
-              <td>{{row.reference}}</td>
-              <td class="text-center"><span class="label bg-{{row.channelType}}">{{row.channelName}}</span></td>
-              <!-- <td>{{row.created |  fromNow}}</td> -->
-              <!-- <td>{{row.siteProgramsCount}}</td> -->
-              <td class="text-center"><i class="fa fa-circle text-{{row.deliverState}} text-xs m-t-sm"></i></td>
-              <td class="text-center"><i class="fa fa-circle text-{{row.playerStatus}} text-xs m-t-sm"></i></td>
-              <td class="text-center"><a class="btn btn-sm btn-info btn-addon" href><i class="fa fa-download"></i>导出</a></td>
-              <!-- <td><span ng-show="row.lastBindDate!=null">{{row.lastBindDate | fromNow}}</span></td> -->
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div> 
   </div>
-  <!-- /main -->
 </div>

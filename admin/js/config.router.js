@@ -150,6 +150,10 @@ angular.module('app')
               .state('customers.brand.detail', {
                   url: '/:brandId/detail',
                   parent: 'customers',
+                  params:{
+                    'partial':'store',
+                    'storeId':null
+                  },
                   templateUrl: 'tpl/com.envomuse/customers_brand_detail.html'
               })
 

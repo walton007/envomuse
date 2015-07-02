@@ -12,8 +12,8 @@
         </div>
         <div class="col-sm-6 text-right hidden-xs">
           <div class="btn-group dropdown" dropdown>
-              <button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="$state.go('customers.brand.new')"><i class="fa fa-plus"></i>添加品牌</button>
-            </div>
+            <button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="$state.go('customers.brand.new')"><i class="fa fa-plus"></i>添加品牌</button>
+          </div>
         </div>
       </div>
     </div>
@@ -25,8 +25,8 @@
           <div class="panel panel-default">
             <div class="panel-heading">
               <div class="row m-t-md">
-                <div class="col-sm-4">
-                  <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" ng-change="pageChanged()" max-size="maxSize" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
+                <div class="col-sm-6">
+                  <pagination total-items="bigTotalItems" items-per-page="pageItems" num-pages="numPages"  max-size="maxSize" ng-model="bigCurrentPage" ng-change="pageChanged()" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
                 </div>
                 <div class="col-sm-6">
                   <div class="input-group">

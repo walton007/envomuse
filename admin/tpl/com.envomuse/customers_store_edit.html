@@ -49,13 +49,22 @@
               </div>
             </div>
 
-            <!-- <div class="form-group">
+            <div class="form-group">
+              <label class="col-lg-2 control-label">频道</label>
+              <div class="col-lg-8">
+                <select ui-jq="chosen" class="form-control" ng-model="selectedChannel" ng-options="option.name for option in channels" required></select>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
               <label class="col-lg-2 control-label">地址</label>
               <div class="col-lg-8">
                 <input type="text" class="form-control" ng-model="store.address" required>
               </div>
             </div>
-
+            
+            <!-- 
             <div class="form-group">
               <label class="col-lg-2 control-label">经度</label>
               <div class="col-lg-8">
@@ -69,15 +78,7 @@
                 <input type="text" class="form-control" ng-model="store.longitude" required>
               </div>
             </div>
- -->
-            <!-- <div class="line line-dashed b-b line-lg pull-in"></div>
-            <div class="form-group">
-              <label class="col-sm-2 control-label">详细描述</label>
-              <div class="col-sm-8">
-                <textarea class="form-control h-auto" style="min-height:200px;" ng-model="store.description">{{store.description}}
-                </textarea>
-              </div>
-            </div> -->
+            -->
 
             <div class="form-group">
               <div class="col-lg-8 col-lg-offset-2">
