@@ -7,8 +7,11 @@
       <div class="w-auto-xl w-auto-xs center-block">
         <div class="btn-group btn-group-justified text-center text-sm">
           <div class="btn-group">    
-            <a class="wrapper-xs block" tooltip="返回" ng-click="hideMe()">
+            <a class="wrapper-xs" tooltip="返回" ng-click="hideMe()">
               <i class="block text-md m-t-xs icon-arrow-left"></i>
+            </a>
+            <a class="wrapper-xs" tooltip="添加联系人" ng-click="showItem('addcontact')">
+              <i class="icon icon-user-follow m-l-sm"></i>
             </a>
           </div>
         </div>
@@ -24,49 +27,54 @@
       </div>
       <!-- / alert -->
 
-      <div ng-repeat="item in datasource" class="col-sm-4">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="clearfix">
-              <div class="pull-left thumb-md avatar b-3x m-r">
-                <img src="img/a2.jpg" alt="...">
-              </div>
-              <div class="clear">
-                <div class="h3 m-t-xs m-b-xs">
-                  {{item.name}}
-                  <i class="fa fa-circle text-{{item.isLeader?'success':'dker'}} pull-right text-xs m-t-sm"></i>
+      <div ng-show="datasource.length==0">
+        暂时没有联系人信息，马上<a class="text-u-l m-l" ng-click="showItem('addcontact')">添加联系人</a>
+      </div>
+      <div ng-show="datasource.length>0">
+        <div ng-repeat="item in datasource" class="col-sm-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <div class="clearfix">
+                <div class="pull-left thumb-md avatar b-3x m-r">
+                  <img src="img/a2.jpg" alt="...">
                 </div>
-                <small class="text-muted">{{item.title}}</small>
-                <a href ng-click="editItem(item)"><i class="pull-right fa fa-edit" tooltip="修改"></i></a>
+                <div class="clear">
+                  <div class="h3 m-t-xs m-b-xs">
+                    {{item.name}}
+                    <i class="fa fa-circle text-{{item.isLeader?'success':'dker'}} pull-right text-xs m-t-sm"></i>
+                  </div>
+                  <small class="text-muted">{{item.title}}</small>
+                  <a href ng-click="editItem(item)"><i class="pull-right fa fa-edit" tooltip="修改"></i></a>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="list-group no-radius alt">
-            <a class="list-group-item" href>
-              <span class="pull-right">{{item.workmobile}}</span>
-              <i class="fa fa-phone fa-fw text-muted"></i> 
-              工作电话
-            </a>
-            <a class="list-group-item" href>
-              <span class="pull-right">{{item.email}}</span>
-              <i class="fa fa-envelope-o fa-fw text-muted"></i> 
-              Email
-            </a>
-            <a class="list-group-item" href >
-              <span class="pull-right">{{item.wechat}}</span>
-              <i class="fa fa-wechat fa-fw text-muted"></i> 
-              微信
-            </a>
-            <a class="list-group-item" href>
-              <span class="pull-right">{{item.qq}}</span>
-              <i class="fa fa-qq fa-fw text-muted"></i> 
-              QQ
-            </a>
-            <a class="list-group-item" href>
-              <span class="pull-right">{{item.privatemobile}}</span>
-              <i class="fa fa-mobile fa-fw text-muted"></i> 
-              私人电话
-            </a>
+            <div class="list-group no-radius alt">
+              <a class="list-group-item" href>
+                <span class="pull-right">{{item.workmobile}}</span>
+                <i class="fa fa-phone fa-fw text-muted"></i> 
+                工作电话
+              </a>
+              <a class="list-group-item" href>
+                <span class="pull-right">{{item.email}}</span>
+                <i class="fa fa-envelope-o fa-fw text-muted"></i> 
+                Email
+              </a>
+              <a class="list-group-item" href >
+                <span class="pull-right">{{item.wechat}}</span>
+                <i class="fa fa-wechat fa-fw text-muted"></i> 
+                微信
+              </a>
+              <a class="list-group-item" href>
+                <span class="pull-right">{{item.qq}}</span>
+                <i class="fa fa-qq fa-fw text-muted"></i> 
+                QQ
+              </a>
+              <a class="list-group-item" href>
+                <span class="pull-right">{{item.privatemobile}}</span>
+                <i class="fa fa-mobile fa-fw text-muted"></i> 
+                私人电话
+              </a>
+            </div>
           </div>
         </div>
       </div>
