@@ -5,7 +5,6 @@
  */
 var mongoose = require('mongoose'),
   Site = mongoose.model('Site'),
-  SiteProgram = mongoose.model('SiteProgram'),
   ChannelController = require('./channel'),
   uuid = require('node-uuid'),
   _ = require('lodash');

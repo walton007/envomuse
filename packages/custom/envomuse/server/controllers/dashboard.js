@@ -6,13 +6,13 @@
 var mongoose = require('mongoose'),
   Customer = mongoose.model('Customer'),
   Task = mongoose.model('Task'),
+  Channel = mongoose.model('Channel'),
   Job = mongoose.model('Job'),
   Site = mongoose.model('Site'),
   Program = mongoose.model('Program'),
-  SiteProgram = mongoose.model('SiteProgram'),
-  SiteProgramController = require('./siteProgram'),
   Q = require('q'),
   _ = require('lodash');
+
 
 /**
  * Create an site
@@ -50,6 +50,15 @@ exports.analysis = function(req, res) {
     }]).exec();
   promiseArr.push(promise);
 
+  // get totalChannel
+  promise = Channel.find().count().exec();
+  promiseArr.push(promise);
+
+  // get totalJobs
+  promise = Job.find({
+  }).count().exec();
+  promiseArr.push(promise);
+
   // Wait all done
   Q.all(promiseArr)
   .done(function (values) {
@@ -67,7 +76,13 @@ exports.analysis = function(req, res) {
       siteDeliveryStats[obj._id] = obj.count;
     });
 
+    var totalChannel = values[2];
+    var totalJob = values[3];
+
+
     var ret = {
+      totalChannel: totalChannel,
+      totalJob: totalJob,
       customerStatus: customerStatus, 
       siteDeliveryStats: siteDeliveryStats
     }; 

@@ -5,9 +5,6 @@
  */
 var mongoose = require('mongoose'),
   Job = mongoose.model('Job'),
-  Program = mongoose.model('Program'),
-  programController = require('./program'),
-  siteProgramController = require('./siteProgram'),
   Q = require('q'),
   _ = require('lodash');
 
@@ -15,7 +12,7 @@ exports.all = function(req, res) {
   console.log('all jobs');
   // return only basic information
   Job.find().sort('-created')
-  .select('_id creator brand type created')
+  .select('_id name creator brand type created')
   .exec(function(err, jobs) {
     if (err) {
       return res.status(500).json({
@@ -23,15 +20,7 @@ exports.all = function(req, res) {
       });
     }
 
-    //Get Program from jobs
-    programController.getProgramCountFromJobs(jobs)
-    .then(function(retJobs) {
-      res.json(retJobs);
-    }, function(err) {
-      return res.status(400).json({
-        error: 'getProgramCountFromJobs failed'
-      });
-    });
+    res.json(jobs);
   });
 };
 
@@ -55,67 +44,26 @@ exports.box = function(req, res, next) {
     });
   };
 
-  var boxes = _.filter(req.job.programRule.boxes, {uuid: uuid});
-  if (boxes.length) {
-    return res.json(boxes[0]);
-  };
+  var findBox = null;
+
+  _.each(req.job.dateTemplates, function (dateTemplate) {
+    _.each(dateTemplate.clock.boxes, function (box) {
+      if (box.uuid === uuid) {
+        findBox = box;
+        return;
+      };
+    });
+  });
+
+  if (findBox) {
+    return res.json(findBox);
+  }
 
   return res.status(400).json({
     error: 'no such boxid'
   });
-
 };
 
-
-// exports.statistic = function(req, res, next) {
-//   if (!('statistic' in req.query)) {
-//     next();
-//     return;
-//   }
-
-//   Job.count(function(err, count) {
-//     if (err) {
-//       console.error('Job count error:', err);
-//       return res.status(500).json({
-//         error: 'count the Job error'
-//       });
-//     }
-
-//     res.json({
-//       // Jun added
-//       // count: count
-//       active: count,
-//       inactive: 0
-//     });
-//     return;
-//   });
-// };
-
-
 exports.show = function(req, res, next) {
-  Program.find({
-    job: req.job
-  })
-  .select('_id name startDate endDate created')
-  .exec(function(err, programs) {
-    if (err) {
-      console.warn('programs err:', err);
-      res.json({
-        getProgramErr: err
-      }, 400);
-      return;
-    }
-
-    siteProgramController.getSiteReferenceCountFrom(programs)
-    .then(function(retPrograms) {
-      var retJob = req.job.toJSON();
-      retJob.programs = retPrograms;
-      res.json(retJob);
-    }, function(err) {
-      res.json({
-        getSiteReferenceCountFrom: err
-      }, 400);
-    });
-    
-  });
+  res.json(req.job);
 }

@@ -17,6 +17,7 @@ var ProgramSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Job'
   },
+  jobName: String,
   channel: {
     type: Schema.ObjectId,
     ref: 'Channel'

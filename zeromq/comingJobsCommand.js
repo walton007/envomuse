@@ -45,7 +45,7 @@ function allComingJobs(respCallback, respErrorback) {
 	ComingJob.find({
 			outdate: false
 		})
-		.select('-filepath -outdate -meta')
+		.select('-filepath -outdate -meta.dateTemplates -meta.tracksMeta')
 		.exec(function(err, comingJobs) {
 			if (err) {
 				respErrorback && respErrorback('err:' + err);

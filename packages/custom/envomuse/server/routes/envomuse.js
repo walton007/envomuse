@@ -85,21 +85,8 @@ module.exports = function(Envomuse, app, auth, database) {
   //Programs
   // apiRouter.get('/programs', programs.statistic, programs.all);
   apiRouter.route('/programs/:programId')
-  .get(programs.show)
-  .delete(function(req, res, next) {
-    res.send(200);
-  });
-  // apiRouter.route('/programs/:programId/bindSite')
-  // .post(function(req, res, next){
-  //   return sites.site(req, res, next, req.body.siteId);
-  // }, sites.bindProgram);
-  // apiRouter.route('/programs/:programId/bindSites')
-  // .post(programs.bindSites);
-
-  // apiRouter.route('/programs/:programId/sites')
-  // .get(programs.sites);
-
-  // apiRouter.param('programId', programs.program); 
+  .get(programs.show);
+  apiRouter.param('programId', programs.program); 
 
   //Songs
   apiRouter.route('/songs')

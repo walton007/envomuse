@@ -11,6 +11,7 @@ var JobSchema = new Schema({
   creator: String,
   created: Date,
   brand: String,
+  name: String,
   type: {
     type: String,
     required: true,
@@ -18,8 +19,10 @@ var JobSchema = new Schema({
     enum: ['simplified', 'advanced'],
   },
   dateTemplates: [{
+    "name": String,
     "clock": {
       "boxes": [{
+            "uuid": String,
             "name": String,
             "totalLength": Number,
             "startTm": Date,
