@@ -49,6 +49,17 @@ exports.all = function(req, res) {
   });
 };
 
+exports.show = function(req, res) {
+  var comingJobsId = req.comingJobsId;
+  comingJobsCommand.detail(comingJobsId, function (comingJob) {
+    res.json(comingJob);
+  }, function (err) {
+    res.status(400).json({
+        error: err
+    });
+  });
+};
+
 /**
  * statistic of comingJobs
  */

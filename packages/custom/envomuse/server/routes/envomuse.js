@@ -34,6 +34,8 @@ module.exports = function(Envomuse, app, auth, database) {
   apiRouter.route('/comingJobs/forceRefresh')
   .post(comingJobs.forceRefresh);
 
+  apiRouter.route('/comingJobs/:comingJobId/')
+  .get(comingJobs.show);
   apiRouter.route('/comingJobs/:comingJobId/import')
   .post(comingJobs.import);
   apiRouter.param('comingJobId', function(req, res, next, id){

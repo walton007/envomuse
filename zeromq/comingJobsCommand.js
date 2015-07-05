@@ -45,7 +45,7 @@ function allComingJobs(respCallback, respErrorback) {
 	ComingJob.find({
 			outdate: false
 		})
-		.select('-filepath -outdate')
+		.select('-filepath -outdate -meta')
 		.exec(function(err, comingJobs) {
 			if (err) {
 				respErrorback && respErrorback('err:' + err);
@@ -53,6 +53,20 @@ function allComingJobs(respCallback, respErrorback) {
 				respCallback && respCallback(comingJobs);
 			}
 		});
+}
+
+function getDetailInfo(comingJobId, respCallback, respErrorback) {
+	ComingJob.find({
+		_id: comingJobId
+	})
+	.select('-filepath -outdate')
+	.exec(function(err, comingJob) {
+		if (err) {
+			respErrorback && respErrorback('err:' + err);
+		} else {
+			respCallback && respCallback(comingJob);
+		}
+	});
 }
 
 function ComingJobsStatistic(respCallback, respErrorback) {
@@ -370,6 +384,7 @@ ClearRuningTask(function() {
 
 exports = module.exports = {
 	all: allComingJobs,
+	detail: getDetailInfo,
 	statistic: ComingJobsStatistic,
 	forceRefresh: forceRefresh,
 	doImport: importComingJob,
