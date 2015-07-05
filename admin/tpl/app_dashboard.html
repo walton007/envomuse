@@ -24,7 +24,7 @@
           <div class="row row-sm text-center">
             
             <div class="col-xs-6">
-              <a ui-sref="customers.dash" class="block panel padder-v item">
+              <a ui-sref="customers.brand" class="block panel padder-v item">
                 <span class="text-primary font-thin h1 block">{{stats.totalCustomer}}</span>
                 <span class="text-muted text-xs">品牌</span>
                 <span class="bottom text-right w-full">
@@ -34,7 +34,7 @@
             </div>
 
             <div class="col-xs-6">
-              <a ui-sref="tasks.dash" class="block panel padder-v item">
+              <a ui-sref="channels.dash" class="block panel padder-v item">
                 <span class="text-danger  font-thin h1 block">{{stats.totalTask}}</span>
                 <span class="text-muted text-xs">频道</span>
                 <span class="bottom text-left w-full">
@@ -45,7 +45,7 @@
 
 
             <div class="col-xs-6">
-              <a ui-sref="jobs.dash" class="block panel padder-v item">
+              <a ui-sref="jobs.list" class="block panel padder-v item">
                 <span class="text-info font-thin h1 block">{{stats.totalJobs}}</span>
                 <span class="text-muted text-xs">工作包</span>
                 <span class="top text-right w-full">
@@ -54,7 +54,7 @@
               </a>
             </div>
 
-            <div class="col-xs-6">
+<!--             <div class="col-xs-6">
               <a ui-sref="playlists.dash" class="block panel padder-v item">
                 <span class="text-success font-thin h1 block">{{stats.totalPrograms}}</span>
                 <span class="text-muted text-xs">日历</span>
@@ -62,17 +62,17 @@
                   <i class="icon icon-calendar text-muted m-l-sm"></i>
                 </span>
               </a>
-            </div>
+            </div> -->
 
             <div class="col-xs-12 m-b-md">
               <div class="r bg-light dker item hbox no-border">
                 <div class="col w-xs v-middle hidden-md">
                   <i class="icon icon-bell text-muted h3"></i>
                 </div>
-                <div class="col dk padder-v r-r">
-                  <div class="text-warning-dk font-thin h1"><span>12</span></div>
+                <a class="col dk padder-v r-r" ui-sref="tasks.incoming">
+                  <div class="text-warning-dk font-thin h1"><span>{{comingJobsStats.notImport}}</span></div>
                   <span class="text-muted text-xs">待处理任务</span>
-                </div>
+                </a>
               </div>
             </div>
 

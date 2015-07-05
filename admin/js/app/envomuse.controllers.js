@@ -1,6 +1,6 @@
 //Customer-Brand
-app.controller('DashboardCtrl', ['$scope', 'DashStats', '$stateParams', 
-  function($scope, DashStats, $stateParams) {  
+app.controller('DashboardCtrl', ['$scope', 'DashStats', 'ComingJobs', '$stateParams', 
+  function($scope, DashStats, ComingJobs, $stateParams) {  
 
     $scope.load = function() {
       // $scope.stat = {};
@@ -20,6 +20,11 @@ app.controller('DashboardCtrl', ['$scope', 'DashStats', '$stateParams',
 
         // console.log($scope.siteDeliveryStats);
       });
+
+      ComingJobs.getCount(function(res){
+        $scope.comingJobsStats = res;
+      });
+
   };
 }]);
 
@@ -359,8 +364,8 @@ app.controller('CustomerDeleteModalCtrl', ['$scope', '$modal', '$log', function(
 }]); 
 
 //STORES-Sites
-app.controller('StoreNewCtrl', ['$scope', 'Customers', 'CustomerChannels', 'Sites', 'CustomerSites', '$stateParams', '$state',
-  function($scope, Customers, CustomerChannels, Sites, CustomerSites, $stateParams,$state) {
+app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites', '$stateParams', '$state',
+  function($scope, Customers, Sites, CustomerSites, $stateParams,$state) {
 
   Customers.get({'customerId':$stateParams.brandId},
     function(res) {
@@ -368,18 +373,18 @@ app.controller('StoreNewCtrl', ['$scope', 'Customers', 'CustomerChannels', 'Site
       $scope.contacts = $scope.brand.contacts;
     });
 
-  CustomerChannels.getChannels({'customerId':$stateParams.brandId},
+  /*CustomerChannels.getChannels({'customerId':$stateParams.brandId},
     function(res) {
       $scope.channels = res;
     });
-
+*/
 
   $scope.createStore = function(){
     var newStore = {
       customerId: $scope.brand._id,
       siteName: $scope.store.sitename,
       reference: $scope.store.reference,
-      channel:$scope.selectedChannel,
+      // channel:$scope.selectedChannel,
       // businesscenter: $scope.store.businesscenter,
       // manager: $scope.store.contact,
       address: $scope.store.address
@@ -617,7 +622,8 @@ app.controller('ChannelNewCtrl', ['$scope', 'CustomerChannels', '$stateParams', 
 
 }]);
 
-app.controller('ChannelListCtrl', ['$scope', 'CustomerSites', 'CustomerChannels', 'ChannelsBindSite', '$stateParams', '$state', function($scope, CustomerSites, CustomerChannels,ChannelsBindSite,$stateParams, $state) {
+app.controller('ChannelListCtrl', ['$scope', 'CustomerSites', 'CustomerChannels', 'ChannelsBindSite', '$stateParams', '$state', 
+  function($scope, CustomerSites, CustomerChannels,ChannelsBindSite,$stateParams, $state) {
   
   $scope.init = function(){
     $scope.channel = {};
@@ -825,37 +831,51 @@ app.controller('JobsDashboardCtrl', ['$scope', 'Jobs', '$stateParams', function(
 }]);
 
 
-app.controller('JobListCtrl', ['$scope', 'Jobs', '$stateParams', function($scope, Jobs, $stateParams) {
+app.controller('JobListCtrl', ['$scope', 'Jobs', '$stateParams', 
+  function($scope, Jobs, $stateParams) {
 
-    $scope.init = function(){
-      $scope.maxSize = 5; //total buttons displayed
-      $scope.bigCurrentPage = 1;  //current page
-      $scope.datasource = [];
+  Jobs.get(function(res) {
+        $scope.datasource = res;
+      });
 
-      $scope.pageChanged();
-    };
-
-    $scope.setPage = function (pageNo) {
-      $scope.bigCurrentPage = pageNo;
-    };
-    $scope.pageChanged = function() {
-      Jobs.get(function(res) {
-          $scope.datasource = res;
-        });
-    };
-
-  }]);
+}]);
 
 
-app.controller('JobDetailCtrl', ['$scope', 'JobById', 'GenerateProgram', '$stateParams', function($scope, JobById, GenerateProgram, $stateParams) {  
-
-  // $scope.job = $stateParams.jobContent;
+app.controller('JobDetailCtrl', ['$scope', 'JobById', '$stateParams', 
+  function($scope, JobById, $stateParams) {  
 
   JobById.get({'jobId':$stateParams.jobId},
     function(res) {
       $scope.job = res;
 
-      $scope.job.programRule.playlists = $scope.job.programRule.playlists.filter(function(e){
+      $scope.job.dateTemplates = $scope.job.dateTemplates.map(function(e){
+        switch(e.periodInfo.calcType){
+          case 'multipleDates':
+            /*e.periodInfo.calcType="日期";
+            e.periodInfo.dValues=e.timePeriods.multipleDatesValues.join(', ');*/
+            break;
+          case 'dateRange':
+            // e.dateTemplates.periodInfo.calcType="日期范围";
+            //e.timePeriods.dValues=e.timePeriods.dateRangeValues.startDate+'-->'+e.timePeriods.dateRangeValues.endDate;
+            break;
+          case 'daysOfWeek':
+            e.periodInfo.calcType="周";
+            e.periodInfo.values = [];
+
+            for(var key in e.periodInfo.daysOfWeekValues){
+              if(e.periodInfo.daysOfWeekValues[key])
+                e.periodInfo.values.push(key);
+            }
+
+            break;
+        };
+
+        return e;
+      });
+
+      console.log($scope.job);
+
+      /*$scope.job.programRule.playlists = $scope.job.programRule.playlists.filter(function(e){
       switch(e.timePeriods.calcType){
         case 'multipleDates':
           e.timePeriods.calcType="日期";
@@ -869,10 +889,10 @@ app.controller('JobDetailCtrl', ['$scope', 'JobById', 'GenerateProgram', '$state
           e.timePeriods.calcType="周";
           e.timePeriods.dValues = e.timePeriods.daysOfWeekValues.join(', ');
           break;
-      };
+      };*/
 
       //rules normalization
-      e.dayRuleUnits = e.dayRuleUnits.map(function(d){
+     /* e.dayRuleUnits = e.dayRuleUnits.map(function(d){
         for(var i=0;i<$scope.job.programRule.rules.length;i++){
           if(d.ruleName.toUpperCase()===$scope.job.programRule.rules[i].name.toUpperCase())
               return {
@@ -902,9 +922,9 @@ app.controller('JobDetailCtrl', ['$scope', 'JobById', 'GenerateProgram', '$state
       }
 
       return e;
-    });
+    });*/
 
-        console.log($scope.job);
+        
     });
 
   
@@ -984,7 +1004,7 @@ app.controller('SetJobDateRangeModalCtrl', ['$scope', '$modal', '$log', function
   ; */
 
 //Tasks
-app.controller('TasksDashboardCtrl', ['$scope', 'ComingJobs', '$stateParams', function($scope, ComingJobs, $stateParams) {  
+/*app.controller('TasksDashboardCtrl', ['$scope', 'ComingJobs', '$stateParams', function($scope, ComingJobs, $stateParams) {  
 
   ComingJobs.getCount(function(res){
     $scope.stat = res;
@@ -992,39 +1012,36 @@ app.controller('TasksDashboardCtrl', ['$scope', 'ComingJobs', '$stateParams', fu
   });
 
 }]);
-
-app.controller('ComingJobsCtrl', ['$scope', 'ComingJobsRefresh', 'Tasks', '$stateParams', function($scope, ComingJobsRefresh, Tasks, $stateParams) {  
+*/
+app.controller('ComingJobsCtrl', ['$scope', 'ComingJobs', 'ComingJobsImport', '$stateParams', 
+  function($scope, ComingJobs, ComingJobsImport, $stateParams) {  
 
   $scope.jobs = [];
 
-  $scope.refresh = function (){
-    ComingJobsRefresh.refresh(function(res){
-      
-      $scope.jobs = res.map(function(e){
+  ComingJobs.getList(function(res){
+    $scope.comingJobs = res;
+    console.log($scope.comingJobs);
+
+    $scope.jobs = res.map(function(e){
         return {
           type:e.__t,
-          version: e.__v,
           _id:e._id,
-          creator:e.creator,
-          customerName:e.customerName, 
-          filepath:e.filepath,
-          hash:e.hash,
+          creator:e.meta.creator,
+          customerName:e.meta.brand,
+          // hash:e.hash,
           importStatus: (e.importStatus==='notImport')?'待导入':(e.importStatus==='importing'?'导入中...':'导入完成')
         };
       });
 
-     /*$scope.count = $scope.jobs.filter(function(e){
-      return e.importStatus !== 'notImport';
-     }).length;*/
      $scope.count = $scope.jobs.length;
-     //console.log($scope.jobs);
-    });
-  };
+
+  });
 
   $scope.doImport = function(id){
-    ComingJobsImport.import({'jobId':id},function(res){
-      $scope.tasks = res;
-      alert(res);
+    $scope.importInProgress = true;
+
+    ComingJobsImport.import({'jobId':id},{},function(res){
+      console.log(res);
     });
   };
 

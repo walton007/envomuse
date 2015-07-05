@@ -245,12 +245,12 @@ angular.module('app')
                     }]
                   }
               })
-
+/*
               .state('jobs.dash', {
                   url: '/',
                   templateUrl: 'tpl/com.envomuse/jobs_dashboard.html'
               })
-
+*/
               .state('jobs.list', {
                   url: '/list',
                   templateUrl: 'tpl/com.envomuse/jobs_list.html'
