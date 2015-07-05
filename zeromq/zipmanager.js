@@ -6,12 +6,13 @@ var JSZip = require("jszip"),
 	Q = require('q'),
 	crypto = require('crypto'),
 	_ = require('lodash');
-var filepath = path.resolve(__dirname, '../uploadAttachment/dj/Archive.zip');
+// var filepath = path.resolve(__dirname, '../uploadAttachment/dj/Archive.zip');
 
 
 
 var mongoose = require('mongoose'),
 	Job = mongoose.model('Job'),
+	Track = mongoose.model('Track'),
 	Song = mongoose.model('Song');
 
 function getMetaInfo(zipFilepath, callback) {
@@ -38,24 +39,25 @@ function EncFile(musicFileBuf) {
 	return musicFileBuf;
 }
 
-function CreateSong(comingJob, musicAssertPath, filename, musicFileBuf, hash, key) {
+function CreateTrack(comingJob, musicAssertPath, musicFileBuf, trackInfo) {
 	var q = Q.defer();
+	var filename = trackInfo.name;
 
 	//Check whether this file already exist
-	Song.findOne({
-		hash: hash
-	}).exec(function(err, song) {
+	Track.findOne({
+		hash: trackInfo.hash
+	}).exec(function(err, track) {
 		if (err) {
-			console.log('find song error filename:', filename);
-			q.reject('find song error filename');
+			console.log('find track error filename:', filename);
+			q.reject('find track error filename');
 			return;
 		};
-		if (song) {
-			console.log('find song already exist filename:', filename);
-			q.resolve({
-				song: song,
-				key: key
+		if (track) {
+			track.fromBoxs = _.union(track.fromBoxs, trackInfo.fromBoxs);
+			track.save(function (err, upTrack) {
+				q.resolve(upTrack);
 			});
+			console.log('find track already exist filename:', filename);
 			return;
 		};
 		//Create song and write the song to musicAssertPath
@@ -77,23 +79,22 @@ function CreateSong(comingJob, musicAssertPath, filename, musicFileBuf, hash, ke
 				});
 
 			//Create modal record
-			new Song({
+			new Track({
 				comingJob: comingJob,
 				name: filename,
-				hash: hash,
+				hash: trackInfo.hash,
+				duration: trackInfo.duration,
+				fromBoxs: trackInfo.fromBoxs,
 				rawfilepath: targetRawFilePath,
 				encfilepath: targetEncFilePath
-			}).save(function(err, song) {
+			}).save(function(err, upTrack) {
 				if (err) {
-					console.error('save song failed:', filename);
-					q.reject('save song failed');
+					console.error('save track failed:', filename);
+					q.reject('save track failed');
 					return;
 				};
-				console.log('save song success:', filename);
-				q.resolve({
-					song: song,
-					key: key
-				});
+				console.log('save track success:', filename);
+				q.resolve(upTrack);
 			});
 		})
 
@@ -102,79 +103,74 @@ function CreateSong(comingJob, musicAssertPath, filename, musicFileBuf, hash, ke
 	return q.promise;
 }
 
-function CreateJob(comingJob, validSongMap, callback) {
-	var jsonObj = comingJob.toObject();
-	_(jsonObj.boxes)
-		.each(function(box) {
-			_(box.songlist).each(function(song) {
-				if (song.relativePath in validSongMap) {
-					song.song = validSongMap[song.relativePath];
-					delete song.relativePath;
+function CreateJob(comingJob, trackArr, callback) {
+	console.log('CreateJob');
+
+	var hashTrackMap = _.zipObject(_.pluck(trackArr, 'hash'), trackArr);
+	var meta = comingJob.toObject().meta;
+
+	// Replace dateTemplates.clock.boxes.tracks to track {duration, id}
+	_.each(meta.dateTemplates, function (dateTemplate) {
+		_.each(dateTemplate.clock.boxes, function (box) {
+			var newTrackArr = _.map(box.tracks, function (hash) {
+				var track = hashTrackMap[hash];
+				return {
+					track: track,
+					duration: track.duration
 				};
-
 			});
+			box.tracks = newTrackArr;
 		});
-
-	new Job({
-		uuid: jsonObj.uuid,
-		creator: jsonObj.creator,
-		programName: jsonObj.programName,
-		custumorName: jsonObj.custumorName,
-		programRule: jsonObj.programRule
-	}).save(callback);
+	});
+	
+	new Job(meta).save(callback);
 }
 
-function extraData(comingJob, musicAssertPath, callback) {
+function extractData(comingJob, musicAssertPath, callback) {
 	var zipFilepath = comingJob.filepath;
-	fs.readFile(filepath, function(err, data) {
+	console.log('extract ', zipFilepath);
+	fs.readFile(zipFilepath, function(err, data) {
+		console.log('extract 1');
 		if (err) {
 			console.error('read file failed:', filepath);
 			callback(err);
 			return;
 		}
 		var zip = new JSZip(data);
-		var metaJson = zip.file("musicEditor.json");
-		if (!metaJson) {
-			callback('invalid zip file');
-			return;
-		};
+		var track_promises = [];
+		var meta = comingJob.meta;
 
-		var song_promises = [];
-		var buf = metaJson.asNodeBuffer();
-		var meta = JSON.parse(buf);
-		_(meta.programRule.boxes)
-			.each(function(box) {
-				console.log('box.description:', box.description);
-				_(box.songlist).each(function(song) {
-					console.log(song.relativePath);
-					var musicFileBuf = zip.file('music/' + song.relativePath).asNodeBuffer();
-					var md5 = crypto.createHash('md5');
-					md5.update(musicFileBuf);
-					var hash = md5.digest('hex');
-					console.log('musicFileBuf length:', musicFileBuf.length, ' hash:', hash);
-					song_promises.push(CreateSong(comingJob, musicAssertPath, path.basename(song.relativePath), musicFileBuf, hash, song.relativePath));
-				});
-			});
+		console.log('extract 2');
+		
+		_.forOwn(meta.tracksMeta, function (trackInfo, hash) {
+			var musicFileBuf = zip.file('asset/' + trackInfo.targetRelativePath).asNodeBuffer();
+			console.log('musicFileBuf length:', musicFileBuf.length, ' hash:', hash);
+			track_promises.push(CreateTrack(comingJob, musicAssertPath, musicFileBuf, trackInfo));
+		});
+
+		console.log('extract 3');
 		//Create Job
-		Q.allSettled(song_promises).spread(function() {
-			var validSongMap = {};
-			var songsArr = arguments;
-			Object.keys(songsArr).forEach(function(key) {
-				var objVal = songsArr[key];
-				if (objVal.state === 'fulfilled') {
-					validSongMap[objVal.value.key] = objVal.value.song;
-				}
+		Q.allSettled(track_promises).spread(function() {
+			var notFulfilled = _.some(arguments, function (defer) {
+				return defer.state !== 'fulfilled';
 			});
-			console.log('validSongMap:', validSongMap);
-			// respCallback && respCallback(validComingJobs);
-			CreateJob(comingJob, validSongMap, function(err, newJob) {
+			if (notFulfilled) {
+				_.isFunction(callback) && callback('notFulfilled', null);
+				return;
+			}
+
+			var trackArr = _.pluck(arguments, 'value');
+			CreateJob(comingJob, trackArr, function(err, newJob) {
+				console.log('after create job err:',err, newJob);
 				callback && callback(err, newJob);
 			});
 		});
+
+		console.log('extract 4');
 	});
 }
 
 exports = module.exports = {
 	getMetaInfo: getMetaInfo,
-	extraData: extraData
+	extractData: extractData
 };

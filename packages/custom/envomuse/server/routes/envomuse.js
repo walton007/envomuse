@@ -42,7 +42,7 @@ module.exports = function(Envomuse, app, auth, database) {
   }); 
 
   //Jobs
-  apiRouter.get('/jobs', jobs.statistic, jobs.all);
+  apiRouter.get('/jobs', jobs.all);
 
   apiRouter.route('/jobs/:jobId')
   .get(jobs.show)

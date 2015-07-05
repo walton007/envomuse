@@ -19,9 +19,13 @@ exports.allTasks = function(req, res) {
  */
 exports.import = function(req, res) {
   var comingJobsId = req.comingJobsId;
-  comingJobsCommand.doImport(function (taskId) {
+  comingJobsCommand.doImport(comingJobsId, function (taskId) {
     res.json({
       taskId: taskId
+    });
+  }, function (err) {
+    res.status(400).json({
+        error: err
     });
   });
 };

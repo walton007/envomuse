@@ -9,56 +9,51 @@ var mongoose = require('mongoose'),
 var JobSchema = new Schema({
   uuid: String,
   creator: String,
-  programName: String,
-  customerName: String,
-  created: {
-    type: Date,
-    default: Date.now,
-    required: true
+  created: Date,
+  brand: String,
+  type: {
+    type: String,
+    required: true,
+    default: 'simplified',
+    enum: ['simplified', 'advanced'],
   },
-  programRule: {
-    boxes: [{
-      uuid: String,
-      name: String,
-      description: String,
-      songlist: [ {
-        //name: String,
-        song: {
-          type: Schema.ObjectId,
-          ref: 'Song'
-        },
-        duration: Number, // in milliseconds
-        relativePath: String
-      }]
-    }],
-    rules: [{
-      name: String,
-      description: String,
-      boxes: [String],
-    }],
-    playlists: [{
-      name: String,
-      timePeriods: {
-        calcType: {
-          type: String,
-          required: true,
-          default: 'daysOfWeek',
-          enum: ['multipleDates', 'daysOfWeek', 'dateRange'],
-        },
-        daysOfWeekValues: [{ //daysOfWeek
-          type: String,
-          required: true,
-          default: 'Mon',
-          enum: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
-        }],
-        multipleDatesValues: [String],
-        dateRangeValues: {startDate: String, endDate: String},
-      },
+  dateTemplates: [{
+    "clock": {
+      "boxes": [{
+            "name": String,
+            "totalLength": Number,
+            "startTm": Date,
+            "endTm": Date,
+            "tracks": [{
+              duration: Number,
+              track: {
+                type: Schema.ObjectId,
+                ref: 'Track'
+              },
+            }]
+          }]
+    },
 
-      //one day is divided to 48 units, every rule may cover several units
-      dayRuleUnits: [{ruleName:String, starthour: String, endhour: String}],
-    }],
-  }
+    "periodInfo": {
+      calcType: {
+        type: String,
+        required: true,
+        default: 'daysOfWeek',
+        enum: ['multipleDates', 'daysOfWeek', 'dateRange'],
+      },
+      daysOfWeekValues: { //daysOfWeek
+        "Mon": Boolean,
+        "Tue": Boolean,
+        "Wed": Boolean,
+        "Thur": Boolean,
+        "Fri": Boolean,
+        "Sat": Boolean,
+        "Sun": Boolean
+      },
+      multipleDatesValues: [Date],
+      dateRangeValues: {startDate: Date, endDate: Date},
+    }
+  }]
 });
 
 /**

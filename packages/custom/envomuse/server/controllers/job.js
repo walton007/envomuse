@@ -17,7 +17,7 @@ exports.all = function(req, res) {
   console.log('all jobs');
   // return only basic information
   Job.find().sort('-created')
-  .select('_id creator customerName programName created')
+  .select('_id creator brand type created')
   .exec(function(err, jobs) {
     if (err) {
       return res.status(500).json({
@@ -69,29 +69,29 @@ exports.box = function(req, res, next) {
 };
 
 
-exports.statistic = function(req, res, next) {
-  if (!('statistic' in req.query)) {
-    next();
-    return;
-  }
+// exports.statistic = function(req, res, next) {
+//   if (!('statistic' in req.query)) {
+//     next();
+//     return;
+//   }
 
-  Job.count(function(err, count) {
-    if (err) {
-      console.error('Job count error:', err);
-      return res.status(500).json({
-        error: 'count the Job error'
-      });
-    }
+//   Job.count(function(err, count) {
+//     if (err) {
+//       console.error('Job count error:', err);
+//       return res.status(500).json({
+//         error: 'count the Job error'
+//       });
+//     }
 
-    res.json({
-      // Jun added
-      // count: count
-      active: count,
-      inactive: 0
-    });
-    return;
-  });
-};
+//     res.json({
+//       // Jun added
+//       // count: count
+//       active: count,
+//       inactive: 0
+//     });
+//     return;
+//   });
+// };
 
 function translateDateString(dateString) {
   return moment(dateString);

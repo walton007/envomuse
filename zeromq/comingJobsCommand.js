@@ -91,7 +91,7 @@ function findByMd5(hash, callback) {
 		.exec(callback);
 }
 
-function createComingJob(filepath, md5val, callback) {
+function createComingJob(filepath, hash, callback) {
 	console.log('createComingJob filepath:', filepath);
 	zipManager.getMetaInfo(filepath, function(err, meta) {
 		if (err) {
@@ -100,11 +100,12 @@ function createComingJob(filepath, md5val, callback) {
 			return;
 		}
 
-		var target = _.assign(meta, {
+		var target = {
+			meta: meta,
 			filepath: filepath,
-			hash: md5val,
+			hash: hash,
 			outdate: false
-		});
+		};
 		// console.log('target:', target);
 		var comingJob = new ComingJob(target);
 		comingJob.save(callback);
@@ -223,7 +224,7 @@ function extractingComingJob(task) {
 				return;
 			};
 			// Create Job and song according to comingJob
-			zipManager.extraData(comingJob, musicAssertDir,
+			zipManager.extractData(comingJob, musicAssertDir,
 				function(err, newJob) {
 					if (err) {
 						console.error('failed to extraData comingJob');
@@ -320,17 +321,16 @@ function importComingJob(comingJobId, respCallback, respErrorback) {
 		.exec(function(err, comingJob) {
 			if (err) {
 				console.error('importComingJob err', err);
-				respErrorback(err);
+				_.isFunction(respErrorback) && respErrorback(err);
 				return;
 			};
 			if (!comingJob) {
 				console.error('no such comingJob');
-				respErrorback('no such comingJob');
+				_.isFunction(respErrorback) && respErrorback('no such comingJob');
 				return;
 			};
-			//mark this comingJob status to 'importing'
-			comingJob.importStatus = 'importing';
-			comingJob.save(function(err, obj) {
+			
+			comingJob.doImporting(function(err, obj) {
 				if (err) {
 					console.error('save comingJob err', err);
 					respErrorback('save comingJob err');

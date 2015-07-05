@@ -39,7 +39,7 @@ var SiteSchema = commonUtil.BaseSchema.extend({
   deliveryState: {
     type: String,
     required: true,
-    default: 'deliveryYes',
+    default: 'deliveryNo',
     enum: ['deliveryYes', 'deliveryNo'],
   },
 

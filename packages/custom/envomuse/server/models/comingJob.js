@@ -6,19 +6,22 @@ console.log('comingJobs model');
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-  job = require('./job'),
-  commonUtil = require('./commonUtil');
+  Schema = mongoose.Schema;
 
-
-var ComingJobSchema = job.JobSchema.extend({
+var ComingJobSchema = new Schema({
   filepath: String,
   hash: String,
+  meta: Schema.Types.Mixed,
   importStatus: {
     type: String,
     required: true,
     default: 'notImport',
     enum: ['notImport', 'importing', 'imported', 'badzip'],
+  },
+  created: {
+    type: Date,
+    default: Date.now,
+    required: true
   },
   outdate: {
 	  type: Boolean,
@@ -28,9 +31,16 @@ var ComingJobSchema = job.JobSchema.extend({
   extractFilepath: String
 });
 
+ComingJobSchema.method('doImporting',
+  function(callback) {
+    this.importStatus = 'importing';
+    this.save(callback); 
+  });
+
 ComingJobSchema.method('badzip',
   function() {
-    this.status = 'badzip';
+    console.log(this.filepath, 'is badzip');
+    this.importStatus = 'badzip';
     this.save(); 
   });
 
