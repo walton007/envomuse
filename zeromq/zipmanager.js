@@ -116,13 +116,14 @@ function CreateJob(comingJob, trackArr, callback) {
 				var track = hashTrackMap[hash];
 				return {
 					track: track,
-					duration: track.duration
+					duration: track.duration,
+					name: track.name
 				};
 			});
 			box.tracks = newTrackArr;
 		});
 	});
-	
+
 	new Job(meta).save(callback);
 }
 

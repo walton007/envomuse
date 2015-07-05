@@ -25,6 +25,7 @@ var JobSchema = new Schema({
             "startTm": Date,
             "endTm": Date,
             "tracks": [{
+              name: String,
               duration: Number,
               track: {
                 type: Schema.ObjectId,

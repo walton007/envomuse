@@ -49,8 +49,8 @@ module.exports = function(Envomuse, app, auth, database) {
   .delete(function(req, res, next) {
     res.send(200);
   });
-  apiRouter.route('/jobs/:jobId/generateProgram')
-  .post(jobs.generateProgram);
+  // apiRouter.route('/jobs/:jobId/generateProgram')
+  // .post(jobs.generateProgram);
   apiRouter.route('/jobs/:jobId/export')
   .post(function(req, res, next) {
     //export job war package
@@ -146,6 +146,9 @@ module.exports = function(Envomuse, app, auth, database) {
 
   apiRouter.route('/channels/:channelId/bindSites')
   .post(channels.bindSites);
+
+  apiRouter.route('/channels/:channelId/generateProgram')
+  .post(channels.generateProgram);
 
   apiRouter.param('channelId', channels.channel);
   

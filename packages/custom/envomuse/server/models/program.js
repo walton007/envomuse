@@ -4,11 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-  commonUtil = require('./commonUtil');
-
-var BaseSchema = commonUtil.BaseSchema;
-
+  Schema = mongoose.Schema;
 //----------- program, music related information  ----------------//
  
 var ProgramSchema = new Schema({
@@ -27,35 +23,29 @@ var ProgramSchema = new Schema({
   },
   startDate: Date,
   endDate: Date,
+
+  dayPlaylistArr: [{
+    date: Date,
+    
+    dateTemplateName: String, // Who defined it? what's the use of it?
+    playlist: [{
+      track: {
+        type: Schema.ObjectId,
+        ref: 'Track'
+      },
+      name: String,
+      duration: Number,
+      exactPlayTime: String,
+      fromBoxs: [String],
+      // url:String,
+    }],
+  }],
+
   createDate: {
     type: Date,
     default: Date.now,
     required: true
   },
-
-  dayPrograms: [{
-    guid: String,
-    date: Date,
-    displayDate: String,
-    dayTemplateName: String,
-    playlist: [{
-      song: {
-        type: Schema.ObjectId,
-        ref: 'Song',
-
-        boxtag: 'box1Tag box2Tag'
-      },
-      title: String,
-      hour: String,
-      milliseconds: Number,
-      volume: Number,
-      fadeIn: Number,
-      fadeOut: Number,
-      duration: Number,
-      // displayTm: String,
-      url:String,
-    }],
-  }]
 });
 
 /**
