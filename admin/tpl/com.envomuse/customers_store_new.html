@@ -1,16 +1,19 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="showHelp=false;" ng-controller="StoreNewCtrl">
 
   <div class="col">
+
+    <!-- header -->
+    <div class="wrapper-sm b-b">
+      <a ng-click="hideMe()" class="m-r" tooltip="返回"><i class="fa fa-fw fa-arrow-circle-left text-muted m-r-sm"></i></a>
+      <a ng-click="showItem('addStore')" class="m-r" tooltip="添加门店"><i class="fa fa-bank fw text-muted m-r-sm"></i></a>
+    </div>
+    <!-- / header -->
+
     <div class="wrapper-md">
-      <h4 class="panel-heading font-bold">新增店铺<a href><small class="text-muted m-l" ng-click="showHelp=true;" ng-show="!showHelp">显示帮助</small><small class="text-muted m-l" ng-click="showHelp=false;" ng-show="showHelp">隐藏帮助</small></a></h4></h4>
-        <div class="panel-body">
-          <form name="form" class="form-horizontal m-t-lg form-validation">
-            <div class="form-group">
-              <label class="col-lg-2 control-label">店铺ID</label>
-              <div class="col-lg-8">
-                <input type="text" class="form-control" ng-model="store.reference" placeholder="必填" required>
-              </div>
-            </div>
+      <h4 class="panel-heading font-bold">新增店铺<a href><small class="text-muted m-l" ng-click="showHelp=true;" ng-show="!showHelp">显示帮助</small><small class="text-muted m-l" ng-click="showHelp=false;" ng-show="showHelp">隐藏帮助</small></a></h4>
+      <div class="panel-body">
+        <form name="form" class="form-horizontal m-t-lg form-validation">
+
             <div class="form-group">
               <label class="col-lg-2 control-label">店名</label>
               <div class="col-lg-8">
@@ -19,11 +22,36 @@
             </div>
 
             <div class="form-group">
+              <label class="col-lg-2 control-label">店铺ID</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="store.reference" placeholder="必填" required>
+              </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">店长姓名</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="store.manager" placeholder="必填" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">门店电话</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="store.phone" placeholder="必填" required>
+              </div>
+            </div>
+
+            <!-- <div class="form-group">
               <label class="col-lg-2 control-label">频道</label>
               <div class="col-lg-8">
                 <select ui-jq="chosen" class="form-control" ng-model="selectedChannel" ng-options="option.name for option in channels" required></select>
               </div>
-            </div>
+            </div> -->
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
 
             <div class="form-group">
             <label class="col-lg-2 control-label">省份</label>
@@ -50,50 +78,11 @@
             </div>
           </div>
 
-          <!-- <div class="form-group">
-            <label class="col-lg-2 control-label">商圈</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" ng-model="store.businesscenter" placeholder="必填" required>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">店长</label>
-            <div class="col-lg-8">
-              <select ui-jq="chosen" class="form-control" ng-model="store.manager" placeholder="必填" required>
-                <option ng-repeat="list in contacts" value="{{list}}">{{list.name}}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">国家</label>
-            <div class="col-lg-8">
-              <select ui-jq="chosen" class="form-control" ng-model="store.country" >
-                <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list}}</option>
-              </select>
-            </div>
-          </div>
-
-          
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">经度</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" ng-model="store.latitude">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">纬度</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" ng-model="store.longitude">
-            </div>
-          </div> -->
+          <div class="line line-dashed b-b line-lg pull-in"></div>
 
           <div class="form-group">
             <div class="col-lg-8 col-lg-offset-2">
-              <button type="submit" class="btn btn-danger" ng-click="hideMe()">取消编辑</button>
+              <button type="submit" class="btn btn-danger" ng-click="hideMe()">取消</button>
               <button class="btn btn-success w-xs pull-right" ng-disabled="form.$invalid" ng-click="createStore()">添加</button>
             </div>
           </div>
@@ -102,9 +91,8 @@
     </div>
   </div>
 
-  <!-- right col -->
+  <!-- help -->
   <div class="col w-md bg-white-only b-l bg-auto no-border-xs" ng-show="showHelp">
-    <!-- help -->
     <div class="padder-md m-t">      
       <div class="m-b text-md">新增门店帮助</div>
       <div class="streamline b-l m-b">
@@ -120,8 +108,7 @@
         </div>
       </div>
     </div>
-    <!-- /help -->
-
   </div>
-  <!-- / right col -->
+  <!-- /help -->
+  
 </div>

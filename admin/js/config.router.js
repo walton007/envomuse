@@ -217,19 +217,19 @@ angular.module('app')
                     }]
                   }
               })
-              .state('tasks.dash', {
+              /*.state('tasks.dash', {
                   url: '/',
                   templateUrl: 'tpl/com.envomuse/tasks_dashboard.html'
-              })
+              })*/
 
               .state('tasks.incoming', {
                   url: '/incoming',
                   templateUrl: 'tpl/com.envomuse/tasks_incoming.html'
               })
-              .state('tasks.running', {
+              /*.state('tasks.running', {
                   url: '/running',
                   templateUrl: 'tpl/com.envomuse/tasks_running.html'
-              })
+              })*/
 
               //jobs
               .state('jobs', {
@@ -245,12 +245,12 @@ angular.module('app')
                     }]
                   }
               })
-
+/*
               .state('jobs.dash', {
                   url: '/',
                   templateUrl: 'tpl/com.envomuse/jobs_dashboard.html'
               })
-
+*/
               .state('jobs.list', {
                   url: '/list',
                   templateUrl: 'tpl/com.envomuse/jobs_list.html'

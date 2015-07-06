@@ -1,36 +1,21 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="showEdit=false;" ng-controller="ContactListCtrl">
 
-<!-- main -->
   <div class="col">
 
-    <div class="row">
-      <div class="w-auto-xl w-auto-xs center-block">
-        <div class="btn-group btn-group-justified text-center text-sm">
-          <div class="btn-group">    
-            <a class="wrapper-xs" tooltip="返回" ng-click="hideMe()">
-              <i class="block text-md m-t-xs icon-arrow-left"></i>
-            </a>
-            <a class="wrapper-xs" tooltip="添加联系人" ng-click="showItem('addcontact')">
-              <i class="icon icon-user-follow m-l-sm"></i>
-            </a>
-          </div>
-        </div>
-      </div>
+   <!-- header -->
+    <div class="wrapper-sm b-b">
+      <a ng-click="showItem('store')" class="m-r" tooltip="返回"><i class="fa fa-fw fa-arrow-circle-left text-muted m-r-sm"></i></a>
+      <a ng-click="showItem('addcontact')" class="m-r" tooltip="添加联系人"><i class="icon icon-user-follow text-muted m-r-sm"></i></a>
     </div>
+    <!-- / header -->
     
     <!-- main -->
     <div class="wrapper">
 
-      <!-- alert -->
-      <div class="m-b-md">
-        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+      <div ng-show="datasource.length==0 && !showEdit">
+        暂时没有联系人信息，马上<button class="btn m-b-xs btn-sm btn-info m-l" ng-click="showItem('addcontact')">添加联系人</button>
       </div>
-      <!-- / alert -->
-
-      <div ng-show="datasource.length==0">
-        暂时没有联系人信息，马上<a class="text-u-l m-l" ng-click="showItem('addcontact')">添加联系人</a>
-      </div>
-      <div ng-show="datasource.length>0">
+      <div ng-show="datasource.length>0 && !showEdit">
         <div ng-repeat="item in datasource" class="col-sm-4">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -60,7 +45,7 @@
                 Email
               </a>
               <a class="list-group-item" href >
-                <span class="pull-right">{{item.wechat}}</span>
+                <span class="pull-right">{{item.weixin}}</span>
                 <i class="fa fa-wechat fa-fw text-muted"></i> 
                 微信
               </a>
@@ -78,89 +63,116 @@
           </div>
         </div>
       </div>
+
+      <!-- edit contact -->
+      <div class="padder-md m-t" ng-show="showEdit">      
+        <h4 class="panel-heading font-bold">修改联系人</h4>
+        <div class="panel-body">
+          <form name="form" class="form-horizontal m-t-lg form-validation ">
+            <div class="form-group">
+              <label class="col-lg-2 control-label">姓名</label>
+              <div class="col-lg-4">
+                <input type="text" class="form-control" ng-model="itemToEdit.name" placeholder="必填" required>
+              </div>
+              <div class="col-lg-4 ">
+                <div class="checkbox">
+                  <label class="i-checks">
+                    <input type="checkbox" ng-model="itemToEdit.isLeader">
+                    <i></i>
+                    品牌主要联系人
+                  </label>
+                </div>
+              </div>
+            </div>              
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">性别</label>
+              <div class="col-lg-8">
+                <span>
+                  <div class="radio inline m-r">
+                    <label class="i-checks">
+                      <input type="radio" name="gender" ng-model="itemToEdit.gender" value="M">
+                      <i></i>男
+                    </label>
+                  </div>
+                  <div class="radio inline">
+                    <label class="i-checks">
+                      <input type="radio" name="gender" ng-model="itemToEdit.gender" value="F" checked>
+                      <i></i>女
+                    </label>
+                  </div>
+                </span>
+              </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">部门</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="itemToEdit.department"  >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">职位</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="itemToEdit.title" >
+              </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">工作电话</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control"  ng-model="itemToEdit.workmobile"  >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">私人电话</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="itemToEdit.privatemobile">
+              </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">QQ</label>
+              <div class="col-lg-8">
+                <input type="number" class="form-control" ng-model="itemToEdit.qq">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">微信</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="itemToEdit.weixin">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Email</label>
+              <div class="col-lg-8">
+                <input type="email" class="form-control" ng-model="itemToEdit.email">
+              </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+              <div class="col-lg-8 col-lg-offset-2">
+                <button type="submit" class="btn btn-danger" ng-click="showEdit=false;">取消</button>
+                <button type="submit" class="btn btn-success pull-right" ng-disabled="form.$invalid" ng-click="saveContact()">保存</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- /edit contact -->
     </div>
   </div>
   <!-- /main -->
-
-  <!-- right col -->
-  <div class="col w-lg bg-white-only b-l bg-auto no-border-xs" ng-show="showEdit">
-    <!-- edit contact -->
-    <div class="padder-md m-t">      
-      <h4 class="panel-heading font-bold">编辑联系人</h4>
-      <div class="panel-body">
-        <form name="form" class="form-horizontal m-t-lg form-validation ">
-
-          <div class="input-group m-b">
-            <span class="input-group-addon"><i class="fa fa-user fa-fw text-muted"></i></span>
-            <input type="text" class="form-control" ng-model="itemToEdit.name" placeholder="姓名">
-              <div class="checkbox">
-                <label class="i-checks">
-                  <input type="checkbox" ng-model="itemToEdit.isLeader" ng-checked="itemToEdit.isLeader">
-                  <i></i>
-                  品牌主要联系人
-                </label>
-              </div>
-          </div>
-                
-
-          <div class="input-group m-b">
-            <div class="radio inline m-r-md">
-              <label class="i-checks">
-                <input type="radio" name="gender" ng-model="itemToEdit.gender" value="M">
-                <i></i>
-                男
-              </label>
-            </div>
-            <div class="radio inline">
-              <label class="i-checks">
-                <input type="radio" name="gender" ng-model="itemToEdit.gender" value="F">
-                <i></i>
-                女
-              </label>
-            </div>
-          </div>
-        
-          <div class="input-group m-b">
-            <span class="input-group-addon">职位</span>
-            <input type="text" class="form-control" ng-model="itemToEdit.title" placeholder="职位">
-          </div>
-
-          <div class="input-group m-b">
-            <span class="input-group-addon"><i class="fa fa-phone fa-fw text-muted"></i></span>
-            <input type="text" class="form-control" ng-model="itemToEdit.workmobile" placeholder="工作电话">
-          </div>
-
-          <div class="input-group m-b">
-            <span class="input-group-addon"><i class="fa fa-mobile fa-fw text-muted"></i></span>
-            <input type="text" class="form-control" ng-model="itemToEdit.privatemobile" placeholder="私人电话">
-          </div>
-
-          <div class="input-group m-b">
-            <span class="input-group-addon"><i class="fa fa-qq fa-fw text-muted"></i></span>
-            <input type="text" class="form-control" ng-model="itemToEdit.qq" placeholder="QQ">
-          </div>
-
-          <div class="input-group m-b">
-            <span class="input-group-addon"><i class="fa fa-wechat fa-fw text-muted"></i></span>
-            <input type="text" class="form-control" ng-model="itemToEdit.wechat" placeholder="微信">
-          </div>
-
-          <div class="input-group m-b">
-            <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw text-muted"></i></span>
-            <input type="text" class="form-control" ng-model="itemToEdit.email" placeholder="Email">
-          </div>
-
-          <div class="form-group">
-            <div class="col-lg-8 col-lg-offset-2">
-              <button type="submit" class="btn btn-sm btn-success pull-right" ng-disabled="form.$invalid" ng-click="saveContact()">保存修改</button>
-              <button type="submit" class="btn btn-sm btn-danger" ng-click="showEdit=false;">取消</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    <!-- /edit contact -->
-  </div>
-  <!-- / right col -->
-
 </div>

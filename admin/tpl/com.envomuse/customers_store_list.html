@@ -1,7 +1,16 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="init();" ng-controller="StoreListCtrl">
   <div class="col">
 
-    <div class="bg-light b-r bg-auto no-padder" style="height:500px">
+    <!-- header -->
+    <div class="wrapper-sm b-b">
+      <a ng-click="showItem('addStore')" class="m-r" tooltip="添加门店"><i class="fa fa-bank fw text-muted m-r-sm"></i></a>
+    </div>
+    <!-- / header -->
+
+    <div class="wrapper-md" ng-show="datasource.length==0">
+      暂时没有门店，马上<button class="btn m-b-xs btn-sm btn-info m-l" ng-click="showItem('addStore')">添加门店</button>
+    </div>      
+    <div class="bg-light b-r bg-auto no-padder" style="height:500px" ng-show="bigTotalItems>0">
       <div class="vbox">
         <div class="wrapper-md b-b">
           <div class="row">
@@ -26,6 +35,7 @@
                     <tr>
                       <th data-toggle="true">门店</th>
                       <th data-toggle="true" data-hide="phone,tablet">门店编码</th>
+                      <th data-toggle="true">设备号</th>
                       <th data-toggle="true">频道</th>
                       <th data-toggle="true">交付状态</th>
                       <th data-toggle="true">连接状态</th>
@@ -36,10 +46,11 @@
                     <tr ng-repeat="row in normalizedDataSource | filter:searchText" st-select-row="row">
                       <td><a ng-click="showItem('storeDetail','{{row._id}}')">{{row.siteName}}</a> </td>
                       <td>{{row.reference}}</td>
-                      <td class="text-center"><span class="label bg-{{row.channelType}}">{{row.channelName}}</span></td>
-                      <td class="text-center"><i class="fa fa-circle text-{{row.deliverState}} text-xs m-t-sm"></i></td>
-                      <td class="text-center"><i class="fa fa-circle text-{{row.playerStatus}} text-xs m-t-sm"></i></td>
-                      <td class="text-center"><a class="btn btn-sm btn-info btn-addon" href><i class="fa fa-download"></i>导出</a></td>
+                      <td>{{row.deviceId}}</td>
+                      <td><span class="label bg-{{row.channelType}}">{{row.channelName}}</span></td>
+                      <td><i class="fa fa-circle text-{{row.deliverState}} text-xs m-t-sm"></i></td>
+                      <td><i class="fa fa-circle text-{{row.playerStatus}} text-xs m-t-sm"></i></td>
+                      <td><a class="btn btn-sm btn-info btn-addon" href><i class="fa fa-download"></i>导出</a></td>
                     </tr>
                   </tbody>
                 </table>

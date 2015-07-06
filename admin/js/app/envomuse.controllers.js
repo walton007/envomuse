@@ -1,28 +1,41 @@
-//Customer-Brand
-app.controller('DashboardCtrl', ['$scope', 'DashStats', '$stateParams', 
-  function($scope, DashStats, $stateParams) {  
+//Dashboard
+app.controller('DashboardCtrl', ['$scope', 'DashStats', 'ComingJobs', '$stateParams', 
+  function($scope, DashStats, ComingJobs, $stateParams) {  
 
     $scope.load = function() {
-      // $scope.stat = {};
       
       DashStats.get(function(res) {
-        // console.log(res);
-        $scope.stats = res.stats;
-        $scope.siteDeliveryStats = res.siteDeliveryStats.delivered===0?0:100*res.siteDeliveryStats.delivered/(res.siteDeliveryStats.delivered+res.siteDeliveryStats.undelivered);
-        $scope.customerStatus = res.customerStatus;
 
+        //global stats
+        $scope.stats = res;
+        $scope.stats.totalCustomers = 0;
+        for ( var i = 0, _len = $scope.customerStatus.length; i < _len; i++ ) {
+            $scope.stats.totalCustomers += this[i];
+        }
+
+        //delivery stats
+        $scope.siteDeliveryStats = res.siteDeliveryStats.delivered===0?0:100*res.siteDeliveryStats.delivered/(res.siteDeliveryStats.delivered+res.siteDeliveryStats.undelivered);
+
+        //brand stats
+        $scope.customerStatus = res.customerStatus;
         $scope.dataCustomerStatus = [ 
-          { label: "目标客户", data: res.customerStatus.目标客户 }, 
+          { label: "目标客户", data: res.customerStatus.prospect }, 
           { label: "样品测试", data: res.customerStatus.demo },
           { label: "签约客户", data: res.customerStatus.signed },
           { label: "合约终止", data: res.inactive }
         ];
 
-        // console.log($scope.siteDeliveryStats);
       });
+
+      //coming jobs stats
+      ComingJobs.getCount(function(res){
+        $scope.comingJobsStats = res;
+      });
+
   };
 }]);
 
+//User admin dashboard
 app.controller('UserHomeCtrl', ['$scope', 'Customers', 'CustomerManager', '$stateParams', function($scope, Customers, CustomerManager, $stateParams) {
 
     $scope.d3 = [ 
@@ -35,21 +48,7 @@ app.controller('UserHomeCtrl', ['$scope', 'Customers', 'CustomerManager', '$stat
 
 }]);
 
-
-//Customer-Brand
-app.controller('CustomerCountCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', 
-  function($scope, Customers, Sites, $stateParams) {  
-
-    $scope.init = function() {
-      $scope.stat = {};
-      $scope.customers = [];
-      
-      Customers.getCount(function(resp) {
-        $scope.stat.totalCustomers = resp.count;
-      });
-  };
-}]);
-
+//Customer list
 app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams', 
   function($scope, Customers, $stateParams) {
 
@@ -86,6 +85,478 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
     };
 
   }]);
+
+//Customer add new
+app.controller('CustomerNewCtrl', ['$scope', '$rootScope', '$state', 'Customers', 
+  function($scope,$rootScope, $state, Customers) {
+  
+  $scope.brand = {};
+  $scope.industrylist = ["奢侈品","时尚-服饰","美容美发","餐饮","零售","银行","酒店宾馆","汽车","航空","其它"];
+
+  $scope.statuslist = [
+    {key:"prospect", value:"目标客户"},
+    {key:"demo", value:"样品测试"},
+    {key:"signed", value:"签约客户"},
+    {key:"inactive", value:"合约终止"}
+  ];
+
+  $scope.updateperiodlist = [
+    "每月更新","每2月更新","每季度更新","半年更新"
+  ];
+
+  $scope.createBrand = function(){
+
+    var newCustomer = {
+      brand: $scope.brand.name,
+      companyName: $scope.brand.company,
+      logo:   $rootScope.myCroppedImage,
+      industry: $scope.brand.industry,
+      status: $scope.brand.status,
+      updatePeriod: $scope.brand.updatePeriod,
+      crmInfo: {
+        contractDate: ($scope.brand.contractStartDate!=null)?$scope.brand.contractStartDate.getTime():null,
+        endContractDate: ($scope.brand.contractEndDate!=null)?$scope.brand.contractEndDate.getTime():null
+      },
+      designFee: $scope.brand.designFee,
+      setupFee: $scope.brand.setupFee,
+      monthServiceFee: $scope.brand.monthServiceFee,
+      otherFee: $scope.brand.otherFee,
+      otherFeeComment: $scope.brand.otherFeeComment,
+      telephone:$scope.brand.telephone,
+      fax:$scope.brand.fax,
+      address:$scope.brand.address,
+      description: $scope.brand.description
+    };
+
+    var customer = new Customers(newCustomer);
+    customer.$save(function(customer) {
+      if(customer){
+        $state.go('customers.brand.detail',{brandId:customer._id});
+      }
+    });
+  };
+}]);
+
+//Customer detail
+app.controller('CustomerDetailCtrl', ['$scope', '$rootScope', 'Customers', 'CustomerManager', 'CustomerChannels', '$stateParams', 
+  function($scope, $rootScope, Customers, CustomerManager, CustomerChannels, $stateParams) {
+
+  $scope.init = function(){
+
+    $scope.displayItemList = {
+      "contact":false,
+      "addcontact":false,
+      "editBrand":false,
+      "store":false,
+      "addStore":false,
+      "storeDetail":false,
+      "editStore":false,
+      "channel":false,
+      "addchannel":false
+    };
+
+    if($stateParams.partial!=='store'){
+      $scope.showItem($stateParams.partial,$stateParams.storeId);
+    }
+    else{
+      $scope.showItem('store');
+    }
+  };
+
+  //messaging
+  $scope.alerts = [];
+  $scope.closeAlert = function(index) {
+    $scope.alerts.splice(index, 1);
+  };
+
+
+  $scope.showItem = function(item,params){
+
+    for(var key in $scope.displayItemList){
+       if($scope.displayItemList[key])
+          $scope.previousItem = key;
+
+       $scope.displayItemList[key] = false;
+    }
+
+    $scope.displayItemList[item] = true;
+
+    if(item==='storeDetail'){
+      $scope.storeId = params;
+      $rootScope.storeId = params;
+    }
+    
+    $scope.partial = $scope.getPartial();
+  };
+
+  $scope.hideMe = function(){
+    
+    if($scope.previousItem==="storeDetail"){
+      $scope.storeId = $rootScope.storeId;
+      $scope.showItem($scope.previousItem,$scope.storeId);
+    }
+    else{
+      $scope.showItem($scope.previousItem);  
+    }
+  };
+
+  $scope.getPartial = function () {
+    if($scope.displayItemList.contact)
+      return 'tpl/com.envomuse/customers_contact_list.html';
+    else if($scope.displayItemList.addcontact)
+      return 'tpl/com.envomuse/customers_contact_new.html';
+    if($scope.displayItemList.store)
+      return 'tpl/com.envomuse/customers_store_list.html';
+    if($scope.displayItemList.addStore)
+      return 'tpl/com.envomuse/customers_store_new.html';
+    if($scope.displayItemList.storeDetail)
+      return 'tpl/com.envomuse/customers_store_detail.html';
+    if($scope.displayItemList.editBrand)
+      return 'tpl/com.envomuse/customers_brand_edit.html';
+    if($scope.displayItemList.editStore)
+      return 'tpl/com.envomuse/customers_store_edit.html';
+    if($scope.displayItemList.channel)
+      return 'tpl/com.envomuse/customers_channel_list.html';
+    if($scope.displayItemList.addchannel)
+      return 'tpl/com.envomuse/customers_channel_new.html';
+  }
+
+
+  Customers.get({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.brand = res;
+
+      switch($scope.brand.status){
+        case 'prospect':$scope.brand.status="目标客户";break;
+        case 'demo':$scope.brand.status="样品测试";break;
+        case 'signed':$scope.brand.status="签约客户";break;
+        case 'inactive':$scope.brand.status="合约终止";break;
+      }
+
+      $scope.leader = $scope.brand.contacts.filter(function(e){
+        return e.isLeader;
+      })[0];
+    });
+
+  CustomerChannels.getChannels({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.channels = res;
+    });
+}]);
+
+//Customer edit
+app.controller('CustomerEditCtrl', ['$scope', '$state', 'Customers', '$stateParams', 
+  function($scope, $state, Customers,$stateParams) {
+  
+  Customers.get({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.brand = res;
+    });
+
+  $scope.industrylist = [
+    "奢侈品","时尚-服饰","美容美发","餐饮","零售","银行","酒店宾馆","汽车","航空","其它"
+  ];
+  $scope.statuslist = [
+    {key:"prospect", value:"目标客户"},
+    {key:"demo", value:"样品测试"},
+    {key:"signed", value:"签约客户"},
+    {key:"inactive", value:"合约终止"}
+  ];
+
+  $scope.updateperiodlist = [
+    "每月更新","每2月更新","每季度更新","半年更新"
+  ];
+
+  $scope.saveBrand = function(){
+    var customerUpdated = {
+      _id: $scope.brand._id,
+      brand: $scope.brand.brand,
+      companyName: $scope.brand.company,
+      industry: $scope.brand.industry,
+      status: $scope.brand.status,
+      updatePeriod: $scope.brand.updatePeriod,
+      crmInfo: {
+        contractDate: ($scope.brand.crmInfo.contractDate!=null)?$scope.brand.crmInfo.contractDate:null,
+        endContractDate: ($scope.brand.crmInfo.endContractDate!=null)?$scope.brand.crmInfo.endContractDate:null
+      },
+      designFee: $scope.brand.designFee,
+      setupFee: $scope.brand.setupFee,
+      monthServiceFee: $scope.brand.monthServiceFee,
+      otherFee: $scope.brand.otherFee,
+      otherFeeComment: $scope.brand.otherFeeComment,
+      telephone:$scope.brand.telephone,
+      fax:$scope.brand.fax,
+      address:$scope.brand.address,
+      description: $scope.brand.description
+    };
+
+    var customer = new Customers(customerUpdated);
+    customer.$update(function(customer) {
+      $state.go('customers.brand.detail',{brandId:customer._id,partial:'store'},{reload: true});
+    });
+
+  };
+}]);
+
+//Customer contact list
+app.controller('ContactListCtrl', ['$scope', 'Customers', '$stateParams', 
+  function($scope, Customers, $stateParams) {
+
+  //for footer controller
+  $scope.brandId = $stateParams.brandId;
+  
+  if($scope.brand!=null){
+    $scope.datasource = $scope.brand.contacts;
+  }
+  else{
+    Customers.get({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.brand = res;
+      $scope.datasource = $scope.brand.contacts;
+    }); 
+  }
+
+  $scope.editItem = function(item){
+    item.editing = true;
+    $scope.itemToEdit = item;
+    $scope.showEdit = true;
+  };
+
+  //save customer to save contacts
+  $scope.saveContact = function(){
+    $scope.showEdit = false;
+
+    var customerUpdated = {
+      _id: $scope.brand._id,
+      contacts:$scope.datasource
+    };
+
+    var customer = new Customers(customerUpdated);
+    customer.$update(function(customer) {
+      $scope.alerts.push({type: 'success', msg: $scope.itemToEdit.name + '修改成功！'});
+      // $state.go('customers.contact',{brandId:customer._id});
+      $state.go('customers.brand.detail',{brandId:$scope.brand._id,partial:'contact'},{reload: true});
+    });
+
+  };
+
+}]);
+
+//Customer contact new
+app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', '$state', 
+  function($scope, Customers, $stateParams, $state) {
+  
+  if($scope.brand==null){
+    Customers.get({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.brand = res;
+    });
+  }
+
+  $scope.createContact = function(){
+    var newContact = {
+      name: $scope.contact.name,
+      isLeader: $scope.contact.isLeader,
+      gender: $scope.contact.gender,
+      // birthday: $scope.contact.birthday !=null ? $scope.contact.birthday.getTime():"",
+      workmobile: $scope.contact.workmobile,
+      privatemobile: $scope.contact.privatemobile,
+      email: $scope.contact.email,
+      weixin: $scope.contact.wechat,
+      qq: $scope.contact.qq,
+      title: $scope.contact.title,
+      department: $scope.contact.department
+    };
+
+    switch($scope.brand.status){
+      case "目标客户":$scope.brand.status='prospect';break;
+      case "样品测试":$scope.brand.status='demo';break;
+      case "签约客户":$scope.brand.status='signed';break;
+      case "合约终止":$scope.brand.status='inactive';break;
+    }
+
+    $scope.brand.contacts.push(newContact);
+
+    $scope.brand.$update(function(customer) {
+      $scope.alerts.push({type: 'success', msg: $scope.contact.name + '添加成功！'});
+      $state.go('customers.brand.detail',{brandId:$scope.brand._id,partial:'contact'},{reload: true});
+    });
+  };
+}]);
+
+//Customer site new
+app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites', '$stateParams', '$state',
+  function($scope, Customers, Sites, CustomerSites, $stateParams,$state) {
+
+  if($scope.brand==null){
+    Customers.get({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.brand = res;
+    });
+  }
+
+  $scope.createStore = function(){
+    var newStore = {
+      customerId: $scope.brand._id,
+      siteName: $scope.store.sitename,
+      reference: $scope.store.reference,
+      // manager: {name:$scope.store.manager},
+      phone: $scope.store.phone,
+      address: $scope.store.address,
+      // country: $scope.store.country,
+      province: $scope.store.province,
+      city: $scope.store.city,
+      // channel:$scope.selectedChannel,
+      // businesscenter: $scope.store.businesscenter,
+      // manager: $scope.store.contact,
+      // zipcode: $scope.store.zipcode,
+      // latitude: $scope.store.latitude,
+      // longitude: $scope.store.longitude,
+      // description: $scope.store.description
+    };
+
+    var store = new CustomerSites(newStore);
+    store.$save({'customerId':  $stateParams.brandId}, function(site) {
+      $state.go('customers.brand.detail',{brandId:$scope.brand._id},{reload: true});
+      $scope.alerts.push({type: 'success', msg: $scope.store.sitename + '添加成功！'});
+    });
+  };
+}]);
+
+//Customer site edit
+app.controller('StoreEditCtrl', ['$scope', 'Sites', 'CustomerChannels', '$stateParams', '$state',
+  function($scope, Sites, CustomerChannels, $stateParams,$state) {
+
+  if($scope.store==null){
+    Sites.get({'siteId':$scope.$parent.storeId},
+    function(res) {
+      $scope.store = res;
+    });
+  }
+
+  CustomerChannels.getChannels({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.channels = res;
+      $scope.selectedChannel = $scope.channels[$scope.channels.map(function(x) {return x._id; }).indexOf($scope.store.channel)];
+  });
+
+  $scope.saveStore = function(){
+    var updatedStore = {
+      _id:$scope.store._id,
+      customerId: $scope.brand._id,
+      siteName: $scope.store.siteName,
+      reference: $scope.store.reference,
+      channel:$scope.selectedChannel._id,
+      // manager: {name:$scope.store.manager},
+      phone: $scope.store.phone,
+      address: $scope.store.address,
+      province: $scope.store.province,
+      city: $scope.store.city
+    };
+
+    var store = new Sites(updatedStore);
+    store.$update(function(site) {
+      $scope.alerts.push({type: 'success', msg: $scope.store.siteName + '修改成功！'});
+      $state.go('customers.brand.detail',{brandId:$scope.brand._id,partial:'storeDetail',storeId:$scope.store._id},{reload: true});
+    });
+  };
+}]);
+
+//Customer store detail
+app.controller('StoreDetailCtrl', ['$scope', '$state', 'Customers', 'Sites', 'SiteLicense', '$stateParams', 
+  function($scope, $state, Customers, Sites, SiteLicense, $stateParams) {
+
+  $scope.siteId = $scope.$parent.storeId;
+
+  Sites.get({'siteId':$scope.siteId},
+    function(res) {
+      $scope.store = res;
+    });
+
+  if($scope.brand==null){
+    Customers.get({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.brand = res;
+    });
+  }
+
+  $scope.setManager = function(chosenManager){
+
+    var updatedStore = {
+      _id:$scope.store._id,
+      manager:$scope.chosenManager
+    };
+
+    var store = new Sites(updatedStore);
+    store.$update(function(site) {
+      showSetManager = false;
+      $scope.alerts.push({type: 'success', msg: $scope.store.siteName + '修改成功！'});
+      $state.go('customers.store.detail',{brandId:$stateParams.brandId,storeId:$stateParams.storeId},{reload: true});
+    });
+  };
+
+
+  $scope.bindLicense = function(storeId){
+    // console.log(storeId);
+    SiteLicense.save({'siteId':storeId},function(res){
+      // console.log(res);
+    })
+  };
+  
+}]);
+
+//Customer store list
+app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams', 
+  function($scope, CustomerSites, $stateParams) {
+  
+  $scope.maxSize = 5; //total buttons displayed
+  $scope.bigCurrentPage = 1;  //current page
+  $scope.datasource = [];
+  $scope.pageItems = 50;
+  $scope.bigTotalItems = 0;
+
+  $scope.init = function(){
+    $scope.pageChanged();
+  };
+
+  $scope.pageChanged = function() {
+
+    CustomerSites.getPageData({'customerId':$stateParams.brandId,pageNumber:$scope.bigCurrentPage,pageSize:$scope.pageItems},
+      function(res) {
+      $scope.bigTotalItems = res.count;
+      $scope.datasource = res.data;
+      $scope.normalizedDataSource = $scope.datasource.map(function(e){
+        return {
+          _id:e._id,
+          siteName:e.siteName,
+          reference:e.reference,
+          deviceId:'未生成',
+          channelName:e.channelName,
+          channelType:e.channelType==='normal'?'light':(e.channelType==='special'?'primary':'info'),
+          deliverState:e.deliveryState==='deliveryYes'?'success':'light',
+          playerStatus:e.playerStatus==='offline'?'danger':'success'
+        };
+      });
+    });
+  };
+}]);
+
+
+//Customer-Brand
+app.controller('CustomerCountCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', 
+  function($scope, Customers, Sites, $stateParams) {  
+
+    $scope.init = function() {
+      $scope.stat = {};
+      $scope.customers = [];
+      
+      Customers.getCount(function(resp) {
+        $scope.stat.totalCustomers = resp.count;
+      });
+  };
+}]);
+
+
 
 
 app.controller('ChannelsDashCtrl', ['$scope', 'CustomersBasic', '$stateParams', function($scope, CustomersBasic, $stateParams) {
@@ -114,341 +585,6 @@ app.controller('ChannelsDetailCtrl', ['$scope', 'ChannelsProgramList', '$statePa
 
 }]);
 
-app.controller('CustomerDetailCtrl', ['$scope', 'Customers', 'CustomerManager', 'CustomerChannels', '$stateParams', function($scope, Customers, CustomerManager, CustomerChannels, $stateParams) {
-
-  $scope.init = function(){
-
-    $scope.displayItemList = {
-      "contact":false,
-      "store":false,
-      "channel":false,
-      "addcontact":false,
-      "editBrand":false,
-      "addStore":false,
-      "storeDetail":false,
-      "editStore":false,
-      "channel":false,
-      "addchannel":false
-    };
-
-    if($stateParams.partial!=='store'){
-      $scope.showItem($stateParams.partial,$stateParams.storeId);
-    }
-    else{
-      $scope.showItem('store');
-    }
-  };
-
-  $scope.showItem = function(item,params){
-
-    for(var key in $scope.displayItemList){
-       if($scope.displayItemList[key])
-          $scope.previousItem = key;
-
-       $scope.displayItemList[key] = false;
-    }
-
-    $scope.displayItemList[item] = true;
-
-    if(item==='storeDetail')
-      $scope.storeId = params;
-      $scope.partial = $scope.getPartial();
-  };
-
-  $scope.hideMe = function(){
-    // console.log($scope.previousItem);
-    $scope.showItem($scope.previousItem);
-  };
-
-  $scope.getPartial = function () {
-    if($scope.displayItemList.contact)
-      return 'tpl/com.envomuse/customers_contact_list.html';
-    else if($scope.displayItemList.addcontact)
-      return 'tpl/com.envomuse/customers_contact_new.html';
-    if($scope.displayItemList.store)
-      return 'tpl/com.envomuse/customers_store_list.html';
-    if($scope.displayItemList.addStore)
-      return 'tpl/com.envomuse/customers_store_new.html';
-    if($scope.displayItemList.storeDetail)
-      return 'tpl/com.envomuse/customers_store_detail.html';
-    if($scope.displayItemList.editBrand)
-      return 'tpl/com.envomuse/customers_brand_edit.html';
-    if($scope.displayItemList.editStore)
-      return 'tpl/com.envomuse/customers_store_edit.html';
-    if($scope.displayItemList.channel)
-      return 'tpl/com.envomuse/customers_channel_list.html';
-    if($scope.displayItemList.addchannel)
-      return 'tpl/com.envomuse/customers_channel_new.html';
-  }
-
-
-  Customers.get({'customerId':$stateParams.brandId},
-    function(res) {
-      $scope.brand = res;
-      $scope.leader = $scope.brand.contacts.filter(function(e){
-        return e.isLeader;
-      })[0];
-
-      // console.log($scope.leader);
-    });
-
-  CustomerChannels.getChannels({'customerId':$stateParams.brandId},
-    function(res) {
-      $scope.channels = res;
-    });
-
-    //messaging
-  $scope.alerts = [];
-  $scope.closeAlert = function(index) {
-    $scope.alerts.splice(index, 1);
-  };
-
-
-  $scope.editItem = function(item){
-    $scope.itemToEdit = item;
-    $scope.showSetManager = true;
-  };
-
-  //save customer to save contacts
-  $scope.setManager = function(){
-    $scope.showSetManager = false;
-
-    CustomerManager.save({customerId:$scope.brand._id},function() {
-      $scope.alerts.push({type: 'success', msg: '成功设置管理员，请将密码交给管理员！'});
-    });
-
-  };
-
-
-
-}]);
-
-app.controller('CustomerNewCtrl', ['$scope', '$rootScope', '$state', 'Customers', function($scope,$rootScope, $state, Customers) {
-  $scope.brand = {};
-
-  $scope.industrylist = [
-    "奢侈品","时尚-服饰","美容美发","餐饮","零售","银行","酒店宾馆","汽车","航空","其它"
-  ];
-  $scope.statuslist = [
-    {key:"prospect", value:"目标客户"},
-    {key:"demo", value:"样品测试"},
-    {key:"singed", value:"签约客户"},
-    {key:"inactive", value:"合约终止"}
-  ];
-  $scope.updateperiodlist = [
-    "每月更新","每2月更新","每季度更新","半年更新"
-  ];
-
-  $scope.createBrand = function(){
-
-    var newCustomer = {
-      brand: $scope.brand.name,
-      companyName: $scope.brand.companyName,
-      logo:   $rootScope.myCroppedImage,
-      industry: $scope.brand.industry,
-      status: $scope.brand.status,
-      updatePeriod: $scope.brand.updatePeriod,
-      crmInfo: {
-        contractDate: ($scope.brand.contractStartDate!=null)?$scope.brand.contractStartDate.getTime():null,
-        endContractDate: ($scope.brand.contractEndDate!=null)?$scope.brand.contractEndDate.getTime():null
-      },
-      designFee: $scope.brand.designFee,
-      setupFee: $scope.brand.setupFee,
-      monthServiceFee: $scope.brand.monthServiceFee,
-      otherFee: $scope.brand.otherFee,
-      otherFeeComment: $scope.brand.otherFeeComment,
-      telephone:$scope.brand.telephone,
-      fax:$scope.brand.fax,
-      address:$scope.brand.address,
-      description: $scope.brand.description
-    };
-
-    // console.log(newCustomer);
-
-    var customer = new Customers(newCustomer);
-    customer.$save(function(customer) {
-      if(customer){
-        $state.go('customers.brand.detail',{brandId:customer._id});
-      }
-    });
-  };
-
-
-}]);
-
-app.controller('CustomerEditCtrl', ['$scope', '$state', 'Customers', '$stateParams', function($scope, $state, Customers,$stateParams) {
-  
-  Customers.get({'customerId':$stateParams.brandId},
-    function(res) {
-      $scope.brand = res;
-    });
-
-  //messaging
-    $scope.alerts = [];
-    $scope.closeAlert = function(index) {
-        $scope.alerts.splice(index, 1);
-      };
-
-  $scope.industrylist = [
-    "奢侈品","时尚-服饰","美容美发","餐饮","零售","银行","酒店宾馆","汽车","航空","其它"
-  ];
-  $scope.statuslist = [
-    {key:"prospect", value:"目标客户"},
-    {key:"demo", value:"样品测试"},
-    {key:"singed", value:"签约客户"},
-    {key:"inactive", value:"合约终止"}
-  ];
-  $scope.updateperiodlist = [
-    "每月更新","每2月更新","每季度更新","半年更新"
-  ];
-
-  $scope.saveBrand = function(){
-    var customerUpdated = {
-      _id: $scope.brand._id,
-      
-      companyName: $scope.brand.companyName,
-      crmInfo: {
-        contractDate: ($scope.brand.contractDate!=null)?$scope.brand.contractDate.getTime():null,
-        endContractDate: ($scope.brand.contractEndDate!=null)?$scope.brand.contractEndDate.getTime():null
-      },
-      designFee: $scope.brand.designFee,
-      setupFee: $scope.brand.setupFee,
-      monthServiceFee: $scope.brand.monthServiceFee,
-      otherFee: $scope.brand.otherFee,
-      otherFeeComment: $scope.brand.otherFeeComment,
-      telephone:$scope.brand.telephone,
-      fax:$scope.brand.fax,
-      address:$scope.brand.address,
-      description: $scope.brand.description
-    };
-
-    var customer = new Customers(customerUpdated);
-    customer.$update(function(customer) {
-      $state.go('customers.brand.detail',{brandId:customer._id});
-    });
-
-  };
-
-}]);
-
-app.controller('CustomerDeleteModalCtrl', ['$scope', '$modal', '$log', function($scope, $modal, $log) {
-    $scope.items = ['item1', 'item2', 'item3'];
-
-    $scope.open = function (size,id) {
-      var modalInstance = $modal.open({
-        templateUrl: 'deleteCustomerConfirmModal',
-        controller: 'ModalInstanceCtrl',
-        size: size,
-        resolve: {
-          items: function () {
-            return $scope.items;
-          },
-          customerId: function (){
-            return id;
-          }
-        }
-      });
-
-      modalInstance.result.then(function (selectedItem) {
-        $scope.selected = selectedItem;
-
-      }, function () {
-        $log.info('Modal dismissed at: ' + new Date());
-      }); 
-    };
-}]); 
-
-//STORES-Sites
-app.controller('StoreNewCtrl', ['$scope', 'Customers', 'CustomerChannels', 'Sites', 'CustomerSites', '$stateParams', '$state',
-  function($scope, Customers, CustomerChannels, Sites, CustomerSites, $stateParams,$state) {
-
-  Customers.get({'customerId':$stateParams.brandId},
-    function(res) {
-      $scope.brand = res;
-      $scope.contacts = $scope.brand.contacts;
-    });
-
-  CustomerChannels.getChannels({'customerId':$stateParams.brandId},
-    function(res) {
-      $scope.channels = res;
-    });
-
-
-  $scope.createStore = function(){
-    var newStore = {
-      customerId: $scope.brand._id,
-      siteName: $scope.store.sitename,
-      reference: $scope.store.reference,
-      channel:$scope.selectedChannel,
-      // businesscenter: $scope.store.businesscenter,
-      // manager: $scope.store.contact,
-      address: $scope.store.address
-      // country: $scope.store.country,
-      // province: $scope.store.province,
-      // city: $scope.store.city,
-      // zipcode: $scope.store.zipcode,
-      // latitude: $scope.store.latitude,
-      // longitude: $scope.store.longitude,
-      // description: $scope.store.description
-    };
-
-    var store = new CustomerSites(newStore);
-    store.$save({'customerId':  $stateParams.brandId}, function(site) {
-      //alert('add site success');
-      $state.go('customers.brand.detail',{brandId:$scope.brand._id},{reload: true});
-    });
-  };
-
-}]);
-
-app.controller('StoreEditCtrl', ['$scope', 'Sites', 'CustomerChannels', '$stateParams', '$state',
-  function($scope, Sites, CustomerChannels, $stateParams,$state) {
-
-  Sites.get({'siteId':$scope.$parent.storeId},
-    function(res) {
-      $scope.store = res;
-      // console.log($scope.store);
-
-      CustomerChannels.getChannels({'customerId':$stateParams.brandId},
-      function(res) {
-        $scope.channels = res;
-        // console.log($scope.channels);
-        // console.log($scope.channels.map(function(x) {return x._id; }).indexOf($scope.store.channel));
-        $scope.selectedChannel = $scope.channels[$scope.channels.map(function(x) {return x._id; }).indexOf($scope.store.channel)];
-    });
-  });  
-
-  $scope.saveStore = function(){
-    var updatedStore = {
-      _id:$scope.store._id,
-      customerId: $scope.brand._id,
-      siteName: $scope.store.siteName,
-      reference: $scope.store.reference,
-      channel:$scope.selectedChannel._id,
-      // businesscenter: $scope.store.businesscenter,
-      // manager: $scope.store.contact,
-      address: $scope.store.address
-      // country: $scope.store.country,
-      // province: $scope.store.province,
-      // city: $scope.store.city,
-      // zipcode: $scope.store.zipcode,
-      // latitude: $scope.store.latitude,
-      // longitude: $scope.store.longitude,
-      //description: $scope.store.description
-    };
-
-    // console.log(updatedStore);
-
-    var store = new Sites(updatedStore);
-    store.$update(function(site) {
-      // $state.go('customers.brand.detail',{brandId:$stateParams.brandId},{reload: true});
-      $state.go('customers.brand.detail',{brandId:$scope.brand._id,partial:'storeDetail',storeId:$scope.store._id},{reload: true});
-      // $scope.$parent.showItem('storeDetail',$scope.store._id);
-    });
-  };
-
-}]);
-
 
 app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams', 
   function($scope, Customers, $stateParams) {
@@ -488,147 +624,65 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
   }]);
 
 
-app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams', 
-  function($scope, CustomerSites, $stateParams) {
-  
-  $scope.maxSize = 5; //total buttons displayed
-  $scope.bigCurrentPage = 1;  //current page
-  $scope.datasource = [];
-  $scope.pageItems = 50;
-  $scope.bigTotalItems = 0;
-
-  $scope.init = function(){
-    $scope.pageChanged();
-  };
-
-  $scope.pageChanged = function() {
-
-    CustomerSites.getPageData({'customerId':$stateParams.brandId,pageNumber:$scope.bigCurrentPage,pageSize:$scope.pageItems},
-      function(res) {
-      $scope.bigTotalItems = res.count;
-      $scope.datasource = res.data;
-      $scope.normalizedDataSource = $scope.datasource.map(function(e){
-        return {
-          _id:e._id,
-          siteName:e.siteName,
-          reference:e.reference,
-          channelName:e.channelName,
-          channelType:e.channelType==='normal'?'light':(e.channelType==='special'?'primary':'info'),
-          deliverState:e.deliveryState==='deliveryYes'?'success':'light',
-          playerStatus:e.playerStatus==='offline'?'danger':'success'
-        };
-      });
-    });
-  };
-}]);
 
 
-app.controller('StoreDetailCtrl', ['$scope', '$state', 'Customers', 'Sites', 'SiteLicense', '$stateParams', function($scope, $state, Customers, Sites, SiteLicense, $stateParams) {
-
-  $scope.siteId = $scope.$parent.storeId;
-
-  Sites.get({'siteId':$scope.siteId},
-    function(res) {
-      $scope.store = res;
-    });
-
-  //messaging
-  $scope.alerts = [];
-  $scope.closeAlert = function(index) {
-    $scope.alerts.splice(index, 1);
-  };
-
-  Customers.get({'customerId':$stateParams.brandId},
-    function(res) {
-      $scope.brand = res;
-    });
-
-  $scope.setManager = function(chosenManager){
-
-    var updatedStore = {
-      _id:$scope.store._id,
-      manager:$scope.chosenManager
-    };
-
-    var store = new Sites(updatedStore);
-    store.$update(function(site) {
-      showSetManager = false;
-      $scope.alerts.push({type: 'success', msg: $scope.store.siteName + '修改成功！'});
-      $state.go('customers.store.detail',{brandId:$stateParams.brandId,storeId:$stateParams.storeId},{reload: true});
-    });
-  };
-
-
-  $scope.bindLicense = function(storeId){
-    // console.log(storeId);
-    SiteLicense.save({'siteId':storeId},function(res){
-      // console.log(res);
-    })
-  };
-  
-}]);
-
-app.controller('StoreDeleteModalCtrl', ['$scope', '$modal', '$log', function($scope, $modal, $log) {
-    $scope.items = ['item1', 'item2', 'item3'];
-
-    $scope.open = function (size,id) {
-      var modalInstance = $modal.open({
-        templateUrl: 'deleteStoreConfirmModal',
-        controller: 'ModalInstanceCtrl',
-        size: size,
-        resolve: {
-          items: function () {
-            return $scope.items;
-          },
-          customerId: function (){
-            return id;
-          }
-        }
-      });
-
-      modalInstance.result.then(function (selectedItem) {
-        $scope.selected = selectedItem;
-
-      }, function () {
-        $log.info('Modal dismissed at: ' + new Date());
-      }); 
-    };
-  }])
-  ; 
-
-
-//Channels
-app.controller('ChannelNewCtrl', ['$scope', 'CustomerChannels', '$stateParams', '$state', function($scope, CustomerChannels,$stateParams, $state) {
-  
-  $scope.channel = {};
-
-  $scope.createChannel = function(){
-
-    var newChannel = {
-      name: $scope.channel.name,
-      type: 'normal'
-    };
-
-    CustomerChannels.saveChannel({customerId:$stateParams.brandId},newChannel,function() {
-      $state.go('customers.brand.detail',{brandId:$stateParams.brandId},{reload: true});
-    });
-  };
-
-
-}]);
-
-app.controller('ChannelListCtrl', ['$scope', 'CustomerSites', 'CustomerChannels', 'ChannelsBindSite', '$stateParams', '$state', function($scope, CustomerSites, CustomerChannels,ChannelsBindSite,$stateParams, $state) {
+//Customer channel list
+app.controller('ChannelListCtrl', ['$scope', 'CustomerSites', 'CustomerChannels', 'ChannelsBindSite', '$stateParams', '$state', 
+  function($scope, CustomerSites, CustomerChannels,ChannelsBindSite,$stateParams, $state) {
   
   $scope.init = function(){
     $scope.channel = {};
     $scope.checkedSites = [];
     $scope.formValid = false;
+
+    //load sites, only load for the first time
+    //pageSize set to a large value to get all sites
+    if(!$scope.allSites){
+      CustomerSites.getPageData({'customerId':$stateParams.brandId,pageNumber:1,pageSize:1000},
+        function(res) {
+          $scope.allSites = res.data.map(function(e){
+
+            switch (e.channelType){
+              case 'default':e.channelType="默认频道";e.bg="light";break;
+              case 'normal':e.channelType="正常频道";e.bg="info";break;
+              case 'special':e.channelType="高优先级频道";e.bg="primary";break;
+            }
+
+            return {
+              _id:e._id,
+              channelId:e.channel,
+              channelName:e.channelName,
+              channelType:e.channelType,
+              bg:e.bg,
+              siteName:e.siteName,
+              siteRef:e.reference
+            };
+          });
+      });
+    }
+
+    //load channels
+    CustomerChannels.getChannels({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.channels = res.map(function(e){
+        e.showSelect=true;
+        e.open = false;
+
+        switch (e.type){
+          case 'default':e.type="默认频道";e.bg="light";e.showSelect=false;break;
+          case 'normal':e.type="正常频道";e.bg="info";break;
+          case 'special':e.type="高优先级频道";e.bg="primary";break;
+        }
+        return e;
+      });
+    });
+
   };
+
 
   //get checked sites
   $scope.chooseSite = function(name) {
     var idx = $scope.checkedSites.indexOf(name);
-
     // is currently selected
     if (idx > -1) {
       $scope.checkedSites.splice(idx, 1);
@@ -637,182 +691,48 @@ app.controller('ChannelListCtrl', ['$scope', 'CustomerSites', 'CustomerChannels'
     else {
       $scope.checkedSites.push(name);
     }
-
     $scope.formValid = $scope.checkedSites.length>0;
   };
 
-  CustomerChannels.getChannels({'customerId':$stateParams.brandId},
-    function(res) {
-      $scope.channels = res;
-      // console.log($scope.channels);
-    });
-
-  $scope.showSites = function(id){
-    $scope.showSiteList = true;
-    $scope.channelId = id;
-    
-    CustomerSites.getPageData({'customerId':$stateParams.brandId},
-      function(res) {
-        $scope.sites = res.data;
-    });
-  };
+  $scope.$watch('channels[0].open', function(isOpen){
+    if (isOpen) {
+      var alreadyBindedSites = $scope.allSites.filter(function(e){
+        return e.channelId === $scope.channels[0]._id;
+      });
+      console.log(alreadyBindedSites);
+    }    
+  });
 
   $scope.startBind = function(){
-    console.log($scope.checkedSites);
-
     ChannelsBindSite.save({'channelId':$scope.channelId},{"sites":$scope.checkedSites},function() {
-      $state.go('customers.brand.detail',{brandId:$stateParams.brandId},{reload: true});
+      $scope.$parent.alerts.push({type: 'success', msg:'绑定成功！'});
+      $state.go('customers.brand.detail',{brandId:$stateParams.brandId,partial:'channel'},{reload: true});
     });
   };
 
 }]);
 
 
-//Contacts
-app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', '$state', 
-  function($scope, Customers, $stateParams, $state) {
+//Customer channel new
+app.controller('ChannelNewCtrl', ['$scope', 'CustomerChannels', '$stateParams', '$state', 
+  function($scope, CustomerChannels,$stateParams, $state) {
   
-  $scope.contact = {};
+  $scope.channel = {};
 
-  Customers.get({'customerId':$stateParams.brandId},
-    function(res) {
-      $scope.brand = res;
-    });
+  $scope.createChannel = function(){
 
-  $scope.createContact = function(){
-
-    var newContact = {
-      name: $scope.contact.name,
-      isLeader: $scope.contact.isLeader,
-      gender: $scope.contact.gender,
-      birthday: $scope.contact.birthday !=null ? $scope.contact.birthday.getTime():"",
-      workmobile: $scope.contact.workmobile,
-      privatemobile: $scope.contact.privatemobile,
-      email: $scope.contact.email,
-      weixin: $scope.contact.wechat,
-      qq: $scope.contact.qq,
-      title: $scope.contact.title,
-      department: $scope.contact.department
+    var newChannel = {
+      name: $scope.channel.name,
+      type: $scope.channel.special?'special':'normal'
+      // comment:$scope.channel.comment
     };
 
-    switch($scope.brand.status){
-      case "目标客户":$scope.brand.status='prospect';break;
-      case "样品测试":$scope.brand.status='demo';break;
-      case "签约客户":$scope.brand.status='signed';break;
-      case "合约终止":$scope.brand.status='inactive';break;
-    }
-
-    $scope.brand.contacts.push(newContact);
-
-    $scope.brand.$update(function(customer) {
-      $state.go('customers.brand.detail',{brandId:$scope.brand._id,partial:'contact'},{reload: true});
+    CustomerChannels.saveChannel({customerId:$stateParams.brandId},newChannel,function() {
+      $scope.$parent.alerts.push({type: 'success', msg: $scope.channel.name + '添加成功！'});
+      $state.go('customers.brand.detail',{brandId:$stateParams.brandId,partial:'channel'},{reload: true});
     });
   };
-
-
 }]);
-
-/*app.controller('ContactEditCtrl', ['$scope', 'Customers', '$stateParams', '$state', function($scope, Customers, $stateParams, $state) {
-  
-  $scope.brand = $stateParams.brandContent;
-  getContact = function(){
-    for(var i=0;i<$scope.brand.contacts.length;i++){
-      if($scope.brand.contacts[i]._id===$stateParams.contactId)
-        return $scope.brand.contacts[i];
-    }
-  };
-
-  $scope.contact = getContact();
-
-  $scope.saveContact = function(){
-    var customerUpdated = $scope.brand;
-
-    var customer = new Customers(customerUpdated);
-    customer.$update(function(customer) {
-      //alert('edit customer success');
-      $state.go('customers.contact.detail',{contactId:$stateParams.contactId,brandContent:customer});
-    });
-  };
-
-}]);*/
-
-app.controller('ContactListCtrl', ['$scope', 'Customers', '$stateParams', function($scope, Customers, $stateParams) {
-
-  //for footer controller
-  $scope.brandId = $stateParams.brandId;
-  
-  //messaging
-  $scope.alerts = [];
-  $scope.closeAlert = function(index) {
-    $scope.alerts.splice(index, 1);
-  };
-
-  Customers.get({'customerId':$stateParams.brandId},
-    function(res) {
-      $scope.brand = res;
-      $scope.datasource = $scope.brand.contacts;
-    }); 
-
-  $scope.editItem = function(item){
-    item.editing = true;
-    $scope.itemToEdit = item;
-    $scope.showEdit = true;
-  };
-
-  //save customer to save contacts
-  $scope.saveContact = function(){
-    $scope.showEdit = false;
-
-    var customerUpdated = {
-      _id: $scope.brand._id,
-      contacts:$scope.datasource
-    };
-
-    var customer = new Customers(customerUpdated);
-    customer.$update(function(customer) {
-      $scope.alerts.push({type: 'success', msg: $scope.itemToEdit.name + '修改成功！'});
-      $state.go('customers.contact',{brandId:customer._id});
-    });
-
-  };
-
-
-}]);
-
-app.controller('ContactDetailCtrl', ['$scope', 'Customers', '$stateParams', function($scope, Customers, $stateParams) {
-
-  $scope.brand = $stateParams.brandContent;
-
-  for(var arr = $scope.brand.contacts,i=0;i<arr.length;i++){
-    if(arr[i]._id===$stateParams.contactId)
-      $scope.contact = arr[i];
-  }
-
-}]);
-
-
-app.controller('ContactDeleteModalCtrl', ['$scope', '$modal', '$log', function($scope, $modal, $log) {
-    $scope.items = ['item1', 'item2', 'item3'];
-    $scope.open = function (size,id) {
-      var modalInstance = $modal.open({
-        templateUrl: 'deleteContactConfirmModal',
-        controller: 'ModalInstanceCtrl',
-        size: size,
-        resolve: {
-          items: function () {
-            return $scope.items;
-          }
-        }
-      });
-
-      modalInstance.result.then(function (selectedItem) {
-        $scope.selected = selectedItem;
-      }, function () {
-        $log.info('Modal dismissed at: ' + new Date());
-      });
-    };
-  }])
-  ; 
 
 
 //Jobs
@@ -825,37 +745,51 @@ app.controller('JobsDashboardCtrl', ['$scope', 'Jobs', '$stateParams', function(
 }]);
 
 
-app.controller('JobListCtrl', ['$scope', 'Jobs', '$stateParams', function($scope, Jobs, $stateParams) {
+app.controller('JobListCtrl', ['$scope', 'Jobs', '$stateParams', 
+  function($scope, Jobs, $stateParams) {
 
-    $scope.init = function(){
-      $scope.maxSize = 5; //total buttons displayed
-      $scope.bigCurrentPage = 1;  //current page
-      $scope.datasource = [];
+  Jobs.get(function(res) {
+        $scope.datasource = res;
+      });
 
-      $scope.pageChanged();
-    };
-
-    $scope.setPage = function (pageNo) {
-      $scope.bigCurrentPage = pageNo;
-    };
-    $scope.pageChanged = function() {
-      Jobs.get(function(res) {
-          $scope.datasource = res;
-        });
-    };
-
-  }]);
+}]);
 
 
-app.controller('JobDetailCtrl', ['$scope', 'JobById', 'GenerateProgram', '$stateParams', function($scope, JobById, GenerateProgram, $stateParams) {  
-
-  // $scope.job = $stateParams.jobContent;
+app.controller('JobDetailCtrl', ['$scope', 'JobById', '$stateParams', 
+  function($scope, JobById, $stateParams) {  
 
   JobById.get({'jobId':$stateParams.jobId},
     function(res) {
       $scope.job = res;
 
-      $scope.job.programRule.playlists = $scope.job.programRule.playlists.filter(function(e){
+      $scope.job.dateTemplates = $scope.job.dateTemplates.map(function(e){
+        switch(e.periodInfo.calcType){
+          case 'multipleDates':
+            /*e.periodInfo.calcType="日期";
+            e.periodInfo.dValues=e.timePeriods.multipleDatesValues.join(', ');*/
+            break;
+          case 'dateRange':
+            // e.dateTemplates.periodInfo.calcType="日期范围";
+            //e.timePeriods.dValues=e.timePeriods.dateRangeValues.startDate+'-->'+e.timePeriods.dateRangeValues.endDate;
+            break;
+          case 'daysOfWeek':
+            e.periodInfo.calcType="周";
+            e.periodInfo.values = [];
+
+            for(var key in e.periodInfo.daysOfWeekValues){
+              if(e.periodInfo.daysOfWeekValues[key])
+                e.periodInfo.values.push(key);
+            }
+
+            break;
+        };
+
+        return e;
+      });
+
+      console.log($scope.job);
+
+      /*$scope.job.programRule.playlists = $scope.job.programRule.playlists.filter(function(e){
       switch(e.timePeriods.calcType){
         case 'multipleDates':
           e.timePeriods.calcType="日期";
@@ -869,10 +803,10 @@ app.controller('JobDetailCtrl', ['$scope', 'JobById', 'GenerateProgram', '$state
           e.timePeriods.calcType="周";
           e.timePeriods.dValues = e.timePeriods.daysOfWeekValues.join(', ');
           break;
-      };
+      };*/
 
       //rules normalization
-      e.dayRuleUnits = e.dayRuleUnits.map(function(d){
+     /* e.dayRuleUnits = e.dayRuleUnits.map(function(d){
         for(var i=0;i<$scope.job.programRule.rules.length;i++){
           if(d.ruleName.toUpperCase()===$scope.job.programRule.rules[i].name.toUpperCase())
               return {
@@ -902,9 +836,9 @@ app.controller('JobDetailCtrl', ['$scope', 'JobById', 'GenerateProgram', '$state
       }
 
       return e;
-    });
+    });*/
 
-        console.log($scope.job);
+        
     });
 
   
@@ -984,7 +918,7 @@ app.controller('SetJobDateRangeModalCtrl', ['$scope', '$modal', '$log', function
   ; */
 
 //Tasks
-app.controller('TasksDashboardCtrl', ['$scope', 'ComingJobs', '$stateParams', function($scope, ComingJobs, $stateParams) {  
+/*app.controller('TasksDashboardCtrl', ['$scope', 'ComingJobs', '$stateParams', function($scope, ComingJobs, $stateParams) {  
 
   ComingJobs.getCount(function(res){
     $scope.stat = res;
@@ -992,39 +926,36 @@ app.controller('TasksDashboardCtrl', ['$scope', 'ComingJobs', '$stateParams', fu
   });
 
 }]);
-
-app.controller('ComingJobsCtrl', ['$scope', 'ComingJobsRefresh', 'Tasks', '$stateParams', function($scope, ComingJobsRefresh, Tasks, $stateParams) {  
+*/
+app.controller('ComingJobsCtrl', ['$scope', 'ComingJobs', 'ComingJobsImport', '$stateParams', 
+  function($scope, ComingJobs, ComingJobsImport, $stateParams) {  
 
   $scope.jobs = [];
 
-  $scope.refresh = function (){
-    ComingJobsRefresh.refresh(function(res){
-      
-      $scope.jobs = res.map(function(e){
+  ComingJobs.getList(function(res){
+    $scope.comingJobs = res;
+    console.log($scope.comingJobs);
+
+    $scope.jobs = res.map(function(e){
         return {
           type:e.__t,
-          version: e.__v,
           _id:e._id,
-          creator:e.creator,
-          customerName:e.customerName, 
-          filepath:e.filepath,
-          hash:e.hash,
+          creator:e.meta.creator,
+          customerName:e.meta.brand,
+          // hash:e.hash,
           importStatus: (e.importStatus==='notImport')?'待导入':(e.importStatus==='importing'?'导入中...':'导入完成')
         };
       });
 
-     /*$scope.count = $scope.jobs.filter(function(e){
-      return e.importStatus !== 'notImport';
-     }).length;*/
      $scope.count = $scope.jobs.length;
-     //console.log($scope.jobs);
-    });
-  };
+
+  });
 
   $scope.doImport = function(id){
-    ComingJobsImport.import({'jobId':id},function(res){
-      $scope.tasks = res;
-      alert(res);
+    $scope.importInProgress = true;
+
+    ComingJobsImport.import({'jobId':id},{},function(res){
+      console.log(res);
     });
   };
 

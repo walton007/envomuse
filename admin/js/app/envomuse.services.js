@@ -219,12 +219,13 @@ app.factory('ComingJobs', ['$resource', function($resource) {
     {
       //'get': {method:'GET', isArray:false},
       // 'getCount':{method:'GET', isArray:true}
-      'getCount': {method:'GET', isArray:false, params:{'statistic':''}}
+      'getCount': {method:'GET', isArray:false, params:{'statistic':''}},
+      'getList': {method:'GET', isArray:true}
     });
   }
 ]);
 
-app.factory('ComingJobsRefresh', ['$resource', function($resource) {
+/*app.factory('ComingJobsRefresh', ['$resource', function($resource) {
     return $resource(
       '/api/comingJobs/forceRefresh', 
     {
@@ -234,7 +235,7 @@ app.factory('ComingJobsRefresh', ['$resource', function($resource) {
       'refresh':{method:'POST',isArray:true}
     });
   }
-]);
+]);*/
 
 app.factory('ComingJobsImport', ['$resource', function($resource) {
     return $resource(
@@ -255,14 +256,14 @@ app.factory('GenerateProgram', ['$resource', function($resource) {
       jobId:'@_id'
     },
     {
-      'generate':{method:'POST',}
+      'generate':{method:'POST'}
     });
   }
 ]);
 
 
 //Tasks, used for comingjos list page
-app.factory('Tasks', ['$resource', function($resource) {
+/*app.factory('Tasks', ['$resource', function($resource) {
     return $resource(
       '/api/tasks/', 
     {
@@ -271,7 +272,7 @@ app.factory('Tasks', ['$resource', function($resource) {
       'allTasks': {method:'GET', isArray:true}
     });
   }
-]);
+]);*/
 
 //Programs - Playlist
 app.factory('Programs', ['$resource', function($resource) {

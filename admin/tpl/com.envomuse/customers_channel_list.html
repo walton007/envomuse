@@ -2,21 +2,43 @@
   <!-- main -->
   <div class="col">
     
-    <div class="row">
-      <div class="w-auto-xl w-auto-xs center-block">
-        <div class="btn-group btn-group-justified text-center text-sm">
-          <div class="btn-group">    
-            <a class="wrapper-xs block" tooltip="返回" ng-click="hideMe()">
-              <i class="block text-md m-t-xs icon-arrow-left"></i>
-            </a>
-          </div>
-        </div>
-      </div>
+   <!-- header -->
+    <div class="wrapper-sm b-b">
+      <a ng-click="showItem('store')" class="m-r" tooltip="返回"><i class="fa fa-fw fa-arrow-circle-left text-muted m-r-sm"></i></a>
+      <a ng-click="showItem('addchannel')" class="m-r" tooltip="添加频道"><i class="fa fa-fw fa-list text-muted m-r-sm"></i></a>
     </div>
+    <!-- / header -->
 
-    <div class="row wrapper">
+    <div class="row wrapper m-t-n">
       <div class="panel panel-default no-border">
-        <div class="table-responsive">
+        <accordion close-others="true">
+          <accordion-group ng-repeat="row in channels" is-open="row.open">
+            <accordion-heading>
+              <span class="label bg-{{row.sitesCount>0?'info':'light'}} pull-right">{{row.sitesCount}}</span>
+              <span class="label bg-{{row.bg}} m-r">{{row.type}}</span>{{row.name}}
+            </accordion-heading>
+            <form name="form" class="form-validation">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="col-sm-3" ng-repeat="s in allSites" >
+                    <div class="checkbox">
+                      <label class="i-checks">
+                        <input type="checkbox" value="{{s.siteName}}" ng-checked="checkedSites.indexOf(s.siteName)>-1" ng-click="chooseSite(s.siteName)">
+                        <i></i>
+                        {{s.siteName}}<small class="label bg-{{s.bg}} m-l-sm">{{s.channelName}}</small>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <footer class="panel-footer text-right bg-light lter">
+                  <button type="submit" class="btn btn-success" ng-disabled="!formValid" ng-click="startBind()">关联</button>
+                </footer>
+              </div>
+            </form>
+          </accordion-group>
+        </accordion>
+
+        <!-- <div class="table-responsive">
           <table class="table table-striped b-t b-light">
             <thead class="bg-light">
               <tr>
@@ -30,39 +52,40 @@
             <tbody>
               <tr ng-repeat="row in channels">
                 <td><a ui-sref="channels.dash({channelId:row._id})">{{row.name}}</a></td>
-                <td>{{row.type}}</td>
+                <td><span class="label bg-{{row.bg}}">{{row.type}}</span></td>
                 <td><span class="badge bg-{{row.sitesCount>0?'info':'light'}}">{{row.sitesCount}}</span></td>
                 <td>{{row.comment}}</td>
-                <td class="text-center"><a class="label bg-info" ng-click="showSites(row._id)"><i class="fa fa-plus"></i>选择门店</a></td>
+                <td class="text-center"><a class="label bg-info" ng-show="row.showSelect" ng-click="showSites(row._id)"><i class="fa fa-plus"></i>选择门店</a></td>
               </tr>
             </tbody>
           </table>
-        </div>
+        </div> -->
       </div> 
     </div>
     <!--sites list-->
-    <div class="row wrapper" ng-show="showSiteList">
+    <!-- <div class="row wrapper" ng-show="showSiteList">
       <form name="form" class="form-validation">
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="form-group">
-              <div class="col-sm-3" ng-repeat="s in sites">
+              <div class="col-sm-3" ng-repeat="s in allSites">
                 <div class="checkbox">
                   <label class="i-checks">
                     <input type="checkbox" value="{{s.siteName}}" ng-checked="checkedSites.indexOf(s.siteName)>-1" ng-click="chooseSite(s.siteName)">
                     <i></i>
-                    {{s.siteName}}
+                    {{s.siteName}}<small class="label bg-{{s.bg}} m-l-sm">{{s.channelName}}</small>
                   </label>
                 </div>
               </div>
             </div>
           </div>
           <footer class="panel-footer text-right bg-light lter">
+            <button type="submit" class="btn btn-danger m-r-md" ng-click="showSiteList=false;">取消</button>
             <button type="submit" class="btn btn-success" ng-disabled="!formValid" ng-click="startBind()">关联</button>
           </footer>
         </div>
       </form>
-    </div>
+    </div> -->
     <!--/sites list-->
   </div>
   <!-- /main -->

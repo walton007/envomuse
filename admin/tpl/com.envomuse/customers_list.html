@@ -7,8 +7,8 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black"><a ui-sref="customers.dash">品牌管理</a></h1>
-          <small class="text-muted">品牌列表，显示品牌基本信息</small>
+          <h1 class="m-n font-thin h3 text-black">品牌管理</h1>
+          <small class="text-muted">管理所有品牌</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
           <div class="btn-group dropdown" dropdown>
@@ -37,30 +37,36 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-3" ng-repeat="row in normalizedDataSource | filter:searchText">
-            <div class="panel panel-default">
-              <a ui-sref="customers.brand.detail({brandId:row._id})">
-              <div class="panel-heading">
-                <div class="clearfix">
-                  <div class="pull-left thumb-md avatar b-3x m-r">
-                    <img src="{{row.logo==null?'img/default_logo.png':row.logo}}" alt="...">
-                  </div>
-                  <div class="clear">
-                    <div class="h4 m-t-xs m-b-xs">
-                      {{row.brand | uppercase}}
+
+          <div ng-show="normalizedDataSource.length==0">
+            <alert type="warning">还没有品牌信息！<button class="btn m-b-xs btn-sm btn-info" ng-click="$state.go('customers.brand.new')">添加品牌</button></alert>
+          </div>
+          <div ng-show="normalizedDataSource.length>0">
+            <div class="col-sm-3" ng-repeat="row in normalizedDataSource | filter:searchText">
+              <div class="panel panel-default">
+                <a ui-sref="customers.brand.detail({brandId:row._id})">
+                <div class="panel-heading">
+                  <div class="clearfix">
+                    <div class="pull-left thumb-md avatar b-3x m-r">
+                      <img src="{{row.logo==null?'img/default_logo.png':row.logo}}" alt="...">
                     </div>
-                    <small class="text-muted clearfix">{{row.industry}}</small>
-                    <small class="text-muted clearfix">{{row.status==null?'状态未知':row.status}}</small>
+                    <div class="clear">
+                      <div class="h4 m-t-xs m-b-xs">
+                        {{row.brand | uppercase}}
+                      </div>
+                      <small class="text-muted clearfix">{{row.industry}}</small>
+                      <small class="text-muted clearfix">{{row.status==null?'状态未知':row.status}}</small>
+                    </div>
                   </div>
                 </div>
-              </div>
-              </a>
-              <div class="list-group no-radius alt">
-                <a class="list-group-item" href>
-                  <span class="pull-right"><span class="badge bg-{{row.sitesCount==0?'dk':'success'}}">{{row.sitesCount}}</span></span>
-                  <i class="fa fa-bank fa-fw text-muted"></i> 
-                  门店
                 </a>
+                <div class="list-group no-radius alt">
+                  <a class="list-group-item" href>
+                    <span class="pull-right"><span class="badge bg-{{row.sitesCount==0?'dk':'success'}}">{{row.sitesCount}}</span></span>
+                    <i class="fa fa-bank fa-fw text-muted"></i> 
+                    门店
+                  </a>
+                </div>
               </div>
             </div>
           </div>

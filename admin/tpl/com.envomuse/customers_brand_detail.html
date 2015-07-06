@@ -1,7 +1,7 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="init();" ng-controller="CustomerDetailCtrl">
   <div class="col">
 
-    <!-- main header -->
+    <!-- header -->
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
@@ -19,7 +19,7 @@
               <li><a ng-click="showItem('addcontact')">添加联系人</a></li>
               <li class="divider"></li>
               <li><a ng-click="showItem('editBrand')">编辑</a></li>
-              <li><a href>删除</a></li>
+              <!-- <li><a href>删除</a></li> -->
               <li class="divider"></li>
               <li><a ui-sref="customers.invoice({brandId:brand._id})">查看发票</a></li>
               <li class="divider"></li>
@@ -29,31 +29,27 @@
         </div>
       </div>
     </div>
-    <!-- / main header -->
+    <!-- / header -->
 
     <!-- brand meta -->
     <div class="col w-lg bg-light b-r bg-auto">
 
       <div class="wrapper-sm b-b">
         <a ng-click="showItem('editBrand')" class="m-r" tooltip="修改"><i class="fa fa-edit text-muted m-r-sm"></i></a>
-        <a ng-click="showItem('addcontact')" class="m-r" tooltip="添加联系人"><i class="icon icon-user-follow text-muted m-r-sm"></i></a>
         <a ng-click="showItem('addStore')" class="m-r" tooltip="添加门店"><i class="fa fa-bank fw text-muted m-r-sm"></i></a>
         <a ng-click="showItem('addchannel')" class="m-r" tooltip="添加频道"><i class="fa fa-list fw text-muted m-r-sm"></i></a>
+        <a ng-click="showItem('addcontact')" class="m-r" tooltip="添加联系人"><i class="icon icon-user-follow text-muted m-r-sm"></i></a>
       </div>
 
       <div class="panel-heading b-b wrapper-md">
         <div class="clearfix">
-          <a ng-click="showItem('store')">
           <div class="pull-left thumb-md avatar b-3x m-r">
-            <img src="{{brand.logo==null?'img/default_logo.png':brand.logo}}" alt="...">
+            <img src="{{brand.logo==null?'img/default_logo.png':brand.logo}}" alt="{{brand.brand}}">
           </div>
-          </a>
           <div class="clear">
-            <a ng-click="showItem('store')">
             <div class="h4 m-t-xs m-b-xs">
               {{brand.brand | uppercase}}
             </div>
-            </a>
             <small class="text-muted clearfix">{{brand.industry}}</small>
             <small class="text-muted clearfix">{{brand.status==null?'状态未知':brand.status}}</small>
           </div>
@@ -80,92 +76,147 @@
           联系人
         </a>
 
-        <li class="list-group-item bg-light">
-          <span class="badge bg-light">{{brand.updatePeriod}}</span>
-          <i class="fa fa-calendar-o fa-fw text-muted"></i> 
-          更新周期
-        </li>
+        <accordion close-others="true">
+          <accordion-group>
+            <accordion-heading>
+            <i class="fa fa-fw fa-gavel text-muted m-r"></i>合同信息
+            </accordion-heading>
+              <ul class="list-group">
+                <li class="list-group-item bg-light">
+                  <span class="badge bg-light">{{brand.updatePeriod}}</span>
+                  <i class="fa fa-refresh fa-fw text-muted"></i> 
+                  更新周期
+                </li>
 
-        <li class="list-group-item bg-light" >
-          <span class="badge bg-light">{{brand.nextUpdateDate | fromNow}}</span>
-          <i class="fa fa-warning fa-fw text-muted"></i> 
-          下次更新
-        </li>
+                <li class="list-group-item bg-light" >
+                  <span class="badge bg-light">{{brand.nextUpdateDate | fromNow}}</span>
+                  <i class="fa fa-calendar-o fa-fw text-muted"></i> 
+                  下次更新
+                </li>
 
-        <li class="list-group-item bg-light">
-          <span class="badge bg-info">{{brand.created | fromNow}}</span>
-          <i class="fa fa-clock-o fa-fw text-muted"></i> 
-          创建时间
-        </li>
+                <li class="list-group-item bg-light">
+                  <span class="badge bg-light">{{brand.crmInfo.contractDate | date:'yyyy-MM-dd'}}</span>
+                  <i class="fa fa-refresh fa-fw text-muted"></i> 
+                  合同开始
+                </li>
+
+                <li class="list-group-item bg-light">
+                  <span class="badge bg-light">{{brand.crmInfo.endContractDate | date:'yyyy-MM-dd'}}</span>
+                  <i class="fa fa-refresh fa-fw text-muted"></i> 
+                  合同开始
+                </li>
+
+                 <li class="list-group-item bg-light">
+                  <span class="badge bg-info">{{brand.designFee}}</span>
+                  <i class="fa fa-credit-card fa-fw text-muted"></i> 
+                  设计费
+                </li>
+
+                <li class="list-group-item bg-light">
+                  <span class="badge bg-info">{{brand.setupFee}}</span>
+                  <i class="fa fa-credit-card fa-fw text-muted"></i> 
+                  安装费
+                </li>
+
+                <li class="list-group-item bg-light">
+                  <span class="badge bg-info">{{brand.monthServiceFee}}</span>
+                  <i class="fa fa-credit-card fa-fw text-muted"></i> 
+                  月服务费
+                </li>
+                <li class="list-group-item bg-light">
+                  <span class="badge bg-info">{{brand.otherFee}}</span>
+                  <i class="fa fa-credit-card fa-fw text-muted"></i> 
+                  其它费用
+                </li>
+                <li class="list-group-item bg-light">
+                  <span class="badge bg-info">{{brand.otherFeeComment}}</span>
+                  <i class="fa fa-clock-o fa-fw text-muted"></i> 
+                  其它费用说明
+                </li>
+              </ul>
+          </accordion-group>
+          <accordion-group>
+            <accordion-heading>
+            <i class="fa fa-fw fa-flag text-muted m-r"></i>基本信息
+            </accordion-heading>
+              <ul class="list-group">
+                <li class="list-group-item bg-light">
+                  <span class="badge bg-info">{{brand.companyName}}</span>
+                  <i class="fa fa-heart fa-fw text-muted"></i> 
+                  公司
+                </li>
+
+                <li class="list-group-item bg-light">
+                  <span class="badge bg-info">{{brand.created | fromNow}}</span>
+                  <i class="fa fa-clock-o fa-fw text-muted"></i> 
+                  创建时间
+                </li>
+
+                <li class="list-group-item bg-light">
+                  <span class="badge bg-info">{{brand.telephone}}</span>
+                  <i class="fa fa-phone fa-fw text-muted"></i> 
+                  电话
+                </li>
+
+                <li class="list-group-item bg-light">
+                  <span class="badge bg-info">{{brand.fax}}</span>
+                  <i class="fa fa-fax fa-fw text-muted"></i> 
+                  传真
+                </li>
+
+                <li class="list-group-item bg-light">
+                  <span class="badge bg-info">{{brand.address}}</span>
+                  <i class="fa fa-map-marker fa-fw text-muted"></i> 
+                  地址
+                </li>
+
+                <li class="list-group-item bg-light">
+                  <span class="badge bg-info">{{brand.description}}}</span>
+                  <i class="fa fa-info fa-fw text-muted"></i> 
+                  描述
+                </li>
+              </ul>
+            </accordion-group>
+            <accordion-group>
+            <accordion-heading>
+            <i class="fa fa-fw fa-user text-muted m-r"></i>管理员账户
+            </accordion-heading>
+              <!--  <h4 class="panel-heading font-bold">管理员账号设置</h4>
+              <div class="panel-body">
+                <form name="form" class="form-horizontal m-t-lg form-validation ">
+
+                  <div class="input-group m-b">
+                    <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw text-muted"></i></span>
+                    <input type="text" class="form-control" ng-model="manager.email" placeholder="Email">
+                  </div>
+
+                  <div class="input-group m-b">
+                    <span class="input-group-addon"><i class="fa fa-key fa-fw text-muted"></i></span>
+                    <input type="password" class="form-control" ng-model="manager.password" placeholder="密码">
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-lg-8 col-lg-offset-2">
+                      <button type="submit" class="btn btn-sm btn-success pull-right" ng-disabled="form.$invalid" ng-click="setManager()">设置</button>
+                      <button type="submit" class="btn btn-sm btn-danger" ng-click="showSetManager=false;">取消</button>
+                    </div>
+                  </div>
+                </form>
+              </div> -->        
+            </accordion-group>
+        </accordion>
       </ul>
-      <div class="row padder no-gutter">
-        {{brand.description}}
-      </div>
-
-
-                 <!--  <h4 class="panel-heading font-bold">管理员账号设置</h4>
-        <div class="panel-body">
-          <form name="form" class="form-horizontal m-t-lg form-validation ">
-
-            <div class="input-group m-b">
-              <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw text-muted"></i></span>
-              <input type="text" class="form-control" ng-model="manager.email" placeholder="Email">
-            </div>
-
-            <div class="input-group m-b">
-              <span class="input-group-addon"><i class="fa fa-key fa-fw text-muted"></i></span>
-              <input type="password" class="form-control" ng-model="manager.password" placeholder="密码">
-            </div>
-
-            <div class="form-group">
-              <div class="col-lg-8 col-lg-offset-2">
-                <button type="submit" class="btn btn-sm btn-success pull-right" ng-disabled="form.$invalid" ng-click="setManager()">设置</button>
-                <button type="submit" class="btn btn-sm btn-danger" ng-click="showSetManager=false;">取消</button>
-              </div>
-            </div>
-          </form>
-        </div> -->
-
-        <!-- <ul class="list-group list-group-sp" ng-show="search.query.count > 1">
-          <li class="list-group-item" ng-repeat="loc in search.query.results.place">
-            <a class="clear text-ellipsis" ng-click="getWeather(loc.woeid, loc.name, loc.country.content)">{{loc.name}}, {{loc.admin1.content}}, {{loc.country.content}}</a>
-          </li>
-        </ul>
-        <ul class="list-group list-group-sp">
-          <li class="list-group-item">
-            <a href ng-click="getWeather(2459115,'New York','United States')">New York</a>
-          </li>
-          <li class="list-group-item">
-            <a href ng-click="getWeather(615702,'Paris','France')">Paris</a>
-          </li>
-          <li class="list-group-item">
-            <a href ng-click="getWeather(44418,'London','United Kingdom')">London</a>
-          </li>
-          <li class="list-group-item">
-            <a href ng-click="getWeather(1105779,'Sydney','Australia')">Sydney</a>
-          </li>
-        </ul> -->
+      
     </div>
     <!-- / brand meta -->
 
     <div class="col" >
+      <!-- alert -->
+      <div class="m-b-md" ng-show="alerts.length>0">
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+      </div>
+      <!-- / alert -->
       <div data-ng-include="partial"></div>
-      <!-- <div data-ng-include data-ng-src="{{partial}}"></div> -->
-      <!-- <ng-include ng-if="displayItemList.contact" src="'tpl/com.envomuse/customers_contact_list.html'"></ng-include>
-      <ng-include ng-if="displayItemList.addcontact" src="'tpl/com.envomuse/customers_contact_new.html'"></ng-include>
-      <ng-include ng-if="displayItemList.store" src="'tpl/com.envomuse/customers_store_list.html'"></ng-include>
-      <ng-include ng-if="displayItemList.addStore" src="'tpl/com.envomuse/customers_store_new.html'"></ng-include>
-      <ng-include ng-if="displayItemList.storeDetail" src="'tpl/com.envomuse/customers_store_detail.html'"></ng-include>
-      <ng-include ng-if="displayItemList.editBrand" src="'tpl/com.envomuse/customers_brand_edit.html'"></ng-include>
- -->
-      <!-- <div data-ng-include="'tpl/com.envomuse/customers_contact_list.html'" ng-show="displayItemList.contact"></div>
-      <div data-ng-include="'tpl/com.envomuse/customers_contact_new.html'" ng-show="displayItemList.addcontact"></div>
-      <div data-ng-include="'tpl/com.envomuse/customers_store_list.html'" ng-show="displayItemList.store"></div>
-      <div data-ng-include="'tpl/com.envomuse/customers_store_new.html'" ng-show="displayItemList.addStore"></div>
-      <div data-ng-include="'tpl/com.envomuse/customers_store_detail.html'" ng-show="displayItemList.storeDetail"></div>
-      <div data-ng-include="'tpl/com.envomuse/customers_brand_edit.html'" ng-show="displayItemList.editBrand"></div>
-      <div ng-show="showManager">
-      </div> -->
     </div>
 
   </div>

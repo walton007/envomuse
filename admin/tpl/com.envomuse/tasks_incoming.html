@@ -1,7 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
-    app.settings.asideFolded = false; 
-    app.settings.asideDock = false;
-  " ng-controller="ComingJobsCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="ComingJobsCtrl">
   
   <!-- main -->
   <div class="col">
@@ -34,14 +31,11 @@
             <table class="table table-striped m-b-none">
               <thead>
                 <tr>
-                  <th>序号</th>
-                  <th>品牌</th>
-                  <th>上传路径</th>
-                  <th>DJ</th>
-                  <th>版本</th>
-                  <th>HASH</th>
-                  <th>状态</th>
-                  <th></th>
+                  <th class="text-center">序号</th>
+                  <th class="text-center">品牌</th>
+                  <th class="text-center">DJ</th>
+                  <th class="text-center">状态</th>
+                  <th class="text-center"></th>
                 </tr>
               </thead>
               <tbody>
@@ -53,23 +47,14 @@
                   {{r.customerName}}
                   </td>
                   <td>
-                  {{r.filepath}}
-                  </td>
-                  <td>
                   {{r.creator}}
-                  </td>
-                  <td>
-                  {{r.version}}
-                  </td>
-                  <td>
-                  {{r.hash}}
                   </td>
                   <td>
                   {{r.importStatus}}
                   </td>
                   <td>
-                    <button class="btn btn-primary" ng-show="{{r.importStatus==='待导入'}}" ng-click="doImport({{}})">导入</button>
-                    <button class="btn btn-info" ng-show="{{r.importStatus==='导入完成'}}">查看</button>
+                    <button class="btn btn-primary" ng-show="{{r.importStatus==='待导入'}}" ng-click="doImport(r._id)" ng-hide="importInProgress">导入</button>
+                    <button class="btn btn-success" ng-show="{{r.importStatus==='导入完成'}}">查看</button>
                   </td>
                 </tr>
               </tbody>

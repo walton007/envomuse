@@ -7,7 +7,7 @@
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-6 col-xs-12">
-          <h1 class="m-n font-thin h3 text-black"><a ui-sref="jobs.dash">工作包管理</a></h1>
+          <h1 class="m-n font-thin h3 text-black">工作包管理</h1>
           <small class="text-muted">系统内所有可用的工作包</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
@@ -21,7 +21,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="row m-t-md">
-              <div class="col-sm-6">
+              <div class="col-sm-4">
                 <div class="input-group">
                   <span class="input-group-addon"><i class="icon text-mute icon-magnifier"></i></span>
                   <input type="text" class="input-sm form-control" placeholder="输入查找内容" ng-model="searchText">
@@ -49,7 +49,7 @@
             </a>
             <div class="list-group no-radius alt">
               <div class="list-group-item">
-                <span class="pull-right"><span class="badge bg-light">{{item.custumorName}}</span></span>
+                <span class="pull-right"><span class="badge bg-light">{{item.brand | uppercase }}</span></span>
                 <i class="icon icon-trophy text-muted"></i> 
                 目标品牌
               </div>
