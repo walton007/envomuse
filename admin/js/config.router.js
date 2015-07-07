@@ -68,9 +68,9 @@ angular.module('app')
                                               'com.2fdevs.videogular.plugins.buffering',
                                               'js/app/music/ctrl.js', 
                                               'js/app/music/theme.css',
-                                                 'js/app/envomuse.controllers.js',
-                                                 'js/app/envomuse.services.js']
-                                                 );
+                                              'js/app/envomuse.controllers.js',
+                                              'js/app/envomuse.services.js']
+                                             );
                             }
                           )
                       }]

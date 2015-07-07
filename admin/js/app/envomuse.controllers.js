@@ -8,10 +8,7 @@ app.controller('DashboardCtrl', ['$scope', 'DashStats', 'ComingJobs', '$statePar
 
         //global stats
         $scope.stats = res;
-        $scope.stats.totalCustomers = 0;
-        for ( var i = 0, _len = $scope.customerStatus.length; i < _len; i++ ) {
-            $scope.stats.totalCustomers += this[i];
-        }
+        $scope.stats.totalCustomers = res.customerStatus.prospect+res.customerStatus.demo+res.customerStatus.inactive+res.customerStatus.signed;
 
         //delivery stats
         $scope.siteDeliveryStats = res.siteDeliveryStats.delivered===0?0:100*res.siteDeliveryStats.delivered/(res.siteDeliveryStats.delivered+res.siteDeliveryStats.undelivered);
@@ -24,7 +21,6 @@ app.controller('DashboardCtrl', ['$scope', 'DashStats', 'ComingJobs', '$statePar
           { label: "签约客户", data: res.customerStatus.signed },
           { label: "合约终止", data: res.inactive }
         ];
-
       });
 
       //coming jobs stats
@@ -73,6 +69,42 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
             return {
               _id:e._id,
               brand:e.brand,
+              logo:e.logo!=null?e.logo:'img/default_logo.png',
+              industry:e.industry,
+              created:e.created,
+              status:e.status,
+              updatePeriod:e.updatePeriod,
+              sitesCount:e.sitesCount!=null?e.sitesCount:0
+            };
+          });
+        });
+    };
+
+  }]);
+/*app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams', 
+  function($scope, Customers, $stateParams) {
+
+    $scope.maxSize = 5; //total buttons displayed
+    $scope.bigCurrentPage = 1;  //current page
+    $scope.datasource = [];
+    $scope.pageItems = 12;
+    $scope.bigTotalItems = 0;
+
+    $scope.init = function(){
+      $scope.pageChanged();
+    };
+
+    $scope.pageChanged = function() {
+
+      Customers.getPageData({pageNumber:$scope.bigCurrentPage,pageSize:$scope.pageItems},
+        function(res) {
+          $scope.datasource = res.data;
+          $scope.bigTotalItems = res.count;
+
+          $scope.normalizedDataSource = $scope.datasource.map(function(e){
+            return {
+              _id:e._id,
+              brand:e.brand,
               industry:e.industry,
               created:e.created,
               status:e.status,
@@ -84,13 +116,35 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
         });
     };
 
-  }]);
+  }]);*/
+
+
+
 
 //Customer add new
 app.controller('CustomerNewCtrl', ['$scope', '$rootScope', '$state', 'Customers', 
   function($scope,$rootScope, $state, Customers) {
+
+    $scope.myImage='';
+    $scope.myCroppedImage='';
+    $scope.cropType="circle";
+
+    var handleFileSelect=function(evt) {
+      var file=evt.currentTarget.files[0];
+      var reader = new FileReader();
+      reader.onload = function (evt) {
+        $scope.$apply(function($scope){
+          $scope.myImage=evt.target.result;
+          $rootScope.myCroppedImage = $scope.myCroppedImage;
+        });
+      };
+      reader.readAsDataURL(file);
+    };
+    angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+
   
   $scope.brand = {};
+
   $scope.industrylist = ["奢侈品","时尚-服饰","美容美发","餐饮","零售","银行","酒店宾馆","汽车","航空","其它"];
 
   $scope.statuslist = [
@@ -109,7 +163,7 @@ app.controller('CustomerNewCtrl', ['$scope', '$rootScope', '$state', 'Customers'
     var newCustomer = {
       brand: $scope.brand.name,
       companyName: $scope.brand.company,
-      logo:   $rootScope.myCroppedImage,
+      logo:   $scope.myCroppedImage,
       industry: $scope.brand.industry,
       status: $scope.brand.status,
       updatePeriod: $scope.brand.updatePeriod,
@@ -127,6 +181,8 @@ app.controller('CustomerNewCtrl', ['$scope', '$rootScope', '$state', 'Customers'
       address:$scope.brand.address,
       description: $scope.brand.description
     };
+    // console.log(newCustomer);
+
 
     var customer = new Customers(newCustomer);
     customer.$save(function(customer) {
@@ -543,7 +599,7 @@ app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams',
 
 
 //Customer-Brand
-app.controller('CustomerCountCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', 
+/*app.controller('CustomerCountCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', 
   function($scope, Customers, Sites, $stateParams) {  
 
     $scope.init = function() {
@@ -554,7 +610,7 @@ app.controller('CustomerCountCtrl', ['$scope', 'Customers', 'Sites', '$statePara
         $scope.stat.totalCustomers = resp.count;
       });
   };
-}]);
+}]);*/
 
 
 
@@ -586,42 +642,7 @@ app.controller('ChannelsDetailCtrl', ['$scope', 'ChannelsProgramList', '$statePa
 }]);
 
 
-app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams', 
-  function($scope, Customers, $stateParams) {
 
-    $scope.maxSize = 5; //total buttons displayed
-    $scope.bigCurrentPage = 1;  //current page
-    $scope.datasource = [];
-    $scope.pageItems = 12;
-    $scope.bigTotalItems = 0;
-
-    $scope.init = function(){
-      $scope.pageChanged();
-    };
-
-    $scope.pageChanged = function() {
-
-      Customers.getPageData({pageNumber:$scope.bigCurrentPage,pageSize:$scope.pageItems},
-        function(res) {
-          $scope.datasource = res.data;
-          $scope.bigTotalItems = res.count;
-
-          $scope.normalizedDataSource = $scope.datasource.map(function(e){
-            return {
-              _id:e._id,
-              brand:e.brand,
-              industry:e.industry,
-              created:e.created,
-              status:e.status,
-              updatePeriod:e.updatePeriod,
-              sitesCount:e.sitesCount!=null?e.sitesCount:0
-            };
-          });
-
-        });
-    };
-
-  }]);
 
 
 
@@ -666,7 +687,6 @@ app.controller('ChannelListCtrl', ['$scope', 'CustomerSites', 'CustomerChannels'
     function(res) {
       $scope.channels = res.map(function(e){
         e.showSelect=true;
-        e.open = false;
 
         switch (e.type){
           case 'default':e.type="默认频道";e.bg="light";e.showSelect=false;break;
@@ -676,9 +696,7 @@ app.controller('ChannelListCtrl', ['$scope', 'CustomerSites', 'CustomerChannels'
         return e;
       });
     });
-
   };
-
 
   //get checked sites
   $scope.chooseSite = function(name) {
@@ -694,14 +712,6 @@ app.controller('ChannelListCtrl', ['$scope', 'CustomerSites', 'CustomerChannels'
     $scope.formValid = $scope.checkedSites.length>0;
   };
 
-  $scope.$watch('channels[0].open', function(isOpen){
-    if (isOpen) {
-      var alreadyBindedSites = $scope.allSites.filter(function(e){
-        return e.channelId === $scope.channels[0]._id;
-      });
-      console.log(alreadyBindedSites);
-    }    
-  });
 
   $scope.startBind = function(){
     ChannelsBindSite.save({'channelId':$scope.channelId},{"sites":$scope.checkedSites},function() {

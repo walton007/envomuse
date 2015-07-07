@@ -12,7 +12,7 @@
     <div class="row wrapper m-t-n">
       <div class="panel panel-default no-border">
         <accordion close-others="true">
-          <accordion-group ng-repeat="row in channels" is-open="row.open">
+          <accordion-group ng-repeat="row in channels">
             <accordion-heading>
               <span class="label bg-{{row.sitesCount>0?'info':'light'}} pull-right">{{row.sitesCount}}</span>
               <span class="label bg-{{row.bg}} m-r">{{row.type}}</span>{{row.name}}
@@ -23,7 +23,7 @@
                   <div class="col-sm-3" ng-repeat="s in allSites" >
                     <div class="checkbox">
                       <label class="i-checks">
-                        <input type="checkbox" value="{{s.siteName}}" ng-checked="checkedSites.indexOf(s.siteName)>-1" ng-click="chooseSite(s.siteName)">
+                        <input type="checkbox" value="{{s.siteName}}" ng-checked="s.channelId===row._id" ng-checked="checkedSites.indexOf(s.siteName)>-1" ng-click="chooseSite(s.siteName)">
                         <i></i>
                         {{s.siteName}}<small class="label bg-{{s.bg}} m-l-sm">{{s.channelName}}</small>
                       </label>
