@@ -1,0 +1,91 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="JobDetailCtrl">
+
+  <div class="col">
+
+    <!-- main header -->
+    <div class="bg-light lter b-b wrapper-md">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <h1 class="m-n font-thin h3 text-black"><a ui-sref="jobs.list">工作包管理</a></h1>
+          <small class="text-muted">{{job.programName | uppercase }} 详细信息</small>
+        </div>
+        <div class="col-sm-6 text-right hidden-xs">
+        </div>
+      </div>
+    </div>
+    <!-- / main header -->
+
+    <!-- job detail -->
+    <div class="row wrapper m-t-n">
+      <div class="wrapper-lg bg-white-opacity">
+        <div class="row">
+          <div class="col-sm-7">
+            <div class="clear">
+              <span class="h4 text-black m-r"><i class="icon icon-layers m-r"></i>{{job.programName!=null?job.programName:"未命名" | uppercase }}</span>
+              <span class="h4 text-black">{{job.brand | uppercase }}</span>
+              <small class="m-l">DJ：{{job.creator}}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <tabset class="nav-tabs-alt" justified="true">
+          <tab ng-repeat="row in job.dateTemplates">
+            <tab-heading>
+              <i class="glyphicon glyphicon-list text-md text-muted wrapper-sm"></i>{{row.name!=null?row.name:"未命名" | uppercase }}
+            </tab-heading>
+            <div class="padder"> 
+              <div class="row wrapper">
+                <div class="clear wrapper b panel m-b-none">
+                  <div class="h5 clear-fix">日期类型：{{row.periodInfo.calcType}}</div>
+                  <div class="h5">选定日期：{{row.periodInfo.values}}</div>
+                </div>
+              </div>
+
+              <section id="cd-timeline" class="cd-container">
+                <div class="cd-timeline-block" ng-repeat="r in row.clock.boxes">
+                  <div class="cd-timeline-img cd-picture">
+                    <img src="img/icons/clock.png" alt="...">
+                  </div> <!-- cd-timeline-img -->
+
+                  <div class="cd-timeline-content">
+                    <h2>情景段：{{r.name}}</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus veritatis qui ut.</p>
+                    <button class="btn m-b-xs btn-sm btn-info" ng-click="">查看曲风库</button>
+                    <span class="cd-date">
+                      <label class="label bg-light m-l-xs">{{r.startTm | date:'hh-mm'}}</label>
+                      <label class="label bg-light m-l-xs">{{r.endTm | date:'hh-mm'}}</label>
+                    </span>
+                  </div> <!-- cd-timeline-content -->
+                </div> <!-- cd-timeline-block -->
+              </section>
+              <!-- <div class="streamline b-l b-info m-l-lg m-b m-t-n padder-v">                
+                <div ng-repeat="r in row.clock.boxes">
+                  <a class="pull-left thumb-sm avatar m-l-n-md">
+                    <img src="img/icons/clock.png" alt="...">
+                  </a>
+                  <div class="m-l-lg panel b-a">
+                    <div class="panel-heading pos-rlt b-b b-light">
+                      <span class="arrow left"></span>
+                      <span>情景段：{{r.name}}</span>
+                      <label class="label bg-light m-l-xs">{{r.startTm | date:'hh-mm'}}</label>
+                      <label class="label bg-light m-l-xs">{{r.endTm | date:'hh-mm'}}</label>
+                    </div>
+                    <div class="panel-body">
+                      <button class="btn m-b-xs btn-sm btn-info" ng-click="$state.go('tasks.incoming')">查看曲风库</button>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+
+            </div>
+          </tab>     
+        </tabset>
+      </div>
+    </div>
+    <!-- /job detail -->
+
+  </div>
+
+</div>

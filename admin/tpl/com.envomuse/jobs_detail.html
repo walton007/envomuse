@@ -39,36 +39,20 @@
               <div class="row wrapper">
                 <div class="clear wrapper b panel m-b-none">
                   <div class="h5 clear-fix">日期类型：{{row.periodInfo.calcType}}</div>
-                  <div class="h5">选定日期：{{row.periodInfo.values}}</div>
-                </div>
-              </div>
-
-              <div class="streamline b-l b-info m-l-lg m-b m-t-n padder-v">                
-                <div ng-repeat="r in row.clock.boxes">
-                  <a class="pull-left thumb-sm avatar m-l-n-md">
-                    <img src="img/icons/clock.png" alt="...">
-                  </a>
-                  <div class="m-l-lg panel b-a">
-                    <div class="panel-heading pos-rlt b-b b-light">
-                      <span class="arrow left"></span>
-                      <span>情景段：{{r.name}}</span>
-                      <label class="label bg-light m-l-xs">{{r.startTm | date:'hh-mm'}}</label>
-                      <label class="label bg-light m-l-xs">{{r.endTm | date:'hh-mm'}}</label>
-                    </div>
-                    <div class="panel-body">
-                      <div class="h5" >
-                        <div class="list-group no-radius alt" ng-repeat="t in r.boxes.tracks">
-                        {{t.name!=null?t.name:"无名"}}
-                          <!-- <a class="list-group-item" ui-sref="jobs.box({boxId:b.name,jobId:job._id})">
-                            {{b.name}}
-                          </a> -->
-                        </div>
+                  <div ng-show="row.periodInfo.calcType==='周'">
+                    <div class="inline m-r-sm" ng-repeat="d in row.periodInfo.values" >
+                      <div class="checkbox">
+                        <label class="i-checks">
+                          <input type="checkbox" ng-disabled="true;" value="{{d.dateName}}" ng-checked="d.checked">
+                          <i></i>
+                          {{d.dateName}}
+                        </label>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-
+              <timeline></timeline>
             </div>
           </tab>     
         </tabset>

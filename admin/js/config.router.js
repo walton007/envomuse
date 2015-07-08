@@ -88,8 +88,7 @@ angular.module('app')
                       function( $ocLazyLoad,uiLoad ){
                         return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
                                                  'js/app/envomuse.services.js',
-                                                 'js/filters/fromNow.js',
-                                                 'js/app/envomuse.select.js'])
+                                                 'js/filters/fromNow.js'])
                         .then(function(){
                               return $ocLazyLoad.load('ui.select');
                             });
@@ -98,6 +97,10 @@ angular.module('app')
               })
               .state('channels.dash', {
                   url: '/:channelId',
+                  params:{
+                    'previousBrand':null,
+                    'previousChannel':null
+                  },
                   templateUrl: 'tpl/com.envomuse/channels_dash.html'
               })
               .state('channels.detail', {
@@ -217,10 +220,6 @@ angular.module('app')
                     }]
                   }
               })
-              /*.state('tasks.dash', {
-                  url: '/',
-                  templateUrl: 'tpl/com.envomuse/tasks_dashboard.html'
-              })*/
 
               .state('tasks.incoming', {
                   url: '/incoming',
@@ -245,12 +244,7 @@ angular.module('app')
                     }]
                   }
               })
-/*
-              .state('jobs.dash', {
-                  url: '/',
-                  templateUrl: 'tpl/com.envomuse/jobs_dashboard.html'
-              })
-*/
+
               .state('jobs.list', {
                   url: '/list',
                   templateUrl: 'tpl/com.envomuse/jobs_list.html'
@@ -258,7 +252,16 @@ angular.module('app')
 
               .state('jobs.detail', {
                   url: '/:jobId/',
-                  templateUrl: 'tpl/com.envomuse/jobs_detail.html'
+                  templateUrl: 'tpl/com.envomuse/jobs_detail.html',
+                  resolve: {
+                      deps: ['$ocLazyLoad', 'uiLoad',
+                        function( $ocLazyLoad ){
+                          return $ocLazyLoad.load([
+                                          'js/app/timeline/timestack.css',
+                                          'js/app/timeline/timestack.min.js']
+                                         );
+                  }]
+                }
               })
               
               .state('jobs.box', {

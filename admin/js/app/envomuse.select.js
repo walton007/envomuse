@@ -32,10 +32,12 @@ app.filter('propsFilter', function() {
     };
 })
 
-
-
-
 app.controller('SelectCtrl', ['$scope', 'Jobs', function($scope, Jobs ) {
+    
+    Jobs.get(function(res) {
+      $scope.jobs = res;
+    });
+
     $scope.disabled = undefined;
     $scope.searchEnabled = undefined;
 
@@ -59,16 +61,6 @@ app.controller('SelectCtrl', ['$scope', 'Jobs', function($scope, Jobs ) {
     $scope.job.selected = undefined;
     };
 
-    $scope.someGroupFn = function (item){
-
-    if (item.name[0] >= 'A' && item.name[0] <= 'M')
-        return 'From A - M';
-
-    if (item.name[0] >= 'N' && item.name[0] <= 'Z')
-        return 'From N - Z';
-
-    };
-
     $scope.counter = 0;
     $scope.someFunction = function (item, model){
     $scope.counter++;
@@ -79,29 +71,10 @@ app.controller('SelectCtrl', ['$scope', 'Jobs', function($scope, Jobs ) {
     $scope.lastRemoved = {
         item: item,
         model: model
+      };
     };
-    };
 
-    Jobs.get(function(res) {
-        $scope.jobs = res;
-        // console.log($scope.jobs);
-    });
-
-    $scope.job = {};
-    /*$scope.people = [
-        { name: 'Adam',      email: 'adam@email.com'},
-        { name: 'Amalie',    email: 'amalie@email.com'},
-        { name: 'Estefanía', email: 'estefania@email.com'},
-        { name: 'Adrian',    email: 'adrian@email.com'},
-        { name: 'Wladimir',  email: 'wladimir@email.com'},
-        { name: 'Samantha',  email: 'samantha@email.com'},
-        { name: 'Nicole',    email: 'nicole@email.com'},
-        { name: 'Natasha',   email: 'natasha@email.com'},
-        { name: 'Michael',   email: 'michael@email.com'},
-        { name: 'Nicolás',   email: 'nicolas@email.com'},
-    ];*/
-
-    $scope.startGenerate = function(item){
+    $scope.generate = function(item){
       var params = {
         jobName:program.jobSelected,
         dateRange:program.dateRange,
@@ -111,12 +84,8 @@ app.controller('SelectCtrl', ['$scope', 'Jobs', function($scope, Jobs ) {
         name:item.targetProgramName*/
       };
 
+      console.log($scope.job.selected);
       console.log(params);
-
-      /*GenerateProgram.generate({'jobId':item._id},params,
-        function(res){
-          $state.go('jobs.detail',{jobId:item._id});
-      });*/
     };
 
 }]);

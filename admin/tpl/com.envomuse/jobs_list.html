@@ -8,7 +8,7 @@
       <div class="row">
         <div class="col-sm-6 col-xs-12">
           <h1 class="m-n font-thin h3 text-black">工作包管理</h1>
-          <small class="text-muted">系统内所有可用的工作包</small>
+          <small class="text-muted">已导入系统的所有可用工作包</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
         </div>
@@ -30,13 +30,17 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-3" ng-repeat="item in datasource | filter:searchText">
+
+        <div ng-show="datasource.length==0">
+          <alert type="warning">还没有工作包！<button class="btn m-b-xs btn-sm btn-info" ng-click="$state.go('tasks.incoming')">查看任务</button></alert>
+        </div>
+        <div ng-show="datasource.length>0" class="col-sm-3" ng-repeat="item in datasource | filter:searchText">
           <div class="panel panel-default">
             <a ui-sref="jobs.detail({jobId:item._id})">
             <div class="panel-heading">
               <div class="clearfix">
                 <div class="pull-left thumb-md avatar b-3x m-r">
-                  <img src="img/icons/job.png" alt="...">
+                  <img src="img/icons/tasks_64.png" alt="...">
                 </div>
                 <div class="clear">
                   <div class="h4 m-t-xs m-b-xs">

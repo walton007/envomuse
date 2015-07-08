@@ -614,37 +614,111 @@ app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams',
 
 
 
-
-app.controller('ChannelsDashCtrl', ['$scope', 'CustomersBasic', '$stateParams', function($scope, CustomersBasic, $stateParams) {
+//Channels dash
+app.controller('ChannelsDashCtrl', ['$scope', 'CustomersBasic', '$stateParams', 
+  function($scope, CustomersBasic, $stateParams) {
 
   CustomersBasic.get(function(res){
+  
+    for(var i=0;i<res.length;i++){
+      res[i].channels.map(function(e){
+        switch (e.type){
+              case 'default':e.type="默认频道";e.bg="light";break;
+              case 'normal':e.type="正常频道";e.bg="info";break;
+              case 'special':e.type="高优先级频道";e.bg="primary";break;
+            }
+      });
+    }
+
     $scope.customerDataItems = res;
+
   });
 
-  $scope.showChannel = function(id){
-    $scope.channelId = id;
+    //messaging
+  $scope.alerts = [];
+  $scope.closeAlert = function(index) {
+    $scope.alerts.splice(index, 1);
+  };
+
+
+  if($stateParams.previousChannel != null && $stateParams.previousBrand != null){
+    $scope.showChannel($stateParams.previousChannel,$stateParams.previousBrand);
+  }
+
+  $scope.showChannel = function(channel,brand){
+    
+    $scope.chosenChannel = channel;
+    $scope.chosenBrand = brand;
+
     $scope.partial = 'tpl/com.envomuse/channels_detail.html';
   };
+
 }]);
 
-app.controller('ChannelsDetailCtrl', ['$scope', 'ChannelsProgramList', '$stateParams', function($scope, ChannelsProgramList, $stateParams) {
-  
-  ChannelsProgramList.get(function(res){
-    $scope.customerDataItems = res;
-  });
+//Channels detail
+app.controller('ChannelsDetailCtrl', ['$scope', '$state', 'Jobs', 'ChannelsProgramList', 'ChannelsGenerateProgram', '$stateParams', 
+  function($scope,$state, Jobs, ChannelsProgramList, ChannelsGenerateProgram, $stateParams) {
 
-  ChannelsProgramList.getPrograms({'channelId':$scope.channelId},
-    function(res) {
-      $scope.programs = res;
-      console.log($scope.programs);
+    // console.log($scope.$parent);
+
+    Jobs.get(function(res) {
+      $scope.jobs = res;
     });
 
+    ChannelsProgramList.getPrograms({'channelId':$scope.chosenChannel._id},
+    function(res) {
+      $scope.programs = res;
+    });
+
+    //initialisation
+    $scope.disabled = undefined;
+    $scope.searchEnabled = undefined;
+
+    $scope.enable = function() {
+    $scope.disabled = false;
+    };
+
+    $scope.disable = function() {
+    $scope.disabled = true;
+    };
+
+    $scope.enableSearch = function() {
+    $scope.searchEnabled = true;
+    }
+
+    $scope.disableSearch = function() {
+    $scope.searchEnabled = false;
+    }
+
+    $scope.clear = function() {
+    $scope.job.selected = undefined;
+    };
+
+    /*ChannelsProgramList.get(function(res){
+      $scope.customerDataItems = res;
+    });*/
+
+    $scope.job = {};
+
+    $scope.generate = function(){
+      var conf = {
+        name:$scope.program.comment,
+        // daterange:$scope.program.dateRange,
+        // job:$scope.job.selected
+        startDate:$scope.program.dateRange.substring(0,10),
+        endDate:$scope.program.dateRange.substring(13,23),
+        jobId:$scope.job.selected._id,
+      };
+    
+      console.log(conf);
+
+      ChannelsGenerateProgram.generateProgram({channelId:$scope.chosenChannel._id},conf,function(res){
+        $scope.alerts.push({type: 'success', msg: res.name + '生成成功！'});
+        $state.go('channels.dash',{previousChannel:$scope.chosenChannel,previousBrand:$scope.chosenBrand},{reload: true});  
+      });
+  };
+
 }]);
-
-
-
-
-
 
 
 //Customer channel list
@@ -787,89 +861,46 @@ app.controller('JobDetailCtrl', ['$scope', 'JobById', '$stateParams',
             e.periodInfo.values = [];
 
             for(var key in e.periodInfo.daysOfWeekValues){
-              if(e.periodInfo.daysOfWeekValues[key])
-                e.periodInfo.values.push(key);
+              switch(key){
+                case 'Mon': e.periodInfo.values.push({dateName:'星期一',checked:e.periodInfo.daysOfWeekValues[key]});break;
+                case 'Tue': e.periodInfo.values.push({dateName:'星期二',checked:e.periodInfo.daysOfWeekValues[key]});break;
+                case 'Wed': e.periodInfo.values.push({dateName:'星期三',checked:e.periodInfo.daysOfWeekValues[key]});break;
+                case 'Thur': e.periodInfo.values.push({dateName:'星期四',checked:e.periodInfo.daysOfWeekValues[key]});break;
+                case 'Fri': e.periodInfo.values.push({dateName:'星期五',checked:e.periodInfo.daysOfWeekValues[key]});break;
+                case 'Sat': e.periodInfo.values.push({dateName:'星期六',checked:e.periodInfo.daysOfWeekValues[key]});break;
+                case 'Sun': e.periodInfo.values.push({dateName:'星期日',checked:e.periodInfo.daysOfWeekValues[key]});break;
+              }
             }
-
             break;
         };
 
         return e;
       });
-
-      console.log($scope.job);
-
-      /*$scope.job.programRule.playlists = $scope.job.programRule.playlists.filter(function(e){
-      switch(e.timePeriods.calcType){
-        case 'multipleDates':
-          e.timePeriods.calcType="日期";
-          e.timePeriods.dValues=e.timePeriods.multipleDatesValues.join(', ');
-          break;
-        case 'dateRange':
-          e.timePeriods.calcType="日期范围";
-          //e.timePeriods.dValues=e.timePeriods.dateRangeValues.startDate+'-->'+e.timePeriods.dateRangeValues.endDate;
-          break;
-        case 'daysOfWeek':
-          e.timePeriods.calcType="周";
-          e.timePeriods.dValues = e.timePeriods.daysOfWeekValues.join(', ');
-          break;
-      };*/
-
-      //rules normalization
-     /* e.dayRuleUnits = e.dayRuleUnits.map(function(d){
-        for(var i=0;i<$scope.job.programRule.rules.length;i++){
-          if(d.ruleName.toUpperCase()===$scope.job.programRule.rules[i].name.toUpperCase())
-              return {
-                _id:d._id,
-                starthour:d.starthour,
-                endhour:d.endhour,
-                ruleName:d.ruleName,
-                description:$scope.job.programRule.rules[i].description,
-                boxes:$scope.job.programRule.rules[i].boxes
-              };
-        }
-      });
-
-      //boxes normalization
-      for(var i=0;i<e.dayRuleUnits.length;i++){
-        e.dayRuleUnits[i].boxes = e.dayRuleUnits[i].boxes.map(function(k){
-          for(var j=0;j<$scope.job.programRule.boxes.length;j++){
-            if(k.toUpperCase()===$scope.job.programRule.boxes[j].name.toUpperCase())
-              return {
-                _id:$scope.job.programRule.boxes[j]._id,
-                name:$scope.job.programRule.boxes[j].name,
-                description:$scope.job.programRule.boxes[j].description,
-                songlist:$scope.job.programRule.boxes[j].songlist
-              };
-          }
-        });
-      }
-
-      return e;
-    });*/
-
-        
     });
-
-  
-    $scope.startGenerate = function(item){
-      var params = {
-        startDate:item.programStartDate.toLocaleDateString(),
-        endDate:item.programEndDate.toLocaleDateString(),
-        name:item.targetProgramName
-      };
-
-      GenerateProgram.generate({'jobId':item._id},params,
-        function(res){
-          $state.go('jobs.detail',{jobId:item._id});
-    });
-
-      //console.log(params);
-    };
-
- // console.log($scope.job);
-
 }]);
+
+app.directive('timeline', function() {
+  return function($scope, $element, $attrs) {
+    // console.log($scope.row.clock.boxes);
+    var defaultDateStr = '2015-08-01';
+
+    var clock = $scope.row.clock.boxes.map(function(e){
+      return {
+        _id:e._id,
+        title:e.name,
+        start:defaultDateStr.concat(e.startTm.substring(10)),
+        end:defaultDateStr.concat(e.endTm.substring(10)),
+        color: '#'+(Math.random()*0xFFFFFF<<0).toString(16),
+        tracks:e.tracks
+      };
+    });
+    
+   $element.timestack({
+      span: 'hour',
+      data: clock
+    });
+  };
+});
 
 /*app.controller('ProgramDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
 
@@ -903,40 +934,6 @@ app.controller('BoxDetailCtrl', ['$scope', 'BoxById', '$stateParams', function($
 
 }]);
 
-/*
-app.controller('SetJobDateRangeModalCtrl', ['$scope', '$modal', '$log', function($scope, $modal, $log) {
-    $scope.items = ['item1', 'item2', 'item3'];
-    $scope.open = function (size) {
-      var modalInstance = $modal.open({
-        templateUrl: 'setJobDateRangeModal',
-        controller: 'ModalInstanceCtrl',
-        size: size,
-        resolve: {
-          items: function () {
-            return $scope.items;
-          }
-        }
-      });
-
-      modalInstance.result.then(function (selectedItem) {
-        $scope.selected = selectedItem;
-      }, function () {
-        $log.info('Modal dismissed at: ' + new Date());
-      });
-    };
-  }])
-  ; */
-
-//Tasks
-/*app.controller('TasksDashboardCtrl', ['$scope', 'ComingJobs', '$stateParams', function($scope, ComingJobs, $stateParams) {  
-
-  ComingJobs.getCount(function(res){
-    $scope.stat = res;
-    // console.log($scope.stat);
-  });
-
-}]);
-*/
 app.controller('ComingJobsCtrl', ['$scope', 'ComingJobs', 'ComingJobsImport', '$stateParams', 
   function($scope, ComingJobs, ComingJobsImport, $stateParams) {  
 
@@ -1115,7 +1112,6 @@ app.controller('PlaylistListCtrl', ['$scope', 'Programs', '$stateParams', functi
 
 // }]);*/
 
-
 app.controller('DailyPlaylistDetailCtrl', ['$scope', 'ProgramById', '$stateParams', function($scope, ProgramById, $stateParams) {  
 
   ProgramById.get({'programId':$stateParams.programId},
@@ -1228,8 +1224,6 @@ app.controller('UserListCtrl', ['$scope', 'Users', '$stateParams', function($sco
     });*/
 
   };
-
-
 }]);
 
 
