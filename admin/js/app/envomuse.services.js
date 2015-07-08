@@ -20,7 +20,6 @@ app.factory('DashStats', ['$resource', function($resource) {
   }
 ]);
 
-
 //Customers service : Customer REST endpoint
 app.factory('Customers', ['$resource', function($resource) {
     return $resource(
@@ -101,6 +100,18 @@ app.factory('ChannelsProgramList', ['$resource', function($resource) {
     },
     {
       'getPrograms': {method:'GET', isArray:true}
+    });
+  }
+]);
+
+app.factory('ChannelsGenerateProgram', ['$resource', function($resource) {
+    return $resource(
+      '/api/channels/:channelId/generateProgram', 
+    {
+      channelId: '@_id'
+    },
+    {
+      'generateProgram': {method:'POST'}
     });
   }
 ]);

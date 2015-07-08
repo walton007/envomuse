@@ -14,47 +14,44 @@
       </div>
     </div>
     <!-- / main header -->
-
     
-      <!-- brand list -->
-      <div class="col w-lg bg-light b-r bg-auto no-padder" style="height:500px">
-        <div class="vbox">
-          <div class="wrapper-md dker b-b">
-            <div class="input-group">
-               <input type="text" class="form-control" ng-model="brandSearchText" placeholder="品牌名称">
-               <div class="input-group-btn">
-                  <button type="button" class="btn btn-default">查找</button>
-               </div>
-            </div>
+    <!-- brand list -->
+    <div class="col w-lg bg-light b-r bg-auto no-padder" style="height:500px">
+      <div class="vbox">
+        <div class="wrapper-md dker b-b">
+          <div class="input-group">
+             <input type="text" class="form-control" ng-model="brandSearchText" placeholder="品牌名称">
+             <div class="input-group-btn">
+                <button type="button" class="btn btn-default">查找</button>
+             </div>
           </div>
-          <div class="row-row">
-            <div class="cell">
-              <div class="cell-inner">
+        </div>
+        <div class="row-row">
+          <div class="cell">
+            <div class="cell-inner">
 
-                <accordion close-others="true">
-                  <accordion-group ng-repeat="b in customerDataItems | filter:brandSearchText">
-                    <accordion-heading>
-                    <span class="label m-l pull-right bg-{{b.channels.length>0?'success':'light'}}">{{b.channels.length}}</span><i class="icon icon-trophy text-muted m-r"></i>{{b.brand | uppercase}}
-                    </accordion-heading>
-                      <ul class="list-group">
-                        <a ng-click="showChannel(c._id)" class="list-group-item b-b" ng-repeat="c in b.channels">
-                          <span ng-show="c.type=='special'" ><span class="label m-l m-r bg-primary">特别频道</span>{{c.name}}</span>
-                          <span ng-show="c.type=='normal'" ><span class="label m-l m-r bg-info">标准频道</span>{{c.name}}</span>
-                          <span ng-show="c.type=='default'" ><span class="label m-l m-r bg-light">默认频道</span>{{c.name}}</span>
-                        </a>
-                      </ul>
-                  </accordion-group>
-                </accordion>
-              </div>
+              <accordion close-others="true">
+                <accordion-group ng-repeat="b in customerDataItems | filter:brandSearchText">
+                  <accordion-heading>
+                  <span class="label m-l pull-right bg-{{b.channels.length>0?'success':'light'}}">{{b.channels.length}}</span><i class="icon icon-trophy text-muted m-r"></i>{{b.brand | uppercase}}
+                  </accordion-heading>
+                    <ul class="list-group">
+                      <a ng-click="showChannel(c,b)" class="list-group-item b-b" ng-repeat="c in b.channels">
+                        <span class="label bg-{{c.bg}} m-r">{{c.type}}</span>{{c.name}}
+                      </a>
+                    </ul>
+                </accordion-group>
+              </accordion>
             </div>
           </div>
         </div>
       </div>
-      <!-- /brand list -->
+    </div>
+    <!-- /brand list -->
 
-      <div class="col">
-        <div ng-include="partial"></div>
-      </div>
+    <div class="col">
+      <div ng-include="partial"></div>
+    </div>
 
   </div>
 </div>
