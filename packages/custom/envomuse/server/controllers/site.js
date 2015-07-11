@@ -5,7 +5,9 @@
  */
 var mongoose = require('mongoose'),
   Site = mongoose.model('Site'),
+  Channel = mongoose.model('Channel'),
   ChannelController = require('./channel'),
+  Q = require('q'),
   uuid = require('node-uuid'),
   _ = require('lodash');
 
@@ -42,23 +44,54 @@ exports.create = function(req, res) {
  */
 exports.update = function(req, res) {
   var site = req.site;
-  if ('manager' in req.body) {
-    site.manager = _.extend(site.manager, req.body.manager);
-    delete req.body.manager;
-  }
-  if ('license' in req.body) {
-    delete req.body.license;
-  }
-  site = _.extend(site, req.body);
-  site.save(function(err) {
-    if (err) {
-      console.warn('update site error:', err);
-      return res.status(500).json({
-        error: 'Cannot update the site'
-      });
-    }
-    res.json(site);
+  console.warn('update site :', site);
 
+  var vairableProperties = ['siteName', 'reference', 'manager', 
+  'phone', 'address', 'province', 'city'];
+  var siteProperties = {};
+  _.each(vairableProperties, function (property) {
+    if (property in req.body) {
+      siteProperties[property] = req.body[property];
+    }
+  });
+
+  var readyQ = Q.defer();
+
+  if ('channel' in req.body) {
+    // handle channel info
+    Channel.load(req.body.channel, function(err, channel) {
+        if (err || !channel) {
+          readyQ.reject('Invalid Channel');
+          return;
+        }
+        siteProperties = _.extend(siteProperties, {
+          'channel': channel,
+          'channelName': channel.channelName,
+          'channelType': channel.channelType
+        });
+        readyQ.resolve();
+    });
+  } else {
+    readyQ.resolve();
+  }
+
+  readyQ.promise.then(function () {
+    site = _.extend(site, siteProperties);
+
+    site.save(function(err) {
+      if (err) {
+        console.warn('update site error:', err);
+        return res.status(400).json({
+          error: 'Cannot update the site'
+        });
+      }
+      res.json(site);
+
+    });
+  }, function (err) {
+    res.status(400).json({
+      error: err
+    });
   });
 };
 

@@ -29,7 +29,7 @@ var SiteSchema = commonUtil.BaseSchema.extend({
     unique: true
   },
   reference: String,
-  manager: commonUtil.ContactSchema,
+  manager: String,
   phone: String,
   address: String,
   province: String,
@@ -41,6 +41,11 @@ var SiteSchema = commonUtil.BaseSchema.extend({
     required: true,
     default: 'deliveryNo',
     enum: ['deliveryYes', 'deliveryNo'],
+  },
+
+  deviceId: {
+    type: String,
+    required: true
   },
 
   license: {

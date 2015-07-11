@@ -21,40 +21,40 @@ exports.program = function(req, res, next, id) {
   });
 };
 
-exports.getProgramCountFromJobs = function(jobs) {
-  var deferred = Q.defer();
-  Program.aggregate([{
-    $match: {
-      job: {$in: _.map(jobs, '_id')}
-    }
-  }, {
-    $group: {
-      _id: '$job',
-      count: {$sum: 1}
-    }
-  }])
-  .exec(function(err, result) {
-    console.log('result:', result);
-    if (err) {
-      deferred.reject(err);
-      return;
-    };
-    var jobProgramMap = {};
-    _.each(result, function(obj) {
-      jobProgramMap[obj._id] = obj.count;
-    })
+// exports.getProgramCountFromJobs = function(jobs) {
+//   var deferred = Q.defer();
+//   Program.aggregate([{
+//     $match: {
+//       job: {$in: _.map(jobs, '_id')}
+//     }
+//   }, {
+//     $group: {
+//       _id: '$job',
+//       count: {$sum: 1}
+//     }
+//   }])
+//   .exec(function(err, result) {
+//     console.log('result:', result);
+//     if (err) {
+//       deferred.reject(err);
+//       return;
+//     };
+//     var jobProgramMap = {};
+//     _.each(result, function(obj) {
+//       jobProgramMap[obj._id] = obj.count;
+//     })
 
-    var retJobs = _.map(jobs, function(job) {
-        var ret = job.toJSON();
-        ret.programCount = jobProgramMap[job._id] ? jobProgramMap[job._id]: 0;
-        return ret;
-      });
+//     var retJobs = _.map(jobs, function(job) {
+//         var ret = job.toJSON();
+//         ret.programCount = jobProgramMap[job._id] ? jobProgramMap[job._id]: 0;
+//         return ret;
+//       });
 
-    deferred.resolve(retJobs);
-  });
+//     deferred.resolve(retJobs);
+//   });
 
-  return deferred.promise;
-};
+//   return deferred.promise;
+// };
 
 
 /**

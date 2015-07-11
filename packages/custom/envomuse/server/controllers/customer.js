@@ -12,6 +12,7 @@ var mongoose = require('mongoose'),
   ChannelController = require('./channel'),
   UserController = require('./user'),
   util = require('util'),
+  randomstring = require("randomstring"),
   Q = require('q'),
   _ = require('lodash');
 
@@ -203,6 +204,8 @@ exports.addSite = function(req, res) {
       req.body.channel = channel;
       req.body.channelName = channel.name;
       req.body.channelType = channel.type;
+      req.body.deviceId = randomstring.generate(10);
+      
       SiteController.create(req, res);
     });
 };
