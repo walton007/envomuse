@@ -130,7 +130,14 @@ function validFilePath(filepath) {
 	return path.extname(filepath) === '.zip';
 }
 
+var isRefreshing = false;
+
 function forceRefresh(respCallback, respErrorback) {
+	if (isRefreshing) {
+		return;
+	}
+	isRefreshing = true;
+
 	console.log('forceRefresh');
 	var updateQ = Q.defer();
 	ComingJob.update({importStatus: 'notImport'}, {
@@ -212,11 +219,13 @@ function forceRefresh(respCallback, respErrorback) {
 					console.log('validComingJobs:', validComingJobs);
 					respCallback && respCallback(validComingJobs);
 					// allComingJobs(respCallback, respErrorback);
+					isRefreshing = false;
 				});
 			});
 			finder.on('error', function(err) {
 				console.log('find err:', err);
 				respErrorback && respErrorback('finder err' + err);
+				isRefreshing = false;
 			});
 		});
 }
@@ -364,16 +373,16 @@ function importComingJob(comingJobId, respCallback, respErrorback) {
 		});
 }
 
-chokidar.watch(DJUploadDir, {
-	ignored: /[\/\\]\./,
-	persistent: true
-}).on('all', function(event, path) {
-	// console.log('event', event);
-	// console.log('path', path);
-	if (validFilePath(path)) {
-		forceRefresh();
-	};
-});
+// chokidar.watch(DJUploadDir, {
+// 	ignored: /[\/\\]\./,
+// 	persistent: true
+// }).on('all', function(event, path) {
+// 	// console.log('event', event);
+// 	// console.log('path', path);
+// 	if (validFilePath(path)) {
+// 		forceRefresh();
+// 	};
+// });
 
 ClearRuningTask(function() {
 	setInterval(StartIdleTasks, 10000);
