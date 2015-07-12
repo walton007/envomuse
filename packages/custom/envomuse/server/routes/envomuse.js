@@ -11,6 +11,7 @@ var express = require('express'),
    jobs = require('../controllers/job'),
    songs = require('../controllers/song'),
    users = require('../controllers/user'),
+   terminals = require('../controllers/terminal'),
    dashboard = require('../controllers/dashboard'),
    comingJobs = (config.enableZmq) ? require('../controllers/comingJobZmq') : require('../controllers/comingJob');
 
@@ -190,18 +191,22 @@ module.exports = function(Envomuse, app, auth, database) {
     //once a day 
     res.json({jingo: []});
   });
-  terminalRouter.route('/playlist')
+
+  terminalRouter.route('/playlists')
+  .get(terminals.getProgramList);
+
+  terminalRouter.route('/playlists/:playlistId')
+  .get(terminals.getProgram);
+  terminalRouter.param('playlistId', terminals.playlist); 
+
+  terminalRouter.route('/tracks/:trackId/hqfile')
   .get(function(req, res, next) {
-    //query param: version
-    //once a day 
-    res.json({playlist: []});
-  });
-  terminalRouter.route('/songs/:songId/hqfile')
-  .get(function(req, res, next) {
-    var hqfileUrl = req.song.rawfilepath.substr(config.root.length);
+    var hqfileUrl = req.track.rawfilepath.substr(config.root.length);
     // console.log('hqfileUrl:', hqfileUrl);
     res.redirect(hqfileUrl);
   });
+
+
   terminalRouter.route('/reports')
   .post(function(req, res, next) {
     // once a day: for statistic purpose
