@@ -9,7 +9,7 @@ var express = require('express'),
    channels = require('../controllers/channel'),
    programs = require('../controllers/program'),
    jobs = require('../controllers/job'),
-   songs = require('../controllers/song'),
+   tracks = require('../controllers/track'),
    users = require('../controllers/user'),
    terminals = require('../controllers/terminal'),
    dashboard = require('../controllers/dashboard'),
@@ -89,24 +89,24 @@ module.exports = function(Envomuse, app, auth, database) {
   .get(programs.show);
   apiRouter.param('programId', programs.program); 
 
-  //Songs
-  apiRouter.route('/songs')
-  .get(songs.all);
-  apiRouter.route('/songs/:songId')
-  .get(songs.show);
-  apiRouter.route('/songs/:songId/hqfile')
+  //tracks
+  apiRouter.route('/tracks')
+  .get(tracks.all);
+  apiRouter.route('/tracks/:trackId')
+  .get(tracks.show);
+  apiRouter.route('/tracks/:trackId/hqfile')
   .get(function(req, res, next) {
-    var hqfileUrl = req.song.rawfilepath.substr(config.root.length);
+    var hqfileUrl = req.trackI.rawfilepath.substr(config.root.length);
     // console.log('hqfileUrl:', hqfileUrl);
     res.redirect(hqfileUrl);
   });
-  apiRouter.route('/songs/:songId/lqfile')
+  apiRouter.route('/trackId/:trackId/lqfile')
   .get(function(req, res, next) {
-    var rawfileUrl = req.song.rawfilepath.substr(config.root.length);
+    var rawfileUrl = req.track.rawfilepath.substr(config.root.length);
     // console.log('rawfileUrl:', rawfileUrl);
     res.redirect(rawfileUrl);
   });
-  apiRouter.param('songId', songs.song); 
+  apiRouter.param('trackId', tracks.track); 
 
   //Customers
   apiRouter.route('/customers/')
@@ -202,9 +202,11 @@ module.exports = function(Envomuse, app, auth, database) {
   terminalRouter.route('/tracks/:trackId/hqfile')
   .get(function(req, res, next) {
     var hqfileUrl = req.track.rawfilepath.substr(config.root.length);
-    // console.log('hqfileUrl:', hqfileUrl);
+    console.log('hqfileUrl:', hqfileUrl);
     res.redirect(hqfileUrl);
   });
+
+  terminalRouter.param('trackId', tracks.track); 
 
 
   terminalRouter.route('/reports')

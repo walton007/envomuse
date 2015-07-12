@@ -1,4 +1,4 @@
-require('../packages/custom/envomuse/server/models/song');
+require('../packages/custom/envomuse/server/models/track');
 
 var JSZip = require("jszip"),
 	path = require('path'),
@@ -12,8 +12,7 @@ var JSZip = require("jszip"),
 
 var mongoose = require('mongoose'),
 	Job = mongoose.model('Job'),
-	Track = mongoose.model('Track'),
-	Song = mongoose.model('Song');
+	Track = mongoose.model('Track');
 
 function getMetaInfo(zipFilepath, callback) {
 	fs.readFile(zipFilepath, function(err, data) {

@@ -6,7 +6,7 @@
 require('../packages/custom/envomuse/server/models/comingJob');
 require('../packages/custom/envomuse/server/models/task');
 require('../packages/custom/envomuse/server/models/job');
-require('../packages/custom/envomuse/server/models/song');
+require('../packages/custom/envomuse/server/models/track');
 
 var mean = require('meanio'),
   config = mean.loadConfig();
@@ -22,7 +22,7 @@ var mongoose = require('mongoose'),
 	_ = require('lodash'),
 	ComingJob = mongoose.model('ComingJob'),
 	Job = mongoose.model('Job'),
-	Song = mongoose.model('Song'),
+	Track = mongoose.model('Track'),
 	Task = mongoose.model('Task');
 
 var zipManager = require('./zipmanager');
@@ -33,7 +33,7 @@ console.log('comingJob model path.normalize(p) :', DJUploadDir);
 function clearAll(respCallback, respErrorback) {
 	console.log('!! Clear All Song, Job, Task and ComingJob records!!');
 	Job.remove({}).exec();
-	Song.remove({}).exec();
+	Track.remove({}).exec();
 	ComingJob.remove({}).exec();
 	Task.remove({}).exec();
 	respCallback && respCallback('Done');
