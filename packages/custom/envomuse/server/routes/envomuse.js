@@ -3,6 +3,7 @@
 /* jshint -W098 */
 var express = require('express'),
    mean = require('meanio'),
+   _ = require('lodash'),
    config = mean.loadConfig(),
    customer = require('../controllers/customer'),
    sites = require('../controllers/site'),
@@ -205,7 +206,11 @@ module.exports = function(Envomuse, app, auth, database) {
     console.log('hqfileUrl:', hqfileUrl);
     res.redirect(hqfileUrl);
   });
-
+  terminalRouter.route('/tracks/:trackId/meta')
+  .get(function(req, res, next) {
+    var trackInfo = _.pick(req.track.toJSON(), '_id', 'name', 'duration', 'hash');
+    res.json(trackInfo);
+  });
   terminalRouter.param('trackId', tracks.track); 
 
 
