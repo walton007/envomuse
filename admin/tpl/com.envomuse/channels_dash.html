@@ -31,12 +31,12 @@
             <div class="cell-inner">
 
               <accordion close-others="true">
-                <accordion-group ng-repeat="b in customerDataItems | filter:brandSearchText">
+                <accordion-group ng-repeat="b in customerDataItems | filter:brandSearchText" is-open="b.isOpen">
                   <accordion-heading>
                   <span class="label m-l pull-right bg-{{b.channels.length>0?'success':'light'}}">{{b.channels.length}}</span><i class="icon icon-trophy text-muted m-r"></i>{{b.brand | uppercase}}
                   </accordion-heading>
                     <ul class="list-group">
-                      <a ng-click="showChannel(c,b)" class="list-group-item b-b" ng-repeat="c in b.channels">
+                      <a ui-sref="channels.detail({brandId:b._id,channelId:c._id})" class="list-group-item b-b" ng-repeat="c in b.channels">
                         <span class="label bg-{{c.bg}} m-r">{{c.type}}</span>{{c.name}}
                       </a>
                     </ul>
@@ -50,7 +50,7 @@
     <!-- /brand list -->
 
     <div class="col">
-      <div ng-include="partial"></div>
+      <div ui-view></div>
     </div>
 
   </div>

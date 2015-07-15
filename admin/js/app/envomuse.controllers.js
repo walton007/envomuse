@@ -598,78 +598,68 @@ app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams',
 }]);
 
 
-//Customer-Brand
-/*app.controller('CustomerCountCtrl', ['$scope', 'Customers', 'Sites', '$stateParams', 
-  function($scope, Customers, Sites, $stateParams) {  
-
-    $scope.init = function() {
-      $scope.stat = {};
-      $scope.customers = [];
-      
-      Customers.getCount(function(resp) {
-        $scope.stat.totalCustomers = resp.count;
-      });
-  };
-}]);*/
-
-
-
 //Channels dash
 app.controller('ChannelsDashCtrl', ['$scope', 'CustomersBasic', '$stateParams', 
   function($scope, CustomersBasic, $stateParams) {
 
-  CustomersBasic.get(function(res){
-  
-    for(var i=0;i<res.length;i++){
-      res[i].channels.map(function(e){
-        switch (e.type){
-              case 'default':e.type="默认频道";e.bg="light";break;
-              case 'normal':e.type="正常频道";e.bg="info";break;
-              case 'special':e.type="高优先级频道";e.bg="primary";break;
-            }
-      });
-    }
+    CustomersBasic.get(function(res){
+      for(var i=0;i<res.length;i++){
+        res[i].channels.map(function(e){
+          switch (e.type){
+                case 'default':e.type="默认频道";e.bg="light";isOpen=false;break;
+                case 'normal':e.type="正常频道";e.bg="info";isOpen=false;break;
+                case 'special':e.type="高优先级频道";e.bg="primary";isOpen=false;break;
+              }
+        });
+      }
 
-    $scope.customerDataItems = res;
-
-  });
+      $scope.customerDataItems = res;
+    });
 
     //messaging
-  $scope.alerts = [];
+  /*$scope.alerts = [];
   $scope.closeAlert = function(index) {
     $scope.alerts.splice(index, 1);
   };
-
-
-  if($stateParams.previousChannel != null && $stateParams.previousBrand != null){
-    $scope.showChannel($stateParams.previousChannel,$stateParams.previousBrand);
-  }
-
-  $scope.showChannel = function(channel,brand){
-    
-    $scope.chosenChannel = channel;
-    $scope.chosenBrand = brand;
-
-    $scope.partial = 'tpl/com.envomuse/channels_detail.html';
-  };
+*/
 
 }]);
 
 //Channels detail
-app.controller('ChannelsDetailCtrl', ['$scope', '$state', 'Jobs', 'ChannelsProgramList', 'ChannelsGenerateProgram', '$stateParams', 
-  function($scope,$state, Jobs, ChannelsProgramList, ChannelsGenerateProgram, $stateParams) {
-
-    // console.log($scope.$parent);
+app.controller('ChannelsDetailCtrl', ['$scope', '$state', 'Jobs', 'Customers', 'ChannelsProgramList', 'ChannelsGenerateProgram', '$stateParams', 
+  function($scope, $state, Jobs, Customers, ChannelsProgramList, ChannelsGenerateProgram, $stateParams) {
 
     Jobs.get(function(res) {
       $scope.jobs = res;
     });
 
-    ChannelsProgramList.getPrograms({'channelId':$scope.chosenChannel._id},
+    Customers.get({'customerId':$stateParams.brandId},
     function(res) {
-      $scope.programs = res;
+      $scope.chosenBrand = res;
+
+      switch($scope.chosenBrand.status){
+        case 'prospect':$scope.chosenBrand.status="目标客户";break;
+        case 'demo':$scope.chosenBrand.status="样品测试";break;
+        case 'signed':$scope.chosenBrand.status="签约客户";break;
+        case 'inactive':$scope.chosenBrand.status="合约终止";break;
+      }
     });
 
+    $scope.chosenBrandId = $stateParams.brandId;
+    $scope.chosenChannelId = $stateParams.channelId;
+
+    /*for(var i=0,size=$rootScope.customerDataItems.length;i<size;i++){
+      if($rootScope.customerDataItems[i]._id===$scope.chosenBrandId)
+        $rootScope.customerDataItems[i].isOpen = true;
+      else
+        $rootScope.customerDataItems[i].isOpen = false;
+    }*/
+
+    ChannelsProgramList.getPrograms({'channelId':$scope.chosenChannelId},
+      function(res) {
+      $scope.programs = res;
+    });
+    
     //initialisation
     $scope.disabled = undefined;
     $scope.searchEnabled = undefined;
@@ -712,9 +702,9 @@ app.controller('ChannelsDetailCtrl', ['$scope', '$state', 'Jobs', 'ChannelsProgr
     
       console.log(conf);
 
-      ChannelsGenerateProgram.generateProgram({channelId:$scope.chosenChannel._id},conf,function(res){
+      ChannelsGenerateProgram.generateProgram({channelId:$scope.chosenChannelId},conf,function(res){
         $scope.alerts.push({type: 'success', msg: res.name + '生成成功！'});
-        $state.go('channels.dash',{previousChannel:$scope.chosenChannel,previousBrand:$scope.chosenBrand},{reload: true});  
+        $state.go('channels.detail',{brandId:$scope.chosenBrandId,channelId:$scope.chosenChannelId},{reload: true});  
       });
   };
 

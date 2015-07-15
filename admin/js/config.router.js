@@ -97,18 +97,12 @@ angular.module('app')
               })
               .state('channels.dash', {
                   url: '/:channelId',
-                  params:{
-                    'previousBrand':null,
-                    'previousChannel':null
-                  },
                   templateUrl: 'tpl/com.envomuse/channels_dash.html'
               })
               .state('channels.detail', {
-                  url: '/:channelId/detail',
-                  parent:'channels',
+                  url: '/:brandId/:channelId/detail',
+                  parent:'channels.dash',
                   templateUrl: 'tpl/com.envomuse/channels_detail.html',
-                  
-                  
               })
 
               //customer
