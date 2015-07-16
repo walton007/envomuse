@@ -1,128 +1,126 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="showHelp=false;" ng-controller="ContactNewCtrl">
 
   <div class="col">
-    <!-- header -->
-    <div class="wrapper-sm b-b">
-      <a ng-click="hideMe()" class="m-r" tooltip="返回"><i class="fa fa-fw fa-arrow-circle-left text-muted m-r-sm"></i></a>
-    </div>
-    <!-- / header -->
 
     <div class="wrapper">
-      <h4 class="panel-heading">新增联系人<a href><small class="text-muted m-l" ng-click="showHelp=true;" ng-show="!showHelp">显示帮助</small><small class="text-muted m-l" ng-click="showHelp=false;" ng-show="showHelp">隐藏帮助</small></a></h4>
-      <div class="panel-body">
-        <form name="form" class="form-horizontal m-t-lg form-validation ">
-          <div class="form-group">
-            <label class="col-lg-2 control-label">姓名</label>
-            <div class="col-lg-4">
-              <input type="text" class="form-control" ng-model="contact.name" placeholder="必填" required>
-            </div>
-            <div class="col-lg-4 ">
-              <div class="checkbox">
-                <label class="i-checks">
-                  <input type="checkbox" ng-model="contact.isLeader">
-                  <i></i>
-                  品牌主要联系人
-                </label>
+      <div class="panel panel-default">
+        <div class="panel-heading">新增联系人<a href><small class="text-muted m-l" ng-click="showHelp=true;" ng-show="!showHelp">显示帮助</small><small class="text-muted m-l" ng-click="showHelp=false;" ng-show="showHelp">隐藏帮助</small></a>
+        </div>
+        <div class="panel-body">
+          <form name="form" class="form-horizontal m-t-lg form-validation ">
+            <div class="form-group">
+              <label class="col-lg-2 control-label">姓名</label>
+              <div class="col-lg-4">
+                <input type="text" class="form-control" ng-model="contact.name" placeholder="必填" required>
               </div>
-            </div>
-          </div>              
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">性别</label>
-            <div class="col-lg-8">
-              <span>
-                <div class="radio inline m-r">
+              <div class="col-lg-4 ">
+                <div class="checkbox">
                   <label class="i-checks">
-                    <input type="radio" name="gender" ng-model="contact.gender" value="M">
-                    <i></i>男
+                    <input type="checkbox" ng-model="contact.isLeader">
+                    <i></i>
+                    品牌主要联系人
                   </label>
                 </div>
-                <div class="radio inline">
-                  <label class="i-checks">
-                    <input type="radio" name="gender" ng-model="contact.gender" value="F" checked>
-                    <i></i>女
-                  </label>
-                </div>
-              </span>
-            </div>
-          </div>
+              </div>
+            </div>              
 
-          <div class="line line-dashed b-b line-lg pull-in"></div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">部门</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" ng-model="contact.department"  >
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">职位</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" ng-model="contact.title" >
-            </div>
-          </div>
-
-          <div class="line line-dashed b-b line-lg pull-in"></div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">工作电话</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control"  ng-model="contact.workmobile"  >
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">私人电话</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" ng-model="contact.privatemobile">
-            </div>
-          </div>
-
-          <div class="line line-dashed b-b line-lg pull-in"></div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">QQ</label>
-            <div class="col-lg-8">
-              <input type="number" class="form-control" ng-model="contact.qq">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">微信</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" ng-model="contact.wechat">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">Email</label>
-            <div class="col-lg-8">
-              <input type="email" class="form-control" ng-model="contact.email">
-            </div>
-          </div>
-
-          <!-- <div class="form-group">
-            <label class="col-sm-2 control-label">生日</label>
-            <div class="col-sm-10" ng-controller="DatepickerDemoCtrl">
-              <div class="input-group w-md">
-                <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="contact.birthday" is-open="opened" datepicker-options="dateOptions"   close-text="Close" />
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">性别</label>
+              <div class="col-lg-8">
+                <span>
+                  <div class="radio inline m-r">
+                    <label class="i-checks">
+                      <input type="radio" name="gender" ng-model="contact.gender" value="M">
+                      <i></i>男
+                    </label>
+                  </div>
+                  <div class="radio inline">
+                    <label class="i-checks">
+                      <input type="radio" name="gender" ng-model="contact.gender" value="F" checked>
+                      <i></i>女
+                    </label>
+                  </div>
                 </span>
               </div>
             </div>
-          </div> -->
 
-          <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
 
-          <div class="form-group">
-            <div class="col-lg-8 col-lg-offset-2">
-              <button type="submit" class="btn btn-danger" ng-click="hideMe()">取消</button>
-              <button type="submit" class="btn btn-success pull-right" ng-disabled="form.$invalid" ng-click="createContact()">添加</button>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">部门</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="contact.department"  >
+              </div>
             </div>
-          </div>
-        </form>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">职位</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="contact.title" >
+              </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">工作电话</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control"  ng-model="contact.workmobile"  >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">私人电话</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="contact.privatemobile">
+              </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">QQ</label>
+              <div class="col-lg-8">
+                <input type="number" class="form-control" ng-model="contact.qq">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">微信</label>
+              <div class="col-lg-8">
+                <input type="text" class="form-control" ng-model="contact.wechat">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Email</label>
+              <div class="col-lg-8">
+                <input type="email" class="form-control" ng-model="contact.email">
+              </div>
+            </div>
+
+            <!-- <div class="form-group">
+              <label class="col-sm-2 control-label">生日</label>
+              <div class="col-sm-10" ng-controller="DatepickerDemoCtrl">
+                <div class="input-group w-md">
+                  <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="contact.birthday" is-open="opened" datepicker-options="dateOptions"   close-text="Close" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+              <div class="col-lg-8 col-lg-offset-2">
+                <button type="submit" class="btn btn-danger" ng-click="hideMe()">取消</button>
+                <button type="submit" class="btn btn-success pull-right" ng-disabled="form.$invalid" ng-click="createContact()">添加</button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>

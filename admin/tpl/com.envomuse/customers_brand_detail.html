@@ -1,4 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="init();" ng-controller="CustomerDetailCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="CustomerDetailCtrl">
   <div class="col">
 
     <!-- header -->
@@ -11,14 +11,14 @@
         <div class="col-sm-6 text-right hidden-xs">
 
           <div class="btn-group dropdown" dropdown>
-            <a class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="showItem('addStore')"><i class="fa fa-plus"></i>添加门店</a>
+            <a class="btn m-b-xs btn-sm btn-primary btn-addon" ui-sref="customers.store.add({brandId:brand._id})" ><i class="fa fa-plus"></i>添加门店</a>
             <button class="btn m-b-xs btn-sm btn-primary" dropdown-toggle><span class="caret"></span></button>
              <ul class="dropdown-menu">
-              <li><a ng-click="showItem('addchannel')">添加频道</a></li>
+              <li><a ui-sref="customers.channel.add({brandId:brand._id})">添加频道</a></li>
               <li class="divider"></li>
-              <li><a ng-click="showItem('addcontact')">添加联系人</a></li>
+              <li><a ui-sref="customers.contact.add({brandId:brand._id})">添加联系人</a></li>
               <li class="divider"></li>
-              <li><a ng-click="showItem('editBrand')">编辑</a></li>
+              <li><a ui-sref="customers.brand.edit({brandId:brand._id})">编辑</a></li>
               <!-- <li><a href>删除</a></li> -->
               <li class="divider"></li>
               <li><a ui-sref="customers.invoice({brandId:brand._id})">查看发票</a></li>
@@ -35,10 +35,11 @@
     <div class="col w-lg bg-light b-r bg-auto">
 
       <div class="wrapper-sm b-b">
-        <a ng-click="showItem('editBrand')" class="m-r" tooltip="修改"><i class="fa fa-edit text-muted m-r-sm"></i></a>
-        <a ng-click="showItem('addStore')" class="m-r" tooltip="添加门店"><i class="fa fa-bank fw text-muted m-r-sm"></i></a>
-        <a ng-click="showItem('addchannel')" class="m-r" tooltip="添加频道"><i class="fa fa-list fw text-muted m-r-sm"></i></a>
-        <a ng-click="showItem('addcontact')" class="m-r" tooltip="添加联系人"><i class="icon icon-user-follow text-muted m-r-sm"></i></a>
+        <!-- <a ng-click="showItem('editBrand')" class="m-r" tooltip="修改"><i class="fa fa-edit text-muted m-r-sm"></i></a> -->
+        <a ui-sref="customers.brand.edit({brandId:brand._id})" class="m-r" tooltip="修改"><i class="fa fa-edit text-muted m-r-sm"></i></a>
+        <a ui-sref="customers.store.add({brandId:brand._id})" class="m-r" tooltip="添加门店"><i class="fa fa-bank fw text-muted m-r-sm"></i></a>
+        <a ui-sref="customers.channel.add({brandId:brand._id})" class="m-r" tooltip="添加频道"><i class="fa fa-list fw text-muted m-r-sm"></i></a>
+        <a ui-sref="customers.contact.add({brandId:brand._id})"  class="m-r" tooltip="添加联系人"><i class="icon icon-user-follow text-muted m-r-sm"></i></a>
       </div>
 
       <div class="panel-heading b-b wrapper-md">
@@ -58,19 +59,19 @@
 
       <ul class="list-group">
 
-        <a ng-click="showItem('store')" class="list-group-item bg-light" ng-class="{{store==true?'lter':''}}">
+        <a ui-sref="customers.store({brandId:brand._id})" class="list-group-item bg-light" ng-class="{{store==true?'lter':''}}">
           <span class="badge bg-success">{{brand.sitesCount}}</span>
           <i class="fa fa-bank fa-fw text-muted"></i> 
           门店
         </a>
 
-        <a ng-click="showItem('channel')" class="list-group-item bg-light">
+        <a ui-sref="customers.channel({brandId:brand._id})" class="list-group-item bg-light">
           <span class="badge bg-{{channels.length==0?'dk':'info'}}">{{channels.length}}</span>
           <i class="fa fa-list fa-fw text-muted"></i> 
           频道
         </a>
 
-        <a ng-click="showItem('contact')" class="list-group-item bg-light">
+        <a ui-sref="customers.contact({brandId:brand._id})" class="list-group-item bg-light">
           <span class="badge bg-success">{{leader.name}}</span>
           <i class="fa fa-user fa-fw text-muted"></i> 
           联系人
@@ -181,28 +182,8 @@
             <accordion-heading>
             <i class="fa fa-fw fa-user text-muted m-r"></i>管理员账户
             </accordion-heading>
-              <!--  <h4 class="panel-heading font-bold">管理员账号设置</h4>
-              <div class="panel-body">
-                <form name="form" class="form-horizontal m-t-lg form-validation ">
-
-                  <div class="input-group m-b">
-                    <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw text-muted"></i></span>
-                    <input type="text" class="form-control" ng-model="manager.email" placeholder="Email">
-                  </div>
-
-                  <div class="input-group m-b">
-                    <span class="input-group-addon"><i class="fa fa-key fa-fw text-muted"></i></span>
-                    <input type="password" class="form-control" ng-model="manager.password" placeholder="密码">
-                  </div>
-
-                  <div class="form-group">
-                    <div class="col-lg-8 col-lg-offset-2">
-                      <button type="submit" class="btn btn-sm btn-success pull-right" ng-disabled="form.$invalid" ng-click="setManager()">设置</button>
-                      <button type="submit" class="btn btn-sm btn-danger" ng-click="showSetManager=false;">取消</button>
-                    </div>
-                  </div>
-                </form>
-              </div> -->        
+               <span class="label bg-light">{{brand.user.email}}</span>
+               <span><a href="">编辑</a></span>
             </accordion-group>
         </accordion>
       </ul>
@@ -216,8 +197,8 @@
         <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
       </div>
       <!-- / alert -->
-      <div data-ng-include="partial"></div>
-      <!-- <div class="app-content-body fade-in" ui-view></div> -->
+      <!-- <div data-ng-include="partial"></div> -->
+      <div class="app-content-body fade-in" ui-view></div>
     </div>
 
   </div>

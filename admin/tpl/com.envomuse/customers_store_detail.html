@@ -2,19 +2,11 @@
 
   <div class="col">
 
-    <!-- header -->
-    <div class="wrapper-sm b-b">
-      <a ng-click="showItem('store')" class="m-r" tooltip="返回"><i class="fa fa-fw fa-arrow-circle-left text-muted m-r-sm"></i></a>
-      <a ng-click="showItem('addStore')" class="m-r" tooltip="添加门店"><i class="fa fa-bank fw text-muted m-r-sm"></i></a>
-      <a ng-click="showItem('editStore')" class="m-r" tooltip="修改门店"><i class="fa fa-edit text-muted m-r-sm"></i></a>
-    </div>
-    <!-- / header -->
-
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
         <div class="col-sm-8 col-xs-12">
           <div class="h4 m-t-xs m-b-xs">
-            {{store.siteName | uppercase}}店
+            {{store.siteName | uppercase}}店 <a ui-sref="customers.store.edit({brandId:brand._id,storeId:store._id})" class="m-r" tooltip="修改"><i class="fa fa-edit text-muted m-r-sm"></i></a>
           </div>
           <small class="text-muted">{{store.reference}}</small>
           <small class="text-muted">经理：{{store.manager.name}}</small>
@@ -80,69 +72,8 @@
     <!-- /player row -->
     </div>
 
-      <!-- right col  SET MANAGER-->
-      <!-- <div class="col w-lg bg-white-only b-l bg-auto no-border-xs" ng-show="showSetManager">
-        <h4 class="panel-heading font-bold text-center b-b">设置店长</h4>
-        <div class="panel-body">
-          <form name="form" class="form-horizontal form-validation">
-            <div class="radio list-group-item bg-light no-border" ng-repeat="c in brand.contacts">
-              <label class="i-checks i-checks-sm">
-                <input type="radio" name="manager" ng-value="{{c}}" ng-model="$parent.chosenManager">
-                <i></i>
-                {{c.name}} <small>{{c.title}}</small>
-              </label>
-            </div>
-
-            <div class="line line-dashed b-b line-lg pull-in"></div>
-            <div class="form-group">
-              <div class="col-lg-8 col-lg-offset-2">
-                <button type="submit" class="btn btn-sm btn-success pull-right" ng-click="setManager($parent.chosenManager)">设置</button>
-                <button type="submit" class="btn btn-sm btn-danger" ng-click="showSetManager=false;">取消</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div> -->
-      <!-- / right col  SET MANAGER-->
   </div>
     <!-- /main -->
-
-
-
-  <!-- right col  SET PROGRAM -->
-  <!-- <div class="col w-lg bg-white-only b-l bg-auto no-border-xs" ng-show="showSetProgram">
-    <div class="padder-md m-t">      
-      <h4 class="panel-heading font-bold">关联播放列表</h4>
-      <div class="panel-body">
-        <form name="form" class="form-horizontal m-t-lg form-validation ">
-
-          <div class="form-group">
-            <label class="col-sm-3 control-label text-left">Default</label>
-            <div class="col-sm-6">
-
-              <ui-select ng-model="person.selected" theme="bootstrap">
-                <ui-select-match placeholder="Select or search a person in the list...">{{$select.selected.name}}</ui-select-match>
-                <ui-select-choices repeat="item in people | filter: $select.search">
-                  <div ng-bind-html="item.name | highlight: $select.search"></div>
-                  <small ng-bind-html="item.email | highlight: $select.search"></small>
-                </ui-select-choices>
-              </ui-select>
-
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-lg-8 col-lg-offset-2">
-              <button type="submit" class="btn btn-sm btn-success pull-right" ng-disabled="form.$invalid" ng-click="setManager()">设置</button>
-              <button type="submit" class="btn btn-sm btn-danger" ng-click="showSetProgram=false;">取消</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div> -->
-  <!-- / right col  SET PROGRAM -->
-
 
   </div>
 </div>

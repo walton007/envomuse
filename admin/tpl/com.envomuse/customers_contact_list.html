@@ -1,19 +1,12 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="showEdit=false;" ng-controller="ContactListCtrl">
 
   <div class="col">
-
-   <!-- header -->
-    <div class="wrapper-sm b-b">
-      <a ng-click="showItem('store')" class="m-r" tooltip="返回"><i class="fa fa-fw fa-arrow-circle-left text-muted m-r-sm"></i></a>
-      <a ng-click="showItem('addcontact')" class="m-r" tooltip="添加联系人"><i class="icon icon-user-follow text-muted m-r-sm"></i></a>
-    </div>
-    <!-- / header -->
     
     <!-- main -->
     <div class="wrapper">
 
       <div ng-show="datasource.length==0 && !showEdit">
-        暂时没有联系人信息，马上<button class="btn m-b-xs btn-sm btn-info m-l" ng-click="showItem('addcontact')">添加联系人</button>
+        暂时没有联系人信息，马上<button class="btn m-b-xs btn-sm btn-info m-l" ui-sref="customers.contact.add({brandId:brand._id})">添加联系人</button>
       </div>
       <div ng-show="datasource.length>0 && !showEdit">
         <div ng-repeat="item in datasource" class="col-sm-4">

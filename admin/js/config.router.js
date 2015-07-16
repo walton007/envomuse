@@ -208,42 +208,56 @@ angular.module('app')
 
               .state('customers.invoice', {
                   url: '/:brandId/invoice',
-                  parent: 'customers',
+                  parent: 'customers.brand.detail',
                   templateUrl: 'tpl/com.envomuse/customers_invoice.html'
               })
 
               .state('customers.store', {
                   url: '/:brandId/store',
+                  parent: 'customers.brand.detail',
                   templateUrl: 'tpl/com.envomuse/customers_store_list.html'
               })
 
               .state('customers.store.add', {
                   url: '/:brandId/store/new',
-                  parent: 'customers',
+                  parent: 'customers.brand.detail',
                   templateUrl: 'tpl/com.envomuse/customers_store_new.html'
               })
 
               .state('customers.store.detail', {
                   url: '/:brandId/store/:storeId/',
-                  parent: 'customers',
+                  parent: 'customers.brand.detail',
                   templateUrl: 'tpl/com.envomuse/customers_store_detail.html'
               })
               
               .state('customers.store.edit', {
                   url: '/:brandId/store/:storeId/edit',
-                  parent: 'customers',
+                  parent: 'customers.brand.detail',
                   templateUrl: 'tpl/com.envomuse/customers_store_edit.html'
               })
 
               .state('customers.contact', {
+                  parent: 'customers.brand.detail',
                   url: '/:brandId/contacts',
                   templateUrl: 'tpl/com.envomuse/customers_contact_list.html'
               })
 
               .state('customers.contact.add', {
                   url: '/:brandId/addContact',
-                  parent: 'customers',
+                  parent: 'customers.brand.detail',
                   templateUrl: 'tpl/com.envomuse/customers_contact_new.html'
+              })
+
+              .state('customers.channel', {
+                  url: '/:brandId/channel',
+                  parent: 'customers.brand.detail',
+                  templateUrl: 'tpl/com.envomuse/customers_channel_list.html'
+              })
+
+              .state('customers.channel.add', {
+                  url: '/:brandId/channel/new',
+                  parent: 'customers.brand.detail',
+                  templateUrl: 'tpl/com.envomuse/customers_channel_new.html'
               })
 
               .state('customers.brand.detail.setmanager', {

@@ -1,12 +1,6 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="init();" ng-controller="StoreListCtrl">
   <div class="col">
 
-    <!-- header -->
-    <div class="wrapper-sm b-b">
-      <a ng-click="showItem('addStore')" class="m-r" tooltip="添加门店"><i class="fa fa-bank fw text-muted m-r-sm"></i></a>
-    </div>
-    <!-- / header -->
-
     <div class="wrapper-md" ng-show="datasource.length==0">
       暂时没有门店，马上<button class="btn m-b-xs btn-sm btn-info m-l" ng-click="showItem('addStore')">添加门店</button>
     </div>      
@@ -44,7 +38,8 @@
                   </thead>
                   <tbody>
                     <tr ng-repeat="row in normalizedDataSource | filter:searchText" st-select-row="row">
-                      <td><a ng-click="showItem('storeDetail','{{row._id}}')">{{row.siteName}}</a> </td>
+                      <!-- <td><a ng-click="showItem('storeDetail','{{row._id}}')">{{row.siteName}}</a> </td> -->
+                      <td><a ui-sref="customers.store.detail({brandId:brand._id,storeId:row._id})">{{row.siteName}}</a> </td>
                       <td>{{row.reference}}</td>
                       <td>{{row.deviceId}}</td>
                       <td><span class="label bg-{{row.channelType}}">{{row.channelName}}</span></td>

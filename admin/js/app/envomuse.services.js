@@ -20,6 +20,7 @@ app.factory('DashStats', ['$resource', function($resource) {
   }
 ]);
 
+
 //Customers service : Customer REST endpoint
 app.factory('Customers', ['$resource', function($resource) {
     return $resource(

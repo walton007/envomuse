@@ -84,8 +84,8 @@ app.controller('SelectCtrl', ['$scope', 'Jobs', function($scope, Jobs ) {
         name:item.targetProgramName*/
       };
 
-      console.log($scope.job.selected);
-      console.log(params);
+      // console.log($scope.job.selected);
+      // console.log(params);
     };
 
 }]);

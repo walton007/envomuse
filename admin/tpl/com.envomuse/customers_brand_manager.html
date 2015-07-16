@@ -1,111 +1,45 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="CustomerSetManagerCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="showHelp=false;" ng-controller="CustomerSetManagerCtrl">
 
   <div class="col">
 
     <div class="wrapper">
-      <h4 class="panel-heading">新增联系人<a href><small class="text-muted m-l" ng-click="showHelp=true;" ng-show="!showHelp">显示帮助</small><small class="text-muted m-l" ng-click="showHelp=false;" ng-show="showHelp">隐藏帮助</small></a></h4>
-      <div class="panel-body">
-        <form name="form" class="form-horizontal m-t-lg form-validation ">
-          <div class="form-group">
-            <label class="col-lg-2 control-label">姓名</label>
-            <div class="col-lg-4">
-              <input type="text" class="form-control" ng-model="contact.name" placeholder="必填" required>
-            </div>
-            <div class="col-lg-4 ">
-              <div class="checkbox">
-                <label class="i-checks">
-                  <input type="checkbox" ng-model="contact.isLeader">
-                  <i></i>
-                  品牌主要联系人
-                </label>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          设置品牌管理员账户
+        </div>
+        <div class="panel-body">
+          <form name="form" class="form-horizontal m-t-lg form-validation ">
+
+            <div class="form-group">
+              <label class="col-lg-2 control-label">邮箱</label>
+              <div class="col-lg-4">
+                <input type="email" class="form-control" ng-model="manager.email" placeholder="必填" required>
               </div>
             </div>
-          </div>              
 
-          <div class="form-group">
-            <label class="col-lg-2 control-label">性别</label>
-            <div class="col-lg-8">
-              <span>
-                <div class="radio inline m-r">
-                  <label class="i-checks">
-                    <input type="radio" name="gender" ng-model="contact.gender" value="M">
-                    <i></i>男
-                  </label>
-                </div>
-                <div class="radio inline">
-                  <label class="i-checks">
-                    <input type="radio" name="gender" ng-model="contact.gender" value="F" checked>
-                    <i></i>女
-                  </label>
-                </div>
-              </span>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">密码</label>
+              <div class="col-lg-4">
+                <input type="password" class="form-control" name="password" ng-model="manager.pwd1" placeholder="最少8位" ng-minlength="8" required >
+              </div>
             </div>
-          </div>
 
-          <div class="line line-dashed b-b line-lg pull-in"></div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">部门</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" ng-model="contact.department"  >
+            <div class="form-group">
+              <label class="col-lg-2 control-label">确认密码</label>
+              <div class="col-lg-4">
+                <input type="password" class="form-control" name="confirm_password" placeholder="重复输入密码" required ng-model="manager.pwd2" ui-validate=" '$value==manager.pwd1' " ui-validate-watch=" 'password' ">
+                <span ng-show='form.confirm_password.$error.validator'>密码不符合！</span>
+              </div>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="col-lg-2 control-label">职位</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" ng-model="contact.title" >
+            <div class="form-group">
+              <div class="col-lg-4 col-lg-offset-2">
+                <button type="submit" class="btn btn-danger" ng-click="hideMe()">取消</button>
+                <button type="submit" class="btn btn-success pull-right" ng-disabled="form.$invalid" ng-click="setManager()">设置</button>
+              </div>
             </div>
-          </div>
-
-          <div class="line line-dashed b-b line-lg pull-in"></div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">工作电话</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control"  ng-model="contact.workmobile"  >
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">私人电话</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" ng-model="contact.privatemobile">
-            </div>
-          </div>
-
-          <div class="line line-dashed b-b line-lg pull-in"></div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">QQ</label>
-            <div class="col-lg-8">
-              <input type="number" class="form-control" ng-model="contact.qq">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">微信</label>
-            <div class="col-lg-8">
-              <input type="text" class="form-control" ng-model="contact.wechat">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-lg-2 control-label">Email</label>
-            <div class="col-lg-8">
-              <input type="email" class="form-control" ng-model="contact.email">
-            </div>
-          </div>
-
-          <div class="line line-dashed b-b line-lg pull-in"></div>
-
-          <div class="form-group">
-            <div class="col-lg-8 col-lg-offset-2">
-              <button type="submit" class="btn btn-danger" ng-click="hideMe()">取消</button>
-              <button type="submit" class="btn btn-success pull-right" ng-disabled="form.$invalid" ng-click="createContact()">添加</button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>
