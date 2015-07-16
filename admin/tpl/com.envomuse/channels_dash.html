@@ -1,4 +1,4 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="ChannelsDashCtrl">
+<div class="hbox hbox-auto-xs hbox-auto-sm" >
   <div class="col">
 
     <!-- main header -->
@@ -15,8 +15,9 @@
     </div>
     <!-- / main header -->
     
+
     <!-- brand list -->
-    <div class="col w-lg bg-light b-r bg-auto no-padder" style="height:500px">
+    <div class="col w-lg bg-light b-r bg-auto no-padder" style="height:500px" ng-controller="ChannelsDashCtrl">
       <div class="vbox">
         <div class="wrapper-md dker b-b">
           <div class="input-group">
@@ -29,9 +30,8 @@
         <div class="row-row">
           <div class="cell">
             <div class="cell-inner">
-
               <accordion close-others="true">
-                <accordion-group ng-repeat="b in customerDataItems | filter:brandSearchText" is-open="b.isOpen">
+                <accordion-group ng-repeat="b in customerDataItems | filter:brandSearchText" class="accordion-body collapse in">
                   <accordion-heading>
                   <span class="label m-l pull-right bg-{{b.channels.length>0?'success':'light'}}">{{b.channels.length}}</span><i class="icon icon-trophy text-muted m-r"></i>{{b.brand | uppercase}}
                   </accordion-heading>
@@ -50,7 +50,7 @@
     <!-- /brand list -->
 
     <div class="col">
-      <div ui-view></div>
+      <div class="app-content-body fade-in" ui-view></div>
     </div>
 
   </div>

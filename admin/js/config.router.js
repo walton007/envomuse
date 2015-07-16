@@ -96,13 +96,64 @@ angular.module('app')
                   }
               })
               .state('channels.dash', {
-                  url: '/:channelId',
+                  url: '',
                   templateUrl: 'tpl/com.envomuse/channels_dash.html'
               })
               .state('channels.detail', {
-                  url: '/:brandId/:channelId/detail',
+                  url: '/:brandId/:channelId/detail/',
                   parent:'channels.dash',
                   templateUrl: 'tpl/com.envomuse/channels_detail.html',
+              })
+              .state('channels.detail.program', {
+                  url: '/:brandId/:channelId/program',
+                  parent:'channels.dash',
+                  params:{
+                    programArr:null,
+                    brand:null
+                  },
+                  templateUrl: 'tpl/com.envomuse/programs_detail.html',
+                  resolve: {
+                      deps: ['$ocLazyLoad', 'uiLoad',
+                        function( $ocLazyLoad, uiLoad ){
+                          return uiLoad.load(
+                            JQ_CONFIG.fullcalendar.concat('js/app/calendar/calendar.js')
+                          ).then(
+                            function(){
+                              return $ocLazyLoad.load('ui.calendar');
+                            }
+                          )
+                      }]
+                  }    
+              })
+              .state('channels.detail.program.dailydetail', {
+                  url: '/:brandId/:channelId/program/:programId/detail',
+                  parent:'channels.dash',
+                  params:{
+                    brand:null
+                  },
+                  views: {
+                      '': {
+                          templateUrl: 'tpl/com.envomuse/programs_daily_detail.html',
+                      },
+                      'footer': {
+                          templateUrl: 'tpl/com.envomuse/programs_daily_detail_footer.html'
+                      }
+                  }, 
+                  resolve: {
+                      deps: ['$ocLazyLoad',
+                        function( $ocLazyLoad){
+                          return $ocLazyLoad.load([
+                                              'com.2fdevs.videogular', 
+                                              'com.2fdevs.videogular.plugins.controls', 
+                                              'com.2fdevs.videogular.plugins.overlayplay',
+                                              'com.2fdevs.videogular.plugins.poster',
+                                              'com.2fdevs.videogular.plugins.buffering',
+                                              'js/app/music/ctrl.js', 
+                                              'js/app/music/theme.css'
+                                              ]);
+                      }]
+                  }
+
               })
 
               //customer
@@ -120,10 +171,6 @@ angular.module('app')
                     }]
                   }
               })
-              /*.state('customers.dash', {
-                url: '/',
-                templateUrl: 'tpl/com.envomuse/customers_dashboard.html'
-              })*/
               .state('customers.brand', {
                   url: '/list/',
                   templateUrl: 'tpl/com.envomuse/customers_list.html'
@@ -153,10 +200,9 @@ angular.module('app')
                   },
                   templateUrl: 'tpl/com.envomuse/customers_brand_detail.html'
               })
-
               .state('customers.brand.edit', {
                   url: '/:brandId/edit',
-                  parent: 'customers',
+                  parent: 'customers.brand.detail',
                   templateUrl: 'tpl/com.envomuse/customers_brand_edit.html'
               })
 
@@ -198,6 +244,12 @@ angular.module('app')
                   url: '/:brandId/addContact',
                   parent: 'customers',
                   templateUrl: 'tpl/com.envomuse/customers_contact_new.html'
+              })
+
+              .state('customers.brand.detail.setmanager', {
+                  url: '/:brandId/setmanager',
+                  parent: 'customers.brand.detail',
+                  templateUrl: 'tpl/com.envomuse/customers_brand_manager.html'
               })
             
               //tasks
@@ -299,91 +351,11 @@ angular.module('app')
                     }]
                   }
               })
-              .state('playlists.dash', {
-                  url: '/',
-                  templateUrl: 'tpl/com.envomuse/playlists_dashboard.html'
-              })
-              .state('playlists.list', {
-                  url: '/:linkState',
-                  //templateUrl: 'tpl/com.envomuse/playlists_list.html',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/playlists_list.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/playlists_list_footer.html'
-                      }
-                  }                 
-              })
-              .state('playlists.detail', {
-                  url: '/:playlistId/',
-                  //templateUrl: 'tpl/com.envomuse/playlists_detail.html',
-                  /*params : {
-                    playlistContent:null
-                  },*/
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/playlists_detail.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/playlists_detail_footer.html'
-                      }
-                  },
-                  resolve: {
-                      deps: ['$ocLazyLoad', 'uiLoad',
-                        function( $ocLazyLoad, uiLoad ){
-                          return uiLoad.load(
-                            JQ_CONFIG.fullcalendar.concat('js/app/calendar/calendar.js')
-                          ).then(
-                            function(){
-                              return $ocLazyLoad.load('ui.calendar');
-                            }
-                          )
-                      }]
-                  }    
-                  /*resolve: {
-                      deps: ['$ocLazyLoad',
-                        function( $ocLazyLoad ){
-                            return $ocLazyLoad.load('ui.calendar');
-                          }]
-                  }  */           
-              })
-              .state('playlists.dailydetail', {
-                  url: '/:programId/:dailyplaylistId/',
-                  //templateUrl: 'tpl/com.envomuse/playlists_detail.html',
-                  /*params : {
-                    dailyPlaylistContent:null,
-                    playlistContent:null
-                  },*/
-                  //templateUrl: 'tpl/com.envomuse/playlists_daily_detail.html',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/playlists_daily_detail.html',
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/playlists_daily_detail_footer.html'
-                      }
-                  }, 
-                  resolve: {
-                      deps: ['$ocLazyLoad',
-                        function( $ocLazyLoad){
-                          return $ocLazyLoad.load([
-                                              'com.2fdevs.videogular', 
-                                              'com.2fdevs.videogular.plugins.controls', 
-                                              'com.2fdevs.videogular.plugins.overlayplay',
-                                              'com.2fdevs.videogular.plugins.poster',
-                                              'com.2fdevs.videogular.plugins.buffering',
-                                              'js/app/music/ctrl.js', 
-                                              'js/app/music/theme.css'
-                                              ]);
-                      }]
-                  }
+              
+             
+              
+              
 
-              })
-              .state('playlists.associate', {
-                  url: '/:playlistId/bind',
-                  templateUrl: 'tpl/com.envomuse/playlists_bind.html'
-              })
 
               /*//users
               .state('users', {

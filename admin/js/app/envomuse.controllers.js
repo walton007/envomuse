@@ -81,6 +81,8 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
     };
 
   }]);
+
+
 /*app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams', 
   function($scope, Customers, $stateParams) {
 
@@ -440,6 +442,49 @@ app.controller('ContactNewCtrl', ['$scope', 'Customers', '$stateParams', '$state
   };
 }]);
 
+
+//Customer set manager
+app.controller('CustomerSetManagerCtrl', ['$scope', 'Customers', '$stateParams', '$state', 
+  function($scope, Customers, $stateParams, $state) {
+  
+  if($scope.brand==null){
+    Customers.get({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.brand = res;
+    });
+  }
+
+  $scope.createContact = function(){
+    var newContact = {
+      name: $scope.contact.name,
+      isLeader: $scope.contact.isLeader,
+      gender: $scope.contact.gender,
+      // birthday: $scope.contact.birthday !=null ? $scope.contact.birthday.getTime():"",
+      workmobile: $scope.contact.workmobile,
+      privatemobile: $scope.contact.privatemobile,
+      email: $scope.contact.email,
+      weixin: $scope.contact.wechat,
+      qq: $scope.contact.qq,
+      title: $scope.contact.title,
+      department: $scope.contact.department
+    };
+
+    switch($scope.brand.status){
+      case "目标客户":$scope.brand.status='prospect';break;
+      case "样品测试":$scope.brand.status='demo';break;
+      case "签约客户":$scope.brand.status='signed';break;
+      case "合约终止":$scope.brand.status='inactive';break;
+    }
+
+    $scope.brand.contacts.push(newContact);
+
+    $scope.brand.$update(function(customer) {
+      $scope.alerts.push({type: 'success', msg: $scope.contact.name + '添加成功！'});
+      $state.go('customers.brand.detail',{brandId:$scope.brand._id,partial:'contact'},{reload: true});
+    });
+  };
+}]);
+
 //Customer site new
 app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites', '$stateParams', '$state',
   function($scope, Customers, Sites, CustomerSites, $stateParams,$state) {
@@ -616,13 +661,6 @@ app.controller('ChannelsDashCtrl', ['$scope', 'CustomersBasic', '$stateParams',
       $scope.customerDataItems = res;
     });
 
-    //messaging
-  /*$scope.alerts = [];
-  $scope.closeAlert = function(index) {
-    $scope.alerts.splice(index, 1);
-  };
-*/
-
 }]);
 
 //Channels detail
@@ -647,13 +685,6 @@ app.controller('ChannelsDetailCtrl', ['$scope', '$state', 'Jobs', 'Customers', '
 
     $scope.chosenBrandId = $stateParams.brandId;
     $scope.chosenChannelId = $stateParams.channelId;
-
-    /*for(var i=0,size=$rootScope.customerDataItems.length;i<size;i++){
-      if($rootScope.customerDataItems[i]._id===$scope.chosenBrandId)
-        $rootScope.customerDataItems[i].isOpen = true;
-      else
-        $rootScope.customerDataItems[i].isOpen = false;
-    }*/
 
     ChannelsProgramList.getPrograms({'channelId':$scope.chosenChannelId},
       function(res) {
@@ -703,7 +734,7 @@ app.controller('ChannelsDetailCtrl', ['$scope', '$state', 'Jobs', 'Customers', '
       console.log(conf);
 
       ChannelsGenerateProgram.generateProgram({channelId:$scope.chosenChannelId},conf,function(res){
-        $scope.alerts.push({type: 'success', msg: res.name + '生成成功！'});
+        // $scope.alerts.push({type: 'success', msg: res.name + '生成成功！'});
         $state.go('channels.detail',{brandId:$scope.chosenBrandId,channelId:$scope.chosenChannelId},{reload: true});  
       });
   };
@@ -809,6 +840,8 @@ app.controller('ChannelNewCtrl', ['$scope', 'CustomerChannels', '$stateParams', 
 }]);
 
 
+
+
 //Jobs
 app.controller('JobsDashboardCtrl', ['$scope', 'Jobs', '$stateParams', function($scope, Jobs, $stateParams) {  
 
@@ -892,6 +925,38 @@ app.directive('timeline', function() {
   };
 });
 
+//Channel daily program playlist detail
+app.controller('DailyPlaylistDetailCtrl', ['$scope', 'ProgramById', '$stateParams', 
+  function($scope, ProgramById, $stateParams) {  
+
+  $scope.brandId = $stateParams.barndId;
+  $scope.channelId = $stateParams.channelId;
+  $scope.programId = $stateParams.programId;
+
+
+  Customers.get({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.chosenBrand = res;
+
+      switch($scope.chosenBrand.status){
+        case 'prospect':$scope.chosenBrand.status="目标客户";break;
+        case 'demo':$scope.chosenBrand.status="样品测试";break;
+        case 'signed':$scope.chosenBrand.status="签约客户";break;
+        case 'inactive':$scope.chosenBrand.status="合约终止";break;
+      }
+    });
+
+  ProgramById.get({'programId':$scope.programId},
+    function(res) {
+
+      $scope.dailyPlaylist = res.dayPlaylistArr.filter(function(e){
+        return e._id===$stateParams.dailyplaylistId;
+      });
+      console.log($scope.dailyPlaylist);
+    });
+
+}]);
+
 /*app.controller('ProgramDetailCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {  
 
   $scope.job = $stateParams.jobContent;
@@ -958,7 +1023,7 @@ app.controller('ComingJobsCtrl', ['$scope', 'ComingJobs', 'ComingJobsImport', '$
 
 }]);
 
-//Programs - Playlists
+/*//Programs - Playlists
 app.controller('ProgramDashboardCtrl', ['$scope', 'Programs', '$stateParams', function($scope, Programs, $stateParams) {  
 
   Programs.getCount(function(res){
@@ -979,7 +1044,7 @@ app.controller('PlaylistListCtrl', ['$scope', 'Programs', '$stateParams', functi
           });
         });
 
-  }]);
+  }]);*/
 
 /*app.controller('PlaylistDetailCtrl', ['$scope', 'ProgramById', '$stateParams', function($scope, ProgramById, $stateParams) {  
 
@@ -1102,20 +1167,10 @@ app.controller('PlaylistListCtrl', ['$scope', 'Programs', '$stateParams', functi
 
 // }]);*/
 
-app.controller('DailyPlaylistDetailCtrl', ['$scope', 'ProgramById', '$stateParams', function($scope, ProgramById, $stateParams) {  
 
-  ProgramById.get({'programId':$stateParams.programId},
-    function(res) {
 
-      $scope.dailyPlaylist = res.dayPrograms.filter(function(e){
-        return e._id===$stateParams.dailyplaylistId;
-      });
-      console.log($scope.dailyPlaylist);
-    });
 
-}]);
-
-app.controller('PlaylistBindCtrl', ['$scope', 'ProgramById','CustomersBasic', 'CustomerSites', 'ProgramBindSite', '$stateParams', function($scope,ProgramById, CustomersBasic, CustomerSites, ProgramBindSite, $stateParams) {
+/*app.controller('PlaylistBindCtrl', ['$scope', 'ProgramById','CustomersBasic', 'CustomerSites', 'ProgramBindSite', '$stateParams', function($scope,ProgramById, CustomersBasic, CustomerSites, ProgramBindSite, $stateParams) {
 
   $scope.init = function(){
 
@@ -1169,14 +1224,14 @@ app.controller('PlaylistBindCtrl', ['$scope', 'ProgramById','CustomersBasic', 'C
     ProgramBindSite.save({'programId':$scope.playlist._id},params,function(res){
       $scope.alerts.push({type: 'success', msg: $scope.playlist.name + '绑定成功！'});
 
-      /*{ type: 'danger', msg: 'Well done! You successfully read this important alert message.' },
+      /*\{ type: 'danger', msg: 'Well done! You successfully read this important alert message.' },
       { type: 'info', msg: 'Heads up! This alert needs your attention, but it is not super important.' },
-      { type: 'warning', msg: 'Warning! Best check yo self, you are not looking too good...' }*/
+      { type: 'warning', msg: 'Warning! Best check yo self, you are not looking too good...' }*
     });
   };
 
 }]);
-
+*/
 
 app.controller('UserListCtrl', ['$scope', 'Users', '$stateParams', function($scope, Users, $stateParams) {
 

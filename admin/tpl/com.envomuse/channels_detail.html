@@ -22,7 +22,10 @@
 
               <span class="label bg-{{chosenChannel.bg}} m-r">{{chosenChannel.type}}</span>{{chosenChannel.name}}
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-2">
+            <a class="btn m-b-xs btn-sm btn-success btn-addon" ui-sref="channels.detail.program({brandId:chosenBrandId,channelId:chosenChannelId,programArr:programs,brand:chosenBrand})"><i class="fa fa-calendar"></i>查看日历</a>
+            </div>
+            <div class="col-sm-6">
               <a class="btn m-b-xs btn-sm btn-primary btn-addon pull-right" ng-show="!showGenerateProgram" ng-click="showGenerateProgram=true"><i class="fa fa-plus"></i>生成播放列表</a>
               <a class="btn m-b-xs btn-sm btn-danger btn-addon pull-right" ng-show="showGenerateProgram" ng-click="showGenerateProgram=false"><i class="fa fa-minus"></i>关闭</a>
             </div>
@@ -105,6 +108,7 @@
           </table>
         </div>
         <!-- /programs list -->
+        
       </div>
     </div>
   </div>

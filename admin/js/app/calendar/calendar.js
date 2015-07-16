@@ -2,42 +2,69 @@
  * calendarDemoApp - 0.1.3
  */
 
-app.controller('FullcalendarCtrl', ['$scope', 'ProgramById', '$stateParams', function($scope, ProgramById, $stateParams) {  
+app.controller('FullcalendarCtrl', ['$scope', 'Customers', 'ChannelsProgramList', '$stateParams', 
+  function($scope, Customers, ChannelsProgramList, $stateParams) {  
 
-  $scope.programId = $stateParams.playlistId;
+  $scope.programArr = $stateParams.programArr;
   
+  $scope.brandId = $stateParams.brandId;
+
+  Customers.get({'customerId':$stateParams.brandId},
+    function(res) {
+      $scope.chosenBrand = res;
+
+      switch($scope.chosenBrand.status){
+        case 'prospect':$scope.chosenBrand.status="目标客户";break;
+        case 'demo':$scope.chosenBrand.status="样品测试";break;
+        case 'signed':$scope.chosenBrand.status="签约客户";break;
+        case 'inactive':$scope.chosenBrand.status="合约终止";break;
+      }
+    });
+
+  $scope.channelId = $stateParams.channelId;
+
   var date = new Date();
-    var d = date.getDate();
-    var m = date.getMonth();
-    var y = date.getFullYear();
+  var d = date.getDate();
+  var m = date.getMonth();
+  var y = date.getFullYear();
 
-   
-    $scope.events = [];
+  $scope.events = [];
 
-    ProgramById.get({'programId':$stateParams.playlistId},
+  $scope.getEvents = function(){
+    for(var i=0,n=$scope.programArr.length;i<n;i++){
+    
+      var classNameArr = [
+          ['b-l b-2x b-info'],
+          ['b-l b-2x b-success'],
+          ['b-l b-2x b-primary'],
+          ['b-l b-2x b-danger'],
+          ['b-l b-2x b-warning']
+        ];
+
+      var e={
+        id:$scope.programArr[i]._id,
+        title: $scope.programArr[i].name,
+        allDay:false,
+        start:moment($scope.programArr[i].startDate),
+        end:moment($scope.programArr[i].endDate).add('22','hours'),
+        className:classNameArr[i],
+        editable:false
+      };
+
+      $scope.events.push(e);
+    }
+  };
+
+  if($scope.programArr==null){
+    ChannelsProgramList.getPrograms({'channelId':$scope.channelId},
       function(res) {
-        var playlist = res;
-
-        if(playlist !==null){
-          for(var i=0;i<playlist.dayPrograms.length;i++){
-            var d = playlist.dayPrograms[i].date;//date string
-            var e={
-              id:playlist.dayPrograms[i]._id,
-              title: playlist.name,
-              allDay:true,
-              start:new Date(d),
-              //end:endMoment,
-              className:['b-l b-2x b-info'],
-              editable:false
-              // dailyPlaylistContent:playlist.dayPrograms[i]
-              // playlistContent:$scope.playlist
-            };
-
-            $scope.events.push(e);
-          }
-        }
-      });
-
+      $scope.programArr = res;
+      $scope.getEvents();
+    });
+  }
+  else{
+    $scope.getEvents();
+  }
 
     /* alert on dayClick */
     $scope.precision = 400;

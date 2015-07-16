@@ -23,7 +23,7 @@
               <li class="divider"></li>
               <li><a ui-sref="customers.invoice({brandId:brand._id})">查看发票</a></li>
               <li class="divider"></li>
-              <li><a href ng-click="showSetManager=!showSetManager">设置品牌管理员</a></li>
+              <li><a ui-sref="customers.brand.detail.setmanager({brandId:brand._id})">设置品牌管理员</a></li>
             </ul>
           </div>
         </div>
@@ -217,6 +217,7 @@
       </div>
       <!-- / alert -->
       <div data-ng-include="partial"></div>
+      <!-- <div class="app-content-body fade-in" ui-view></div> -->
     </div>
 
   </div>

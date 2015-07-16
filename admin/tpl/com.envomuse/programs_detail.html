@@ -1,0 +1,56 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="FullcalendarCtrl">
+  <div class="col">
+    <div class="row wrapper">
+      <div class="panel-heading">
+        <div class="col-sm-4">
+          <div class="clearfix">
+            <div class="pull-left thumb-md avatar b-3x m-r">
+              <img ng-src="{{chosenBrand.logo}}" alt="...">
+            </div>
+            <div class="clear">
+              <div class="h4 m-t-xs m-b-xs">
+                {{chosenBrand.brand | uppercase}}
+              </div>
+              <small class="text-muted clearfix">{{chosenBrand.industry}}</small>
+              <small class="text-muted clearfix">{{chosenBrand.status==null?'状态未知':chosenBrand.status}}</small>
+            </div>
+          </div>
+          <span class="label bg-{{chosenChannel.bg}} m-r">{{chosenChannel.type}}</span>{{chosenChannel.name}}
+        </div>
+        <div class="col-sm-8">
+          <a class="btn btn-sm btn-danger pull-right" ui-sref="channels.detail({brandId:brandId,channelId:channelId})">返回</a>
+        </div>
+      </div>
+
+      <!-- calendar -->
+        <div class="hbox hbox-auto-xs hbox-auto-sm">
+          <div class="col wrapper-md">
+            <div class="clearfix m-b">
+              <div class="pull-right">
+                <button type="button" class="btn btn-sm btn-default" ng-click="today()">回到今天</button>
+                <div class="btn-group m-l-xs">
+                  <!-- <button class="btn btn-sm btn-default" ng-click="changeView('agendaDay')">单日</button> -->
+                  <button class="btn btn-sm btn-default" ng-click="changeView('agendaWeek')">按周显示</button>
+                  <button class="btn btn-sm btn-default" ng-click="changeView('month')">按月显示</button>
+                </div>
+              </div>
+            </div>
+            <div class="pos-rlt">
+              <div class="fc-overlay">
+                <div class="panel bg-white b-a pos-rlt">
+                  <span class="arrow"></span>
+                  <div class="h4 font-thin m-b-sm">{{event.title}}</div>
+                  <div class="line b-b b-light"></div>
+                  <!-- <div><i class="icon-calendar text-muted m-r-xs"></i> {{event.start | date:'yyyy-MM-dd'}}</div>
+                  <div class="ng-hide" ng-show='event.end'><i class="icon-clock text-muted m-r-xs"></i> {{event.end | date:'yyyy-MM-dd'}}</div> -->
+                  <!-- <div><a ui-sref="channels.detail.program.dailydetail({brandId:brandId,channelId:channelId,programId:event.id,brand:chosenBrand})"><i class="fa fa-fw fa-random text-muted m-r-xs"></i> 查看歌曲清单 </a></div> -->
+                </div>
+              </div>
+              <div class="calendar" ng-model="eventSources" config="uiConfig.calendar" ui-calendar="uiConfig.calendar"></div>
+            </div>
+          </div>
+        </div>
+      <!-- /calendar -->
+    </div>
+  </div>
+</div>
