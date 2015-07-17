@@ -18,8 +18,7 @@
               <li class="divider"></li>
               <li><a ui-sref="customers.contact.add({brandId:brand._id})">添加联系人</a></li>
               <li class="divider"></li>
-              <li><a ui-sref="customers.brand.edit({brandId:brand._id})">编辑</a></li>
-              <!-- <li><a href>删除</a></li> -->
+              <li><a ui-sref="customers.brand.edit({brandId:brand._id})">编辑品牌</a></li>
               <li class="divider"></li>
               <li><a ui-sref="customers.invoice({brandId:brand._id})">查看发票</a></li>
               <li class="divider"></li>
@@ -75,6 +74,12 @@
           <span class="badge bg-success">{{leader.name}}</span>
           <i class="fa fa-user fa-fw text-muted"></i> 
           联系人
+        </a>
+
+        <a ui-sref="customers.brand.detail.setmanager({brandId:brand._id})" class="list-group-item bg-light">
+          <span class="label bg-light pull-right">{{brand.user.email!=null?brand.user.email:'设置'}}</span>
+          <i class="fa fa-user fa-fw text-muted"></i> 
+          管理员账户
         </a>
 
         <accordion close-others="true">
@@ -177,13 +182,6 @@
                   描述
                 </li>
               </ul>
-            </accordion-group>
-            <accordion-group>
-            <accordion-heading>
-            <i class="fa fa-fw fa-user text-muted m-r"></i>管理员账户
-            </accordion-heading>
-               <span class="label bg-light">{{brand.user.email}}</span>
-               <span><a href="">编辑</a></span>
             </accordion-group>
         </accordion>
       </ul>

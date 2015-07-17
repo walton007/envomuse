@@ -1,150 +1,151 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="CustomerEditCtrl">
   <div class="col">
-
     <div class="row wrapper">
-      <div class="panel-heading font-bold">编辑品牌</div>
-        <div class="panel-body">
-          <form name="form" class="form-horizontal m-t-lg form-validation">
-              <div class="form-group">
-                <label class="col-lg-2 control-label">品牌名称</label>
-                <div class="col-lg-6">
-                  <input type="text" class="form-control" ng-model="brand.brand" placeholder="必填" required>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">所属公司</label>
-                <div class="col-lg-6">
-                  <input type="text" class="form-control" ng-model="brand.company" placeholder="必填" required>
-                </div>
-              </div>
-
-              <div class="line line-dashed b-b line-lg pull-in"></div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">所属行业</label>
-                <div class="col-lg-6">
-                  <select ui-jq="chosen" class="form-control" ng-model="brand.industry" placeholder="必填" required>
-                    <option ng-repeat="list in industrylist" value="{{list}}">{{list}}</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">联系电话</label>
-                <div class="col-lg-6">
-                  <input type="text" class="form-control"  ng-model="brand.telephone"  >
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">传真</label>
-                <div class="col-lg-6">
-                  <input type="text" class="form-control"  ng-model="brand.fax"  >
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">地址</label>
-                <div class="col-lg-6">
-                  <input type="text" class="form-control"  ng-model="brand.address"  >
-                </div>
-              </div>
-
-              <div class="line line-dashed b-b line-lg pull-in"></div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">品牌状态</label>
-                <div class="col-lg-6">
-                  <select ui-jq="chosen" class="form-control" ng-model="brand.status" placeholder="必填" required>
-                    <option ng-repeat="list in statuslist" value="{{list.key}}">{{list.value}}</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-lg-2 control-label">曲目更新周期</label>
-                <div class="col-lg-6">
-                  <select ui-jq="chosen" class="form-control" ng-model="brand.updatePeriod" placeholder="必填" required>
-                    <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list}}</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="form-group">
-                <label class="col-sm-2 control-label">合同开始日期</label>
-                <div class="col-sm-6" ng-controller="DatepickerDemoCtrl">
-                  <div class="input-group w-md">
-                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="brand.crmInfo.contractDate" is-open="opened" datepicker-options="dateOptions" close-text="Close" />
-                    <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
+      <div class="panel panel-default">
+        <div class="panel-heading font-bold">编辑品牌</div>
+          <div class="panel-body">
+            <form name="form" class="form-horizontal m-t-lg form-validation">
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">品牌名称</label>
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control" ng-model="brand.brand" placeholder="必填" required>
                   </div>
                 </div>
-              </div>
 
-              <div class="form-group">
-                <label class="col-sm-2 control-label">合同结束日期</label>
-                <div class="col-sm-6" ng-controller="DatepickerDemoCtrl">
-                  <div class="input-group w-md">
-                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="brand.crmInfo.endContractDate" is-open="opened" datepicker-options="dateOptions" close-text="Close" />
-                    <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">所属公司</label>
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control" ng-model="brand.company" placeholder="必填" required>
                   </div>
                 </div>
-              </div>
 
-              <div class="line line-dashed b-b line-lg pull-in"></div>
-              <div class="form-group">
-                <label class="col-lg-2 control-label">设计费</label>
-                <div class="col-lg-6">
-                  <input type="number" class="form-control" ng-model="brand.designFee" >
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-lg-2 control-label">安装费</label>
-                <div class="col-lg-6">
-                  <input type="number" class="form-control" ng-model="brand.setupFee" >
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-lg-2 control-label">月服务费</label>
-                <div class="col-lg-6">
-                  <input type="number" class="form-control" ng-model="brand.monthServiceFee" >
-                </div>
-              </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
 
-              <div class="line line-dashed b-b line-lg pull-in"></div>
-              <div class="form-group">
-                <label class="col-lg-2 control-label">其它费用</label>
-                <div class="col-lg-6">
-                  <input type="number" class="form-control" ng-model="brand.otherFee" >
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">所属行业</label>
+                  <div class="col-lg-6">
+                    <select ui-jq="chosen" class="form-control" ng-model="brand.industry" placeholder="必填" required>
+                      <option ng-repeat="list in industrylist" value="{{list}}">{{list}}</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="col-lg-2 control-label">其它费用描述</label>
-                <div class="col-lg-6">
-                  <input type="text" class="form-control" ng-model="brand.otherFeeComment" >
-                </div>
-              </div>
 
-              <div class="line line-dashed b-b line-lg pull-in"></div>
-              
-              <div class="form-group">
-                <label class="col-sm-2 control-label">详细描述</label>
-                <div class="col-sm-6">
-                  <textarea class="form-control h-auto" style="min-height:200px;" ng-model="brand.description">{{brand.description}}
-                  </textarea>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">联系电话</label>
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control"  ng-model="brand.telephone"  >
+                  </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <div class="col-lg-6 col-lg-offset-2">
-                  <button type="submit" class="btn btn-danger" ng-click="hideMe(brand._id)">取消</button>
-                  <button type="submit" class="btn btn-success pull-right" ng-disabled="form.$invalid" ng-click="saveBrand()">添加</button>
+
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">传真</label>
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control"  ng-model="brand.fax"  >
+                  </div>
                 </div>
-              </div>
-            </form>  
+
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">地址</label>
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control"  ng-model="brand.address"  >
+                  </div>
+                </div>
+
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">品牌状态</label>
+                  <div class="col-lg-6">
+                    <select ui-jq="chosen" class="form-control" ng-model="brand.status" placeholder="必填" required>
+                      <option ng-repeat="list in statuslist" value="{{list.key}}">{{list.value}}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">曲目更新周期</label>
+                  <div class="col-lg-6">
+                    <select ui-jq="chosen" class="form-control" ng-model="brand.updatePeriod" placeholder="必填" required>
+                      <option ng-repeat="list in updateperiodlist" value="{{list}}">{{list}}</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">合同开始日期</label>
+                  <div class="col-sm-6" ng-controller="DatepickerDemoCtrl">
+                    <div class="input-group w-md">
+                      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="brand.crmInfo.contractDate" is-open="opened" datepicker-options="dateOptions" close-text="Close" />
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">合同结束日期</label>
+                  <div class="col-sm-6" ng-controller="DatepickerDemoCtrl">
+                    <div class="input-group w-md">
+                      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="brand.crmInfo.endContractDate" is-open="opened" datepicker-options="dateOptions" close-text="Close" />
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">设计费</label>
+                  <div class="col-lg-6">
+                    <input type="number" class="form-control" ng-model="brand.designFee" >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">安装费</label>
+                  <div class="col-lg-6">
+                    <input type="number" class="form-control" ng-model="brand.setupFee" >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">月服务费</label>
+                  <div class="col-lg-6">
+                    <input type="number" class="form-control" ng-model="brand.monthServiceFee" >
+                  </div>
+                </div>
+
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">其它费用</label>
+                  <div class="col-lg-6">
+                    <input type="number" class="form-control" ng-model="brand.otherFee" >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">其它费用描述</label>
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control" ng-model="brand.otherFeeComment" >
+                  </div>
+                </div>
+
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">详细描述</label>
+                  <div class="col-sm-6">
+                    <textarea class="form-control h-auto" style="min-height:200px;" ng-model="brand.description">{{brand.description}}
+                    </textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-lg-6 col-lg-offset-2">
+                    <button type="submit" class="btn btn-danger" ng-click="hideMe(brand._id)">取消</button>
+                    <button type="submit" class="btn btn-success pull-right" ng-disabled="form.$invalid" ng-click="saveBrand()">添加</button>
+                  </div>
+                </div>
+              </form>  
+          </div>
         </div>
       </div>
     </div>

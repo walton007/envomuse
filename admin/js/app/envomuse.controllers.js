@@ -82,47 +82,6 @@ app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams',
 
   }]);
 
-
-/*app.controller('CustomerListCtrl', ['$scope', 'Customers', '$stateParams', 
-  function($scope, Customers, $stateParams) {
-
-    $scope.maxSize = 5; //total buttons displayed
-    $scope.bigCurrentPage = 1;  //current page
-    $scope.datasource = [];
-    $scope.pageItems = 12;
-    $scope.bigTotalItems = 0;
-
-    $scope.init = function(){
-      $scope.pageChanged();
-    };
-
-    $scope.pageChanged = function() {
-
-      Customers.getPageData({pageNumber:$scope.bigCurrentPage,pageSize:$scope.pageItems},
-        function(res) {
-          $scope.datasource = res.data;
-          $scope.bigTotalItems = res.count;
-
-          $scope.normalizedDataSource = $scope.datasource.map(function(e){
-            return {
-              _id:e._id,
-              brand:e.brand,
-              industry:e.industry,
-              created:e.created,
-              status:e.status,
-              updatePeriod:e.updatePeriod,
-              sitesCount:e.sitesCount!=null?e.sitesCount:0
-            };
-          });
-
-        });
-    };
-
-  }]);*/
-
-
-
-
 //Customer add new
 app.controller('CustomerNewCtrl', ['$scope', '$rootScope', '$state', 'Customers', 
   function($scope,$rootScope, $state, Customers) {
@@ -385,12 +344,11 @@ app.controller('CustomerSetManagerCtrl', ['$scope', 'CustomerManager', 'Customer
   }
 
   $scope.setManager = function(){
+
     var manager = {
-      email:$scope.manager.email,
+      email:$scope.brand.user.email,
       password:$scope.manager.pwd1
     };
-
-    console.log(manager);
 
     CustomerManager.save({customerId:$stateParams.brandId},manager,function(res){
         $scope.$parent.alerts.push({type: 'success', msg: res.email + '生成成功！'});
@@ -737,18 +695,6 @@ app.controller('ChannelNewCtrl', ['$scope', 'CustomerChannels', '$stateParams', 
       $state.go('customers.channel',{brandId:$stateParams.brandId});
     });
   };
-}]);
-
-
-
-
-//Jobs
-app.controller('JobsDashboardCtrl', ['$scope', 'Jobs', '$stateParams', function($scope, Jobs, $stateParams) {  
-
-  Jobs.getCount(function(res){
-    $scope.stat = res;
-  });
-
 }]);
 
 

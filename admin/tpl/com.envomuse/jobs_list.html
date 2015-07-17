@@ -10,7 +10,17 @@
           <h1 class="m-n font-thin h3 text-black">工作包管理</h1>
           <small class="text-muted">已导入系统的所有可用工作包</small>
         </div>
-        <div class="col-sm-6 text-right hidden-xs">
+        <div class="col-sm-4 text-right hidden-xs">
+          <!-- search form -->
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" ng-model="searchText" class="form-control input-sm bg-light no-border rounded padder" placeholder="查找...">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-sm bg-light rounded"><i class="fa fa-search"></i></button>
+              </span>
+            </div>
+          </div>
+          <!-- / search form -->
         </div>
       </div>
     </div>
@@ -18,19 +28,6 @@
 
     <div class="row">
       <div class="wrapper-md m-t-n">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="row m-t-md">
-              <div class="col-sm-4">
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="icon text-mute icon-magnifier"></i></span>
-                  <input type="text" class="input-sm form-control" placeholder="输入查找内容" ng-model="searchText">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div ng-show="datasource.length==0">
           <alert type="warning">还没有工作包！<button class="btn m-b-xs btn-sm btn-info" ng-click="$state.go('tasks.incoming')">查看任务</button></alert>
         </div>

@@ -10,7 +10,17 @@
           <h1 class="m-n font-thin h3 text-black">品牌管理</h1>
           <small class="text-muted">管理所有品牌</small>
         </div>
-        <div class="col-sm-6 text-right hidden-xs">
+        <!-- search form -->
+        <div class="col-sm-3 form-group">
+          <div class="input-group">
+            <input type="text" ng-model="searchText" class="form-control input-sm bg-light no-border rounded padder" placeholder="查找...">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-sm bg-light rounded"><i class="fa fa-search"></i></button>
+            </span>
+          </div>
+        </div>
+        <!-- / search form -->
+        <div class="col-sm-3 text-right hidden-xs">
           <div class="btn-group dropdown" dropdown>
             <button class="btn m-b-xs btn-sm btn-primary btn-addon" ng-click="$state.go('customers.brand.new')"><i class="fa fa-plus"></i>添加品牌</button>
           </div>
@@ -22,21 +32,6 @@
     <!-- main -->
       <div class="row">
         <div class="wrapper-md m-t-n">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <div class="row m-t-md">
-                <div class="col-sm-6">
-                  <pagination total-items="bigTotalItems" items-per-page="pageItems" num-pages="numPages"  max-size="maxSize" ng-model="bigCurrentPage" ng-change="pageChanged()" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
-                </div>
-                <div class="col-sm-6">
-                  <div class="input-group">
-                    <span class="input-group-addon"><i class="icon text-mute icon-magnifier"></i></span>
-                    <input type="text" class="input-sm form-control" placeholder="输入查找内容" ng-model="searchText">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
           <div ng-show="normalizedDataSource.length==0">
             <alert type="warning">还没有品牌信息！<button class="btn m-b-xs btn-sm btn-info" ng-click="$state.go('customers.brand.new')">添加品牌</button></alert>
@@ -69,6 +64,9 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="col-sm-12 text-center">
+            <pagination total-items="bigTotalItems" items-per-page="pageItems" num-pages="numPages"  max-size="maxSize" ng-model="bigCurrentPage" ng-change="pageChanged()" class="pagination-sm m-t-none m-b" boundary-links="true" rotate="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
           </div>
         </div>
       </div>
