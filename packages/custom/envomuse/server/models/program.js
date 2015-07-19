@@ -22,6 +22,10 @@ var ProgramSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Channel'
   },
+  customer: {
+    type: Schema.ObjectId,
+    ref: 'Customer'
+  },
   startDate: Date,
   endDate: Date,
 

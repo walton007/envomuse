@@ -24,7 +24,15 @@ module.exports = function(Envomuse, app, auth, database) {
   app.use('/musicAssert', express.static(config.root + '/'+ config.musicAssert));
 
   var apiRouter = express.Router();
-  app.use('/api', apiRouter);
+  app.use('/api'
+    , function (req, res, next) {
+      if (!config.requireAuth) {
+        return next();
+      }
+
+      return auth.requiresAdmin(req, res, next);
+    }
+    ,apiRouter);
 
   //all Tasksx`
   apiRouter.route('/dashboard/')
@@ -234,18 +242,27 @@ module.exports = function(Envomuse, app, auth, database) {
   var adminRouter = express.Router();
   app.use('/admin', adminRouter);
   //auth.requiresLogin,
-  adminRouter.use(
+  if (config.requireAuth) {
+    adminRouter.use(
     // auth.requiresLogin, 
     function(req, res, next) {
-      // if (!req.isAuthenticated()) {
-      //   return res.status(401).send('User is not authorized');
-      // }
       if (req.url === '/' || req.url === '/index.html') {
         return dashboard.render(req, res);
       }
       next();
     }, 
     express.static(config.root + '/admin'));
+  } else {
+    adminRouter.use(
+    function(req, res, next) {
+      if (req.url === '/' || req.url === '/index.html') {
+        return dashboard.render(req, res);
+      }
+      next();
+    }, 
+    express.static(config.root + '/admin'));
+  }
+  
 
   //integrate admin module
   // app.use('/admin', express.static(config.root + '/admin'));  //admin

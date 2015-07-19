@@ -360,6 +360,7 @@ function generateProgramRecord(job, channel, startDate, endDate, programName, va
       job: job,
       jobName: job.name,
       channel: channel,
+      customer: channel.customer,
       startDate: startDate,
       endDate: endDate,
       dayPlaylistArr: validDays
