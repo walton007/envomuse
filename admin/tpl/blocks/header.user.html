@@ -1,0 +1,48 @@
+    <!-- navbar collapse -->
+      <div class="collapse pos-rlt navbar-collapse userhome box-shadow">
+
+        <!-- brand -->
+        <span class="navbar-brand text-lt pull-left">
+          <i class="fa fa-cube"></i>
+          <img src="img/logo.png" alt="." class="hide">
+          <span class="hidden-folded m-l-xs">{{app.name}}</span>
+        </span>
+        <!-- / brand -->
+
+      <!-- link and dropdown -->
+        <ul class="nav navbar-nav hidden-sm">
+
+          <li>
+            <a ui-sref="user.home" class="auto">
+              <span class="font-bold">播放日历</span>
+            </a>
+          </li>
+
+          <li>
+            <a ui-sref="user.sites" class="auto">
+              <span class="font-bold">门店信息</span>
+            </a>
+          </li>
+        </ul>
+        <!-- / link and dropdown -->
+
+        <!-- nabar right -->
+        <ul class="nav navbar-nav navbar-right">
+          
+          <li class="dropdown" dropdown>
+            <a href class="dropdown-toggle clear" dropdown-toggle>
+              <span class="hidden-sm hidden-md">{{loggedInUser.username}}</span><b class="caret"></b>
+            </a>
+            <!-- dropdown -->
+            <ul class="dropdown-menu animated fadeIn">
+              <li>
+                <a ui-sref="access.logout">注销</a>
+              </li>
+            </ul>
+            <!-- / dropdown -->
+          </li>
+        </ul>
+        <!-- / navbar right -->
+
+      </div>
+      <!-- / navbar collapse -->

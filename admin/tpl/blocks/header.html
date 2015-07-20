@@ -66,17 +66,14 @@
           
           <li class="dropdown" dropdown>
             <a href class="dropdown-toggle clear" dropdown-toggle>
-              <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
-                <img src="img/logo/hermes.png" alt="...">
-              </span>
-              <span class="hidden-sm hidden-md">张三</span><b class="caret"></b>
+              <span class="hidden-sm hidden-md">{{loggedInUser.username}}</span><b class="caret"></b>
             </a>
             <!-- dropdown -->
             <ul class="dropdown-menu animated fadeIn">
-              <li>
+              <!-- <li>
                 <a ui-sref="app.page.profile">设置</a>
               </li>
-              <li class="divider"></li>
+              <li class="divider"></li> -->
               <li>
                 <a ui-sref="access.logout">注销</a>
               </li>

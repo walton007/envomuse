@@ -13,7 +13,11 @@ app.controller('SigninFormController', ['$scope', '$http', '$state', function($s
         if ( !response.data.user ) {
           $scope.authError = response.data[0].msg;
         }else{
-          $state.go('app.dashboard');
+          switch(response.data.user.roles.shift()){
+            case 'customer':console.log('GO TO USER HOME');$state.go('user.home',{reload:true});break;
+            case 'admin':console.log('GO TO ADMIN DASH');$state.go('app.dashboard',{reload:true});break;
+            default:break;
+          }
         }
       }, function(response) {
           console.log(response);

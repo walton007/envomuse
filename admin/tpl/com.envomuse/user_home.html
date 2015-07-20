@@ -1,0 +1,68 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="UserHomeCtrl">
+
+  <div class="row" ng-controller="EnvoMusicCtrl">
+    <div class="col-sm-2 text-center">
+      <span>试听曲目</span>
+    </div>
+    <div class="col-sm-10" >
+      <div class="videogular-container bg-light b-l lter">
+        <videogular 
+          vg-player-ready="onPlayerReady" 
+          vg-complete="onComplete" 
+          vg-theme="config.theme.url"  
+          vg-autoplay="config.autoPlay" 
+          class="videogular-container audio">
+          <vg-audio vg-src="config.sources"></vg-audio>
+          <vg-controls>
+            <vg-button ng-show="audios.length-1" ng-click="play('prev')"><i class="fa fa-backward"></i></vg-button>
+            <vg-play-pause-button></vg-play-pause-button>
+            <vg-button ng-show="audios.length-1" ng-click="play('next')"><i class="fa fa-forward"></i></vg-button>
+            <vg-timedisplay class="hidden-xs">{{ currentTime | date:'mm:ss' }}</vg-timedisplay>
+            <vg-scrubBar>
+              <vg-title class="hidden-xs">{{config.title}}</vg-title>
+              <vg-scrubbarcurrenttime class="bg-info" style="height: 4px"></vg-scrubbarcurrenttime>
+            </vg-scrubBar>
+            <vg-timedisplay>{{ timeLeft | date:'mm:ss' }}</vg-timedisplay>
+             
+            <vg-button ng-click="toggleShuffle()" title="Shuffle"><i class="fa fa-random" ng-class="{'text-info':config.shuffle}"></i></vg-button>
+            <vg-button ng-click="toggleRepeat()" title="Repeat"><i class="fa fa-retweet" ng-class="{'text-info':config.repeat}"></i></vg-button>
+
+          <vg-volume>
+            <vg-mutebutton></vg-mutebutton>
+          </vg-volume>
+        </vg-controls>
+      </videogular>
+    </div>
+  </div>
+</div>
+
+  <!-- main -->
+  <div class="row">
+    <div class="row wrapper">
+    
+        <div class="panel panel-default">
+          <div class="panel-body text-center" ng-controller="UserCalendarCtrl">
+            <div class="pos-rlt userhome">
+              <div class="fc-overlay">
+                <div class="panel bg-white b-a pos-rlt">
+                  <span class="arrow"></span>
+                  <div class="h4 font-thin m-b-sm">{{event.title}}</div>
+                  <div class="line b-b b-light"></div>
+                  <div><i class="icon-calendar text-muted m-r-xs"></i> {{event.start | date:'medium'}}</div>
+                  <div class="ng-hide" ng-show='event.end'><i class="icon-clock text-muted m-r-xs"></i> {{event.end | date:'medium'}}</div>
+                  <div class="line b-b b-light"></div>
+                  <div><a ui-sref="playlists.dailydetail({programId:programId,dailyplaylistId:event.id})"><i class="icon-clock text-muted m-r-xs"></i> 详细信息 </a></div>
+                </div>
+              </div>
+              <div class="calendar" ng-model="eventSources" config="uiConfig.calendar" ui-calendar="uiConfig.calendar"></div>
+            </div>
+
+        </div>
+                        
+      </div>
+        
+  </div>
+
+</div>
+
+</div>

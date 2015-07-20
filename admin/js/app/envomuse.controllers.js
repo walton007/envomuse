@@ -32,15 +32,15 @@ app.controller('DashboardCtrl', ['$scope', 'DashStats', 'ComingJobs', '$statePar
 }]);
 
 //User admin dashboard
-app.controller('UserHomeCtrl', ['$scope', 'Customers', 'CustomerManager', '$stateParams', function($scope, Customers, CustomerManager, $stateParams) {
+app.controller('UserHomeCtrl', ['$scope', 'Customers', 'CustomerManager', '$stateParams', '$window',
+  function($scope, Customers, CustomerManager, $stateParams, $window) {
 
-    $scope.d3 = [ 
-      { label: "LICENSE未激活", data: 20 }, 
-      { label: "待激活", data: 20 },
-      { label: "在线", data: 40 },
-      { label: "本地播放", data: 10 },
-      { label: "离线", data: 10 }
-    ];
+    $scope.data = $window.myInfo;
+
+    $scope.sites = $scope.data.sites;
+    $scope.playlist = $scope.data.dayPlaylistArr;
+    
+    // console.log($scope.playlist);
 
 }]);
 
@@ -592,7 +592,7 @@ app.controller('ChannelsDetailCtrl', ['$scope', '$state', 'Jobs', 'Customers', '
       console.log(conf);
 
       ChannelsGenerateProgram.generateProgram({channelId:$scope.chosenChannelId},conf,function(res){
-        $scope.$parent.alerts.push({type: 'success', msg: res.name + '生成成功！'});
+        // $scope.$parent.alerts.push({type: 'success', msg: res.name + '生成成功！'});
         $state.go('channels.detail',{brandId:$scope.chosenBrandId,channelId:$scope.chosenChannelId},{reload: true});  
       });
   };
@@ -1224,25 +1224,6 @@ app.controller('EnvoMusicCtrl', ["$sce",'$scope', function ($sce, $scope) {
       $scope.config.shuffle = !$scope.config.shuffle;
       console.log($scope.API.currentState);
       if ($scope.isCompleted) $scope.API.play();
-    };
-
-    // video
-    $scope.video = {
-      sources: [
-        {src: $sce.trustAsResourceUrl("http://flatfull.com/themes/assets/video/big_buck_bunny_trailer.m4v"), type: "video/mp4"},
-        {src: $sce.trustAsResourceUrl("http://flatfull.com/themes/assets/video/big_buck_bunny_trailer.webm"), type: "video/webm"},
-        {src: $sce.trustAsResourceUrl("http://flatfull.com/themes/assets/video/big_buck_bunny_trailer.ogv"), type: "video/ogg"}
-      ],
-      theme: {
-        url: "js/app/music/videogular.css"
-      },
-      plugins: {
-        controls: {
-          autoHide: true,
-          autoHideTime: 5000
-        },
-        poster: "img/c1.jpg"
-      }
     };
 
   }]

@@ -37,27 +37,26 @@ angular.module('app')
                   }
               })
 
-              .state('me', {
+              .state('user', {
                   abstract: true,
-                  url: '/me',
-                  templateUrl: 'tpl/app.me.html'
+                  url: '/u',
+                  templateUrl: 'tpl/app_user.html',
+                  resolve: {
+                    deps: ['$ocLazyLoad',
+                      function( $ocLazyLoad ){
+                        return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
+                                                 'js/app/envomuse.services.js']);
+                    }]
+                  }
               })
-              .state('me.home', {
+              .state('user.home', {
                   url: '/home',
-                  // templateUrl: 'tpl/com.envomuse/userhome.html',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/com.envomuse/userhome.html',
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/com.envomuse/userhome.footer.html'
-                      }
-                  },
+                  templateUrl: 'tpl/com.envomuse/user_home.html',
                   resolve: {
                       deps: ['$ocLazyLoad', 'uiLoad',
                         function( $ocLazyLoad, uiLoad ){
                           return uiLoad.load(
-                            JQ_CONFIG.fullcalendar.concat('js/app/calendar/calendar.me.js')
+                            JQ_CONFIG.fullcalendar.concat('js/app/calendar/calendar.user.js')
                           ).then(
                             function(){
                               return $ocLazyLoad.load(['ui.calendar',
@@ -67,14 +66,16 @@ angular.module('app')
                                               'com.2fdevs.videogular.plugins.poster',
                                               'com.2fdevs.videogular.plugins.buffering',
                                               'js/app/music/ctrl.js', 
-                                              'js/app/music/theme.css',
-                                              'js/app/envomuse.controllers.js',
-                                              'js/app/envomuse.services.js']
+                                              'js/app/music/theme.css']
                                              );
                             }
                           )
                       }]
                   }
+              })
+              .state('user.sites', {
+                  url: '/sites',
+                  templateUrl: 'tpl/com.envomuse/user_sites.html'
               })
 
               //channels
@@ -366,59 +367,10 @@ angular.module('app')
                   }
               })
               
-             
-              
-              
-
-
-              /*//users
-              .state('users', {
-                abstract: true,
-                  url: '/users',
-                  // templateUrl: 'tpl/layout.html',
-                  templateUrl: 'tpl/app.html',
-                  resolve: {
-                    deps: ['$ocLazyLoad',
-                      function( $ocLazyLoad ){
-                        return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
-                                                 'js/app/envomuse.services.js']);
-                    }]
-                  }
-              })
-              .state('users.list', {
-                  url: '/',
-                  templateUrl: 'tpl/com.envomuse/users_list.html'
-              })  */  
-
-              
               // pages
               .state('app.page', {
                   url: '/page',
                   template: '<div ui-view class="fade-in-down"></div>'
-              })
-              .state('app.page.profile', {
-                  url: '/profile',
-                  templateUrl: 'tpl/page_profile.html'
-              })
-              .state('app.page.post', {
-                  url: '/post',
-                  templateUrl: 'tpl/page_post.html'
-              })
-              .state('app.page.search', {
-                  url: '/search',
-                  templateUrl: 'tpl/page_search.html'
-              })
-              .state('app.page.invoice', {
-                  url: '/invoice',
-                  templateUrl: 'tpl/page_invoice.html'
-              })
-              .state('app.page.price', {
-                  url: '/price',
-                  templateUrl: 'tpl/page_price.html'
-              })
-              .state('app.docs', {
-                  url: '/docs',
-                  templateUrl: 'tpl/docs.html'
               })
               // others
               .state('lockme', {
@@ -461,83 +413,6 @@ angular.module('app')
                 controller: function () {
                   window.location = '/logout';
                 }
-              })
-
-              // fullCalendar
-              .state('app.calendar', {
-                  url: '/calendar',
-                  templateUrl: 'tpl/app_calendar.html',
-                  // use resolve to load other dependences
-                  resolve: {
-                      deps: ['$ocLazyLoad', 'uiLoad',
-                        function( $ocLazyLoad, uiLoad ){
-                          return uiLoad.load(
-                            JQ_CONFIG.fullcalendar.concat('js/app/calendar/calendar.js')
-                          ).then(
-                            function(){
-                              return $ocLazyLoad.load('ui.calendar');
-                            }
-                          )
-                      }]
-                  }
-              })
-
-              
-
-              .state('layout', {
-                  abstract: true,
-                  url: '/layout',
-                  templateUrl: 'tpl/layout.html'
-              })
-              .state('layout.fullwidth', {
-                  url: '/fullwidth',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/layout_fullwidth.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/layout_footer_fullwidth.html'
-                      }
-                  },
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad ){
-                          return uiLoad.load( ['js/controllers/vectormap.js'] );
-                      }]
-                  }
-              })
-              .state('layout.mobile', {
-                  url: '/mobile',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/layout_mobile.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/layout_footer_mobile.html'
-                      }
-                  }
-              })
-              .state('layout.app', {
-                  url: '/app',
-                  views: {
-                      '': {
-                          templateUrl: 'tpl/layout_app.html'
-                      },
-                      'footer': {
-                          templateUrl: 'tpl/layout_footer_fullwidth.html'
-                      }
-                  },
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad ){
-                          return uiLoad.load( ['js/controllers/tab.js'] );
-                      }]
-                  }
-              })
-              .state('apps', {
-                  abstract: true,
-                  url: '/apps',
-                  templateUrl: 'tpl/layout.html'
               })
       }
     ]

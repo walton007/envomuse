@@ -2,41 +2,76 @@
  * calendarDemoApp - 0.1.3
  */
 
-app.controller('FullMecalendarCtrl', ['$scope', 'ProgramById', '$stateParams', function($scope, ProgramById, $stateParams) {  
+app.controller('UserCalendarCtrl', ['$scope', '$stateParams', 
+  function($scope, $stateParams) {  
 
-  $scope.programId = $stateParams.playlistId;
+    $scope.playlist = $scope.$parent.playlist;
   
-  var date = new Date();
+    var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
-
    
-    $scope.events = [];
+    var events = [];
 
-    $scope.events = [
-      {title:'轻松早晨', start: new Date(y, m, d - 1, 8, 0), end: new Date(y, m, d - 1, 11, 59), allDay: false, className: ['b-l b-2x b-info'], location:'Tokyo', info:'Tokyo Game Racing'},
-      {title:'温情提示', start: new Date(y, m, d - 1, 12, 0), end: new Date(y, m, d - 1, 12, 1), allDay: false,className: ['b-l b-2x b-danger']},
-      {title:'舒适午间', start: new Date(y, m, d - 1, 12, 2), end: new Date(y, m, d - 1, 14, 0), allDay: false,className: ['b-l b-2x b-success'], location:'Tokyo', info:'Tokyo Game Racing'},
-      {title:'青春下午', start: new Date(y, m, d - 1, 14, 0), end: new Date(y, m, d - 1, 18, 0), allDay: false,className: ['b-l b-2x b-primary'], location:'Tokyo', info:'Tokyo Game Racing'},
-      {title:'激情晚上', start: new Date(y, m, d - 1, 18, 0), end: new Date(y, m, d - 1, 22, 0), allDay: false,className: ['b-l b-2x b-danger'], location:'Tokyo', info:'Tokyo Game Racing'},
-      {title:'爵士心情', start: new Date(y, m, d, 8, 0), end: new Date(y, m, d, 18, 0), allDay: false, className: ['b-l b-2x b-success'], location:'Tokyo', info:'Tokyo Game Racing'},
-      {title:'浓情夏日', start: new Date(y, m, d, 18, 0), end: new Date(y, m, d, 22, 0), allDay: false,className: ['b-l b-2x b-warning'], location:'Tokyo', info:'Tokyo Game Racing'},
-    ];
+    var colorBars = ['b-l b-5x b-info','b-l b-5x b-primary','b-l b-5x b-danger','b-l b-5x b-success','b-l b-5x b-warning'];
+    var colorIndex = 0;
 
+    for(var i=0,size=$scope.playlist.length;i<size;i++){
+      for(var j=0,track_size=$scope.playlist[i].playlist.length;j<track_size;j++){
+        var dt = $scope.playlist[i].date;
+        var track = $scope.playlist[i].playlist[j];
 
+        if(events.length>0){
+          var lastEvent = events[events.length-1];
+
+          if(lastEvent.title===track.fromBoxs[0] && lastEvent.dateString===dt){
+            events[events.length-1].tracks.push(track);
+            events[events.length-1].end = lastEvent.end.add(track.duration,'seconds');
+          }
+          else{
+            if(colorIndex==4)
+              colorIndex=0;
+          
+            var newEvent = {
+              title:track.fromBoxs[0],
+              start: moment(dt).add(track.exactPlayTime,'ms'),
+              end: moment(dt).add(track.exactPlayTime,'ms').add(track.duration,'s'),
+              allDay:false,
+              tracks:[track],
+              className: colorBars[colorIndex++],
+              dateString:dt
+            };
+
+            events.push(newEvent);
+          }
+        }
+        else{
+          if(colorIndex==4)
+            colorIndex=0;
+
+          var newEvent = {
+            title:track.fromBoxs[0],
+            start: moment(dt).add(track.exactPlayTime,'ms'),
+            end: moment(dt).add(track.exactPlayTime,'ms').add(track.duration,'s'),
+            allDay:false,
+            className: colorBars[colorIndex++],
+            tracks:[track],
+            dateString:dt
+          };
+
+          events.push(newEvent);
+        }
+      }
+    }
+
+    console.log(events);
+
+    $scope.events = events;
+  
     /* alert on dayClick */
     $scope.precision = 400;
     $scope.lastClickTime = 0;
-    
-    /* alert on Drop */
-    $scope.alertOnDrop = function(event, delta, revertFunc, jsEvent, ui, view){
-       $scope.alertMessage = ('Event Droped to make dayDelta ' + delta);
-    };
-    /* alert on Resize */
-    $scope.alertOnResize = function(event, delta, revertFunc, jsEvent, ui, view){
-       $scope.alertMessage = ('Event Resized to make dayDelta ' + delta);
-    };
 
     $scope.overlay = $('.fc-overlay');
     $scope.alertOnMouseOver = function( event, jsEvent, view ){
