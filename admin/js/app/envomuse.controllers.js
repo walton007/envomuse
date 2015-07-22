@@ -31,16 +31,15 @@ app.controller('DashboardCtrl', ['$scope', 'DashStats', 'ComingJobs', '$statePar
   };
 }]);
 
+
 //User admin dashboard
-app.controller('UserHomeCtrl', ['$scope', 'Customers', 'CustomerManager', '$stateParams', '$window',
-  function($scope, Customers, CustomerManager, $stateParams, $window) {
+app.controller('UserHomeCtrl', ['$scope', '$stateParams', '$window',
+  function($scope, $stateParams, $window) {
 
     $scope.data = $window.myInfo;
 
     $scope.sites = $scope.data.sites;
     $scope.playlist = $scope.data.dayPlaylistArr;
-    
-    // console.log($scope.playlist);
 
 }]);
 
@@ -374,7 +373,7 @@ app.controller('StoreNewCtrl', ['$scope', 'Customers', 'Sites', 'CustomerSites',
       customerId: $scope.brand._id,
       siteName: $scope.store.sitename,
       reference: $scope.store.reference,
-      // manager: {name:$scope.store.manager},
+      manager: $scope.store.manager,
       phone: $scope.store.phone,
       address: $scope.store.address,
       // country: $scope.store.country,
@@ -421,7 +420,7 @@ app.controller('StoreEditCtrl', ['$scope', 'Sites', 'CustomerChannels', '$stateP
       siteName: $scope.store.siteName,
       reference: $scope.store.reference,
       channel:$scope.selectedChannel._id,
-      // manager: {name:$scope.store.manager},
+      manager: $scope.store.manager,
       phone: $scope.store.phone,
       address: $scope.store.address,
       province: $scope.store.province,
@@ -714,16 +713,20 @@ app.controller('JobDetailCtrl', ['$scope', 'JobById', '$stateParams',
   JobById.get({'jobId':$stateParams.jobId},
     function(res) {
       $scope.job = res;
+      console.log($scope.job);
 
       $scope.job.dateTemplates = $scope.job.dateTemplates.map(function(e){
         switch(e.periodInfo.calcType){
           case 'multipleDates':
-            /*e.periodInfo.calcType="日期";
-            e.periodInfo.dValues=e.timePeriods.multipleDatesValues.join(', ');*/
+            e.periodInfo.calcType="多日期";
+            e.periodInfo.values = e.periodInfo.multipleDatesValues;
             break;
           case 'dateRange':
-            // e.dateTemplates.periodInfo.calcType="日期范围";
-            //e.timePeriods.dValues=e.timePeriods.dateRangeValues.startDate+'-->'+e.timePeriods.dateRangeValues.endDate;
+            e.periodInfo.calcType = '日期范围';
+            e.periodInfo.values = {
+              startDate:e.periodInfo.dateRangeValues.startDate,
+              endDate:e.periodInfo.dateRangeValues.endDate
+            };
             break;
           case 'daysOfWeek':
             e.periodInfo.calcType="周";
@@ -835,15 +838,12 @@ app.controller('BoxDetailCtrl', ['$scope', 'BoxById', '$stateParams', function($
 
 }]);
 
-app.controller('ComingJobsCtrl', ['$scope', 'ComingJobs', 'ComingJobsImport', '$stateParams', 
-  function($scope, ComingJobs, ComingJobsImport, $stateParams) {  
+app.controller('ComingJobsCtrl', ['$scope', 'ComingJobs', 'ComingJobsImport', 'ComingJobsRefresh', '$stateParams', 
+  function($scope, ComingJobs, ComingJobsImport, ComingJobsRefresh, $stateParams) {  
 
   $scope.jobs = [];
 
-  ComingJobs.getList(function(res){
-    $scope.comingJobs = res;
-    console.log($scope.comingJobs);
-
+  $scope.getJobs = function(res){
     $scope.jobs = res.map(function(e){
         return {
           type:e.__t,
@@ -856,8 +856,22 @@ app.controller('ComingJobsCtrl', ['$scope', 'ComingJobs', 'ComingJobsImport', '$
       });
 
      $scope.count = $scope.jobs.length;
+  };
+
+  ComingJobs.getList(function(res){
+    $scope.comingJobs = res;
+    // console.log($scope.comingJobs);
+
+    $scope.getJobs(res);
 
   });
+
+  $scope.refresh = function(){
+    ComingJobsRefresh.refresh({},function(res){
+      $scope.getJobs(res);
+    });
+  };
+
 
   $scope.doImport = function(id){
     $scope.importInProgress = true;

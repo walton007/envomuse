@@ -65,7 +65,7 @@ angular.module('app')
                                               'com.2fdevs.videogular.plugins.overlayplay',
                                               'com.2fdevs.videogular.plugins.poster',
                                               'com.2fdevs.videogular.plugins.buffering',
-                                              'js/app/music/ctrl.js', 
+                                              'js/app/music/useradmin_ctrl.js', 
                                               'js/app/music/theme.css']
                                              );
                             }

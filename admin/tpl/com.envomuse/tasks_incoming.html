@@ -11,12 +11,13 @@
           <small class="text-muted">所有待处理任务均显示在此，可在此导入这些任务</small>
         </div>
         <div class="col-sm-6 text-right hidden-xs">
-          
+          <div class="btn-group dropdown" dropdown>
+            <button class="btn m-b-xs btn-sm btn-danger btn-addon" ng-click="refresh();"><i class="fa fa-refresh"></i>手动刷新</button>
+          </div>
         </div>
       </div>
     </div>
     <!-- / main header -->
-
 
 <div class="col">
     <div class="wrapper-md">
@@ -53,8 +54,8 @@
                   {{r.importStatus}}
                   </td>
                   <td>
-                    <button class="btn btn-primary" ng-show="{{r.importStatus==='待导入'}}" ng-click="doImport(r._id)" ng-hide="importInProgress">导入</button>
-                    <button class="btn btn-success" ng-show="{{r.importStatus==='导入完成'}}">查看</button>
+                    <button class="btn btn-primary" ng-show="{{r.importStatus==='待导入'}}" ng-click="doImport(r._id)">导入</button>
+                    <!-- <button class="btn btn-success" ng-show="{{r.importStatus=='导入完成'}}">查看</button> -->
                   </td>
                 </tr>
               </tbody>

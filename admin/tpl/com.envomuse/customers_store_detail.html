@@ -9,7 +9,7 @@
             {{store.siteName | uppercase}}店 <a ui-sref="customers.store.edit({brandId:brand._id,storeId:store._id})" class="m-r" tooltip="修改"><i class="fa fa-edit text-muted m-r-sm"></i></a>
           </div>
           <small class="text-muted">{{store.reference}}</small>
-          <small class="text-muted">经理：{{store.manager.name}}</small>
+          <small class="text-muted">经理：{{store.manager}}</small>
           <small class="text-muted">店铺地址：{{store.address}}</small>
           <small class="text-muted">店铺电话：{{store.phone}}</small>
           <small class="text-muted">创建时间：{{store.created | fromNow}}</small>

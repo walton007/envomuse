@@ -10,7 +10,7 @@ angular.module('app')
       isIE && angular.element($window.document.body).addClass('ie');
       isSmartDevice( $window ) && angular.element($window.document.body).addClass('smart');
 
-      console.log(window.user);
+      // console.log(window.user);
 
       if (!window.user._id) {
         return $location.url('/access/signin');

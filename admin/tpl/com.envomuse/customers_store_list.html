@@ -2,7 +2,7 @@
   <div class="col">
 
     <div class="wrapper-md" ng-show="datasource.length==0">
-      暂时没有门店，马上<button class="btn m-b-xs btn-sm btn-info m-l" ng-click="showItem('addStore')">添加门店</button>
+      暂时没有门店，马上<button class="btn m-b-xs btn-sm btn-info m-l" ui-sref="customers.store.add({brandId:brand._id})">添加门店</button>
     </div>      
     <div class="bg-light b-r bg-auto no-padder" style="height:500px" ng-show="bigTotalItems>0">
       <div class="vbox">

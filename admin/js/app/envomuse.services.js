@@ -254,7 +254,7 @@ app.factory('ComingJobs', ['$resource', function($resource) {
   }
 ]);
 
-/*app.factory('ComingJobsRefresh', ['$resource', function($resource) {
+app.factory('ComingJobsRefresh', ['$resource', function($resource) {
     return $resource(
       '/api/comingJobs/forceRefresh', 
     {
@@ -264,7 +264,7 @@ app.factory('ComingJobs', ['$resource', function($resource) {
       'refresh':{method:'POST',isArray:true}
     });
   }
-]);*/
+]);
 
 app.factory('ComingJobsImport', ['$resource', function($resource) {
     return $resource(

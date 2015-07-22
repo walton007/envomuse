@@ -50,6 +50,19 @@
                       </div>
                     </div>
                   </div>
+                  <div class="m-t" ng-show="row.periodInfo.calcType==='日期范围'">
+                    <div class="">
+                      <i class="m-r fa fa-fw fa-calendar-o" tooltip="结束日期"></i><span class="label label-info">{{row.periodInfo.values.startDate | date:'yyyy-MM-dd'}}</span>
+                    </div>
+                    <div>
+                      <i class="m-r fa fa-fw fa-calendar" tooltip="结束日期"></i><span class="label label-info">{{row.periodInfo.values.endDate | date:'yyyy-MM-dd'}}</span>
+                    </div>
+                  </div>
+                  <div class="m-t" ng-show="row.periodInfo.calcType==='多日期'">
+                    <span ng-repeat="r in row.periodInfo.values">
+                      <i class="m-r fa fa-fw fa-calendar-o" tooltip="日期"></i><span class="label label-info">{{r | date:'yyyy-MM-dd'}}</span>
+                    </span>
+                  </div>
                 </div>
               </div>
               <timeline></timeline>
