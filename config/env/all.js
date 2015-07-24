@@ -46,7 +46,7 @@ module.exports = {
   sessionName: 'connect.sid',
 
   enableZmq: false,
-  requireAuth: true,
+  requireAuth: false,
   pubAddr: "tcp://127.0.0.1:9999",
   pushCmdAddr: "tcp://127.0.0.1:9998",
   musicAssert: "musicAssert"

@@ -12,7 +12,7 @@ angular.module('app')
 
       // console.log(window.user);
 
-      if (!window.user._id) {
+      if (window.requireAuth && !window.user._id) {
         return $location.url('/access/signin');
       }
       

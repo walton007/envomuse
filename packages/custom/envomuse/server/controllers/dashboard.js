@@ -216,11 +216,14 @@ function getUserSpecificInfo(req) {
   return deferred.promise;
 }
 
-exports.render = function(req, res) {
+exports.render = function(req, res, requireAuth) {
   console.log('====== render');
 
   function isAdmin() {
-    return req.user && req.user.roles.indexOf('admin') !== -1;
+    if (requireAuth) {
+      return req.user && req.user.roles.indexOf('admin') !== -1;
+    }
+    return true;
   }
 
   function isCustomer() {
@@ -259,7 +262,8 @@ exports.render = function(req, res) {
       roles: req.user.roles
     } : {},
     isAdmin: isAdmin() ? 'true' : 'false',
-    myInfo: {}
+    myInfo: {},
+    requireAuth: requireAuth
   });
   return;
 };

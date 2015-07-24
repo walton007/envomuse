@@ -241,28 +241,14 @@ module.exports = function(Envomuse, app, auth, database) {
 
   var adminRouter = express.Router();
   app.use('/admin', adminRouter);
-  //auth.requiresLogin,
-  if (config.requireAuth) {
-    adminRouter.use(
-    // auth.requiresLogin, 
-    function(req, res, next) {
-      if (req.url === '/' || req.url === '/index.html') {
-        return dashboard.render(req, res);
-      }
-      next();
-    }, 
-    express.static(config.root + '/admin'));
-  } else {
-    adminRouter.use(
-    function(req, res, next) {
-      if (req.url === '/' || req.url === '/index.html') {
-        return dashboard.render(req, res);
-      }
-      next();
-    }, 
-    express.static(config.root + '/admin'));
-  }
-  
+
+  adminRouter.use(function(req, res, next) {
+    if (req.url === '/' || req.url === '/index.html') {
+      return dashboard.render(req, res, config.requireAuth);
+    }
+    next();
+  }, 
+  express.static(config.root + '/admin'));
 
   //integrate admin module
   // app.use('/admin', express.static(config.root + '/admin'));  //admin
