@@ -13,6 +13,8 @@ module.exports = {
 
     // Paths to key and cert as string
     ssl: {
+      // key: path.normalize(__dirname + '/../../keys/privatekey.pem'),
+      // cert: path.normalize(__dirname + '/../../keys/.pem')
       key: '',
       cert: ''
     }
@@ -46,8 +48,10 @@ module.exports = {
   sessionName: 'connect.sid',
 
   enableZmq: false,
-  requireAuth: false,
+  requireAuth: true,
   pubAddr: "tcp://127.0.0.1:9999",
   pushCmdAddr: "tcp://127.0.0.1:9998",
-  musicAssert: "musicAssert"
+  musicAssert: "musicAssert",
+  adminName: "walton008@qq.com",
+  adminPassword: "Initial0"
 };

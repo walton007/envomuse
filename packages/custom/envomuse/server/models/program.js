@@ -40,7 +40,7 @@ var ProgramSchema = new Schema({
       },
       name: String,
       duration: Number,
-      exactPlayTime: String,
+      exactPlayTime: Number,
       fromBoxs: [String],
       // url:String,
     }],
