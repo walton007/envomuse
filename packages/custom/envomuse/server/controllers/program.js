@@ -5,6 +5,8 @@
  */
 var mongoose = require('mongoose'),
   Program = mongoose.model('Program'),
+  Site = mongoose.model('Site'),
+  ExportRequest = mongoose.model('ExportRequest'),
   Q = require('q'),
   _ = require('lodash');
 
@@ -20,42 +22,6 @@ exports.program = function(req, res, next, id) {
     next();
   });
 };
-
-// exports.getProgramCountFromJobs = function(jobs) {
-//   var deferred = Q.defer();
-//   Program.aggregate([{
-//     $match: {
-//       job: {$in: _.map(jobs, '_id')}
-//     }
-//   }, {
-//     $group: {
-//       _id: '$job',
-//       count: {$sum: 1}
-//     }
-//   }])
-//   .exec(function(err, result) {
-//     console.log('result:', result);
-//     if (err) {
-//       deferred.reject(err);
-//       return;
-//     };
-//     var jobProgramMap = {};
-//     _.each(result, function(obj) {
-//       jobProgramMap[obj._id] = obj.count;
-//     })
-
-//     var retJobs = _.map(jobs, function(job) {
-//         var ret = job.toJSON();
-//         ret.programCount = jobProgramMap[job._id] ? jobProgramMap[job._id]: 0;
-//         return ret;
-//       });
-
-//     deferred.resolve(retJobs);
-//   });
-
-//   return deferred.promise;
-// };
-
 
 /**
  * Show an program
@@ -80,4 +46,74 @@ exports.all = function(req, res) {
        
       res.json(programs);
     });
+};
+
+
+/**
+ * Generate Export Request from this program
+ */
+exports.generateExportRequest = function(req, res) {
+  var channelName, customerName, sitesInfo = [];
+  var program = req.program;
+
+  console.log('program.channel:', typeof program.channel, program.channel.str);
+
+  Site.find({channel: program.channel})
+  .select('_id siteName deviceId channelName customerName')
+  .sort('-created').exec(function(err, sites) {
+    if (err) {
+      return res.status(400).json({
+        error: 'Cannot list the sites in generateExportRequest'
+      });
+    }
+
+    if (sites.length === 0) {
+      return res.status(400).json({
+        error: 'No sites bind with current program'
+      });
+    }
+
+    // console.log('sites:', sites);
+    // return res.status(200).json({
+    //     error: 'bingo'
+    //   });
+
+    _.each(sites, function (site) {
+      sitesInfo.push({
+        siteName: site.siteName,
+        deviceId: site.deviceId
+      });
+    });
+    channelName = sites[0].channelName;
+    customerName = sites[0].customerName;
+
+    var exportRequestInfo = {
+      program: program,
+      programName: program.name,
+      channel: program.channel,
+      channelName: channelName,
+      customer: program.customer,
+      customerName: customerName,
+      sitesArr: sitesInfo,
+
+      startDate: program.startDate,
+      endDate: program.endDate,
+
+      dayPlaylistArr: program.dayPlaylistArr,
+      comment: req.body.comment
+    };
+
+    var newExportRequest = new ExportRequest(exportRequestInfo);
+    newExportRequest.save(
+      function(err, retExportRequest) {
+        if (err) {
+          console.warn('create ExportRequest err:', err);
+          return res.status(400).json({
+            error: 'Cannot save the ExportRequest'
+          });
+        }
+        res.json(retExportRequest);
+      });
+
+  });
 };

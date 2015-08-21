@@ -14,6 +14,7 @@ var express = require('express'),
    users = require('../controllers/user'),
    terminals = require('../controllers/terminal'),
    dashboard = require('../controllers/dashboard'),
+   exportRequests = require('../controllers/exportRequest'),
    comingJobs = (config.enableZmq) ? require('../controllers/comingJobZmq') : require('../controllers/comingJob');
 
 
@@ -96,7 +97,18 @@ module.exports = function(Envomuse, app, auth, database) {
   // apiRouter.get('/programs', programs.statistic, programs.all);
   apiRouter.route('/programs/:programId')
   .get(programs.show);
-  apiRouter.param('programId', programs.program); 
+  
+  apiRouter.route('/programs/:programId/generateExportRequest')
+  .post(programs.generateExportRequest);
+
+  apiRouter.param('programId', programs.program);
+
+  //ExportRequest
+  apiRouter.route('/exportRequests/')
+  .get(exportRequests.all);
+  apiRouter.route('/exportRequests/:exportRequestId')
+  .get(exportRequests.show);
+  apiRouter.param('exportRequestId', exportRequests.exportRequest);
 
   //tracks
   apiRouter.route('/tracks')
@@ -177,7 +189,60 @@ module.exports = function(Envomuse, app, auth, database) {
 
   apiRouter.param('siteId', sites.site);
 
-  //All Terminal Player related interface will be moved to another dedicated server 
+  //Users Management
+  apiRouter.route('/users/')
+  .get(users.all);
+  
+  ////////////////////////////////////////////////////////////////////////////////////////
+  //API For IT-Tool: IT-Tool is used for sync track and expose musicPlayer to customer
+  var itapiRouter = express.Router();
+  app.use('/itapi'
+    , function (req, res, next) {
+      if (!config.requireAuth) {
+        return next();
+      }
+
+      console.log('req.url:', req.url);
+      console.log('_.endsWith:', _.endsWith);
+
+      if (_.endsWith(req.url, '/login')) {
+        console.log('1');
+        return next();
+      }
+
+      console.log('2');
+
+      return auth.requiresItAdminRole(req, res, next);
+    }
+    ,itapiRouter);
+
+  itapiRouter.route('/login')
+  .post(function(req, res, next) {
+    res.json({ok: true});
+  });
+  // itapiRouter's exportRequests
+  itapiRouter.route('/exportRequests/')
+  .get(exportRequests.all);
+  itapiRouter.route('/exportRequests/:exportRequestId')
+  .get(exportRequests.show);
+  itapiRouter.param('exportRequestId', exportRequests.exportRequest);
+  
+  // itapiRouter's track information
+  itapiRouter.route('/tracks/:trackId/hqfile')
+  .get(function(req, res, next) {
+    var hqfileUrl = req.track.rawfilepath.substr(config.root.length);
+    console.log('hqfileUrl:', hqfileUrl);
+    res.redirect(hqfileUrl);
+  });
+  itapiRouter.route('/tracks/:trackId/meta')
+  .get(function(req, res, next) {
+    var trackInfo = _.pick(req.track.toJSON(), '_id', 'name', 'duration', 'hash');
+    res.json(trackInfo);
+  });
+  itapiRouter.param('trackId', tracks.track); 
+
+  ////////////////////////////////////////////////////////////////////////////////////////
+  //API Terminal Player related interface will be moved to another dedicated server 
   var terminalRouter = express.Router();
   app.use('/terminal', terminalRouter);
   //ConnectionLogs For Music Player
@@ -235,9 +300,7 @@ module.exports = function(Envomuse, app, auth, database) {
     res.json({ok: true});
   });
 
-  //Users Management
-  apiRouter.route('/users/')
-  .get(users.all);
+  
 
   var adminRouter = express.Router();
   app.use('/admin', adminRouter);

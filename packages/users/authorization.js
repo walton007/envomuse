@@ -23,6 +23,13 @@ exports.requiresAdmin = function(req, res, next) {
   next();
 };
 
+exports.requiresItAdminRole = function(req, res, next) {
+  if (!req.isAuthenticated() || !req.user.hasRole('itadmin')) {
+    return res.status(401).send('User is not authorized');
+  }
+  next();
+};
+
 /**
  * Generic validates if the first parameter is a mongo ObjectId
  */

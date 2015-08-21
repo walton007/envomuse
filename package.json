@@ -39,7 +39,7 @@
     "forever": "0.11.1",
     "gridfs-stream": "0.5.3",
     "jszip": "^2.5.0",
-    "lodash": "2.4.1",
+    "lodash": "3.10.1",
     "meanio": "0.7.4",
     "moment": "^2.10.2",
     "moment-range": "^1.0.9",
