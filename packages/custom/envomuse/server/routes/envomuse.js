@@ -19,7 +19,7 @@ var express = require('express'),
 
 
 // The Package is past automatically as first parameter
-module.exports = function(Envomuse, app, auth, database) {
+module.exports = function(Envomuse, app, auth, database, passport) {
   //Set musicAssert
   
   app.use('/musicAssert', express.static(config.root + '/'+ config.musicAssert));
@@ -168,8 +168,8 @@ module.exports = function(Envomuse, app, auth, database) {
   .get(sites.show)
   .put(sites.update)
   .delete(sites.destroy);
-  apiRouter.route('/sites/:siteId/bindLicense')
-  .post(sites.bindLicense);
+  // apiRouter.route('/sites/:siteId/bindLicense')
+  // .post(sites.bindLicense);
   
 
   apiRouter.route('/sites/:siteId/licenseActivate')
@@ -202,24 +202,10 @@ module.exports = function(Envomuse, app, auth, database) {
         return next();
       }
 
-      console.log('req.url:', req.url);
-      console.log('_.endsWith:', _.endsWith);
-
-      if (_.endsWith(req.url, '/login')) {
-        console.log('1');
-        return next();
-      }
-
-      console.log('2');
-
       return auth.requiresItAdminRole(req, res, next);
     }
     ,itapiRouter);
 
-  itapiRouter.route('/login')
-  .post(function(req, res, next) {
-    res.json({ok: true});
-  });
   // itapiRouter's exportRequests
   itapiRouter.route('/exportRequests/')
   .get(exportRequests.all);
@@ -244,15 +230,25 @@ module.exports = function(Envomuse, app, auth, database) {
   ////////////////////////////////////////////////////////////////////////////////////////
   //API Terminal Player related interface will be moved to another dedicated server 
   var terminalRouter = express.Router();
-  app.use('/terminal', terminalRouter);
+  app.use('/terminal', terminals.checkValidConnection, terminalRouter);
   //ConnectionLogs For Music Player
   // ConnectionLog
-  terminalRouter.route('/login')
-  .post(function(req, res, next) {
-    //param: {uuid: 'abc', deviceInfo: {mac:'ac-de-fc-sd'}}
-    //update site.license info
-    res.json({ok: true});
-  });
+  // terminalRouter.route('/login')
+  // // .post(function(req, res, next) {
+  // //   //param: {uuid: 'abc', deviceInfo: {mac:'ac-de-fc-sd'}}
+  // //   //update site.license info
+  // //   res.json({ok: true});
+  // // });
+
+  // .post(passport.authenticate('envomusePlayerStrategy', {
+  //     failureFlash: true
+  //   }), function(req, res) {
+  //     console.log('req.user:', req.user);
+  //     res.send({
+  //       user: req.user
+  //     });
+  //   });
+
   terminalRouter.route('/config')
   .get(function(req, res, next) {
     //return site.playerSetting
@@ -299,8 +295,6 @@ module.exports = function(Envomuse, app, auth, database) {
     // this will update site.lastHeartbeat
     res.json({ok: true});
   });
-
-  
 
   var adminRouter = express.Router();
   app.use('/admin', adminRouter);

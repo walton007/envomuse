@@ -26,18 +26,18 @@ exports.site = function(req, res, next, id) {
 /**
  * Create an site
  */
-exports.create = function(req, res) {
-  var site = new Site(req.body);
-  site.save(function(err, retSite) {
-    if (err) {
-      console.warn('create err:', err);
-      return res.status(400).json({
-        error: 'Cannot save the site'
-      });
-    }
-    res.json(retSite);
-  });
-};
+// exports.create = function(req, res) {
+//   var site = new Site(req.body);
+//   site.save(function(err, retSite) {
+//     if (err) {
+//       console.warn('create err:', err);
+//       return res.status(400).json({
+//         error: 'Cannot save the site'
+//       });
+//     }
+//     res.json(retSite);
+//   });
+// };
 
 /**
  * Update an site

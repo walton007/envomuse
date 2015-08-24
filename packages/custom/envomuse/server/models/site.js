@@ -50,9 +50,7 @@ var SiteSchema = commonUtil.BaseSchema.extend({
 
   license: {
     uuid: String,
-    deviceInfo: {
-      mac: String
-    },
+    deviceMac: String,
     sshkey: String
   },
 
@@ -66,11 +64,6 @@ var SiteSchema = commonUtil.BaseSchema.extend({
     type: Boolean,
     required: true,
     default: false
-  },
-
-  playerSetting: {
-    startSyncTm: String,
-    retryCnt: Number
   },
 
   playerStatus: {
@@ -87,6 +80,12 @@ var SiteSchema = commonUtil.BaseSchema.extend({
 SiteSchema.statics.load = function(id, cb) {
   this.findOne({
     _id: id
+  }).exec(cb);
+};
+
+SiteSchema.statics.loadByUuid = function(uuid, cb) {
+  this.findOne({
+    "license.uuid": uuid
   }).exec(cb);
 };
 

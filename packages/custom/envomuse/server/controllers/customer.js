@@ -8,7 +8,6 @@ var mongoose = require('mongoose'),
   User = mongoose.model('User'),
   Site = mongoose.model('Site'),
   Channel = mongoose.model('Channel'),
-  SiteController = require('./site'),
   ChannelController = require('./channel'),
   UserController = require('./user'),
   util = require('util'),
@@ -186,7 +185,7 @@ exports.sitesPaginate = function(req, res) {
   Site.paginate(filterCond,
     pageNumber, pageSize, callback, {
       sortBy: '-created',
-      columns: '_id siteName reference created playerStatus deliveryState channel channelName channelType'
+      columns: '_id siteName reference created deviceId playerStatus deliveryState channel channelName channelType'
     });
 };
 
@@ -201,12 +200,28 @@ exports.addSite = function(req, res) {
         });
       }
 
-      req.body.channel = channel;
-      req.body.channelName = channel.name;
-      req.body.channelType = channel.type;
-      req.body.deviceId = randomstring.generate(10);
+      var siteObj = _.extend(req.body, {
+        channel: channel,
+        channelName: channel.name,
+        channelType: channel.type,
+        deviceId: randomstring.generate(10),
+        license: {
+          uuid: randomstring.generate(10)
+        },
+      });
       
-      SiteController.create(req, res);
+      // SiteController.create(req, res);
+
+      var site = new Site(siteObj);
+      site.save(function(err, retSite) {
+        if (err) {
+          console.warn('create err:', err);
+          return res.status(400).json({
+            error: 'Cannot save the site'
+          });
+        }
+        res.json(retSite);
+      });
     });
 };
 
