@@ -341,6 +341,18 @@ app.factory('ProgramBindSite', ['$resource', function($resource) {
   }
 ]);
 
+app.factory('ExportProgram', ['$resource', function($resource) {
+    return $resource(
+      '/api/programs/:programId/generateExportRequest', 
+    {
+      programId:'@_id'
+    },
+    {
+      'doExport':{method:'POST'}
+    });
+  }
+]);
+
 //users
 
 ///customers/:customerId/bindUser
