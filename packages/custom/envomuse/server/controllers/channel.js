@@ -134,7 +134,7 @@ exports.basicChannelInfo = function(req, res, next) {
 
 exports.getChannelProgramInfo = function(req, res, next) {
   Program.find({channel: req.channel._id})
-  .select('_id name job jobName startDate endDate createDate')
+  .select('_id name job jobName startDate endDate exported createDate')
   .exec(function(err, programs) {
     if (err) {
       res.status(400).json({

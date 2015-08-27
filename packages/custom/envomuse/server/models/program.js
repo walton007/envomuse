@@ -46,6 +46,8 @@ var ProgramSchema = new Schema({
     }],
   }],
 
+  exported: Boolean,
+
   createDate: {
     type: Date,
     default: Date.now,

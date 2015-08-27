@@ -112,6 +112,10 @@ exports.generateExportRequest = function(req, res) {
             error: 'Cannot save the ExportRequest'
           });
         }
+
+        program.exported = true;
+        program.save();
+
         res.json(retExportRequest);
       });
 
