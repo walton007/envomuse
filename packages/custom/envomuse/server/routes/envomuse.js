@@ -225,7 +225,11 @@ module.exports = function(Envomuse, app, auth, database, passport) {
     var trackInfo = _.pick(req.track.toJSON(), '_id', 'name', 'duration', 'hash');
     res.json(trackInfo);
   });
-  itapiRouter.param('trackId', tracks.track); 
+  itapiRouter.param('trackId', tracks.track);
+
+  itapiRouter.route('/channels/:channelId/sites')
+  .get(sites.getChannelSitesInfo);
+  itapiRouter.param('channelId', channels.channel);
 
   ////////////////////////////////////////////////////////////////////////////////////////
   //API Terminal Player related interface will be moved to another dedicated server 

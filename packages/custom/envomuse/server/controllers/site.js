@@ -142,6 +142,24 @@ exports.basicInfos = function(req, res, next) {
   });
 };
 
+exports.getChannelSitesInfo = function (req, res, next) {
+  var channel = req.channel;
+  Site.find({disable: false, channel: channel})
+  .select('_id siteName reference deviceId license.uuid')
+  .sort('-created').exec(function(err, sites) {
+    if (err) {
+      return res.status(400).json({
+        error: 'Cannot list the sites'
+      });
+    }
+    var retInfo = {
+      channelId: channel._id,
+      channelName: channel.name,
+      sites: sites
+    };
+    res.json(retInfo);
+  });
+}
 
 /**
  * bind license for an site
