@@ -26,7 +26,7 @@ var mongoose = require('mongoose'),
 	Task = mongoose.model('Task');
 
 var zipManager = require('./zipmanager');
-var DJUploadDir = path.resolve(__dirname, '../uploadAttachment/dj');
+var DJUploadDir = config.DJUploadDir ? config.DJUploadDir :path.resolve(__dirname, '../uploadAttachment/dj');
 var musicAssertDir = path.resolve(__dirname, '../'+ config.musicAssert);
 console.log('comingJob model path.normalize(p) :', DJUploadDir);
 

@@ -53,5 +53,6 @@ module.exports = {
   pushCmdAddr: "tcp://127.0.0.1:9998",
   musicAssert: "musicAssert",
   adminName: "walton008@qq.com",
-  adminPassword: "Initial0"
+  adminPassword: "Initial0",
+  DJUploadDir: ''
 };

@@ -16,6 +16,7 @@ var ExportRequestSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Channel'
   },
+  channelName: String,
   customer: {
     type: Schema.ObjectId,
     ref: 'Customer'
