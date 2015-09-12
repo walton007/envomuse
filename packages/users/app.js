@@ -64,5 +64,46 @@ MeanUser.register(function(app, database, passport) {
     });
     */
 
+  //Add admin user
+  var config = mean.loadConfig();
+
+  var mongoose = require('mongoose'),
+  User = mongoose.model('User');
+
+  // run with paramater
+  var username = config.adminName,
+  password = config.adminPassword ;
+
+  User.findOne({username: username}, function (err, theOne) {
+    if (err) {
+      console.log('findOne fail');
+      return;
+    }
+
+    if (theOne) {
+      console.log('Already Exist. Good!');
+      return;
+    }
+
+    // Create one
+    var user = new User({
+      name: username,
+      username: username,
+      password: password,
+      email: username,
+      provider: 'local',
+      roles: ['admin']
+    });
+
+    console.log('user:', user);
+    user.save(function(err, retUser) {
+      console.log('finish save user');
+      if (err) {
+        console.log('error code');
+        return;
+      };
+    });
+  });
+
   return MeanUser;
 });
