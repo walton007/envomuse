@@ -1,0 +1,15 @@
+web:
+  build: .
+  links:
+    - db
+  ports:
+    - "80:3000"
+  environment:
+    - USER:
+db:
+  image: "tutum/mongodb"
+  ports:
+    - "27017"
+    - "28017"
+  environment:
+    - AUTH=no
