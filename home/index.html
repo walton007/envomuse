@@ -26,10 +26,10 @@
         </button>
 
         <!-- brand -->
-        <a href="#/" class="navbar-brand m-r-lg">
-          <i class="h2 font-bold fa fa-cube"></i>
-          <img src="img/logo.png" alt="." class="hide">
-          <span class="h3 font-bold hidden-folded m-l-xs">Envomuse</span>
+        <a href="#home" class="navbar-brand m-r-lg" data-ride="scroll">
+          <!-- <i class="h2 font-bold fa fa-cube"></i> -->
+          <img src="img/logo.png" alt="." class="logo">
+          <!-- <span class="h3 font-bold hidden-folded m-l-xs">Envomuse</span> -->
         </a>
         <!-- / brand -->
       </div>
@@ -37,15 +37,16 @@
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav font-bold">
           <li><a href="#product" data-ride="scroll">产品</a></li>
-          <li><a href="#feature" data-ride="scroll">特色</a></li>
-          <li><a href="#demo" data-ride="scroll">试听</a></li>
+          <li><a href="#price" data-ride="scroll">定价</a></li>
+          <li><a href="#demo" data-ride="scroll">体验</a></li>
+          <li><a href="#report" data-ride="scroll">报道</a></li>
           <li><a href="#contact" data-ride="scroll">联系</a></li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
           <li>
             <div class="m-t-sm">
-              <a href="../admin/#/access/signin" class="btn btn-link btn-sm">登陆</a>
+              <a href="../admin/#/access/signin" class="btn btn-default btn-sm m-l" role="button">登陆</a>
             </div>
           </li>
         </ul>     
@@ -55,7 +56,7 @@
   <!-- / header -->
 
   <div id="content">
-    <div id="product" class="bg-white clearfix">
+    <div id="home" class="bg-img clearfix">
       <div class="container m-t-xxl m-b-xxl padder-v">
         <div class="carousel auto slide clearfix" id="b-slide" data-interval="3000">
         <ol class="carousel-indicators">
@@ -63,25 +64,25 @@
           <li data-target="#b-slide" data-slide-to="1" class="active"></li>
           <li data-target="#b-slide" data-slide-to="2" class=""></li>
         </ol>
-        <div class="carousel-inner text-center m-t-xl m-b-xl">
+        <div class="carousel-inner text-center m-t-xxl m-b-xxl">
           <div class="item">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-3 m-b-xl">
-                <h1 class="font-bold l-h-1x m-t-xxl text-black padder-v">用音乐的无限魅力<br/>为您的业绩助力</h1>
+                <h1 class="font-bold l-h-1x m-t-xxl text-white padder-v">用音乐的无限魅力<br/>为您的业绩助力</h1>
               </div>
             </div>
           </div>
           <div class="item active">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-3 m-b-xl">
-                <h1 class="font-bold l-h-1x m-t-xxl text-black padder-v">最完美的店内环境音乐<br/>刺激客户消费</h1>
+                <h1 class="font-bold l-h-1x m-t-xxl text-white padder-v">完美环境音乐<br/>提升用户体验</h1>
               </div>
             </div>
           </div>
           <div class="item">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-3 m-b-xl">
-                <h1 class="font-bold l-h-1x m-t-xxl text-black padder-v">专业的市场和DJ团队<br/>为您服务</h1>
+                <h1 class="font-bold l-h-1x m-t-xxl text-white padder-v">专业市场-DJ团队<br/>量身定制</h1>
               </div>
             </div>
           </div>
@@ -93,146 +94,277 @@
           <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
         </a>
         </div>
-        <p class="text-center m-b-xxl wrapper">
-          <a href="#feature" data-ride="scroll" class="btn b-2x btn-lg b-black btn-default btn-rounded text-lg font-bold m-t-xxl m-b-l animated fadeInUpBig">了解特色</a>
+        <p>
+        <div class="m-t-xl m-b text-center wrapper">
+          <a href="#contact" data-ride="scroll" class="btn btn-lg btn-white b-2x btn-rounded bg-empty m-sm">我要定制</a>
+        </div>
         </p>
       </div>
     </div>
-  <div id="feature" class="bg-light">
-    <div class="container">
-      <div class="m-t-l m-b-l text-center wrapper">
-        <h2 class="text-black font-bold">Envomuse环境音乐解决方案特色</h2>
-        <p class="text-muted h4 m-b-xl">最专业的室内环境音乐解决方案供应商</p>
+    <div id="product" class="bg-white">
+      <div class="m-t-l m-b-xl bg-light text-center text-white wrapper">
+        <h2 class="font-bold m-t-xl m-b-xl">Envomuse室内环境音乐解决方案</h2>
       </div>
-      <div class="row m-t-l m-b-l text-center">
-        <div class="col-sm-4" data-ride="animated" data-animation="fadeInLeft" data-delay="300">
-          <p class="h3 m-b-md inline b b-dark rounded wrapper-md">
-            <i class="fa w-1x fa-map-marker"></i>
-          </p>
-          <div class="m-b-l">
-            <h4 class="m-t-none">精准品牌定位</h4>
-            <p class="text-muted m-t-lg">精确分析品牌形象定位，主要消费群体及门店商圈人群消费习性</p>
-          </div>
-        </div>
-        <div class="col-sm-4" data-ride="animated" data-animation="fadeInLeft" data-delay="600">
-          <p class="h3 m-b-md inline b b-dark rounded wrapper-md">
-            <i class="fa w-1x fa-music"></i>
-          </p>
-          <div class="m-b-l">
-            <h4 class="m-t-none">优秀DJ团队</h4>
-            <p class="text-muted m-t-lg">由国际化的专业DJ和音乐制作团队，提供环境音乐个性化定制，刺激消费</p>
-          </div>
-        </div>
-        <div class="col-sm-4" data-ride="animated" data-animation="fadeInLeft" data-delay="900">
-          <p class="h3 m-b-md inline b b-dark rounded wrapper-md">
-            <i class="fa w-1x fa-calendar-o"></i>
-          </p>
-          <div class="m-b-l">
-            <h4 class="m-t-none">播排日历</h4>
-            <p class="text-muted m-t-lg">商业世界，瞬息万变。Envomuse提供强大的音乐播放日历编排，确保背景音乐按“天时”播放</p>
-          </div>
-        </div>
-        <div class="col-sm-4" data-ride="animated" data-animation="fadeInLeft" data-delay="1200">
-          <p class="h3 m-b-md inline b b-dark rounded wrapper-md">
-            <i class="fa w-1x fa-clock-o"></i>
-          </p>
-          <div class="m-b-l">
-            <h4 class="m-t-none">灵活插播</h4>
-            <p class="text-muted m-t-lg">根据需要，随时插播语音提醒，创造最温馨购物环境</p>
-          </div>
-        </div>
-        <div class="col-sm-4" data-ride="animated" data-animation="fadeInLeft" data-delay="1500">
-          <p class="h3 m-b-md inline b b-dark rounded wrapper-md">
-            <i class="fa w-1x fa-laptop"></i>
-          </p>
-          <div class="m-b-l">
-            <h4 class="m-t-none">强大管理后台</h4>
-            <p class="text-muted m-t-lg">提供强大的管理后台，实时跟踪门店音乐播放状态</p>
-          </div>
-        </div>
-        <div class="col-sm-4" data-ride="animated" data-animation="fadeInLeft" data-delay="1800">
-          <p class="h3 m-b-md inline b b-dark rounded wrapper-md">
-            <i class="fa w-1x fa-cog"></i>
-          </p>
-          <div class="m-b-l">
-            <h4 class="m-t-none">即插即用</h4>
-            <p class="text-muted m-t-lg">从此告别复杂繁琐的配置</p>
-          </div>
-        </div>
-      </div>
-      <div class="m-t-l m-b-l text-center wrapper">
-        <p class="m-t-xl"><a href="#demo" data-ride="scroll" class="btn btn-lg btn-white b-2x b-dark btn-rounded bg-empty m-sm">音乐试听</a></p>
-      </div>
-    </div>
-  </div>
-  <div id="demo" class="bg-white">
-    <div class="container">
-      <div class="m-t-xxl m-b-xl text-center wrapper">
-        <h2 class="text-black font-bold">Envomuse室内环境音乐试听</h2>
-      </div>
-      <div class="row m-t-xl m-b-xl text-center">
-        <div class="col-sm-4">
-          <p class="h3 m-b-xl inline b b-dark rounded wrapper-lg">
-            <i class="fa w-1x fa-google"></i>
-          </p>
-          <div class="m-b-xl">
-            <h4 class="m-t-none">时尚快销</h4>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <p class="h3 m-b-xl inline b b-dark rounded wrapper-lg">
-            <i class="fa w-1x fa-gears"></i>
-          </p>
-          <div class="m-b-xl">
-            <h4 class="m-t-none">奢侈品</h4>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <p class="h3 m-b-xl inline b b-dark rounded wrapper-lg">
-            <i class="fa w-1x fa-clock-o"></i>
-          </p>
-          <div class="m-b-xl">
-            <h4 class="m-t-none">汽车</h4>
-          </div>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-  <div id="contact" class="bg-info" >
-    <div class="container">
-      <div class="row m-t-xl m-b-xl">
-        <div class="col-sm-6 text-white text-center">
-          <h4 class="m-b">需要完美契合你的品牌和店铺定位的环境音乐？</h4>
-        </div>
-        <div class="col-sm-6 text-center">
-          <a href="#" class="btn btn-lg btn-default btn-rounded">马上联系我们</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- footer -->
-  <footer id="footer">
-    <div class="bg-light dk">
       <div class="container">
-        <div class="row padder-v m-t">
-          <div class="col-xs-3">
-            <p class="text-sm">上海市徐汇区肇嘉浜路 <br>
-              +86 （0）21 3858 8888
-             </p>
+          <div class="row m-t-lg m-b-lg" data-ride="animated" data-animation="fadeInLeft" data-delay="300">
+            <div class="col-xs-6 text-center">
+              <img src="./img/Goal@2x.png" class="feature-img">
+            </div>
+            <div class="col-xs-6">
+              <h4 class="m-t-xl text-yellow-header">精准品牌定位</h4>
+              <p class="text-yellow-body m-t-lg">听觉 嗅觉</br>全方位新视点</br>精准品牌定位</br>提升品牌价值</p>
+            </div>
           </div>
-          <div class="col-xs-6">
-             <p>业务： <a href="mailto:hey@example.com">info@example.com</a></p>
-             <p class="m-b-xl">媒体： <a href="mailto:hey@example.com">job@example.com</a></p>
+          <div class="row m-t-lg m-b-lg" data-ride="animated" data-animation="fadeInLeft" data-delay="600">
+            <div class="col-xs-6 text-right">
+              <h4 class="m-t-xl text-yellow-header">国际化专业团队</h4>
+              <p class="text-yellow-body m-t-lg">国内外dj团队</br>专业音乐制作人</br>营造个性化场景</p>
+            </div>
+            <div class="col-xs-6 text-center">
+              <img src="./img/dj@2x.png" class="feature-img">
+            </div>
           </div>
-          <div class="col-xs-3 text-right">
-            Envomuse &copy; 2015 版权所有
+          <div class="row m-t-lg m-b-lg" data-ride="animated" data-animation="fadeInLeft" data-delay="900">
+            <div class="col-xs-6 text-center">
+              <img src="./img/user-interface@2x.png" class="feature-img">
+            </div>
+            <div class="col-xs-6">
+              <h4 class="m-t-xl text-yellow-header">数字化系统管理</h4>
+              <p class="text-yellow-body m-t-lg">数字化播放计划</br>随时插播语音广播广告系统</br>EVM客户店铺管理系统</p>
+            </div>
+          </div>
+          <div class="row m-t-lg m-b-lg" data-ride="animated" data-animation="fadeInLeft" data-delay="1200">
+            <div class="col-xs-6 text-right">
+              <h4 class="m-t-xl text-yellow-header">香氛+音乐</h4>
+              <p class="text-yellow-body m-t-lg">国际认证专业香氛师</br>独一无二室内香氛</br>完美环境体验</p>
+            </div>
+            <div class="col-xs-6 text-center">
+              <img src="./img/flower@2x.png" class="feature-img">
+            </div>
+          </div>
+        </div>
+        <div class="m-t m-b-lg text-center wrapper">
+          <a href="#demo" data-ride="scroll" class="btn btn-lg btn-yellow b-2x btn-rounded bg-empty m-sm">音乐试听</a>
+        </div>
+      </div>
+    </div>
+    <div id="price" class="bg-white">
+      <div class="m-t-l m-b-xl bg-light text-center text-white wrapper">
+        <h2 class="font-bold m-t-xl m-b-xl">多样化精品服务，助力业绩增长，提升客户忠诚度</h2>
+      </div>
+      <div class="container">
+        <div class="wrapper-md">
+          <div class="row no-gutter">
+            <div class="col-lg-3 col-md-4 col-sm-6">
+              <div class="panel b-a">
+                <div class="panel-heading wrapper-xs bg-primary no-border">          
+                </div>
+                <div class="wrapper text-center b-b b-light">
+                  <h4 class="text-u-c m-b-none">基础服务</h4>
+                  <h2 class="m-t-none">
+                    <sup class="pos-rlt" style="top:-22px">￥</sup>
+                    <span class="text-2x text-lt">69</span>
+                    <span class="text-xs">/月/门店</span>
+                  </h2>
+                </div>
+                <ul class="list-group text-center no-borders m-t-sm">
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> 品牌定位分析
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> 背景音乐定制
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> 7x24技术支持
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-close text-danger m-r-xs"></i> <span class="text-l-t">自助提示音设置</span>
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-close text-danger m-r-xs"></i> <span class="text-l-t">远程播放监控</span>
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-close text-danger m-r-xs"></i> <span class="text-l-t">店铺香氛定制</span>
+                  </li>
+                </ul>
+                <div class="panel-footer text-center">
+                  <a href="#contact" data-ride="scroll" class="btn btn-primary font-bold m">获取试用</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+              <div class="panel b-a">
+                <div class="panel-heading wrapper-xs bg-primary no-border">          
+                </div>
+                <div class="wrapper text-center b-b b-light">
+                  <h4 class="text-u-c m-b-none">标准服务</h4>
+                  <h2 class="m-t-none">
+                    <sup class="pos-rlt" style="top:-22px">￥</sup>
+                    <span class="text-2x text-lt">99</span>
+                    <span class="text-xs">/月/门店</span>
+                  </h2>
+                </div>
+                <ul class="list-group text-center no-borders m-t-sm">
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> 品牌定位分析
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> 店铺背景音乐定制
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> 7x24技术支持
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> 自助提示音设置
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> 远程播放监控
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-close text-danger m-r-xs"></i> <span class="text-l-t">店铺香氛定制</span>
+                  </li>
+                </ul>
+                <div class="panel-footer text-center">
+                  <a href="#contact" data-ride="scroll" class="btn btn-primary font-bold m">获取试用</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+              <div class="panel b-a m-t-n-md m-b-xl">
+                <div class="panel-heading wrapper-xs bg-light dker no-border">
+          
+                </div>
+                <div class="wrapper bg-warning text-center m-l-n-xxs m-r-n-xxs">
+                  <h4 class="text-u-c m-b-none font-bold">香氛音乐</h4>
+                  <h2 class="m-t-none">
+                    <sup class="pos-rlt" style="top:-22px">￥</sup>
+                    <span class="text-2x text-lt">169</span>
+                    <span class="text-xs">/月/门店</span>
+                  </h2>
+                </div>
+                <ul class="list-group text-center no-borders m-t-sm">
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> 品牌定位分析
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> 店铺背景音乐定制
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> 7x24技术支持
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> 自助提示音设置
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> 远程播放监控
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> 店铺香氛定制
+                  </li>
+                </ul>
+                <div class="panel-footer text-center">
+                  <div class="m-t-sm">向您推荐</div>
+                  <a href="#contact" data-ride="scroll" class="btn btn-warning font-bold m">获取试用</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 hidden-md">
+              <div class="panel b-a">
+                <div class="panel-heading wrapper-xs bg-primary no-border">
+                  
+                </div>
+                <div class="wrapper text-center b-b b-light">
+                  <h4 class="text-u-c m-b-none">全面定制</h4>
+                  <h2 class="m-t-none">
+                    <sup class="pos-rlt" style="top:-22px">￥</sup>
+                    <span class="text-2x text-lt">199</span>
+                    <span class="text-xs">/月/门店</span>
+                  </h2>
+                </div>
+                <ul class="list-group text-center no-borders m-t-sm">
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> “香氛服务”所有
+                  </li>
+                  <li class="list-group-item">
+                    <i class="icon-check text-success m-r-xs"></i> 其它定制
+                  </li>
+                  
+                </ul>
+                <div class="panel-footer text-center">
+                  <a href="#contact" data-ride="scroll" class="btn btn-primary font-bold m">联系定制</a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </footer>
-  <!-- / footer -->
+    <div id="demo">
+      <div class="m-t-l m-b-xl bg-light text-center text-white wrapper">
+        <h2 class="font-bold m-t-xl m-b-xl">环境音乐+香氛，打造完美购物体验</h2>
+      </div>
+      <div class="container">
+        <img src="./img/demo.png" alt="demo" class="demo">
+      </div>
+    </div>
+    <div id="report">
+      <div class="m-t-l m-b-xl bg-light text-center text-white wrapper">
+        <h2 class="font-bold m-t-xl m-b-xl">媒体报道</h2>
+      </div>
+      <div class="container">
+        <div class="row m-b-lg">
+          <div class="col-sm-12 col-md-6"> 
+            <h3><a href="#home" style="color:#96b1b8">DaoCloud与合作伙伴共建“Container+联盟”</a> </h3> 
+            <hr> 
+            <ul class="text-muted list-inline blg-header">
+              <li><i class="fa fa-calendar"></i> 2015年7月2日</li>
+            </ul> 
+            <p class="lh" style="color:#7B889A"> 2015年6月30日，北京，由DaoCloud主办的企业级容器云平台解决方案研讨会圆满结束。本次会议以“变革应用交付，推动持续创新”为主题，邀请了来自合作伙伴、企业用户以及主流IT媒体的来宾，共同探讨容器技术在企业的应用之道。在本次研讨会上，DaoCloud推出了企业级容器云平台解决方案，并发起了“Container+联盟”，旨在联合生态系统的合作伙伴，共同推动企业级容器云平台发展，帮助企业实现互联网的架构和业务双转型。<br> </p>
+          </div> 
+        <div class="col-sm-12 col-md-5 col-md-offset-1">
+          <ul class="crp-blg-list">
+            <li> <h3> <a href="#home" target="_self">DaoCloud出席Docker全球开发者大会 中国公司首度发表主题演讲</a> </h3> 
+            <time datetime="2014-01-10" class="text-muted"> <i class="fa fa-calendar"></i> 2015年6月27日</time> </li> <li> <h3> <a href="#home" target="_self">IT168专访：DaoCloud欲扛起国内Docker云生态大旗</a> </h3> <time datetime="2014-01-09" class="text-muted"> <i class="fa fa-calendar"></i> 2015年6月25日</time> </li> </ul> </div> </div>
+      </div>
+    </div>
+    <div id="contact" class="bg-light" >
+      <div class="container">
+        <div class="row m-t-xl m-b-xl">
+          <div class="col-sm-2">
+          </div>
+          <div class="col-sm-6 text-white text-left">
+            <h4 class="m-b font-bold">上海市徐汇区肇嘉浜路</h4>
+            <p class="text-sm">
+              <i class="glyphicon glyphicon-earphone m-r"></i>
+              +86 （0）21 3858 8888
+            </p>
+            <p class="text-sm">
+              <i class="glyphicon glyphicon-briefcase m-r"></i>
+              <a href="mailto:business@envomuse.com" title="业务联系" >business@envomuse.com</a>
+            </p>
+            <p class="text-sm">
+              <i class="glyphicon glyphicon-bullhorn m-r"></i>
+              <a href="mailto:press@envomuse.com" title="媒体报道">press@envomuse.com</a>
+            </p>
+            <p class="text-sm">
+              <i class="glyphicon glyphicon-wrench m-r"></i>
+              <a href="mailto:support@envomuse.com" title="技术支持">support@envomuse.com</a>
+            </p>
+          </div>
+          <div class="col-sm-3 text-center">
+            <a href="#" class="btn btn-lg btn-default btn-rounded">联系我们</a>
+          </div>
+        </div>
+        <!-- footer -->
+          <footer id="footer">
+            <div class="row text-center text-sm">
+                Envomuse &copy; 2015 版权所有
+            </div>
+          </footer>
+          <!-- / footer -->
+      </div>
+    </div>
+  
   <script src="../bower_components/jquery/dist/jquery.min.js"></script>
   <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="../bower_components/jquery_appear/jquery.appear.js"></script>

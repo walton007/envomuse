@@ -5175,3 +5175,123 @@ a.text-#000000:hover {
     background-color: #7266ba;
   }
 }
+.carousel-control.right,
+.carousel-control.left{
+  background-image:none !important;
+}
+
+.navbar-brand .logo {
+  display: inline;
+  max-height: 40px;
+  margin-top: -4px;
+  vertical-align: middle;
+}
+
+.btn.outline{
+    background: none;
+    padding: 12px 35px;
+    opacity:0.7 !important;
+}
+.btn.outline:hover, .btn.outline:focus, .btn.outline:active, .btn.outline.active, .open > .dropdown-toggle.btn {
+    color: #fff !important;
+    border-color: #fff;
+    -webkit-transition: opacity 1.5s;
+    -moz-transition: opacity 1.5s;
+    -o-transition: opacity 1.5s;
+    transition: opacity 1.5s;
+}
+.btn.outline:active, .btn.outline.active {
+    border-color: #007299;
+    color: #007299;
+    box-shadow: none;
+}
+
+.bg-img {
+  background-image: url('../img/product_img.jpg');
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.bg-img-demo {
+  min-height: 400px;
+  background-image: url('../img/demo.png');
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.demo{
+  opacity: 0.9;
+  max-width: 100%;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+}
+
+.bg-yellow {
+  background-color: #FDD235 !important;
+}
+
+/*.btn-yellow {
+  color:#FDD235 !important;
+  border-color:#FDD235 !important;
+}*/
+
+.btn-yellow {
+  color:#96b1b8 !important;
+  border-color:#96b1b8 !important;
+}
+
+.btn-primary{
+  color:#96b1b8 !important;
+  background-color: #EDF1F2 !important;
+  border-color: #EDF1F2 !important;
+}
+
+.btn-warning{
+ color:#fff !important;
+  background-color: #96b1b8 !important;
+  border-color: #EDF1F2 !important; 
+}
+
+.btn-white {
+  color:#fff !important;
+  border-color:#fff !important;
+}
+
+@media screen and (max-width: 480px) {
+  .feature-img {
+    width:100%;
+    height:auto;
+  }
+}
+
+.text-yellow-header {
+  color: #FDD235 !important;
+  font-size: 1.6em;
+  font-weight: bold;
+}
+
+
+.text-white,
+.text-yellow-header{
+  color:#96b1b8 !important;
+}
+
+.bg-primary{
+  background-color:#EDF1F2 !important
+}
+.bg-warning{
+  background-color:#96b1b8 !important;
+}
+
+.text-yellow-body {
+  color:#58666E;
+  font-size: 1em;
+}
