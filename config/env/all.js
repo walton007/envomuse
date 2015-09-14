@@ -54,5 +54,5 @@ module.exports = {
   musicAssert: "musicAssert",
   adminName: "walton008@qq.com",
   adminPassword: "Initial0",
-  DJUploadDir: ''
+  DJUploadDir: process.env.DJUPLOADDIR || ''
 };
