@@ -1,0 +1,13 @@
+envomuse:
+  image: daocloud.io/envomuse/envomuse-backend:master-aa69ea0
+  restart: always
+  ports:
+  - '3000'
+  links:
+  - 'db:db'
+
+db:
+  image: daocloud.io/library/mongo:latest
+  restart: always
+  ports:
+  - '27017'
