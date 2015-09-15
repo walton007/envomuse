@@ -13,8 +13,8 @@ COPY ./bower.json /usr/src/app/bower.json
 COPY ./package.json /usr/src/app/package.json
 USER node
 RUN touch /home/node/.mean
-RUN bower install
 RUN npm install --production
+RUN bower install
 
 #Copy whole file
 COPY . /usr/src/app/
