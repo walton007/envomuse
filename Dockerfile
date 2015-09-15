@@ -11,9 +11,11 @@ RUN     groupadd -r node \
 
 COPY ./bower.json /usr/src/app/bower.json
 COPY ./package.json /usr/src/app/package.json
+RUN npm install --production
+RUN chown -R node:node /usr/src/app
+
 USER node
 RUN touch /home/node/.mean
-RUN npm install --production
 RUN bower install
 
 #Copy whole file
