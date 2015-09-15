@@ -11,15 +11,19 @@ RUN     groupadd -r node \
 
 COPY ./bower.json /usr/src/app/bower.json
 COPY ./package.json /usr/src/app/package.json
+USER node
+RUN touch /home/node/.mean
 RUN bower install
 RUN npm install --production
 
 #Copy whole file
 COPY . /usr/src/app/
-RUN chown -R node:node /usr/src/app
-USER node
-RUN touch /home/node/.mean
 
+#chown need root privilige
+USER root
+RUN chown -R node:node /usr/src/app
+
+USER node
 ENV PORT 3000
 ENV DB_PORT_27017_TCP_ADDR db
 EXPOSE 3000
