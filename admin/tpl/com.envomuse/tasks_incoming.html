@@ -1,8 +1,5 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="ComingJobsCtrl">
-  
-  <!-- main -->
   <div class="col">
-  
     <!-- main header -->
     <div class="bg-light lter b-b wrapper-md">
       <div class="row">
@@ -19,14 +16,13 @@
     </div>
     <!-- / main header -->
 
-<div class="col">
-    <div class="wrapper-md">
-      <!-- stats -->
+    <!-- job list -->
+    <div class="col">
+      <div class="wrapper-md">
         <div class="row row-sm text-center">
-
           <div class="panel-default">
             <div class="panel-heading">
-              <span class="label bg-danger pull-right m-t-xs">{{count}} 个新任务</span>
+              <span class="label bg-danger pull-right m-t-xs">{{count}} 个任务</span>
               任务列表
             </div>
             <table class="table table-striped m-b-none">
@@ -36,25 +32,28 @@
                   <th class="text-center">品牌</th>
                   <th class="text-center">DJ</th>
                   <th class="text-center">状态</th>
+                  <th class="text-center">描述</th>
+                  <th class="text-center">导入时间</th>
                   <th class="text-center"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="r in jobs">
-                  <td>
-                  {{$index+1}}
-                  </td>
-                  <td>
-                  {{r.customerName}}
-                  </td>
-                  <td>
-                  {{r.creator}}
-                  </td>
+                  <td>{{$index+1}}</td>
+                  <td>{{r.customerName}}</td>
+                  <td>{{r.creator}}</td>
                   <td>
                   {{r.importStatus}}
+                    <div class="la-pacman">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
                   </td>
+                  <td>{{r.importStatus}}</td>
+                  <td>2015-09-10</td>
                   <td>
-                    <button class="btn btn-primary" ng-show="{{r.importStatus==='待导入'}}" ng-click="doImport(r._id)">导入</button>
+                    <button class="btn btn-primary" ng-show="{{r.importStatus==='待导入'}}" ng-click="doImport(r._id)" ng-enabled="{{importBtnInvalid}}">导入</button>
                     <!-- <button class="btn btn-success" ng-show="{{r.importStatus=='导入完成'}}">查看</button> -->
                   </td>
                 </tr>
@@ -67,32 +66,30 @@
             </div>
           </div>
         </div>
-
-      <!-- / stats -->
+      </div>
     </div>
-  </div>
-  <!-- /main -->
+    <!-- /job list -->
 
-  <!-- right col -->
-  <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
-    <!-- help -->
-    <div class="padder-md m-t">      
-      <div class="m-b text-md">帮助</div>
-      <div class="streamline b-l m-b">
-        <div class="sl-item">
-          <div class="m-l">
-            <p>任务为管理员穿到系统中的未导入系统的压缩文件包</p>
+    <!-- right col -->
+    <div class="col w-md bg-white-only b-l bg-auto no-border-xs">
+      <!-- help -->
+      <div class="padder-md m-t">      
+        <div class="m-b text-md">帮助</div>
+        <div class="streamline b-l m-b">
+          <div class="sl-item">
+            <div class="m-l">
+              <p>任务为管理员穿到系统中的未导入系统的压缩文件包</p>
+            </div>
           </div>
-        </div>
-        <div class="sl-item">
-          <div class="m-l">
-            <p>任务由DJ使用编辑器生成，并经过审核方可传至系统。</p>
+          <div class="sl-item">
+            <div class="m-l">
+              <p>任务由DJ使用编辑器生成，并经过审核方可传至系统。</p>
+            </div>
           </div>
         </div>
       </div>
+      <!-- /help -->
     </div>
-    <!-- /help -->
-  </div>
   <!-- / right col -->
-
+  </div>
 </div>
