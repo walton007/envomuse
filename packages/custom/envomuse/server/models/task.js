@@ -20,7 +20,9 @@ var TaskSchema = new Schema({
     default: 'idle',
     enum: ['idle', 'running', 'finished', 'failed'],
   },
-  ref: String
+  ref: String,
+  description: String,
+  errorCode: Number
 });
 
 TaskSchema.method('failed',

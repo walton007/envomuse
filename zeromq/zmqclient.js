@@ -23,13 +23,22 @@ socketSub.on("message", function (topic, message) {
 
 setTimeout(function() {
 	console.log('going send msg');
-	var msgStr = JSON.stringify({cmdId: 11, cmd: 'comingJobs', args:['reset']});
-	socketCmd.send(msgStr);
+	// var msgStr = JSON.stringify({cmdId: 11, cmd: 'comingJobs', args:['reset']});
+	// socketCmd.send(msgStr);
+
+	// var msgStr = JSON.stringify({cmdId: 11, cmd: 'comingJobs', args:['all']});
+	// socketCmd.send(msgStr);
 	
-	var msgStr = JSON.stringify({cmdId: 11, cmd: 'comingJobs', args:['all']});
-	socketCmd.send(msgStr);
+	// var msgStr = JSON.stringify({cmdId: 11, cmd: 'comingJobs', args:['allTasks']});
+	// socketCmd.send(msgStr);
 
 	// var msgStr = JSON.stringify({cmdId: 13, cmd: 'comingJobs', args:['forceRefresh']});
 	// socketCmd.send(msgStr);
+
+	var msgStr = JSON.stringify({cmdId: 13, cmd: 'comingJobs', args:['doImport', '55febf31a715542c3dde2cdb']});
+	socketCmd.send(msgStr);
+
+    msgStr = JSON.stringify({cmdId: 11, cmd: 'comingJobs', args:['all']});
+	socketCmd.send(msgStr);
 	 
 }, 200);

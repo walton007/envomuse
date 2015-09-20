@@ -56,3 +56,51 @@ socketCmd.on("message", function (message) {
 // Begin listening for connections on all IP addresses on port 9998.
 socketCmd.connect(config.pushCmdAddr);
 socketPub.bindSync(config.pubAddr);
+
+console.log('Server running Process PID: ', process.pid);
+
+function test() {
+	var fs = require('fs');
+	var yauzl = require("yauzl");
+var zipFilepath = '/Users/i071628/meanStack/github/envomuse/uploadAttachment/dj/wanlai.zip';
+	
+	yauzl.open(zipFilepath, function(err, zipfile) {
+  if (err) throw err;
+  zipfile.on("entry", function(entry) {
+  	
+    if (/\/$/.test(entry.fileName)) {
+      // directory file names end with '/' 
+      return;
+    }
+
+    if (entry.fileName.substr(0, 6) !== 'asset/') {
+    	return;
+    }
+
+    console.log('entry.fileName:', entry.fileName.substr(6));
+
+    if (false && entry.fileName === 'musicEditor.json') {
+    	zipfile.openReadStream(entry, function(err, readStream) {
+	      if (err) throw err;
+	      // ensure parent directory exists, and then: 
+	      // readStream.pipe(fs.createWriteStream(entry.fileName));
+	      // var metadata = '';
+	      var bufferArr = [];
+	      // readStream.setEncoding('utf8');
+	      readStream.on('data', function (data) {
+	      	bufferArr.push(data);
+	      	console.log('data:', data.length);
+	      	// metadata = metadata+data;
+	      });
+	      readStream.on('end', function ( ) {
+	      	var buf = Buffer.concat(bufferArr);
+	      	var last = JSON.parse(buf);
+	      	console.log('JSONdata:', typeof last, last.name);
+	      });
+	    });
+    }
+    
+  });
+});
+}
+// test();

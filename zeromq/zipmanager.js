@@ -1,6 +1,7 @@
 require('../packages/custom/envomuse/server/models/track');
 
-var JSZip = require("jszip"),
+var async = require("async"),
+    yauzl = require("yauzl");
 	path = require('path'),
 	fs = require('fs'),
 	Q = require('q'),
@@ -15,22 +16,41 @@ var mongoose = require('mongoose'),
 	Track = mongoose.model('Track');
 
 function getMetaInfo(zipFilepath, callback) {
-	fs.readFile(zipFilepath, function(err, data) {
+	yauzl.open(zipFilepath, function(err, zipfile) {
 		if (err) {
-			console.error('read file failed:', filepath);
-			callback(err);
-			return;
+			console.error('getMetaInfo error:', err);
+			return callback('invalid zip file');
 		}
-		var zip = new JSZip(data);
-		var metaJson = zip.file("musicEditor.json");
-		if (!metaJson) {
-			callback('invalid zip file');
-			return;
-		};
-		var buf = metaJson.asNodeBuffer();
-		var meta = JSON.parse(buf);
-		//maybe check meta later
-		callback(null, meta);
+
+		zipfile.on("entry", function(entry) {
+			if (entry.fileName === 'musicEditor.json') {
+				var bufferArr = [];
+				zipfile.openReadStream(entry
+					, function(err, readStream) {
+						if (err) {
+							console.error('getMetaInfo when read entry error:', err);
+							return callback('error when read entry');
+						}
+
+						readStream.on('data', function(data) {
+							// console.log('data:', data.length);
+							bufferArr.push(data);
+						});
+						readStream.on('error', function(error) {
+							console.error('getMetaInfo readStream failed :', error);
+							bufferArr.length = 0;
+							return callback('error when read entry2');
+						});
+						readStream.on('end', function() {
+							console.log('data read end for file:', entry.fileName);
+							var buf = Buffer.concat(bufferArr);
+							var meta = JSON.parse(buf);
+							bufferArr.length = 0;
+							return callback(null, meta);
+						});
+					});
+			}
+		});
 	});
 }
 
@@ -38,66 +58,96 @@ function EncFile(musicFileBuf) {
 	return musicFileBuf;
 }
 
-function CreateTrack(comingJob, musicAssertPath, musicFileBuf, trackInfo) {
+function CreateTrack(comingJob, musicAssertPath, zipfile, entry, trackInfo) {
 	var q = Q.defer();
 	var filename = trackInfo.name;
 
-	//Check whether this file already exist
-	Track.findOne({
-		hash: trackInfo.hash
-	}).exec(function(err, track) {
-		if (err) {
-			console.log('find track error filename:', filename);
-			q.reject('find track error filename');
-			return;
-		};
-		if (track) {
-			track.fromBoxs = _.union(track.fromBoxs, trackInfo.fromBoxs);
-			track.save(function (err, upTrack) {
-				q.resolve(upTrack);
-			});
-			console.log('find track already exist filename:', filename);
-			return;
-		};
-		//Create song and write the song to musicAssertPath
-		crypto.randomBytes(8, function(ex, buf) {
-			var token = buf.toString('hex');
-			var rawName = 'raw-' + token + '-' + filename;
-			var encName = 'enc-' + token + '-' + filename;
-			var targetRawFilePath = path.resolve(musicAssertPath, rawName);
-			var targetEncFilePath = path.resolve(musicAssertPath, encName);
-			fs.writeFile(targetRawFilePath, musicFileBuf, 
-				function(err) {
-					if (err) {console.error('Failed to writeFile:',  targetRawFilePath); return;}
-					console.log('writeFile Success:', targetRawFilePath);
-				});
-			fs.writeFile(targetEncFilePath, EncFile(musicFileBuf),
-				function(err) {
-					if (err) {console.error('Failed to write enc File:',  targetEncFilePath); return;}
-					console.log('write enc File Success:', targetEncFilePath);
-				});
+	var bufferArr = [];
+	zipfile.openReadStream(entry
+		, function(err, readStream) {
+			if (err) {
+				console.error('CreateTrack when read entry error:', err);
+				return q.reject('CreateTrack when read entry error');
+			}
 
-			//Create modal record
-			new Track({
-				comingJob: comingJob,
-				name: filename,
-				hash: trackInfo.hash,
-				duration: trackInfo.duration,
-				fromBoxs: trackInfo.fromBoxs,
-				rawfilepath: targetRawFilePath,
-				encfilepath: targetEncFilePath
-			}).save(function(err, upTrack) {
-				if (err) {
-					console.error('save track failed:', filename);
-					q.reject('save track failed');
-					return;
-				};
-				console.log('save track success:', filename);
-				q.resolve(upTrack);
+			readStream.on('data', function(data) {
+				// console.log('data:', data.length);
+				bufferArr.push(data);
 			});
-		})
+			readStream.on('error', function(error) {
+				console.error('CreateTrack readStream failed :', error);
+				bufferArr.length = 0;
+				return q.reject('CreateTrack error when read entry2');
+			});
+			readStream.on('end', function() {
+				console.log('data read end:', entry.fileName);
 
-	});
+				//Check whether this file already exist
+				Track.findOne({
+					hash: trackInfo.hash
+				}).exec(function(err, track) {
+					if (err) {
+						console.log('find track error filename:', filename);
+						q.reject('find track error filename');
+						bufferArr.length = 0;
+						return;
+					}
+					if (track) {
+						track.fromBoxs = _.union(track.fromBoxs, trackInfo.fromBoxs);
+						track.save(function (err, upTrack) {
+							q.resolve(upTrack);
+						});
+						console.log('find track already exist filename:', filename);
+						bufferArr.length = 0;
+						return;
+					}
+
+					var musicFileBuf = Buffer.concat(bufferArr);
+					bufferArr.length = 0;
+
+					//Create song and write the song to musicAssertPath
+					crypto.randomBytes(8, function(ex, buf) {
+						var token = buf.toString('hex');
+						var rawName = 'raw-' + token + '-' + filename;
+						var encName = 'enc-' + token + '-' + filename;
+						var targetRawFilePath = path.resolve(musicAssertPath, rawName);
+						var targetEncFilePath = path.resolve(musicAssertPath, encName);
+
+						async.series({
+						    rawfile: fs.writeFile.bind(fs, targetRawFilePath, musicFileBuf),
+						    encfile: fs.writeFile.bind(fs, targetEncFilePath, musicFileBuf),
+						},
+						function(err, results) {
+							console.log('write file results:', results);
+							if (err) {
+								q.reject('save track file failed');
+								return;
+							}
+
+						    //Create modal record
+							new Track({
+								comingJob: comingJob,
+								name: filename,
+								hash: trackInfo.hash,
+								duration: trackInfo.duration,
+								fromBoxs: trackInfo.fromBoxs,
+								rawfilepath: targetRawFilePath,
+								encfilepath: targetEncFilePath
+							}).save(function(err, upTrack) {
+								console.log('save track success:', filename);
+								if (err) {
+									console.error('save track failed:', filename);
+									q.reject('save track failed');
+									return;
+								};
+								q.resolve(upTrack);
+							});
+						});
+
+					})
+				});
+			});
+		});
 
 	return q.promise;
 }
@@ -129,28 +179,46 @@ function CreateJob(comingJob, trackArr, callback) {
 function extractData(comingJob, musicAssertPath, callback) {
 	var zipFilepath = comingJob.filepath;
 	console.log('extract ', zipFilepath);
-	fs.readFile(zipFilepath, function(err, data) {
-		console.log('extract 1');
-		if (err) {
-			console.error('read file failed:', filepath);
-			callback(err);
-			return;
-		}
-		var zip = new JSZip(data);
-		var track_promises = [];
-		var meta = comingJob.meta;
 
-		console.log('extract 2');
-		
-		_.forOwn(meta.tracksMeta, function (trackInfo, hash) {
-			var musicFileBuf = zip.file('asset/' + trackInfo.targetRelativePath).asNodeBuffer();
-			console.log('musicFileBuf length:', musicFileBuf.length, ' hash:', hash);
-			track_promises.push(CreateTrack(comingJob, musicAssertPath, musicFileBuf, trackInfo));
+	// construct targetRelativePath2TrackInfo from meta.tracksMeta
+	var meta = comingJob.meta;
+	var targetRelativePath2TrackInfo = {};
+	_.forOwn(meta.tracksMeta, function (trackInfo, hash) {
+		targetRelativePath2TrackInfo[trackInfo.targetRelativePath] = trackInfo;
+	});
+
+	// parse music in zip package
+	yauzl.open(zipFilepath, function(err, zipfile) {
+		if (err) {
+			console.error('extractData error:', err);
+			return callback('invalid zip file');
+		}
+
+		var track_promises = [];
+
+		zipfile.on("entry", function(entry) {
+			if (/\/$/.test(entry.fileName)) {
+		      // directory file names end with '/' 
+		      return;
+		    }
+
+		    if (entry.fileName.substr(0, 6) !== 'asset/') {
+		    	return;
+		    }
+
+		    var targetRelativePath = entry.fileName.substr(6);
+		    var trackInfo = targetRelativePath2TrackInfo[targetRelativePath];
+		    if (!trackInfo) {
+		    	console.warn('targetRelativePath not Exist:', targetRelativePath);
+		    } else {
+		    	track_promises.push(CreateTrack(comingJob, musicAssertPath, zipfile, entry, trackInfo));
+			}
 		});
 
-		console.log('extract 3');
-		//Create Job
-		Q.allSettled(track_promises).spread(function() {
+		zipfile.on('end', function () {
+			Q.allSettled(track_promises).spread(function() {
+			console.log('create all track done');
+
 			var notFulfilled = _.some(arguments, function (defer) {
 				return defer.state !== 'fulfilled';
 			});
@@ -166,8 +234,12 @@ function extractData(comingJob, musicAssertPath, callback) {
 			});
 		});
 
-		console.log('extract 4');
+		})
 	});
+
+	
+
+	console.log('waiting extract');
 }
 
 exports = module.exports = {

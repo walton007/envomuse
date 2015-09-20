@@ -860,13 +860,19 @@ app.controller('ComingJobsCtrl', ['$scope', 'ComingJobs', 'ComingJobsImport', 'C
 
   $scope.getJobs = function(res){
     $scope.jobs = res.map(function(e){
+        var statusTrans = {
+          'idle': '导入中...',
+          'running': '导入中...',
+          'finished': '导入完成',
+          'failed': '导入失败'
+        };
         return {
           type:e.__t,
           _id:e._id,
           creator:e.meta.creator,
           customerName:e.meta.brand,
           // hash:e.hash,
-          importStatus: (e.importStatus==='notImport')?'待导入':(e.importStatus==='importing'?'导入中...':'导入完成')
+          importStatus: (!e.task) ? '待导入' : statusTrans[e.task.status]
         };
       });
 
