@@ -853,26 +853,27 @@ app.controller('BoxDetailCtrl', ['$scope', 'BoxById', '$stateParams', function($
 
 }]);
 
-app.controller('ComingJobsCtrl', ['$scope', 'ComingJobs', 'ComingJobsImport', 'ComingJobsRefresh', '$stateParams', 
-  function($scope, ComingJobs, ComingJobsImport, ComingJobsRefresh, $stateParams) {  
+app.controller('ComingJobsCtrl', ['$state', '$timeout', '$scope', 'ComingJobs', 'ComingJobsImport', 'ComingJobsRefresh', '$stateParams', 
+  function($state, $timeout, $scope, ComingJobs, ComingJobsImport, ComingJobsRefresh, $stateParams) {  
 
   $scope.jobs = [];
 
   $scope.getJobs = function(res){
     $scope.jobs = res.map(function(e){
         var statusTrans = {
-          'idle': '导入中...',
-          'running': '导入中...',
-          'finished': '导入完成',
-          'failed': '导入失败'
+          'idle': [1,'导入中...'],
+          'running': [1,'导入中...'],
+          'finished': [2,'导入完成'],
+          'failed': [3,'导入失败']
         };
         return {
           type:e.__t,
           _id:e._id,
           creator:e.meta.creator,
           customerName:e.meta.brand,
-          // hash:e.hash,
-          importStatus: (!e.task) ? '待导入' : statusTrans[e.task.status]
+          created:e.meta.created,
+          importStatusDescription: (!e.task) ? '待导入' : statusTrans[e.task.status][1],
+          importStatusFlag: (!e.task) ? 0 : statusTrans[e.task.status][0],
         };
       });
 
@@ -881,24 +882,34 @@ app.controller('ComingJobsCtrl', ['$scope', 'ComingJobs', 'ComingJobsImport', 'C
 
   ComingJobs.getList(function(res){
     $scope.comingJobs = res;
-    // console.log($scope.comingJobs);
+    console.log($scope.comingJobs);
 
     $scope.getJobs(res);
 
   });
 
   $scope.refresh = function(){
+    $scope.isRefreshing = true;
+
     ComingJobsRefresh.refresh({},function(res){
-      $scope.getJobs(res);
+      $state.go('tasks.incoming',{},{reload: true});
+      $scope.isRefreshing = false;
+    },function(res){
+      $scope.isRefreshing = false;
     });
+  };
+
+  $scope.reload = function(){
+    $scope.isRefreshing = false;
+    $state.go('tasks.incoming',{},{reload: true});
   };
 
 
   $scope.doImport = function(id){
-    $scope.importInProgress = true;
 
     ComingJobsImport.import({'jobId':id},{},function(res){
       console.log(res);
+      $state.go('tasks.incoming',{},{reload: true});
     });
   };
 
