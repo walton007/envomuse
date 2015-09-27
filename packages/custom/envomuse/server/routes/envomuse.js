@@ -3,6 +3,7 @@
 /* jshint -W098 */
 var express = require('express'),
    mean = require('meanio'),
+   path = require('path'),
    _ = require('lodash'),
    config = mean.loadConfig(),
    customer = require('../controllers/customer'),
@@ -314,5 +315,17 @@ module.exports = function(Envomuse, app, auth, database, passport) {
   //integrate admin module
   // app.use('/admin', express.static(config.root + '/admin'));  //admin
   app.use('/', express.static(config.root + '/home'));  //home
+
+  //music editor download
+  var appRouter = express.Router();
+  app.use('/app', appRouter);
+
+  appRouter.route('/envomuseEditor')
+  .get(function(req, res) {
+    var file = path.join(config.root, 'appdownload/envomuseMusicEditor.app.zip');
+
+    console.log('file path:', file);
+    return res.download(file); // Set disposition and send it.
+  });
 
 };
