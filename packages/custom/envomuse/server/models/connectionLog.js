@@ -12,7 +12,12 @@ var BaseSchema = commonUtil.BaseSchema;
 
 var ConnectionLogSchema = BaseSchema.extend({
   ip: String,
-  heartbeatTm: Date,
+  mac: String,
+  heartbeatTm: {
+    type: Date,
+    default: Date.now,
+    required: true
+  },
   siteid: {
     type: Schema.ObjectId,
     ref: 'Site'

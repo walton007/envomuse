@@ -235,22 +235,6 @@ module.exports = function(Envomuse, app, auth, database, passport) {
   var terminalRouter = express.Router();
   app.use('/terminal', terminals.checkValidConnection, terminalRouter);
   //ConnectionLogs For Music Player
-  // ConnectionLog
-  // terminalRouter.route('/login')
-  // // .post(function(req, res, next) {
-  // //   //param: {uuid: 'abc', deviceInfo: {mac:'ac-de-fc-sd'}}
-  // //   //update site.license info
-  // //   res.json({ok: true});
-  // // });
-
-  // .post(passport.authenticate('envomusePlayerStrategy', {
-  //     failureFlash: true
-  //   }), function(req, res) {
-  //     console.log('req.user:', req.user);
-  //     res.send({
-  //       user: req.user
-  //     });
-  //   });
 
   terminalRouter.route('/config')
   .get(function(req, res, next) {
@@ -293,11 +277,7 @@ module.exports = function(Envomuse, app, auth, database, passport) {
     res.json({ok: true});
   });
   terminalRouter.route('/heartbeat')
-  .post(function(req, res, next) {
-    // 30 miniutes once a day: for statistic purpose
-    // this will update site.lastHeartbeat
-    res.json({ok: true});
-  });
+  .post(terminals.siteHeartBeat);
 
   var adminRouter = express.Router();
   app.use('/admin', adminRouter);

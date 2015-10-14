@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
   Program = mongoose.model('Program'),
   Site = mongoose.model('Site'),
+  ConnectionLog = mongoose.model('ConnectionLog'),
   Q = require('q'),
   moment = require('moment-range'),
   _ = require('lodash');
@@ -101,6 +102,9 @@ exports.checkValidConnection = function(req, res, next) {
     mac = infoArr[2];
 
   console.log(playerVersion, siteUuid, mac);
+  req.clientInfo = {
+    mac:  mac
+  };
 
   if (!siteUuid || !mac) {
     return res.status(400).json({
@@ -157,3 +161,42 @@ exports.checkValidConnection = function(req, res, next) {
   });
 };
 
+/**
+ * record site hearbeat info
+ */
+exports.siteHeartBeat = function(req, res) {
+  //Check the last record to see whether the frequency is too high
+  var checkMoment = moment().subtract(30, 'minutes');
+  ConnectionLog.find({siteid: req.site, heartbeatTm: {$gte: checkMoment}})
+  .count()
+  .exec(function(err, count) {
+    if (err) {
+      return res.status(500).json({
+        error: 'find connectionLog count error'
+      });
+    }
+    if (count > 0) {
+      console.info('heartbeat frequency too high, just ignore it');
+      res.status(200);
+    } else {
+      console.info('save this heartbeat info');
+      var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+      var connectionLog = new ConnectionLog({
+        ip: ip,
+        mac: req.clientInfo.mac,
+        siteid: req.site
+      });
+      
+      connectionLog.save(function(err) {
+        if (err) {
+          return res.status(500).json({
+            error: 'Cannot save the connectionLog'
+          });
+        }
+        res.status(200);
+      });
+
+    }
+  });
+  
+}
