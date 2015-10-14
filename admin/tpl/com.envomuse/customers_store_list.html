@@ -33,7 +33,7 @@
                       <th data-toggle="true">频道</th>
                       <th data-toggle="true">交付状态</th>
                       <th data-toggle="true">连接状态</th>
-                      <th data-toggle="false">导出</th>
+                      <th data-toggle="true">license</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -45,7 +45,7 @@
                       <td><span class="label bg-{{row.channelType}}">{{row.channelName}}</span></td>
                       <td><i class="fa fa-circle text-{{row.deliverState}} text-xs m-t-sm"></i></td>
                       <td><i class="fa fa-circle text-{{row.playerStatus}} text-xs m-t-sm"></i></td>
-                      <td><a class="btn btn-sm btn-info btn-addon" href><i class="fa fa-download"></i>导出</a></td>
+                      <td>{{row.license}}</td>
                     </tr>
                   </tbody>
                 </table>

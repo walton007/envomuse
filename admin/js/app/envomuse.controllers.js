@@ -492,7 +492,8 @@ app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams',
           channelName:e.channelName,
           channelType:e.channelType==='normal'?'light':(e.channelType==='special'?'primary':'info'),
           deliverState:e.deliveryState==='deliveryYes'?'success':'light',
-          playerStatus:e.playerStatus==='offline'?'danger':'success'
+          playerStatus:e.playerStatus==='offline'?'danger':'success',
+          license: e.license.uuid
         };
       });
     });
