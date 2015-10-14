@@ -133,7 +133,7 @@ exports.basicChannelInfo = function(req, res, next) {
 }
 
 exports.getChannelProgramInfo = function(req, res, next) {
-  Program.find({channel: req.channel._id})
+  Program.find({channel: req.channel._id, deleteFlag: {$ne : true}})
   .select('_id name job jobName startDate endDate exported createDate')
   .exec(function(err, programs) {
     if (err) {

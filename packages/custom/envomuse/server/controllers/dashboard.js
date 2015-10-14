@@ -113,6 +113,7 @@ function calcRecentWeekPlaylist (req) {
 
   Program.find({
     customer: customer,
+    deleteFlag: {$ne : true},
     $or: [ {
       startDate: {
         $lte: beginDay

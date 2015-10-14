@@ -85,9 +85,6 @@ module.exports = function(Envomuse, app, auth, database, passport) {
   apiRouter.route('/exportTasks/:taskid')
   .get(function(req, res, next) {
     res.json({id:2});
-  })
-  .delete(function(req, res, next) {
-    res.send(200);
   });
 
   //all Tasks
@@ -97,7 +94,8 @@ module.exports = function(Envomuse, app, auth, database, passport) {
   //Programs
   // apiRouter.get('/programs', programs.statistic, programs.all);
   apiRouter.route('/programs/:programId')
-  .get(programs.show);
+  .get(programs.show)
+  .delete(programs.destroy);
   
   apiRouter.route('/programs/:programId/generateExportRequest')
   .post(programs.generateExportRequest);

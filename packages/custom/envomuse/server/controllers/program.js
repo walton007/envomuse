@@ -36,7 +36,8 @@ exports.show = function(req, res) {
 exports.all = function(req, res) {
   //collect sites information
   Program.find({
-  }).select('_id name startDate endDate inUse created')
+    deleteFlag: {$ne : true}
+  }).select('_id name startDate endDate inUse created deleteFlag')
     .exec(function(err, programs) {
       if (err) {
         console.error('find programs error');
@@ -48,6 +49,26 @@ exports.all = function(req, res) {
     });
 };
 
+/**
+ * Delete a program
+ */
+exports.destroy = function(req, res) {
+  var program = req.program;
+  program.deleteFlag = true;
+  program.save(function(err) {
+    if (err) {
+      return res.status(500).json({
+        error: 'Cannot delete the program'
+      });
+    }
+    var retObj = {
+      _id: program._id
+    };
+    res.json(retObj);
+
+  });
+};
+
 
 /**
  * Generate Export Request from this program
@@ -57,6 +78,11 @@ exports.generateExportRequest = function(req, res) {
   var program = req.program;
 
   console.log('program.channel:', typeof program.channel, program.channel.str);
+  if (program.deleteFlag === true) {
+    return res.status(410).json({
+        error: 'this program has already been destroyed'
+      });
+  }
 
   Site.find({channel: program.channel})
   .select('_id siteName deviceId channelName customerName license.uuid')

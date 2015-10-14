@@ -27,7 +27,9 @@ exports.getProgramList = function(req, res) {
   console.log('getProgramList:');
   var duration = getDateDuration();
   Program.find({
+    deleteFlag: {$ne : true},
     channel: req.site.channel,
+
     $or: [ {startDate: {
       $gte: duration.startDate,
       $lte: duration.endDate,

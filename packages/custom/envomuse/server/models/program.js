@@ -53,6 +53,12 @@ var ProgramSchema = new Schema({
     default: Date.now,
     required: true
   },
+
+  deleteFlag: {
+    type: Boolean,
+    default: false,
+    required: true
+  },
 });
 
 /**

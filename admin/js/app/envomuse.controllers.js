@@ -521,8 +521,8 @@ app.controller('ChannelsDashCtrl', ['$scope', 'CustomersBasic', '$stateParams',
 }]);
 
 //Channels detail
-app.controller('ChannelsDetailCtrl', ['$scope', '$state', 'Jobs', 'Customers', 'ExportProgram', 'ChannelsProgramList', 'ChannelsGenerateProgram', '$stateParams', 
-  function($scope, $state, Jobs, Customers, ExportProgram, ChannelsProgramList, ChannelsGenerateProgram, $stateParams) {
+app.controller('ChannelsDetailCtrl', ['$scope', '$state', 'Jobs', 'Customers', 'ExportProgram', 'ProgramById', 'ChannelsProgramList', 'ChannelsGenerateProgram', '$stateParams', 
+  function($scope, $state, Jobs, Customers, ExportProgram, ProgramById, ChannelsProgramList, ChannelsGenerateProgram, $stateParams) {
 
     $scope.alerts = [];
     $scope.closeAlert = function(index) {
@@ -605,6 +605,22 @@ app.controller('ChannelsDetailCtrl', ['$scope', '$state', 'Jobs', 'Customers', '
       console.log('export....'+id)
       ExportProgram.doExport({programId:id},{},function(res){
         console.log(res);
+      },function(error){
+        // console.log(error);
+        $scope.alerts.push({type: 'danger', msg: error.data.error});
+      })
+    };
+
+    $scope.doDeleteProgram = function(id){
+      console.log('delete program....'+id)
+      ProgramById.delete({programId:id},{},function(res){
+        console.log('delete program');
+        for (var i = $scope.programs.length - 1; i >= 0; i--) {
+          if ($scope.programs[i]._id === id) {
+            $scope.programs.splice(i, 1);
+            break;
+          }
+        };
       },function(error){
         // console.log(error);
         $scope.alerts.push({type: 'danger', msg: error.data.error});

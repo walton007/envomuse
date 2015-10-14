@@ -97,7 +97,9 @@
                   <td>{{item.startDate | date:"yyyy-MM-dd"}}</td>
                   <td>{{item.endDate | date:"yyyy-MM-dd"}}</td>
                   <td>{{item.createDate | date:"yyyy-MM-dd HH:mm:ss"}}</td>
-                  <td><button type="submit" class="btn btn-info btn-sm" ng-click="doExport(item._id)">导出</button></td>
+                  <td><button type="submit" class="btn btn-info btn-sm" ng-click="doExport(item._id)">导出</button> 
+                  <button type="submit" class="btn btn-info btn-sm" ng-click="doDeleteProgram(item._id)">删除</button>
+                </td>
               </tr>
               <tfoot class="hide-if-no-paging">
                 <tr>
