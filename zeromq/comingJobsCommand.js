@@ -362,6 +362,16 @@ function CreateTask(type, ref, callback) {
 				return;
 			}
 			if (task) {
+				if (task.status === 'failed') {
+					// reset failed to idle, and record the old failed reason
+					console.log('reset failed task to idle', task);
+					task.status = 'idle';
+					if (!task.historyErrorRecordArr instanceof Array) {
+						task.historyErrorRecordArr = [];
+					}
+					task.historyErrorRecordArr.push({description: task.description, errorCode: task.errorCode});
+					return task.save(callback);
+				};
 				return callback(null, task);
 			}
 

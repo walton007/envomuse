@@ -22,7 +22,11 @@ var TaskSchema = new Schema({
   },
   ref: String,
   description: String,
-  errorCode: Number
+  errorCode: Number,
+  historyErrorRecordArr: [{
+    description: String,
+    errorCode: Number
+  }]
 });
 
 TaskSchema.method('failed',
