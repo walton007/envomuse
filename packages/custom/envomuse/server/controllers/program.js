@@ -59,7 +59,7 @@ exports.generateExportRequest = function(req, res) {
   console.log('program.channel:', typeof program.channel, program.channel.str);
 
   Site.find({channel: program.channel})
-  .select('_id siteName deviceId channelName customerName')
+  .select('_id siteName deviceId channelName customerName license.uuid')
   .sort('-created').exec(function(err, sites) {
     if (err) {
       return res.status(400).json({
@@ -81,7 +81,8 @@ exports.generateExportRequest = function(req, res) {
     _.each(sites, function (site) {
       sitesInfo.push({
         siteName: site.siteName,
-        deviceId: site.deviceId
+        deviceId: site.deviceId,
+        licenseUuid: site.license.uuid
       });
     });
     channelName = sites[0].channelName;

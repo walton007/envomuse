@@ -191,6 +191,7 @@ exports.sitesPaginate = function(req, res) {
 
 exports.addSite = function(req, res) {
   req.body.customer = req.customer;
+  req.body.customerName = req.customer.brand;
   ChannelController.getCustomerDefChannel(req.customer,
     function(err, channel) {
       if (err) {
@@ -207,7 +208,7 @@ exports.addSite = function(req, res) {
         deviceId: randomstring.generate(10),
         license: {
           uuid: randomstring.generate(10)
-        },
+        }
       });
       
       // SiteController.create(req, res);

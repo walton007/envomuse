@@ -173,8 +173,8 @@ module.exports = function(Envomuse, app, auth, database, passport) {
   // .post(sites.bindLicense);
   
 
-  apiRouter.route('/sites/:siteId/licenseActivate')
-  .post(sites.licenseActivate);
+  // apiRouter.route('/sites/:siteId/licenseActivate')
+  // .post(sites.licenseActivate);
   apiRouter.route('/sites/:siteId/connectionLogs')
   .get(function(req, res, next) {
     res.json([{id:2}]);

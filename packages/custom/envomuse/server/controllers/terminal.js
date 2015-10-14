@@ -132,7 +132,9 @@ exports.checkValidConnection = function(req, res, next) {
     }
 
     if (site.license.deviceMac !== mac) {
-      return res.send("no such site invalid mac", 400);
+      return res.status(400).json({
+            error: 'no such site invalid mac'
+          });
     } else {
       site.lastHeartbeat = {
         date: new Date(),

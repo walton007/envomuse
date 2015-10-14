@@ -24,6 +24,8 @@ var ExportRequestSchema = new Schema({
   customerName: String,
   sitesArr: [{
     deviceId: String,
+    siteName: String,
+    licenseUuid: String
   }],
 
   startDate: Date,

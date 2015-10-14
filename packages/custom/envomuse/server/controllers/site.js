@@ -188,52 +188,52 @@ exports.bindLicense = function(req, res) {
 /**
  * active license for an site
  */
-exports.licenseActivate = function(req, res) {
-  var mac = req.body.mac;
-  var macRegex = /^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$/;
-  if (!macRegex.test(mac)) {
-    return res.status(503).json({
-      error: 'invalid mac!'
-    });
-  }
-  var requestuuid = req.body.uuid;
-  var site = req.site;
-  if (!!site.license) {
-    if (requestuuid !== site.license.uuid) {
-      console.log('requestuuid:', requestuuid);
-      console.log('site.license.uuid:', site.license.uuid);
-      return res.status(502).json({
-        error: 'invalid license uuid!'
-      });
-    }
+// exports.licenseActivate = function(req, res) {
+//   var mac = req.body.mac;
+//   var macRegex = /^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$/;
+//   if (!macRegex.test(mac)) {
+//     return res.status(503).json({
+//       error: 'invalid mac!'
+//     });
+//   }
+//   var requestuuid = req.body.uuid;
+//   var site = req.site;
+//   if (!!site.license) {
+//     if (requestuuid !== site.license.uuid) {
+//       console.log('requestuuid:', requestuuid);
+//       console.log('site.license.uuid:', site.license.uuid);
+//       return res.status(502).json({
+//         error: 'invalid license uuid!'
+//       });
+//     }
 
-    if (site.license.activated) {
-      return res.status(501).json({
-        error: 'license already activated!'
-      });
-    } else {
-      site.license = _.extend(site.license, {
-        activated: true,
-        deviceInfo: mac,
-        activatedDate: new Date()
-      });
-      site.save(function(err) {
-        if (err) {
-          console.warn('update licenseActivate error:', err);
-          return res.status(505).json({
-            error: 'licenseActivate failed'
-          });
-        }
-        res.json(site);
-      });
-    }
+//     if (site.license.activated) {
+//       return res.status(501).json({
+//         error: 'license already activated!'
+//       });
+//     } else {
+//       site.license = _.extend(site.license, {
+//         activated: true,
+//         deviceInfo: mac,
+//         activatedDate: new Date()
+//       });
+//       site.save(function(err) {
+//         if (err) {
+//           console.warn('update licenseActivate error:', err);
+//           return res.status(505).json({
+//             error: 'licenseActivate failed'
+//           });
+//         }
+//         res.json(site);
+//       });
+//     }
 
-  } else {
-    return res.status(500).json({
-      error: 'bindLicense first!'
-    });
-  }
-};
+//   } else {
+//     return res.status(500).json({
+//       error: 'bindLicense first!'
+//     });
+//   }
+// };
 
 exports.statistic = function(req, res, next) {
   if (!('statistic' in req.query)) {
