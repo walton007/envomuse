@@ -177,7 +177,7 @@ exports.siteHeartBeat = function(req, res) {
     }
     if (count > 0) {
       console.info('heartbeat frequency too high, just ignore it');
-      res.status(200);
+      res.status(200).json({ });
     } else {
       console.info('save this heartbeat info');
       var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -193,7 +193,7 @@ exports.siteHeartBeat = function(req, res) {
             error: 'Cannot save the connectionLog'
           });
         }
-        res.status(200);
+        res.status(200).json({});
       });
 
     }
