@@ -228,14 +228,19 @@ exports.render = function(req, res, requireAuth) {
   }
 
   function isCustomer() {
-    // console.log('req.user.roles:', req.user.roles);
+    console.log('req.user:', req.user);
+    if (req.user) {
+      console.log('req.user.roles:', req.user.roles);
+    }
     return req.user && req.user.roles.indexOf('customer') !== -1;
   }
 
   if (isCustomer()) {
+    console.log(1);
     getUserSpecificInfo(req)
     .then(function (myInfo) {
-      console.log('render myInfo:', myInfo.sites);
+      console.log('render myInfo:', myInfo);
+      console.log('render myInfo.sites:', myInfo.sites);
       // Send some basic starting info to the view
       res.render('admin', {
         user: req.user ? {
@@ -245,12 +250,16 @@ exports.render = function(req, res, requireAuth) {
           roles: req.user.roles
         } : {},
         isAdmin: 'false',
-        myInfo: myInfo
+        myInfo: myInfo,
+        requireAuth: requireAuth 
       });
 
     }, function (err) {
+      console.log(3);
 
     })
+
+    console.log(1.1);
     return;
   };
 
@@ -264,7 +273,7 @@ exports.render = function(req, res, requireAuth) {
     } : {},
     isAdmin: isAdmin() ? 'true' : 'false',
     myInfo: {},
-    requireAuth: requireAuth
+    requireAuth: requireAuth 
   });
   return;
 };

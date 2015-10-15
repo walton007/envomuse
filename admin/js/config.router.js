@@ -8,14 +8,17 @@ angular.module('app')
     [          '$rootScope', '$state', '$stateParams',
       function ($rootScope,   $state,   $stateParams) {
           $rootScope.$state = $state;
-          $rootScope.$stateParams = $stateParams;        
+          $rootScope.$stateParams = $stateParams;
       }
     ]
   )
   .config(
     [          '$stateProvider', '$urlRouterProvider', 'JQ_CONFIG', 
       function ($stateProvider,   $urlRouterProvider, JQ_CONFIG) {
-          
+
+        console.log('==== 1');
+        function defineAdminState() {
+          console.log('defineAdminState');
           $urlRouterProvider
               .otherwise('/app/dashboard');
           $stateProvider
@@ -36,48 +39,6 @@ angular.module('app')
                     }]
                   }
               })
-
-              .state('user', {
-                  abstract: true,
-                  url: '/u',
-                  templateUrl: 'tpl/app_user.html',
-                  resolve: {
-                    deps: ['$ocLazyLoad',
-                      function( $ocLazyLoad ){
-                        return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
-                                                 'js/app/envomuse.services.js']);
-                    }]
-                  }
-              })
-              .state('user.home', {
-                  url: '/home',
-                  templateUrl: 'tpl/com.envomuse/user_home.html',
-                  resolve: {
-                      deps: ['$ocLazyLoad', 'uiLoad',
-                        function( $ocLazyLoad, uiLoad ){
-                          return uiLoad.load(
-                            JQ_CONFIG.fullcalendar.concat('js/app/calendar/calendar.user.js')
-                          ).then(
-                            function(){
-                              return $ocLazyLoad.load(['ui.calendar',
-                                              'com.2fdevs.videogular', 
-                                              'com.2fdevs.videogular.plugins.controls', 
-                                              'com.2fdevs.videogular.plugins.overlayplay',
-                                              'com.2fdevs.videogular.plugins.poster',
-                                              'com.2fdevs.videogular.plugins.buffering',
-                                              'js/app/music/useradmin_ctrl.js', 
-                                              'js/app/music/theme.css']
-                                             );
-                            }
-                          )
-                      }]
-                  }
-              })
-              .state('user.sites', {
-                  url: '/sites',
-                  templateUrl: 'tpl/com.envomuse/user_sites.html'
-              })
-
               //channels
               .state('channels', {
                   abstract: true,
@@ -368,52 +329,131 @@ angular.module('app')
               })
               
               // pages
-              .state('app.page', {
-                  url: '/page',
-                  template: '<div ui-view class="fade-in-down"></div>'
-              })
               // others
-              .state('lockme', {
-                  url: '/lockme',
-                  templateUrl: 'tpl/page_lockme.html'
-              })
               .state('access', {
                   url: '/access',
                   template: '<div ui-view class="fade-in-right-big smooth"></div>'
               })
-              .state('access.signin', {
-                  url: '/signin',
-                  templateUrl: 'tpl/page_signin.html',
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad ){
-                          return uiLoad.load( ['js/controllers/signin.js'] );
-                      }]
-                  }
-              })
-              .state('access.signup', {
-                  url: '/signup',
-                  templateUrl: 'tpl/page_signup.html',
-                  resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad ){
-                          return uiLoad.load( ['js/controllers/signup.js'] );
-                      }]
-                  }
-              })
-              .state('access.forgotpwd', {
-                  url: '/forgotpwd',
-                  templateUrl: 'tpl/page_forgotpwd.html'
-              })
-              .state('access.404', {
-                  url: '/404',
-                  templateUrl: 'tpl/page_404.html'
-              })
+              // .state('access.signin', {
+              //     url: '/signin',
+              //     templateUrl: 'tpl/page_signin.html',
+              //     resolve: {
+              //         deps: ['uiLoad',
+              //           function( uiLoad ){
+              //             return uiLoad.load( ['js/controllers/signin.js'] );
+              //         }]
+              //     }
+              // })
               .state('access.logout', {        
                 controller: function () {
                   window.location = '/logout';
                 }
               })
+
+        };
+
+        function defineCustomerState() {
+          console.log('defineCustomerState');
+          $urlRouterProvider
+              .otherwise('/u/home');
+          $stateProvider
+          .state('user', {
+                  abstract: true,
+                  url: '/u',
+                  templateUrl: 'tpl/app_user.html',
+                  resolve: {
+                    deps: ['$ocLazyLoad',
+                      function( $ocLazyLoad ){
+                        return $ocLazyLoad.load(['js/app/envomuse.controllers.js',
+                                                 'js/app/envomuse.services.js']);
+                    }]
+                  }
+              })
+              .state('user.home', {
+                  url: '/home',
+                  templateUrl: 'tpl/com.envomuse/user_home.html',
+                  resolve: {
+                      deps: ['$ocLazyLoad', 'uiLoad',
+                        function( $ocLazyLoad, uiLoad ){
+                          return uiLoad.load(
+                            JQ_CONFIG.fullcalendar.concat('js/app/calendar/calendar.user.js')
+                          ).then(
+                            function(){
+                              return $ocLazyLoad.load(['ui.calendar',
+                                              'com.2fdevs.videogular', 
+                                              'com.2fdevs.videogular.plugins.controls', 
+                                              'com.2fdevs.videogular.plugins.overlayplay',
+                                              'com.2fdevs.videogular.plugins.poster',
+                                              'com.2fdevs.videogular.plugins.buffering',
+                                              'js/app/music/useradmin_ctrl.js', 
+                                              'js/app/music/theme.css']
+                                             );
+                            }
+                          )
+                      }]
+                  }
+              })
+              .state('user.sites', {
+                  url: '/sites',
+                  templateUrl: 'tpl/com.envomuse/user_sites.html'
+              })
+              .state('access', {
+                  url: '/access',
+                  template: '<div ui-view class="fade-in-right-big smooth"></div>'
+              })
+              // .state('access.signin', {
+              //     url: '/signin',
+              //     templateUrl: 'tpl/page_signin.html',
+              //     resolve: {
+              //         deps: ['uiLoad',
+              //           function( uiLoad ){
+              //             return uiLoad.load( ['js/controllers/signin.js'] );
+              //         }]
+              //     }
+              // })
+              .state('access.logout', {        
+                controller: function () {
+                  window.location = '/logout';
+                }
+              })
+
+        };
+
+        function defineAnoymousState() {
+          console.log('defineAnoymousState');
+          // others
+          $urlRouterProvider
+              .otherwise('/access/signin');
+          $stateProvider
+          .state('access', {
+              url: '/access',
+              template: '<div ui-view class="fade-in-right-big smooth"></div>'
+          })
+          .state('access.signin', {
+              url: '/signin',
+              templateUrl: 'tpl/page_signin.html',
+              resolve: {
+                  deps: ['uiLoad',
+                    function( uiLoad ){
+                      return uiLoad.load( ['js/controllers/signin.js'] );
+                  }]
+              }
+          })
+          .state('access.logout', {        
+            controller: function () {
+              window.location = '/logout';
+            }
+          })
+
+        };
+
+        if (window.isAdmin) {
+            defineAdminState();
+          } else if (window.myInfo.sites) {
+            defineCustomerState();
+          } else {
+            defineAnoymousState();
+          }
       }
     ]
   );

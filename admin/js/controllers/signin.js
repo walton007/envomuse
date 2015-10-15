@@ -2,7 +2,7 @@
 
 /* Controllers */
   // signin controller
-app.controller('SigninFormController', ['$scope', '$http', '$state', function($scope, $http, $state) {
+app.controller('SigninFormController', ['$scope', '$http', '$location', '$state', function($scope, $http, $location, $state) {
     $scope.user = {};
     $scope.authError = null;
     $scope.login = function() {
@@ -24,5 +24,35 @@ app.controller('SigninFormController', ['$scope', '$http', '$state', function($s
           $scope.authError = '用户名或密码错误，请重试';
       });
     };
+
+    $scope.login = function() {
+        $http.post('/login', {
+          email: $scope.user.email,
+          password: $scope.user.password
+        })
+          .success(function(response) {
+            // authentication OK
+            // $scope.loginError = 0;
+            // $rootScope.user = response.user;
+            // $rootScope.$emit('loggedin');
+            // if (response.redirect) {
+            //   if (window.location.href === response.redirect) {
+            //     //This is so an admin user will get full admin page
+            //     window.location.reload();
+            //   } else {
+            //     window.location = response.redirect;
+            //   }
+            // } else {
+            //   $location.url('/');
+            // }
+            // $location.url('/');
+            // window.location.reload();
+            // $location.url('/');
+            window.location.reload();
+          })
+          .error(function() {
+            $scope.authError = '用户名或密码错误，请重试';
+          });
+      };
   }])
 ;
