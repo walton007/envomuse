@@ -261,7 +261,7 @@ app.factory('ComingJobsRefresh', ['$resource', function($resource) {
     },
     {
       //'get': {method:'GET', isArray:false},
-      'refresh':{method:'POST',isArray:true,timeout:5000}
+      'refresh':{method:'POST',isArray:true,timeout:120000}
     });
   }
 ]);

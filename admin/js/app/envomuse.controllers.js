@@ -36,6 +36,8 @@ app.controller('DashboardCtrl', ['$scope', 'DashStats', 'ComingJobs', '$statePar
 app.controller('UserHomeCtrl', ['$scope', '$stateParams', '$window',
   function($scope, $stateParams, $window) {
 
+    console.log($window.myInfo);
+
     $scope.data = $window.myInfo;
 
     $scope.sites = $scope.data.sites;
@@ -481,6 +483,9 @@ app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams',
 
     CustomerSites.getPageData({'customerId':$stateParams.brandId,pageNumber:$scope.bigCurrentPage,pageSize:$scope.pageItems},
       function(res) {
+
+        console.log(res);
+        
       $scope.bigTotalItems = res.count;
       $scope.datasource = res.data;
       $scope.normalizedDataSource = $scope.datasource.map(function(e){
