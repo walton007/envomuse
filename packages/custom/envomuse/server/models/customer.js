@@ -16,6 +16,11 @@ var CustomerSchema = BaseSchema.extend({
     required: true,
     unique: true
   },
+
+  companyName: {
+    type: String,
+    required: true
+  },
    
   address: String,
   industry: String,
