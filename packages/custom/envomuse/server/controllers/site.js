@@ -47,13 +47,23 @@ exports.update = function(req, res) {
   console.warn('update site :', site);
 
   var vairableProperties = ['siteName', 'reference', 'manager', 
-  'phone', 'address', 'province', 'city'];
+  'phone', 'address', 'province', 'city', 'disable'];
   var siteProperties = {};
   _.each(vairableProperties, function (property) {
     if (property in req.body) {
       siteProperties[property] = req.body[property];
     }
   });
+
+  if (req.body.deliveryInfo && req.body.deliveryInfo.deliveried && !site.deliveryInfo.deliveried) {
+    if (req.body.deliveryInfo.deliveried) {
+      siteProperties.deliveryInfo = {
+        deliveried : true,
+        deliveryDate: req.body.deliveryInfo.deliveryDate ? req.body.deliveryInfo.deliveryDate: new Date(),
+        comment: req.body.deliveryInfo.comment
+      };
+    }
+  }
 
   var readyQ = Q.defer();
 

@@ -35,12 +35,10 @@ var SiteSchema = commonUtil.BaseSchema.extend({
   province: String,
   city: String,
    
-  exportTime: Date,
-  deliveryState: {
-    type: String,
-    required: true,
-    default: 'deliveryNo',
-    enum: ['deliveryYes', 'deliveryNo'],
+  deliveryInfo: {
+    deliveried: Boolean,
+    deliveryDate: Date,
+    comment: String
   },
 
   deviceId: {

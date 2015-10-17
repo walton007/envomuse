@@ -120,6 +120,9 @@ exports.checkValidConnection = function(req, res, next) {
     if (!site) {
       return res.send("no such site", 400);
     }
+    if (site.disable) {
+      return res.send("site have been disabled", 400);
+    }
     if (!site.license.deviceMac) {
       // Activate device mac
       site.license.deviceMac = mac;

@@ -167,23 +167,11 @@ module.exports = function(Envomuse, app, auth, database, passport) {
   .get(sites.show)
   .put(sites.update)
   .delete(sites.destroy);
-  // apiRouter.route('/sites/:siteId/bindLicense')
-  // .post(sites.bindLicense);
-  
 
-  // apiRouter.route('/sites/:siteId/licenseActivate')
-  // .post(sites.licenseActivate);
   apiRouter.route('/sites/:siteId/connectionLogs')
   .get(function(req, res, next) {
+    // Return 2 weeks data
     res.json([{id:2}]);
-  });
-  apiRouter.route('/sites/:siteId/refreshPlayerStatus')
-  .post(function(req, res, next) {
-    res.json({playerStatus: 'online'});
-  });
-  apiRouter.route('/sites/:siteId/timelineLogs')
-  .get(function(req, res, next) {
-    res.json([{playerStatus: 'online'}]);
   });
 
   apiRouter.param('siteId', sites.site);

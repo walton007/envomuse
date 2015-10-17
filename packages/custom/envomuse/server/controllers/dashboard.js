@@ -35,11 +35,11 @@ exports.analysis = function(req, res) {
   // get siteDeliveryStats
   promise = Site.aggregate([{
       $match: {
-        deleteFlag: false
+        disable: false
       }
     }, {
       $group: {
-        _id: '$deliveryState',
+        _id: '$deliveryInfo.deliveried',
         count: {
           $sum: 1
         }
@@ -70,7 +70,7 @@ exports.analysis = function(req, res) {
       'delivered': 0,  'undelivered': 0
     };
     _.each(values[1], function(obj) {
-      siteDeliveryStats[obj._id] = obj.count;
+      siteDeliveryStats[obj._id ? 'delivered' : 'undelivered'] = obj.count;
     });
 
     var totalChannel = values[2];

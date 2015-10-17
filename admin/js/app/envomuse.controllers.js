@@ -426,7 +426,9 @@ app.controller('StoreEditCtrl', ['$scope', 'Sites', 'CustomerChannels', '$stateP
       phone: $scope.store.phone,
       address: $scope.store.address,
       province: $scope.store.province,
-      city: $scope.store.city
+      city: $scope.store.city,
+      disable: $scope.store.disable,
+      deliveryInfo: $scope.store.deliveryInfo
     };
 
     var store = new Sites(updatedStore);

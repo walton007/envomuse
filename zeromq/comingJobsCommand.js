@@ -102,34 +102,34 @@ function getDetailInfo(comingJobId, respCallback, respErrorback) {
 	});
 }
 
-function ComingJobsStatistic(respCallback, respErrorback) {
-	console.log('ComingJobsStatistic');
-	// body...
+// function ComingJobsStatistic(respCallback, respErrorback) {
+// 	console.log('ComingJobsStatistic');
+// 	// body...
 
-	ComingJob.aggregate([{
-    $match: {
-      invalid: false
-    }
-  }, {
-    $group: {
-      _id: '$importStatus',
-      count: {$sum: 1}
-    }
-  }])
-  .exec(function(err, result) {
-    console.log('result:', result);
-    if (err) {
-      respErrorback && respErrorback('err:' + err);
-      return;
-    };
-    var statusMap = {};
-    _.each(result, function(obj) {
-      statusMap[obj._id] = obj.count;
-    });
+// 	ComingJob.aggregate([{
+//     $match: {
+//       invalid: false
+//     }
+//   }, {
+//     $group: {
+//       _id: '$importStatus',
+//       count: {$sum: 1}
+//     }
+//   }])
+//   .exec(function(err, result) {
+//     console.log('result:', result);
+//     if (err) {
+//       respErrorback && respErrorback('err:' + err);
+//       return;
+//     };
+//     var statusMap = {};
+//     _.each(result, function(obj) {
+//       statusMap[obj._id] = obj.count;
+//     });
 
-    respCallback && respCallback(statusMap);
-  });
-}
+//     respCallback && respCallback(statusMap);
+//   });
+// }
 
 function findByMd5(hash, callback) {
 	ComingJob.findOne({
@@ -446,7 +446,7 @@ ClearRuningTask(function() {
 exports = module.exports = {
 	all: allComingJobs,
 	detail: getDetailInfo,
-	statistic: ComingJobsStatistic,
+	// statistic: ComingJobsStatistic,
 	forceRefresh: forceRefresh,
 	doImport: importComingJob,
 

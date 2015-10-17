@@ -23,7 +23,14 @@
         <div class="wrapper-md">
           <div class="panel-heading font-bold">编辑门店信息</div>
             <div class="panel-body">
-              <form name="form" class="form-horizontal m-t-lg form-validation">
+              <div>
+                <label class="col-lg-2">禁用</label>
+                <div class="col-lg-6">
+                  <input type="checkbox" ng-model="store.disable">
+                </div>
+              </div>
+
+              <form name="form" class="form-horizontal m-t-lg form-validation" ng-show="!store.disable">
                 <div class="form-group">
                   <label class="col-lg-2 control-label">品牌</label>
                   <div class="col-lg-8">
@@ -77,6 +84,23 @@
                     <select ui-jq="chosen" class="form-control" ng-model="selectedChannel" ng-options="option.name for option in channels" required></select>
                   </div>
                 </div> -->
+
+                <div class="form-group">
+                  <label class="col-lg-2 control-label"> 标志发送 </label>
+                  <div class="col-lg-2">
+                    <input type="checkbox" class="form-control" ng-model="store.deliveryInfo.deliveried">
+                  </div>
+                  <div class="col-lg-6">
+                    <input type="text" class="form-control" ng-model="store.deliveryInfo.comment" placeholder="发送单号" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-lg-2 control-label"> 发送日期 </label>
+                  <div class="col-lg-8">
+                    store.deliveryInfo.deliveryDate
+                  </div>
+                </div>
 
                 <div class="line line-dashed b-b line-lg pull-in"></div>
 
