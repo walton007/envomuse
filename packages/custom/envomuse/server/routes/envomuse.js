@@ -41,6 +41,9 @@ module.exports = function(Envomuse, app, auth, database, passport) {
   apiRouter.route('/dashboard/')
   .get(dashboard.analysis);
 
+  apiRouter.route('/dashboard/playerStatistic/')
+  .get(dashboard.getActivePlayerAnalysis);
+
   //Coming Jobs
   apiRouter.route('/comingJobs')
   .get(comingJobs.statistic, comingJobs.all);

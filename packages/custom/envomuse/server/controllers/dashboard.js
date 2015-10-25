@@ -12,6 +12,7 @@ var mongoose = require('mongoose'),
   Program = mongoose.model('Program'),
   moment = require('moment-range'),
   Q = require('q'),
+  async = require('async'),
   _ = require('lodash');
 
 exports.analysis = function(req, res) {
@@ -171,6 +172,46 @@ function calcRecentWeekPlaylist (req) {
   });
 
   return deferred.promise;
+}
+
+exports.getActivePlayerAnalysis = function(req, res) {
+  var today = moment().startOf('day'),
+  beginDay = moment(today).subtract(3, 'days');
+
+  async.series([
+    function (callback) {
+      Site.find({
+        disable: false,
+        "deliveryInfo.deliveried": true,
+        lastHeartbeat: {
+          $gte: beginDay
+        }
+      })
+      .count(callback);
+    },
+    function (callback) {
+      Site.find({
+        disable: false,
+        "deliveryInfo.deliveried": true,
+        lastHeartbeat: {
+          $lt: beginDay
+        }
+      })
+      .count(callback);
+    }],
+    function(err, results) {
+      if (err) {
+        console.error('failed to getActivePlayerAnalysis:', err);
+        return res.status(400).json({
+          error: 'Query Err'
+        });
+      }
+      
+      res.json({
+        activePlayerCnt: results[0],
+        inactivePlayerCnt: results[1]
+      });
+    });
 }
 
 // API-2: sites status { timestamp:xxxx, online:3000, offline:40, local:50 }
