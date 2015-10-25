@@ -36,7 +36,11 @@ var SiteSchema = commonUtil.BaseSchema.extend({
   city: String,
    
   deliveryInfo: {
-    deliveried: Boolean,
+    deliveried: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
     deliveryDate: Date,
     comment: String
   },
