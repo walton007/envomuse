@@ -485,6 +485,20 @@ app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams', 'Sit
     });
   };
 
+  $scope.toggleActive = function(id, state){
+    var updatedStore = {
+      _id:id,
+      disable: !state
+    };
+
+    var store = new Sites(updatedStore);
+    store.$update(function(site) {
+      // $scope.$parent.alerts.push({type: 'success', msg: $scope.store.siteName + '修改成功！'});
+      // $state.go('customers.store.detail',{brandId:$scope.brand._id,storeId:$scope.store._id});
+      $scope.pageChanged();
+    });
+  };
+
   $scope.pageChanged = function() {
 
     CustomerSites.getPageData({'customerId':$stateParams.brandId,pageNumber:$scope.bigCurrentPage,pageSize:$scope.pageItems},
@@ -503,6 +517,8 @@ app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams', 'Sit
           channelName:e.channelName,
           channelType:e.channelType==='normal'?'light':(e.channelType==='special'?'primary':'info'),
           deliverState:e.deliveryInfo.deliveried === true ?'success':'light',
+          deliverDate: e.deliveryInfo.deliveryDate,
+          deliverComment: e.deliveryInfo.comment,
           playerStatus:e.playerStatus==='offline'?'danger':'success',
           license: e.license.uuid,
           disable: e.disable
