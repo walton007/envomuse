@@ -498,7 +498,7 @@ app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams',
           deviceId:e.deviceId,
           channelName:e.channelName,
           channelType:e.channelType==='normal'?'light':(e.channelType==='special'?'primary':'info'),
-          deliverState:e.deliveryState==='deliveryYes'?'success':'light',
+          deliverState:e.deliveryInfo.deliveried === true ?'success':'light',
           playerStatus:e.playerStatus==='offline'?'danger':'success',
           license: e.license.uuid
         };
