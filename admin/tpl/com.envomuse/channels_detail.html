@@ -6,17 +6,18 @@
       <div class="panel panel-default no-border">
         <div class="panel-heading">
           <div class="row m-t-md">
-            <div class="col-sm-4">
+            <div class="col-sm-6">
               <div class="clearfix">
                 <div class="pull-left thumb-md avatar b-3x m-r">
                   <img ng-src="{{chosenBrand.logo}}" alt="...">
                 </div>
                 <div class="clear">
                   <div class="h4 m-t-xs m-b-xs">
-                    {{chosenBrand.brand | uppercase}}
+                    品牌 {{chosenBrand.brand | uppercase}}
                   </div>
-                  <small class="text-muted clearfix">{{chosenBrand.industry}}</small>
-                  <small class="text-muted clearfix">{{chosenBrand.status==null?'状态未知':chosenBrand.status}}</small>
+                  <small class="text-muted clearfix">频道 {{channelName}} 所有Program</small>
+                  <!--<small class="text-muted clearfix">{{chosenBrand.industry}}</small>
+                  <small class="text-muted clearfix">{{chosenBrand.status==null?'状态未知':chosenBrand.status}}</small>-->
                 </div>
               </div>
 
@@ -25,7 +26,7 @@
             <div class="col-sm-2">
             <a class="btn m-b-xs btn-sm btn-success btn-addon" ui-sref="channels.detail.program({brandId:chosenBrandId,channelId:chosenChannelId,programArr:programs,brand:chosenBrand})"><i class="fa fa-calendar"></i>查看日历</a>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-4">
               <a class="btn m-b-xs btn-sm btn-primary btn-addon pull-right" ng-show="!showGenerateProgram" ng-click="showGenerateProgram=true"><i class="fa fa-plus"></i>生成播放列表</a>
               <a class="btn m-b-xs btn-sm btn-danger btn-addon pull-right" ng-show="showGenerateProgram" ng-click="showGenerateProgram=false"><i class="fa fa-minus"></i>关闭</a>
             </div>

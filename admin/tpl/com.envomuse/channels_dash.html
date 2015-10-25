@@ -36,7 +36,7 @@
                   <span class="label m-l pull-right bg-{{b.channels.length>0?'success':'light'}}">{{b.channels.length}}</span><i class="icon icon-trophy text-muted m-r"></i>{{b.brand | uppercase}}
                   </accordion-heading>
                     <ul class="list-group">
-                      <a ui-sref="channels.detail({brandId:b._id,channelId:c._id})" class="list-group-item b-b" ng-repeat="c in b.channels">
+                      <a ui-sref="channels.detail({brandId:b._id,channelId:c._id, channelName:c.name})" class="list-group-item b-b" ng-repeat="c in b.channels">
                         <span class="label bg-{{c.bg}} m-r">{{c.type}}</span>{{c.name}}
                       </a>
                     </ul>

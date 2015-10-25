@@ -18,8 +18,14 @@
       </div>
     </div>
 
-  <div class="row padder">
-
+  <div class="row wrapper">
+    <h4>连接日志</h4>
+    
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="c in connectionLogs">
+        {{c.heartbeatTm}} - {{c.ip}} - {{c.mac}} - {{c.siteid.ref}}
+      </li>
+    </ul>
   </div>
     <!-- /main -->
 

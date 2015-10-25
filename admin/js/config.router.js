@@ -62,7 +62,7 @@ angular.module('app')
                   templateUrl: 'tpl/com.envomuse/channels_dash.html'
               })
               .state('channels.detail', {
-                  url: '/:brandId/:channelId/detail/',
+                  url: '/:brandId/:channelId/:channelName/detail/',
                   parent:'channels.dash',
                   templateUrl: 'tpl/com.envomuse/channels_detail.html',
               })

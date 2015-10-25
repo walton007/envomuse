@@ -440,8 +440,8 @@ app.controller('StoreEditCtrl', ['$scope', 'Sites', 'CustomerChannels', '$stateP
 }]);
 
 //Customer store detail
-app.controller('StoreDetailCtrl', ['$scope', '$state', 'Customers', 'Sites', 'SiteLicense', '$stateParams', 
-  function($scope, $state, Customers, Sites, SiteLicense, $stateParams) {
+app.controller('StoreDetailCtrl', ['$scope', '$state', 'Customers', 'Sites', 'SiteConnectionLogs', '$stateParams', 
+  function($scope, $state, Customers, Sites, SiteConnectionLogs, $stateParams) {
 
   $scope.siteId = $stateParams.storeId;
 
@@ -457,19 +457,17 @@ app.controller('StoreDetailCtrl', ['$scope', '$state', 'Customers', 'Sites', 'Si
     });
   }
 
-
-  $scope.bindLicense = function(storeId){
-    // console.log(storeId);
-    SiteLicense.save({'siteId':storeId},function(res){
-      // console.log(res);
-    })
-  };
+  SiteConnectionLogs.get({'siteId':$scope.siteId},
+    function(res) {
+      console.log(res);
+      $scope.connectionLogs = res;
+    });
   
 }]);
 
 //Customer store list
-app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams', 
-  function($scope, CustomerSites, $stateParams) {
+app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams', 'Sites',
+  function($scope, CustomerSites, $stateParams, Sites) {
   
   $scope.maxSize = 5; //total buttons displayed
   $scope.bigCurrentPage = 1;  //current page
@@ -479,6 +477,12 @@ app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams',
 
   $scope.init = function(){
     $scope.pageChanged();
+  };
+
+  $scope.closeStore = function(id){
+    Sites.disable({'siteId':id},{},function(res){
+      console.log(res);
+    });
   };
 
   $scope.pageChanged = function() {
@@ -500,7 +504,8 @@ app.controller('StoreListCtrl', ['$scope', 'CustomerSites', '$stateParams',
           channelType:e.channelType==='normal'?'light':(e.channelType==='special'?'primary':'info'),
           deliverState:e.deliveryInfo.deliveried === true ?'success':'light',
           playerStatus:e.playerStatus==='offline'?'danger':'success',
-          license: e.license.uuid
+          license: e.license.uuid,
+          disable: e.disable
         };
       });
     });
@@ -554,6 +559,7 @@ app.controller('ChannelsDetailCtrl', ['$scope', '$state', 'Jobs', 'Customers', '
     });
 
     $scope.chosenBrandId = $stateParams.brandId;
+    $scope.channelName = $stateParams.channelName;
     $scope.chosenChannelId = $stateParams.channelId;
 
     ChannelsProgramList.getPrograms({'channelId':$scope.chosenChannelId},

@@ -23,6 +23,7 @@ exports.site = function(req, res, next, id) {
   });
 };
 
+
 /**
  * Create an site
  */
@@ -128,6 +129,22 @@ exports.destroy = function(req, res) {
 exports.show = function(req, res) {
   //add programSites info
   res.json(req.site);
+};
+
+exports.disable = function(req, res){
+  var site = req.site;
+  site.disable = true;
+
+  site.save(function(err) {
+      if (err) {
+        console.warn('update site error:', err);
+        return res.status(400).json({
+          error: 'Cannot update the site'
+        });
+      }
+      res.json(site);
+
+    });
 };
 
 /**

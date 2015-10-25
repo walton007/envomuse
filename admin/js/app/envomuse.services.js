@@ -149,7 +149,7 @@ app.factory('CustomerManager', ['$resource', function($resource) {
 //STORE - SITES
 app.factory('Sites', ['$resource', function($resource) {
     return $resource(
-      '/api/sites/:siteId', 
+      '/api/sites/:siteId/', 
     {
       siteId: '@_id'
     },
@@ -161,8 +161,22 @@ app.factory('Sites', ['$resource', function($resource) {
       'remove': {method:'DELETE'},
       'delete': {method:'DELETE'},*/
       'update': {method: 'PUT'},
+      'disable': {method: 'POST'},
       'siteStats': {method:'GET', isArray:false, params:{'statistic':true}},
       'getPageData': {method:'GET', isArray:false, params:{'pageNumber':1, 'pageSize':12}}
+    });
+  }
+]);
+
+
+app.factory('SiteConnectionLogs', ['$resource', function($resource) {
+    return $resource(
+      '/api/sites/:siteId/connectionLogs', 
+    {
+      siteId: '@_id'
+    },
+    {
+      'get': {method: 'GET', isArray:true}
     });
   }
 ]);

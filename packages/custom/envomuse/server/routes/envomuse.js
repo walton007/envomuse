@@ -163,8 +163,9 @@ module.exports = function(Envomuse, app, auth, database, passport) {
   apiRouter.param('channelId', channels.channel);
   
   //Sites
-  apiRouter.route('/sites/:siteId')
+  apiRouter.route('/sites/:siteId/')
   .get(sites.show)
+  .post(sites.disable)
   .put(sites.update)
   .delete(sites.destroy);
 

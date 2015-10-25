@@ -185,7 +185,7 @@ exports.sitesPaginate = function(req, res) {
   Site.paginate(filterCond,
     pageNumber, pageSize, callback, {
       sortBy: '-created',
-      columns: '_id license.uuid siteName reference created deviceId deliveryInfo channel channelName channelType'
+      columns: '_id license.uuid siteName reference created deviceId deliveryInfo channel channelName channelType disable lastHeartbeat'
     });
 };
 
