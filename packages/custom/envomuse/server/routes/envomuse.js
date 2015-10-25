@@ -15,6 +15,7 @@ var express = require('express'),
    users = require('../controllers/user'),
    terminals = require('../controllers/terminal'),
    dashboard = require('../controllers/dashboard'),
+   connectionLogs = require('../controllers/connectionLog'),
    exportRequests = require('../controllers/exportRequest'),
    comingJobs = (config.enableZmq) ? require('../controllers/comingJobZmq') : require('../controllers/comingJob');
 
@@ -170,10 +171,7 @@ module.exports = function(Envomuse, app, auth, database, passport) {
   .delete(sites.destroy);
 
   apiRouter.route('/sites/:siteId/connectionLogs')
-  .get(function(req, res, next) {
-    // Return 2 weeks data
-    res.json([{id:2}]);
-  });
+  .get(connectionLogs.getSiteConnectionLogs);
 
   apiRouter.param('siteId', sites.site);
 
